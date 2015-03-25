@@ -1,0 +1,113 @@
+# .inputrc
+# (See readline(3) for settings; C-x C-r reloads)
+
+$include /etc/inputrc
+
+# do not make noise
+#set bell-style none
+
+# append demarkation characters [*/@%=] to special entries
+set visible-stats on
+
+# add trailing slash to completed dirs (default)
+#set mark-directories on
+
+# add trailing slash to completed symlinked dirs (default)
+# (does not affect showing completions)
+#set mark-symlinked-directories on
+
+# wrap long lines when typing commands (default)
+#set horizontal-scroll-mode off
+
+# redirection short cuts
+"\ew":		"2>&1"
+"\eq":		"&>/dev/null &"
+"\e\C-q":	"2>/dev/null"
+"\eg":		"&>~/.garbage.out &"
+"\e\C-g":	"2>~/.garbage.out"
+
+$if term=xterm
+
+# redirection short cuts
+"\M-w":		"2>&1"
+"\M-q":		"&>/dev/null &"
+"\M-\C-q":	"2>/dev/null"
+"\M-g":		"&>~/.garbage.out &"
+"\M-\C-g":	"2>~/.garbage.out"
+$endif
+
+$if term=xterm
+"\M-l":		"la\r"
+$endif
+
+$if term=rxvt
+"\el":		"la\r"
+$endif
+
+#$if term=putty
+#"\el":		"la\r"
+#$endif
+
+# postgresql shortcuts
+$if psql
+	"\e-s":	"select * from "
+	$if term=xterm
+	"\M-s":	"select * from "
+	$endif
+$endif
+
+
+# FIXES BELOW THIS LINE
+#-----
+
+$if term=xterm
+# allow the use of the Home/End keys
+"\e[1~":	beginning-of-line
+"\e[4~":	end-of-line
+
+# mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
+"\e[1;5C":	forward-word
+"\e[1;5D":	backward-word
+# putty?
+"\eOC":		forward-word
+"\eOD":		backward-word
+
+# rotation of kill buffer
+"\M-y":		yank-pop
+
+# completions
+"\M-?":		possible-completions
+"\M-*":		insert-completions
+
+# enable Alt-. insertion of last typed argument
+"\M-.":		yank-last-arg
+
+# alt-space is a different character than a space and can cause baffling errors
+"\xa0":		" "
+$endif
+
+$if term=rxvt
+# allow the use of the Home/End keys
+"\e[7~":	beginning-of-line
+"\e[8~":	end-of-line
+
+# mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
+"\e0c":		forward-word
+"\e0d":		backward-word
+$endif
+
+# allow the use of the Delete/Insert keys
+#"\e[3~":	delete-char
+#"\e[2~":	quoted-insert
+
+# "page up" and "page down" step to the beginning/end of the history
+#"\e[5~":	beginning-of-history
+#"\e[6~":	end-of-history
+
+$if term=xterm
+"\M-h":		" history -a\r"
+$endif
+
+$if term=rxvt
+"\eh":		" history -a\r"
+$endif
