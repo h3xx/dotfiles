@@ -14,3 +14,7 @@
 	path = vim/.vim/pack/dist/start/gist-vim
 	url = https://github.com/mattn/gist-vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-fugitive"]
+	path = vim/.vim/pack/dist/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+	branch = master
