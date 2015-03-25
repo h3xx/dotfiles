@@ -1,0 +1,197 @@
+! KDE, pls
+!*customization: -color
+
+*VT100.foreground:		gray
+*VT100.background:		black
+*VT100*pointerColor:		white
+*VT100*pointerColorBackground:	black
+
+!Rxvt*cursorColor:		white
+!Rxvt*cursorColor2:		red
+!Rxvt*tintColor:		black
+!Rxvt*colorUL:			yellow
+!Rxvt*colorBD:			white
+!Rxvt*colorRV:			gray
+Rxvt*font:			6x10
+Rxvt*font1:			6x13
+Rxvt*geometry:			132x90
+Rxvt*scrollBar:			False
+Rxvt*scrollstyle:		xterm
+Rxvt*scrollTtyOutput:		False
+Rxvt*scrollWithBuffer:		False
+Rxvt*scrollTtyKeypress:		True
+Rxvt*termName:			rxvt
+
+Rxvt*command:			/usr/bin/screen -xRR
+
+!!! XTerm
+
+XTerm*utmpDisplayId:		false
+XTerm*utmpInhibit:		true
+
+!XTerm*locale:			UTF-8
+XTerm*utf8:			1
+XTerm*showMissingGlyphs:	true
+XTerm*wideFont:			DejaVu Sans-10:minspace=true
+XTerm*pointerMode:		0
+
+XTerm*keepSelection:		true
+XTerm*background:		black
+XTerm*foreground:		gray
+
+XTerm*title:			xterm
+!XTerm*geometry:		80x90
+XTerm*geometry:			120x90
+XTerm*font:			6x10
+XTerm*font1:			6x13
+
+!! (this fixes it!)
+XTerm*boldFont:			6x10
+
+!! use fonts from xft
+!XTerm*faceName:			DejaVu Sans Mono:minspace=true
+!XTerm*faceSize:			10
+
+!XTerm*wideChars:		false
+!XTerm*boldMode:			false
+!XTerm*boldColors:		false
+!XTerm*colorBDMode:		false
+
+!XTerm*veryBoldFont:		true
+!XTerm*colorAttrMode:		true
+XTerm*boldColors:		true
+!XTerm*veryBoldColors:		4
+
+!XTerm*boldMode:			false
+XTerm*colorBDMode:		true
+XTerm*colorBD:			white
+
+!! brighten up the dark blue a bit
+!*VT100.color4:			#3366ff
+
+!! Terminology default color scheme:
+*VT100.color1:		#cc3333
+*VT100.color2:		#33cc33
+*VT100.color3:		#cc8833
+*VT100.color4:		#3333cc
+*VT100.color5:		#cc33cc
+*VT100.color6:		#33cccc
+*VT100.color7:		#cccccc
+*VT100.color8:		#666666
+*VT100.color9:		#ff6666
+*VT100.color10:		#66ff66
+*VT100.color11:		#ffff66
+*VT100.color12:		#6666ff
+*VT100.color13:		#ff66ff
+*VT100.color14:		#66ffff
+*VT100.color15:		#ffffff
+
+!! characters
+!! (fixes not being able to backspace)
+#XTerm*ttyModes:			erase ^h
+*VT100.Translations: #override \
+              <Key>BackSpace:	string(0x7F)\n\
+              <Key>Delete:	string("\033[3~")\n\
+              <Key>Home:	string("\033[1~")\n\
+              <Key>End:		string("\033[4~")
+XTerm*ttyModes:			erase ^?
+
+!! special features
+
+! shift-click opens highlighted text in browser
+*VT100.Translations: #override \
+		Shift <Btn1Up>: exec-formatted("google-chrome '%t'", PRIMARY)
+
+!! UXTerm
+
+UXTerm*utmpDisplayId:		false
+UXTerm*utmpInhibit:		true
+UXTerm*geometry:		120x90
+UXTerm*background:		black
+UXTerm*foreground:		gray
+UXTerm*font:			6x10
+UXTerm*font1:			6x13
+UXTerm*showMissingGlyphs:	true
+UXTerm*boldFont:		6x10
+UXTerm*boldColors:		true
+UXTerm*colorBDMode:		true
+UXTerm*colorBD:			white
+UXTerm*keepSelection:		true
+UXTerm*title:			term
+
+XLock.mode: blank
+XLock.erasedelay: 0
+!XLock.erasetime: 2
+!XLock.allowaccess: off
+!XLock.debug: off
+!XLock.description: on
+!XLock.echokeys: off
+!XLock.echokey: ?
+!XLock.enablesaver: off
+XLock.resetsaver: off
+!XLock.grabmouse: on
+!XLock.grabserver: off
+!XLock.hide: on
+!XLock.install: on
+!XLock.mousemotion: off
+!XLock.mono: off
+!XLock.sound: off
+!XLock.showfps: off
+!XLock.fpstop: on
+!XLock.fpsfont: -*-helvetica-medium-r-*-*-24-*-*-*-*-*-*
+XLock.timeelapsed: on
+XLock.usefirst: on
+!XLock.verbose: off
+!XLock.visual: 
+!XLock.nice: 10
+!XLock.lockdelay: 0
+!XLock.unlockdelay: 0
+!XLock.timeout: 30
+!XLock.font: -*-helvetica-medium-r-*-*-24-*-*-*-*-*-*
+XLock.font: 10x20
+!XLock.planfont: -*-fixed-medium-r-*-*-14-*-*-*-*-*-*
+! helps me see in the dark
+XLock.background: gray20
+XLock.foreground: white
+!XLock.username: Name: 
+!XLock.password: Password: 
+!XLock.info: Enter password to unlock; select icon to lock.
+!XLock.validate: Validating login...
+!XLock.invalid: Invalid login.
+!XLock.invalidCapsLock: Invalid login, Caps Lock on.
+!XLock.attempt:  failed attempt.
+!XLock.attempts:  failed attempts.
+!XLock.geometry: 
+!XLock.icongeometry: 
+!XLock.wireframe: off
+!XLock.use3d: off
+!XLock.delta3d: 1.5
+!XLock.none3d: Black
+!XLock.right3d: Blue
+!XLock.left3d: Red
+!XLock.both3d: Magenta
+! text message generation program (-mode flag|marquee|nose)
+XLock.program: fortune -s
+!XLock.messagesfile: 
+!XLock.messagefile: 
+!XLock.message: 
+!XLock.messagefont: -*-times-*-*-*-*-18-*-*-*-*-*-*-*
+!XLock.cpasswd: 
+XLock.startCmd: xset +dpms
+!XLock.endCmd: 
+!XLock.pipepassCmd: 
+!XLock.logoutCmd: 
+XLock.dpmsstandby: 0
+XLock.dpmssuspend: 0
+XLock.dpmsoff: 1
+XLock.mailCmd: [ -z "$(find ~/Mail/mbox/new -type d -empty)" ]
+!XLock.mailIcon: 
+!XLock.nomailIcon: 
+!XLock.blank.delay: 3000000
+!XLock.blank.count: 1
+!XLock.blank.cycles: 1
+!XLock.blank.size: 1
+!XLock.blank.ncolors: 64
+!XLock.blank.saturation: 1
+!XLock.blank.bitmap: 
+! vim: ft=xdefaults
