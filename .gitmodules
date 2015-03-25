@@ -10,6 +10,10 @@
 	path = vim/.vim/pack/dist/start/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-fugitive"]
+	path = vim/.vim/pack/dist/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-gitgutter"]
 	path = vim/.vim/pack/dist/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
