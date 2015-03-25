@@ -1,0 +1,48 @@
+# vi: ft=gitconfig ts=8 sts=8 sw=8 noet
+
+[alias]
+	br		= branch
+	ci		= commit
+	co		= checkout
+	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	pu		= pull
+	st		= status
+	subbr		= submodule foreach git checkout
+	subbranch	= submodule foreach git checkout
+	submaster	= submodule foreach git checkout master
+	subup		= submodule update --init --remote
+	up		= pull # I'm used to svn
+	url		= remote -v # list checkout urls
+	w		= whatchanged
+
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	pager = true
+	ui = auto
+
+[core]
+	# Limit memory when resolving deltas?
+	deltaBaseCacheLimit = 4g
+	excludesfile = ~/.gitignore_global
+	# -R: Handle colors correctly
+	pager = less -R
+
+[fetch]
+	# auto-fetch submodules upon git pull
+	recurseSubmodules = yes
+
+[github]
+	user = h3xx
+
+[push]
+	default = simple
+
+[url "git@github.com:"]
+	# enables shortcuts like `git clone gh:h3xx/dotfiles.git`
+	insteadOf = gh:
+
+[user]
+	email = amphetamachine@gmail.com
+	name = Dan Church
