@@ -1,0 +1,48 @@
+[alias]
+	subup		= submodule update --init --remote
+	subbranch	= submodule foreach git checkout
+	subbr		= submodule foreach git checkout
+	submaster	= submodule foreach git checkout master
+	st		= status
+	ci		= commit
+	co		= checkout
+	w		= whatchanged
+	pu		= pull
+	br		= branch
+	up		= pull		# I'm used to svn
+	url		= remote -v	# list checkout urls
+	# option overrides
+	merge		= merge --ff
+	pull		= pull --ff
+	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+
+[core]
+	pager		= less -R	# handle colors correctly
+	excludesfile	= ~/.gitignore_global
+	deltaBaseCacheLimit = 4g	# limit memory when resolving deltas?
+
+[fetch]
+	# auto-fetch submodules upon git pull
+	recurseSubmodules = yes
+
+[color]
+	branch		= auto
+	diff		= auto
+	interactive	= auto
+	ui		= auto
+	pager		= true
+
+[user]
+	name = Dan Church
+	email = amphetamachine@gmail.com
+
+[github]
+	user = h3xx
+
+[url "git@github.com:"]
+	insteadOf	= gh:
+
+[push]
+	default = simple
+
+# vi: ft=gitconfig
