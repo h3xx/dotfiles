@@ -377,6 +377,7 @@ if has('gui_running')
 endif " has('gui_running')
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#show_buffers=0
 
 " *** IDE plugin ***
 let g:IDE_SyntaxScript='~/.vim/plugin/ideSyntax.pl'
