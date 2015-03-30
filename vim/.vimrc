@@ -147,6 +147,7 @@ endif " has('gui_running') || &t_Co > 2
 	endif " has('gui_running')
 	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#enabled=1
+	let g:airline#extensions#tabline#show_buffers=0
 "endif " exists(':Airline')
 
 " Unicode options
