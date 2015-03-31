@@ -1,0 +1,1 @@
+../pack/dist/opt/vim-coffee-script/ftdetect/coffee.vim
