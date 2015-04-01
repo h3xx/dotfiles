@@ -1,0 +1,139 @@
+# Character
+OPTIONS=name:h3xx,role:w,race:e,gender:male
+
+# Pets
+OPTIONS=catname:Spot
+OPTIONS=dogname:Sparky
+OPTIONS=horsename:Mr. Sparkles
+
+# Interface
+OPTIONS=nocmdassist
+OPTIONS=nomail
+# not working?
+#OPTIONS=ibmgraphics
+# seems to work in xterm
+OPTIONS=decgraphics
+
+# don't say "Note: Please use #quit..."
+OPTIONS=suppress_alert:3.3.1
+
+# replace boulders with 0 instead of `
+OPTIONS=boulder:0
+
+#OPTIONS=autopickup
+#OPTIONS=pickup_types:$?!/(
+#OPTIONS=pickup_burden:unencumbered
+
+## heavy crap
+AUTOPICKUP_EXCEPTION=">*chest*"
+AUTOPICKUP_EXCEPTION=">*large box*"
+AUTOPICKUP_EXCEPTION=">*iron safe*"
+AUTOPICKUP_EXCEPTION=">*statue of*"
+AUTOPICKUP_EXCEPTION=">*figurine of*"
+
+## avoid turning your scrolls of scare monster to dust:
+AUTOPICKUP_EXCEPTION=">*scroll of scare monster"
+AUTOPICKUP_EXCEPTION=">*scroll called scare monster"
+
+## rocks 'n shit
+AUTOPICKUP_EXCEPTION=">*rock*"
+AUTOPICKUP_EXCEPTION=">*stone"
+AUTOPICKUP_EXCEPTION=">*huge chunk of meat*"
+AUTOPICKUP_EXCEPTION=">*worthles*"
+AUTOPICKUP_EXCEPTION=">* called glass"
+AUTOPICKUP_EXCEPTION=">*gray stone"
+AUTOPICKUP_EXCEPTION=">*stone called loa*"
+AUTOPICKUP_EXCEPTION=">*loadstone"
+AUTOPICKUP_EXCEPTION=">*loadstone named *"
+### (blind, not gems)
+AUTOPICKUP_EXCEPTION=">stone"
+### blessed, uncursed, cursed, greased
+AUTOPICKUP_EXCEPTION=">*sed stone"
+
+## annoying shit
+AUTOPICKUP_EXCEPTION=">*mummy wrapping"
+
+## Never pick up corpses except lizards & lichens
+### "blessed/(un)cursed greased partly-eaten monstertype/unique's corpse"
+AUTOPICKUP_EXCEPTION=">*a corpse*"
+AUTOPICKUP_EXCEPTION=">*b corpse*"
+AUTOPICKUP_EXCEPTION=">*c corpse*"
+AUTOPICKUP_EXCEPTION=">*e corpse*"
+AUTOPICKUP_EXCEPTION=">*f corpse*"
+AUTOPICKUP_EXCEPTION=">*g corpse*"
+AUTOPICKUP_EXCEPTION=">*h corpse*"
+AUTOPICKUP_EXCEPTION=">*i corpse*"
+AUTOPICKUP_EXCEPTION=">*k corpse*"
+AUTOPICKUP_EXCEPTION=">*l corpse*"
+AUTOPICKUP_EXCEPTION=">*m corpse*"
+AUTOPICKUP_EXCEPTION=">*n corpse*"
+AUTOPICKUP_EXCEPTION=">*o corpse*"
+AUTOPICKUP_EXCEPTION=">*p corpse*"
+AUTOPICKUP_EXCEPTION=">*r corpse*"
+AUTOPICKUP_EXCEPTION=">*s corpse*"
+AUTOPICKUP_EXCEPTION=">*' corpse*"
+AUTOPICKUP_EXCEPTION=">*t corpse*"
+AUTOPICKUP_EXCEPTION=">*u corpse*"
+AUTOPICKUP_EXCEPTION=">*v corpse*"
+AUTOPICKUP_EXCEPTION=">*x corpse*"
+AUTOPICKUP_EXCEPTION=">*y corpse*"
+AUTOPICKUP_EXCEPTION=">*ld corpse*"
+AUTOPICKUP_EXCEPTION=">*nd corpse*"
+AUTOPICKUP_EXCEPTION=">*ud corpse*"
+AUTOPICKUP_EXCEPTION=">*ord corpse*"
+AUTOPICKUP_EXCEPTION=">*uard corpse*"
+AUTOPICKUP_EXCEPTION=">*wizard corpse*"
+AUTOPICKUP_EXCEPTION="<*lizard corpse"
+AUTOPICKUP_EXCEPTION="<*lichen corpse"
+
+# With Statuscolor patch installed
+# HP
+STATUSCOLOR=hp%100=cyan,hp%99=green,hp%66=yellow,hp%50=orange
+#STATUSCOLOR=hp%100=green,hp%66=yellow,hp%50=orange
+STATUSCOLOR=hp%33=red&bold,hp%15:red&inverse,hp%0:red&inverse&blink
+# Pw
+STATUSCOLOR=pw%100=green,pw%66=yellow,pw%50:orange,pw%33=red&bold
+# Carry
+STATUSCOLOR=burdened:yellow,stressed:orange,strained:red&bold
+STATUSCOLOR=overtaxed:red&inverse,overloaded:red&inverse&blink
+# Hunger
+STATUSCOLOR=satiated:yellow,hungry:orange,weak:red&bold
+STATUSCOLOR=fainting:red&inverse,fainted:red&inverse&blink
+# Mental
+STATUSCOLOR=hallu:yellow,conf:orange,stun:red&bold
+# Health
+STATUSCOLOR=ill:red&inverse,foodpois:red&inverse,slime:red&inverse
+# Other
+STATUSCOLOR=held:red&inverse,blind:red&inverse
+
+# Menu colors
+OPTIONS=menucolors
+
+#MENUCOLOR="* cursed *"=red
+#MENUCOLOR="* unholy *"=red
+#MENUCOLOR="* blessed *"=green
+
+MENUCOLOR=" blessed| B($| )"=green
+MENUCOLOR=" holy"=green
+MENUCOLOR=" cursed| C($| )"=red
+
+# Source: http://alt.org/nethack/userdata/t/tjr2/tjr2.nh343rc
+#################
+# FOOD CONDUCTS # thanks, teabing!
+#################
+# vegan
+#MENUCOLOR="(food |cram |K-|C-)ration|gunyoki"=green&bold
+#MENUCOLOR="lembas wafer|melon|carrot|tin .* spinach"=green&bold
+#MENUCOLOR=" oranges?( named.*)?$"=green&bold # avoid coloring orange DSM
+#MENUCOLOR=" pears?( named.*)?$"=green&bold # avoid coloring pearl rings
+#MENUCOLOR=" apple|banana|kelp|eucalyptus|garlic|wolfsbane"=green&bold
+#MENUCOLOR=" slime mold| brain"=green&bold  ## YOUR FRUIT HERE
+#MENUCOLOR="(tin of )?(gelatinous cube|acid blob|quivering blob)( corpse)?"=green&bold
+#MENUCOLOR="(tin of )?(blue|spotted|ochre) jelly( corpse)?"=green&bold
+#MENUCOLOR="(tin of )?lichen|shrieker|violet fungus|(brown|yellow|green|red) mold( corpse)?"=green&bold
+
+# vegetarian
+#MENUCOLOR="egg|pancake|fortune cookie|candy bar|royal jelly|cream pie|candle"=green
+#MENUCOLOR="(tin of )?brown pudding|gray ooze( corpse)?"=green
+
+# vi: ft=conf
