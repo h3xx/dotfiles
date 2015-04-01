@@ -1,0 +1,115 @@
+# .bashrc-slackware
+
+# Slackware Linux specific definitions
+
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}startx:chkpkg *"
+
+## package-related
+
+# building
+alias \
+	ch='./configure --help' \
+	dbuild='dconf && make && midest' \
+	ddbuild='ddconf && make && midest' \
+	ddebuild='ddeconf && make && midest' \
+	midest='make install DESTDIR="$PWD/b"'
+
+#	dconf='./configure -C --disable-option-checking --prefix=/usr --sysconfdir=/etc --localstatedir=/var --datarootdir=/usr/share --localedir=/usr/share/locale --mandir=/usr/man --infodir=/usr/info --libdir=/usr/lib64' \
+#	ddconf='dconf --docdir="/$(svn-docdir)"' \
+#	ddeconf='ddconf --enable-shared --disable-static' \
+
+#	ddeconf='CFLAGS='\''-fPIC -DPIC'\'' CPPFLAGS='\''-fPIC -DPIC'\'' CXXFLAGS='\''-fPIC -DPIC'\'' ddconf --with-pic --enable-shared --disable-static' \
+
+# docdir chain
+#alias \
+#	svn-docdir='(basedir="$(readlink -m "$(find . .. -type d -iname .svn -maxdepth 1 -exec dirname -- {} \; |head -1)")" && [ -n "$basedir" ] && echo "usr/doc/$(basename "$basedir")-r$(svn info "$basedir" |grep ^Revision: |cut -f 2 -d '\'' '\'')"             || git-docdir)' \
+#	git-docdir='(basedir="$(readlink -m "$(find . .. -type d -iname .git -maxdepth 1 -exec dirname -- {} \; |head -1)")" && [ -n "$basedir" ] && echo "usr/doc/$(basename -- "$basedir")-r$(git --git-dir="$basedir/.git" rev-list HEAD |wc -l)"                      || hg-docdir)' \
+#	hg-docdir='(basedir="$(readlink -m "$(find . .. -type d -iname .hg -maxdepth 1 -exec dirname -- {} \; |head -1)")" && [ -n "$basedir" ] && echo "usr/doc/$(basename -- "$basedir")-r$(cd "$basedir" && hg tip |grep -oP '\''^changeset:\s*\d+'\'' |grep -oP '\''\d+'\'')"	|| cvs-docdir)' \
+#	cvs-docdir='(basedir="$(readlink -m "$(find . .. -type d -name   CVS -maxdepth 1 -exec dirname -- {} \; |head -1)")" && [ -n "$basedir" ] && echo "usr/doc/$(basename -- "$basedir")-r$(cd "$basedir" && cvs rlog . 2>/dev/null |grep '\''^revision '\'' |wc -l)" || pkg-docdir)' \
+#	pkg-docdir='(echo "usr/doc/$(basename "$PWD")")'
+
+## XXX : Make sure not to ascend to the parent directory.
+##	 This was causing problems say, when building from a tarball extracted
+##	 in an RCS-controlled directory.
+#alias \
+#	svn-docdir='([ -d .svn ] && echo "usr/doc/$(basename -- "$PWD")-r$(svn info "$PWD" |grep ^Revision: |cut -f 2 -d '\'' '\'')" || git-docdir)' \
+#	git-docdir='([ -d .git ] && echo "usr/doc/$(basename -- "$PWD")-r$(git --git-dir="$PWD/.git" rev-list HEAD |wc -l)" || hg-docdir)' \
+#	hg-docdir='([ -d .hg ]   && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && hg tip |grep -oP '\''^changeset:\s*\d+'\'' |grep -oP '\''\d+'\'')" || cvs-docdir)' \
+#	cvs-docdir='([ -d CVS ]  && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && cvs rlog . 2>/dev/null |grep '\''^revision '\'' |wc -l)" || pkg-docdir)' \
+#	pkg-docdir='(echo "usr/doc/$(basename "$PWD")")'
+
+# this is the old definition of dconf, before the new 64-bit library dir
+#dconf='./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --mandir=/usr/man --infodir=/usr/info' \
+
+# querying
+
+#alias chkpkg='ls -A1 /var/log/packages |grep -i'
+chkpkg() {
+	# there's really no more efficient way to do this
+	#ls -A1 /var/log/packages |
+	#grep -Ei -- "($(IFS='|'; echo "$*"))"
+	# addendum: yes there is
+	# this doesn't do any stat(2) calls
+	local regex="($(IFS='|'; echo "$*"))"
+	find /var/log/packages/ \
+		-maxdepth 1 \
+		-regextype 'posix-egrep' \
+		-printf '%f\n' |
+	grep -Ei -- "$regex"
+}
+
+catpkg() {
+	(for name; do
+		for pkg in $(chkpkg "$name") ; do
+			if [ -f "/var/log/scripts/$pkg" ]; then
+				cat "/var/log/scripts/$pkg"
+			fi
+			cat "/var/log/packages/$pkg"
+		done
+	done)
+}
+
+pkglook() {
+	local \
+		pkg \
+		slack_meta \
+		install_list
+
+	for pkg; do
+		if [ -f "$pkg" ]; then
+			if tar tf "$pkg" 'install' >/dev/null 2>&1; then
+				mapfile -t install_list < <(
+					tar tf "$pkg" 'install' |
+					grep -v '/$'
+				)
+				for slack_meta in "${install_list[@]}"; do
+					echo "==== $slack_meta ===="
+					tar xOf "$pkg" "$slack_meta"
+				done
+			fi
+
+			tar tvvf "$pkg"
+		fi
+	done |less
+}
+
+# (wrote a script that does a much better job)
+#pkgsearch() {
+#	# explanation of weird syntax:
+#	#
+#	# IFS='|'	=> Concatenate array elements in double-quoted strings
+#	#		   using `|'. IFS is normally set to $' \r\n', the
+#	#		   first character of which is used to concatenate the
+#	#		   elements of interpolated arrays.
+#	#
+#	# "${*/		=> Inline-concatenate all elements in the function's
+#	#		   argument array (`$*'), applying a replacement to
+#	#		   each element.
+#	#
+#	# #\//^}"	=> replace the string `/' anchored at the beginning of
+#	#		   the string (because of `#') with `^'.
+#	#
+#	# So, an argument array like ('/usr' 'some_file.h' '/var') gets
+#	# translated into `(^usr|some_file.h|^var)'
+#	egrep -ir "($(IFS='|'; echo "${*/#\//^}"))" /var/log/packages/
+#}
