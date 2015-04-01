@@ -1,0 +1,16 @@
+# .bashrc-tty
+
+# definitions for operating on the login shell
+
+# a bit tiny, but readable
+#UNICODE_FONT='Goha-12'
+
+# if we're not running through a terminal emulator
+if [ "_$TERM" == '_linux' ]; then
+	#unicode_start "$UNICODE_FONT" 2>/dev/null
+
+	# stop the tty blanker
+	setterm -powersave off -blank 0
+fi
+
+#unset UNICODE_FONT
