@@ -1,0 +1,15 @@
+# .bashrc-slackware-root
+
+# Slackware Linux specific definitions (root only)
+
+## package-related
+
+# updating (root only)
+alias \
+	i='installpkg' \
+	u='upgradepkg' \
+	ur='u --reinstall' \
+	ui='u --install-new' \
+	ud='u --dry-run' \
+	mp='makepkg --linkadd y --chown n' \
+	slap='slapt-get --update && slapt-get --upgrade'
