@@ -2,6 +2,8 @@
 
 # Slackware Linux specific definitions (root only)
 
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}slap:fireon:fireoff"
+
 ## package-related
 
 # updating (root only)
@@ -13,3 +15,18 @@ alias \
 	ud='u --dry-run' \
 	mp='makepkg --linkadd y --chown n' \
 	slap='slapt-get --update && slapt-get --upgrade'
+
+# upgrade from internet
+#ufi() {
+#	local fn
+#	for fn in "$@" ; do
+#		(cd "$ss" && wget -N "$fn" && upgradepkg --reinstall --install-new "$(basename -- "$fn")")
+#	done
+#}
+
+## firewall
+
+alias \
+	fire='$EDITOR /etc/rc.d/rc.firewall.conf' \
+	fireon='(. /etc/rc.d/rc.firewall restart)' \
+	fireoff='(. /etc/rc.d/rc.firewall stop)'
