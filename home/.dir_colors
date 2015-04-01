@@ -1,0 +1,415 @@
+# Configuration file for dircolors, a utility to help you set the
+# LS_COLORS environment variable used by GNU ls with the --color option.
+
+# The keywords COLOR, OPTIONS, and EIGHTBIT (honored by the
+# slackware version of dircolors) are recognized but ignored.
+# (see the scripts in /etc/profile.d/coreutils-dircolors.* to change default
+# options in the Slackware aliases)
+
+# Below, there should be one TERM entry for each termtype that is colorizable
+TERM Eterm
+TERM ansi
+TERM color-xterm
+TERM con132x25
+TERM con132x30
+TERM con132x43
+TERM con132x60
+TERM con80x25
+TERM con80x28
+TERM con80x30
+TERM con80x43
+TERM con80x50
+TERM con80x60
+TERM cons25
+TERM console
+TERM cygwin
+TERM dtterm
+TERM eterm-color
+TERM gnome
+TERM gnome-256color
+TERM jfbterm
+TERM konsole
+TERM kterm
+TERM linux
+TERM linux-c
+TERM mach-color
+TERM mlterm
+TERM putty
+TERM rxvt
+TERM rxvt-256color
+TERM rxvt-cygwin
+TERM rxvt-cygwin-native
+TERM rxvt-unicode
+TERM rxvt-unicode-256color
+TERM rxvt-unicode256
+TERM screen
+TERM screen-256color
+TERM screen-256color-bce
+TERM screen-bce
+TERM screen-w
+TERM screen.linux
+TERM screen.rxvt
+TERM terminator
+TERM vt100
+TERM xterm
+TERM xterm-16color
+TERM xterm-256color
+TERM xterm-88color
+TERM xterm-color
+TERM xterm-debian
+
+# Below are the color init strings for the basic file types. A color init
+# string consists of one or more of the following numeric codes:
+# Attribute codes:
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# Text color codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+# Background color codes:
+# 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
+NORMAL	00	# global default, although everything should be something.
+FILE	00	# normal file
+#RESET 0	# reset to "normal" color
+DIR	01;34	# directory
+LINK	01;36	# symbolic link. (If you set this to 'target' instead of a
+		# numerical value, the color is as for the file pointed to.)
+MULTIHARDLINK 44;37	# regular file with more than one link
+FIFO	40;33	# pipe
+SOCK	01;35	# socket
+DOOR	01;35	# door
+BLK	40;33;01	# block device driver
+CHR	40;33;01	# character device driver
+ORPHAN	40;31;01	# symlink to nonexistent file
+SETUID	37;41	# file that is setuid (u+s)
+SETGID	30;43	# file that is setgid (g+s)
+CAPABILITY 30;41        # file with capability
+STICKY_OTHER_WRITABLE	30;42	# dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE	34;42	# dir that is other-writable (o+w) and not sticky
+STICKY	37;44	# dir with the sticky bit set (+t) and not other-writable
+EXEC	01;32	# This is for files with execute permission:
+
+# List any file extensions like '.gz' or '.tar' that you would like ls
+# to colorize below. Put the extension, a space, and the color init string.
+# (and any comments you want to add after a '#')
+
+# comments: use the darker color (00;xx) for extensions that don't actually
+# denote files with meaningful contents, as in playlists, "documents" which
+# link media and application-specific internal formats, and also for
+# non-os-neutral formats
+ 
+# DOS-style executables (green)
+.bat	00;32
+.BAT	00;32
+.btm	00;32
+.BTM	00;32
+.cmd	00;32
+.CMD	00;32
+.com	00;32
+.COM	00;32
+.dll	00;32
+.DLL	00;32
+.exe	00;32
+.EXE	00;32
+
+# archives or compressed (red/bright red)
+.7z	01;31
+.7Z	01;31
+.ace	01;31
+.ACE	01;31
+## adf - Amiga disk file
+.adf	01;31
+## adz - gzipped Amiga disk file
+.adz	01;31
+## asc - GnuPG ASCII armored file
+.asc	00;31
+.ASC	00;31
+.arj	01;31
+.bz2	01;31
+.cpio	01;31
+.deb	01;31
+.dz	01;31
+.gz	01;31
+.gpg	01;31
+.GPG	01;31
+.iso	01;31
+.ISO	01;31
+.jar	01;31
+.JAR	01;31
+.lha	01;31
+.LHA	01;31
+.lzh	01;31
+.lzma	01;31
+.lzo	01;31
+## maff - Mozilla Archive Format
+.maff	00;31
+.rar	01;31
+.RAR	01;31
+.rpm	01;31
+.rz	01;31
+.sig	00;31
+.SIG	00;31
+.tar	01;31
+.taz	01;31
+.tb2	01;31
+.tbz2	01;31
+.tbz	01;31
+.tgz	01;31
+.tlz	01;31
+.trz	01;31
+.txz	01;31
+.tz	01;31
+.tz2	01;31
+.xz	01;31
+.z	01;31
+.Z	01;31
+.zip	01;31
+.ZIP	01;31
+.zoo	01;31
+
+# multimedia (video/image/sound) file formats (magenta/bright magenta)
+.aac	00;35
+.AAC	00;35
+## aif, aiff - IFF data, AIFF audio
+.aif	00;35
+.aiff	00;35
+.anx	01;35
+## ardour - Ardour project files
+.ardour	00;35
+.asf	01;35
+.ASF	01;35
+.au	00;35
+## aup - Audacity project files
+.aup	00;35
+.axa	00;35
+.axv	01;35
+.AU	01;35
+.avi	01;35
+.AVI	01;35
+## blend - Blender internal file format
+.blend	00;35
+.bmp	01;35
+.BMP	01;35
+.divx	01;35
+.DIVX	01;35
+.flac	01;35
+.FLAC	01;35
+.flv	01;35
+.FLV	01;35
+## GD2 - libgd internal file format (see http://www.libgd.org/GdFileFormats)
+.gd2	00;35
+.gd	00;35
+.gif	01;35
+.GIF	01;35
+## h2pattern - Hydrogen pattern files
+.h2pattern 00;35
+## h2song - Hydrogen project files
+.h2song	00;35
+.ico	00;35
+.ICO	00;35
+.jpg	01;35
+.JPG	01;35
+.jpeg	01;35
+.JPEG	01;35
+.jfif	01;35
+.JFIF	01;35
+.m2a	01;35
+.M2A	01;35
+.m2v	01;35
+.M2V	01;35
+.m4a	01;35
+.M4A	01;35
+.m4p	01;35
+.M4P	01;35
+.m4v	01;35
+.M4V	01;35
+.mid	00;35
+.midi	00;35
+## mka - Matroska audio
+.mka	01;35
+## mkv - Matroska video
+.mkv	01;35
+.MKV	01;35
+.mov	01;35
+.MOV	01;35
+.mp3	01;35
+.MP3	01;35
+.mp4	01;35
+.MP4	01;35
+.mp4v	01;35
+.mpc	01;35
+.MPC	01;35
+.mpeg	01;35
+.MPEG	01;35
+.mpg	01;35
+.MPG	01;35
+.mpv	01;35
+.nuv	01;35
+## oga - old, weird suffix for ogg files
+.oga	00;35
+.ogv	01;35
+.ogx	01;35
+.ogg	01;35
+.OGG	01;35
+.pbm	01;35
+.pcx	01;35
+.PCX	01;35
+.pdf	01;35
+.PDF	01;35
+.pgm	01;35
+.png	01;35
+.PNG	01;35
+.pnm	01;35
+.ppm	01;35
+## qmr - QMidiRoute routes
+.qmr	00;35
+.qt	01;35
+.ra	00;35
+.RA	00;35
+.ram	01;35
+.RAM	01;35
+## rg - Rosegarden project files
+.rg	00;35
+## rkr - Rakarrack effects racks
+.rkr	00;35
+.rm	01;35
+.RM	01;35
+## sf2 - SoundFont spec. 2
+.sf2	00;35
+.SF2	00;35
+## spx - Speex audio
+.spx	01;35
+.svg	01;35
+.svgz	01;35
+.swf	01;35
+.SWF	01;35
+## tg - TuxGuitar project files
+.tg	00;35
+.tga	01;35
+.TGA	01;35
+.tif	01;35
+.TIF	01;35
+.tiff	01;35
+.TIFF	01;35
+## tx - terminatorX set files
+.tx	00;35
+.tX	00;35
+.TIFF	01;35
+## vob - DVD MPEG4 video files
+.vob	01;35
+.VOB	01;35
+.wav	01;35
+.WAV	01;35
+.wma	01;35
+.WMA	01;35
+.wmv	01;35
+.WMV	01;35
+.xbm	01;35
+## xcf - gIMP internal save format
+.xcf	00;35
+.xpm	01;35
+## xspf - Audacious playlist (XML)
+.xspf	00;35
+.xwd	01;35
+.XWD	01;35
+
+# document (openoffice/pdf) file formats (bright white)
+
+## openoffice 2.0+
+.odt	01;01
+.ott	01;01
+.ods	01;01
+.ots	01;01
+.odp	01;01
+.otp	01;01
+.odg	01;01
+.otg	01;01
+.oth	01;01
+.odm	01;01
+.odb	01;01
+.odf	01;01
+
+## openoffice 1.0
+.sxw	01;01
+.stw	01;01
+.sxc	01;01
+.stc	01;01
+.sxi	01;01
+.sti	01;01
+.sxd	01;01
+.std	01;01
+.sxg	01;01
+.sxm	01;01
+
+## star office
+.vor	01;01
+.sdc	01;01
+.smf	01;01
+
+## microsoft office
+.doc	01;01
+.DOC	01;01
+.dot	01;01
+.DOT	01;01
+.xls	01;01
+.XLS	01;01
+.xlw	01;01
+.XLW	01;01
+.xlt	01;01
+.XLT	01;01
+.xlc	01;01
+.XLC	01;01
+.xlm	01;01
+.XLM	01;01
+.ppt	01;01
+.PPT	01;01
+.pps	01;01
+.PPS	01;01
+.pot	01;01
+.POT	01;01
+.docx	01;01
+.DOCX	01;01
+.docm	01;01
+.DOCM	01;01
+.dotx	01;01
+.DOTX	01;01
+.dotm	01;01
+.DOTM	01;01
+
+## common text-based document formats
+.csv	01;01
+.txt	01;01
+.TXT	01;01
+.rtf	01;01
+.RTF	01;01
+.html	01;01
+.htm	01;01
+.HTM	01;01
+.eps	01;01
+.ps	01;01
+.sgml	01;01
+
+## xml, dtd, xsd - XML documents, doctypes and styles
+.xml	01;01
+.dtd	01;01
+.xsd	01;01
+
+## mml - MathML 1.0
+.mml	01;01
+
+# other documents
+## dia - Dia diagram
+.dia	01;01
+## pdb - Extremely hard-to-read Palm document
+#.pdb	01;01
+## dbf - dBASE file
+.dbf	01;01
+.DBF	01;01
+
+# backup files (gray ["bright black"])
+.bak	01;30
+.BAK	01;30
+## .swp - Vim swap file
+.swp	01;30
+## ~ - Vim write backup
+*~	01;30
+## Subversion shadow copies
+.svn-base 01;30
