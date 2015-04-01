@@ -100,7 +100,7 @@ STATUSCOLOR=overtaxed:red&inverse,overloaded:red&inverse&blink
 STATUSCOLOR=satiated:yellow,hungry:orange,weak:red&bold
 STATUSCOLOR=fainting:red&inverse,fainted:red&inverse&blink
 # Mental
-STATUSCOLOR=hallu:yellow,conf:orange,stun:red&bold 
+STATUSCOLOR=hallu:yellow,conf:orange,stun:red&bold
 # Health
 STATUSCOLOR=ill:red&inverse,foodpois:red&inverse,slime:red&inverse
 # Other
