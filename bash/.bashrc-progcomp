@@ -1,0 +1,244 @@
+# .bashrc-progcomp
+
+# Turn on programmable completion
+shopt -s progcomp
+
+# BEGIN BUILTINS
+# make directory commands see only directories
+#complete -d pushd
+
+# bg completes with stopped jobs
+# (addendum: job names not always good/legal)
+#complete -A stopped -P '%' bg
+
+# Other job commands
+# (addendum: job names not always good/legal)
+#complete -j -P '%' fg jobs disown wait
+complete -F _jobspecs -P '%' fg bg jobs disown wait \
+	j
+
+# readonly and export complete with shell variables
+complete -v export readonly
+
+# unset also completes with shell variables, but also function names
+complete -v -A function unset
+
+# set completes with set options
+complete -A setopt set
+
+# shopt completes with shopt options
+complete -A shopt shopt
+
+# Builtin help topics
+complete -A helptopic help
+
+# alias and unalias complete with aliases
+complete -a alias unalias
+
+# bind completes with readline bindings (make this more intelligent)
+complete -A binding bind
+
+# type and which complete on commands
+complete -c \
+	type which \
+	killall pidof \
+	ka startall stopall
+
+# builtin completes on builtins
+complete -b builtin
+
+# enable completes on disabled builtins
+complete -A disabled enable
+
+# END BUILTINS
+
+# BEGIN USER FUNCTIONS
+# user commands see only users
+complete -u su usermod userdel passwd \
+	chage write chfn groups w
+
+# Group commands see only groups
+complete -g groupmod groupdel newgrp
+
+# Here are some notes on tests I performed. You're welcome.
+#
+# Positional parameters:
+#
+# $1: program name
+# $2: word before cursor
+# $3: previous word
+#
+# For instance, hitting tab at this point:
+#
+# $ foo bar ba|z blarg
+#   |-| |-| ||
+#   $1  $3  $2
+#
+# will produce ('foo' 'ba' 'bar').
+#
+# Whereas:
+#
+# $ foo bar baz |blarg
+#
+# will produce ('foo' '' 'bar').
+#
+# Builtin variables:
+#
+# ${COMP_WORDS[$COMP_CWORD]}:
+#	The full word under the cursor at the time tab was pressed. Sometimes it
+#	will be empty. The easiest way I can think of to describe it is to imagine
+#	the cursor as a block, the insertion point being at the left side of the
+#	block. This variable holds the value of the word TOUCHING the edge of the
+#	cursor block, or if there are two, the one touching the LEFT side.
+# $COMP_LINE:
+#	A string containing everything sitting on the command line, spaces and all.
+# $COMP_KEY:
+#	The ordinal value of the character pressed to invoke completion. Tab is
+#	$'\x9', so most of the time it will be `9'.
+# $COMP_POINT:
+#	The number character at which the cursor sits in relation the beginning of
+#	the command line. Ranges from 0 to ${#COMP_LINE}. Beware of indented lines,
+#	as this does not measure from the beginning of the beginning of the
+#	command.
+
+function _jobspecs {
+	readarray -t COMPREPLY < <(
+		readarray JOBLINES < <(
+			[ "$1" = 'bg' ] && jobs -s || jobs
+		)
+
+		for JOBSPEC in "${JOBLINES[@]/]*}" ; do
+			# truth
+			# srch	| match	| ret
+			# 0	| x	| 1
+			# 1	| 0	| 0
+			# 1	| 1	| 1
+			# ret = !srch || match
+			([ -z "${2:1}" ] || [[ "${JOBSPEC:1}" = ${2:1}* ]]) &&
+			echo -n "${JOBSPEC:1} "
+		done
+
+		# add job command names
+		compgen -j -X '('
+	)
+
+	# this works but it uses too many external programs
+	#read -a COMPREPLY <<EOF
+#$(jobs $([ -z "${1/bg}" ] && echo '-s') |cut -c 2 |grep "^${2//%/}" |tr '\n' ' ')
+#EOF
+}
+
+# module removal commands only see installed modules
+complete -F _instkmods rmmod
+function _instkmods {
+	COMPREPLY=(
+		$(cut -f 1 -d ' ' /proc/modules |grep "^$2")
+	)
+}
+
+# module insertion commands see only modules
+complete -o default -F _kmods insmod modprobe
+function _kmods {
+	COMPREPLY=(
+		$(find "/lib/modules/$(uname -r)/" \
+			-type f \
+			\( -name "$2*.ko" -exec basename -- {} .ko \; \) -o \
+			\( -name "$2*.ko.gz" -exec basename -- {} .ko.gz \; \) |
+			sort -u
+		)
+	)
+}
+
+# man completes on manual page names
+# TODO: use $MANPATH and $LANG settings
+complete -o default -F _manpages man
+function _manpages {
+	local \
+		MANS=() \
+		SECT='[0-9]'
+
+	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+	[[ ${COMP_WORDS[1]} = */* ]] && return
+	[ "$COMP_CWORD" -gt 1 ] && SECT=${COMP_WORDS[1]}
+	MANS+=('/usr/man/man'${SECT}"/${2}"*)
+	[ -f "${MANS[0]}" ] || return
+	MANS=("${MANS[@]#/usr/man/man[0-9]/}")
+	COMPREPLY=("${MANS[@]%.[0-9]*}")
+	COMP_WORDBREAKS+=':'
+}
+
+# umount only sees mounted file systems
+complete -o default -F _mounts umount df
+function _mounts {
+	COMPREPLY=(
+		$(cut -f 2 -d ' ' /proc/mounts |grep "^$2")
+	)
+}
+
+# pkg-config
+complete -o default -F _pkg_config pkg-config
+function _pkg_config {
+	local \
+		PKG_FILES=() \
+		PKG_PATH
+
+	for PKG_PATH in ${PKG_CONFIG_PATH//:/ }; do
+		PKG_FILES+=("$PKG_PATH/$2"*.pc)
+
+		# No star globs
+		[ -f "${PKG_FILES[$((${#PKG_FILES[*]}-1))]}" ] ||
+		unset PKG_FILES[$((${#PKG_FILES[*]}-1))]
+	done
+
+	# Basenames
+	PKG_FILES=("${PKG_FILES[@]##*/}")
+
+	COMPREPLY=(
+		# Strip .pc
+		"${PKG_FILES[@]%.pc}"
+	)
+}
+
+# swapoff
+complete -o default -F _swaps swapoff
+function _swaps {
+	COMPREPLY=(
+		$(/sbin/swapon -s | grep -o "^${2:-/}[^ ]*")
+	)
+}
+
+# psql sees users after -U
+complete -o default -F _psqlcomp psql
+function _psqlcomp {
+	if [ -f ~/.pgpass ]; then
+		case "${COMP_WORDS[$COMP_CWORD-1]}" in
+			'-U')
+				COMPREPLY=(
+					$(cut -f 4 -d ':' ~/.pgpass |grep "^$2")
+				)
+				;;
+		esac
+	fi
+}
+
+# XXX : debugging function
+#function _listcomp {
+#	local VARNAME
+#	COMPREPLY=()
+#	for VARNAME in 1 2 COMP_LINE COMP_POINT COMP_KEY COMP_TYPE COMP_CWORD COMP_WORDBREAKS; do
+#		COMPREPLY+=("$VARNAME:'$(eval "echo \${$VARNAME}")'")
+#	done
+#	COMPREPLY+=("COMP_WORDS:$(IFS="|"; echo "${COMP_WORDS[*]}")")
+#}
+
+# END USER FUNCTIONS
+
+# BEGIN NETWORK FUNCTIONS
+#complete -A hostname host nmap ping traceroute ssh ftp telnet
+# END NETWORK FUNCTIONS
+
+# BEGIN PID FUNCTIONS
+# END PID FUNCTIONS
+
+# BEGIN FILE ASSOCIATIONS
+# END FILE ASSOCIATIONS
