@@ -57,4 +57,9 @@ if has('gui_running')
 		set columns=113
 	endif " exists(':NERDTree')
 
+	" Stop the cursor from blinking, ever
+	" addendum: this was to stop a bug where the cursor disappeared when the
+	" window was maximized, but I decided to just never maximize windows
+	"set guicursor+=a:blinkon0
+
 endif " has('gui_running')
