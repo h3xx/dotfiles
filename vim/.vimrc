@@ -121,16 +121,22 @@ if has('gui_running') || &t_Co > 2
 	nnoremap <ESC><ESC> :nohlsearch<CR>
 
 	" stop the cursor from blinking, ever
-	set guicursor+=a:blinkon0
+	" addendum: this was to stop a bug where the cursor disappeared when
+	" the window was maximized, but I decided to just never maximize
+	" windows
+	"set guicursor+=a:blinkon0
 
 	"" color tweaks
 	" 1-2: Show trailing whitespace and spaces before a tab:
 	" 3: not so bright as to make comments disappear in evening colorscheme
 	" 4: brighter cursor
+	" 5: cooler line numbers
 	autocmd ColorScheme *		highlight ExtraWhitespace ctermbg=red guibg=red |
 				\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 				\	hi CursorLine guibg=gray30 |
-				\	hi Cursor guibg=lightgreen
+				\	hi Cursor guibg=lightgreen |
+				\	hi LineNr guifg=steelblue
+
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
 	" correct some colors
