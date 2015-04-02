@@ -120,6 +120,9 @@ if has('gui_running') || &t_Co > 2
 	" Removing search highlighting
 	nnoremap <ESC><ESC> :nohlsearch<CR>
 
+	" stop the cursor from blinking, ever
+	set guicursor+=a:blinkon0
+
 	"" color tweaks
 	" 1-2: Show trailing whitespace and spaces before a tab:
 	" 3: not so bright as to make comments disappear in evening colorscheme
