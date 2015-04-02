@@ -10,3 +10,7 @@
 	path = vim/.vim/pack/dist/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/gist-vim"]
+	path = vim/.vim/pack/dist/start/gist-vim
+	url = https://github.com/mattn/gist-vim.git
+	branch = master
