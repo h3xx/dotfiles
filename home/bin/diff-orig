@@ -1,0 +1,104 @@
+#!/bin/sh
+
+NEW_FILES=0
+while getopts 'n' flag; do
+	case "$flag" in
+		'n')
+			NEW_FILES=1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+	rm -rf -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup'	EXIT
+
+diemsg() {
+	echo "${*:-died}"
+	cleanup
+	exit 1
+}
+
+tar_maindir() {
+	local firstentry="$(tar tf "$1" 2>/dev/null |sort |head -1)"
+
+	# strip trailing slashes
+	firstentry="${firstentry%%/}"
+
+	# eliminate all but the first directory component from the first file
+	# (${var##/} means strip leading slashes)
+	while [[ "${firstentry##/}" == */* ]]; do
+		firstentry="$(dirname "$firstentry")"
+	done
+
+	echo "${firstentry##/}"
+}
+
+diff_orig() {
+	local \
+		src1="${1%/}" \
+		src2="${2%/}" \
+		temp1 \
+		temp2 \
+		dir1 \
+		dir2 \
+		diff_opts=(
+			#'--recursive'
+			#'--unified=3'	# create a unified diff
+			'-ru'		# (shorter output)
+		)
+
+	if [ "$NEW_FILES" -ne 0 ]; then
+		diff_opts+=(
+		#'--new-file'	# treat absent files as empty
+		'-N'
+		)
+	fi
+
+	# set up signal handlers
+	trap 'diemsg "Killed"' INT
+
+	if [ -f "$src1" ]; then
+		# attempt to untar the source file to a temporary directory
+		[ -n "${temp1:=$(mktemp -d -t "$(basename "$0").XXXXXX")}" ] &&
+		tar x -C "$temp1" -f "$src1" &&
+		dir1="$temp1/$(tar_maindir "$src1")" ||
+		diemsg "Failed to un-tar file \`$src1' into \`$temp1"
+	else
+		dir1="$src1"
+	fi
+
+	if [ -f "${src2:=.}" ]; then
+		# attempt to untar the source file to a temporary directory
+		[ -n "${temp2:=$(mktemp -d -t "$(basename "$0").XXXXXX")}" ] &&
+		tar x -C "$temp2" -f "$src2" &&
+		dir2="$temp2/$(tar_maindir "$src2")" ||
+		diemsg "Failed to un-tar file \`$src2' into \`$temp2"
+	else
+		dir2="$src2"
+	fi
+
+	TEMP_FILES+=("$temp1" "$temp2")
+	#ls -d "$dir1" "$dir2"
+
+	diff "${diff_opts[@]}" "$dir1" "$dir2" |
+	egrep -v '^(Only|Binary)' |
+	perl -e '
+my ($pat, $rep) = (quotemeta shift, shift);
+
+while(<>) {
+	s/$pat/$rep/g
+		if m#^(diff|---)#;
+	print
+}' "$dir1" "${dir2}.orig"
+
+	cleanup
+}
+
+diff_orig "$@"

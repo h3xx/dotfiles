@@ -1,0 +1,189 @@
+#!/bin/sh
+
+# queries whether a package is installed (or not installed)
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] PACKAGE...
+Test whether a Slackware package installed on the current system.
+
+  -h		Show this help message.
+  -n		Show packages NOT installed.
+  -z|-0		Print null-separated list.
+  -a		Inspect all files, regardless of whether they have a .t[xg]z
+		  extension.
+  -v		Verbose operation.
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+INSTALLED=1
+ZERO=0
+ALL_FILES=0
+VERBOSE=0
+while getopts 'in0zav' flag; do
+	case "$flag" in
+		'i')
+			INSTALLED=1
+			;;
+		'n')
+			INSTALLED=0
+			;;
+		'0'|'z')
+			ZERO=1
+			;;
+		'a')
+			ALL_FILES=1
+			;;
+		'v')
+			VERBOSE=1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+package_is_installed() {
+	local \
+		PACKAGES='/var/log/packages' \
+		pkg="$1" \
+		pkg_name
+
+	# strip to basename
+	pkg_name="${pkg##*/}"
+	# strip extension
+	pkg_name="${pkg_name%.t[xg]z}"
+
+	[ -f "$PACKAGES/$pkg_name" ]
+}
+
+query_packages() {
+	local \
+		no_check="$1" \
+		verbose="$2" \
+		null_sep="$3" \
+		invert="$4" \
+		pkgs \
+		pkg \
+		pkg_noext \
+		isnt_installed \
+		p_i
+
+	shift 4
+
+	pkgs=()
+
+	for pkg; do
+		# strip extension
+		pkg_noext="${pkg%.t[xg]z}"
+		if [ "$no_check" -eq 0 -a "x$pkg_noext" == "x$pkg" ]; then
+			# doesn't look like a package file
+			if [ "$verbose" -ne 0 ]; then
+				echo "File \`$pkg' doesn't look like a Slackware package (skipping)" >&2
+			fi
+			continue
+		fi
+
+		# truth table
+		# inst	| -i	| add?
+		# 0	| 0	| 1
+		# 0	| 1	| 0
+		# 1	| 0	| 0
+		# 1	| 1	| 1
+		# (add) = (inst) ^ !(-i)
+		# (add) = !(inst) ^ (-i)
+
+		# remember: test returns 0 for true
+		isnt_installed="$(package_is_installed "$pkg"; echo $?)"
+
+		if [ "$((isnt_installed^invert))" -eq 0 ]; then
+			pkgs+=("$pkg")
+		fi
+
+	done
+
+	if [ "${#pkgs[*]}" -lt 1 ]; then
+		return 1
+	fi
+
+	if [ "$null_sep" -ne 0 ]; then
+		for ((p_i=0; p_i < ${#pkgs[@]} - 1; ++p_i)) ; do
+			echo -n "${pkgs[$p_i]}"
+			echo -ne '\0'
+		done
+		# last one [no null at the end of the list]
+		echo -n "${pkgs[$p_i]}"
+	else
+		(IFS=$'\n'; echo "${pkgs[*]}")
+	fi
+}
+
+query_packages "$ALL_FILES" "$VERBOSE" "$ZERO" "$((INSTALLED^1))" "$@"
+
+#exit # exit early
+#
+#if [ "$ZERO" -ne 0 ]; then
+#	echo_flags='-n'
+#else
+#	echo_flags=''
+#fi
+#
+#pkgs=()
+#
+#for pkg; do
+##	if [ -f "$PACKAGES/$(basename "$(basename "$pkg" .tgz)" .txz)" ]; then
+##		if [ "$INSTALLED" -ne 0 ]; then
+##			pkgs+=("$pkg")
+##		fi
+##	else
+##		if [ "$INSTALLED" -eq 0 ]; then
+##			pkgs+=("$pkg")
+##		fi
+##	fi
+#
+#	pkg_name="${pkg%.t[xg]z}"
+#
+#	if [ "$ALL_FILES" -eq 0 ] && [ "$pkg_name" == "$(basename "$pkg")" ]; then
+#		# doesn't look like a package file
+#		if [ "$VERBOSE" -ne 0 ]; then
+#			echo "File \`$pkg' doesn't look like a Slackware package (skipping)" >&2
+#		fi
+#		continue
+#	fi
+#
+#	# truth table
+#	# inst	| -i	| add?
+#	# 0	| 0	| 1
+#	# 0	| 1	| 0
+#	# 1	| 0	| 0
+#	# 1	| 1	| 1
+#	# (add) = (inst) ^ !(-i)
+#	# (add) = !(inst) ^ (-i)
+#	pkg_log="${PACKAGES}/${pkg_name}"
+#
+#	# remember: test returns 0 for true
+#	isnt_installed="$([ -f "$pkg_log" ]; echo $?)"
+#
+#	if [ "$((isnt_installed^INSTALLED))" -ne 0 ]; then
+#		pkgs+=("$pkg")
+#	fi
+#done
+#
+#if [ "${#pkgs[*]}" -lt 1 ]; then
+#	exit 1
+#fi
+#
+#for ((p_i=0; p_i < ${#pkgs[@]} - 1; ++p_i)) ; do
+#	echo $echo_flags "${pkgs[$p_i]}"
+#	if [ "$ZERO" -ne 0 ]; then
+#		echo $echo_flags -e '\0'
+#	fi
+#done
+#
+#echo $echo_flags "${pkgs[$p_i]}"
