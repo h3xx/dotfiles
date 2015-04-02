@@ -1,0 +1,32 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+DOCDIR_BASE='usr/doc'
+
+# ensure non-translated messages
+export LC_MESSAGES=C
+
+svn_rev() {
+    local \
+        DIR=${1:-$PWD}
+
+    if [[ -d $DIR/.svn ]]; then
+        if hash svn &>/dev/null; then
+            svn info "$DIR" |
+            grep '^Last Changed Rev:' |
+            cut -f 4 -d ' '
+
+            # the old way of doing things
+            #svn info "$DIR" |
+            #grep '^Revision:' |
+            #cut -f 2 -d ' '
+        fi
+    fi
+}
+
+REV=$(svn_rev "${1:-$PWD}")
+if [[ -n $REV && $((REV+0)) -gt 0 ]]; then
+    echo "$DOCDIR_BASE/$(basename -- "${1:-$PWD}")-r$REV"
+else
+    exec "$(dirname -- "$(readlink -f -- "$0")")/git-docdir" "$@"
+fi

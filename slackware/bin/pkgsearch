@@ -1,0 +1,207 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+# vi: et sts=4 sw=4 ts=4
+
+use Term::ANSIColor     qw/ colored /;
+use Getopt::Std         qw/ getopts /;
+#use File::Spec::Functions qw/ rel2abs canonpath /;
+use Cwd                 qw/ abs_path /;
+use File::Basename      qw/ basename /;
+
+use constant PACKAGES   => '/var/log/packages';
+use constant COLOR_PKG  => 'magenta';
+use constant COLOR_COL  => 'cyan';
+use constant COLOR_MATCH=> 'bold red';
+use constant LD_SO_CONF => '/etc/ld.so.conf';
+
+sub HELP_MESSAGE {
+    my $fh = shift || *STDERR;
+    print $fh <<EOF
+Usage: $0 [OPTIONS] REGEX...
+Determine which packages files occur.
+
+Options:
+  --help    Show this help message.
+  -b        Search binary name in packages (via which(1)).
+  -l        Search library names (shared and static).
+  -s        Search for REGEX in the slack-desc portion of the package only.
+  -d        Dereference symbolic links.
+  -f        Use fixed-string regex.
+  -i        Ignore case.
+  -C        Count the number of occurrences per package, rather than
+              display them.
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+;
+    exit 0
+}
+
+&getopts(':blsdfiC', \ my %opts);
+
+&pkgsearch(@ARGV);
+
+sub pkgsearch {
+    my @patterns_in = @_;
+
+    # Note: readdir method is faster than File::Find
+    opendir my $pkg_dh, PACKAGES
+        or die 'cannot open directory `' . PACKAGES . "for reading: $!";
+    my @packages;
+    foreach my $fn (readdir $pkg_dh) {
+        my $pkg_filename = PACKAGES . "/$fn";
+        push @packages, $pkg_filename if -f $pkg_filename;
+    }
+
+    # (more portable, but slightly slower File::Find method)
+    #my @packages;
+    #&find(
+    #   sub {push @packages, PACKAGES . "/$_" if -f PACKAGES . "/$_"},
+    #   PACKAGES
+    #);
+
+    my $pattern = &interpolate_patterns(@patterns_in);
+
+    &disp_matches(\@packages, $pattern, [ COLOR_PKG, COLOR_COL, COLOR_MATCH ]);
+}
+
+# general-use function
+sub colorize_pattern {
+    my ($pattern, $line, $color, $exclusive) =
+        @{{@_}}{qw/ pattern line color exclusive /};
+
+    my $colored_line;
+    if (defined $pattern and $line =~ /${pattern}/) {
+        # for some reason (I'll figure it out eventually) this causes a
+        # repeat of everything up until the first match
+        #$colored_line = $`;
+        do {
+            $colored_line .= $` . &colored($&, $color);
+        #} until ($' !~ /${pattern}/);
+        # This will not hang if given a pattern like /\b/, but it has
+        # the effect of not matching anything for /(\b|.)/
+        # (figure this out later)
+        } until (! length $& or $' !~ /${pattern}/);
+        $colored_line .= $';
+    } elsif (! $exclusive) {
+        $colored_line = $line;
+    }
+
+    $colored_line
+}
+
+sub format_line {
+    my ($pkg_name, $line, $pattern, $colors) = @_;
+
+    if (-t STDOUT) {
+        &colored($pkg_name, $colors->[0]) .
+        &colored(':', $colors->[1]) .
+        &colorize_pattern(
+            line        => $line,
+            pattern     => $pattern,
+            color       => $colors->[2],
+        )
+    } else {
+        "${pkg_name}:${line}"
+    }
+}
+
+sub disp_matches {
+    my ($files, $pattern, $colors) = @_;
+
+    foreach my $pkgfile (@{$files}) {
+        my $pfh;
+        unless (open $pfh, '<', $pkgfile) {
+            warn "could not open file `$pkgfile' for reading: $! (skipping)\n";
+            next;
+        }
+
+        my $pkg_name = &basename($pkgfile);
+        my $match_count = 0;
+
+        while (my $pkgline = <$pfh>) {
+            # if searching only slack-desc portion
+            next if $opts{s} && $pkgline !~ /^\w+:/;
+
+            if ($pkgline =~ /${pattern}/) {
+                # display matching lines if we're not counting
+                # matches only (`-C' flag)
+                print &format_line(
+                    $pkg_name,
+                    $pkgline,
+                    $pattern,
+                    $colors
+                ) unless $opts{C};
+                # increment occurrence counter
+                ++$match_count;
+            }
+        }
+
+        # display one match count line for the package if:
+        # A) we're counting them and
+        # B) it's more than zero
+        print &format_line(
+            $pkg_name,
+            "$match_count\n",
+            undef,
+            $colors
+        ) if $opts{C} && $match_count;
+    }
+}
+
+sub interpolate_patterns {
+    my @patterns_in = @_;
+
+    my @patterns_out;
+
+    @patterns_out = @patterns_in
+        unless $opts{b} or $opts{l};
+
+    if ($opts{b}) {
+        push @patterns_out, map {
+            my $bindir = $_;
+            map {
+                $bindir . '/' . $_
+            } @patterns_in
+        } (split /:/, $ENV{PATH});
+    }
+
+    if ($opts{l}) {
+        my $ldsof;
+        my %ldpaths;
+        unless (open $ldsof, '<', LD_SO_CONF) {
+            warn 'could not open library path file `' . LD_SO_CONF . "' for reading: $!";
+        } else {
+            foreach my $ldline (<$ldsof>) {
+                chomp $ldline;
+                $ldpaths{$ldline} = 1;
+            }
+        }
+        close $ldsof;
+
+        $ldpaths{$ENV{LD_LIBRARY_PATH}} = 1
+            if defined $ENV{LD_LIBRARY_PATH};
+
+        push @patterns_out, map {
+            my $lpath = $_;
+            map {
+                $lpath . '/lib' . $_
+            } @patterns_in
+        } keys %ldpaths;
+
+    }
+
+    if ($opts{f}) {
+        @patterns_out = map {quotemeta} @patterns_out;
+    } else {
+        s#^/#^# foreach @patterns_out;
+    }
+
+    wantarray
+        ? @patterns_out
+        : sprintf '(' . (join '|', (('%s') x @patterns_out)) . ')', @patterns_out
+}

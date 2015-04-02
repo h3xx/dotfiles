@@ -1,0 +1,141 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# queries whether a package is installed (or not installed)
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] PACKAGE...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Test whether a Slackware package installed on the current system.
+
+  -h        Show this help message.
+  -n        Show packages NOT installed.
+  -z|-0     Print null-separated list.
+  -a        Inspect all files, regardless of whether they have a .t[xg]z
+              extension.
+  -v        Verbose operation.
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+}
+
+readonly PACKAGES='/var/log/packages'
+
+INSTALLED=1
+ZERO=0
+ALL_FILES=0
+VERBOSE=0
+while getopts 'in0zav' FLAG; do
+    case "$FLAG" in
+        'i')
+            INSTALLED=1
+            ;;
+        'n')
+            INSTALLED=0
+            ;;
+        '0'|'z')
+            ZERO=1
+            ;;
+        'a')
+            ALL_FILES=1
+            ;;
+        'v')
+            VERBOSE=1
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+package_is_installed() {
+    local \
+        PKG=$1 \
+        PKG_NAME
+
+    # strip to basename
+    PKG_NAME=${PKG##*/}
+    # strip extension
+    PKG_NAME=${PKG_NAME%.t[xg]z}
+
+    [[ -f $PACKAGES/$PKG_NAME ]]
+}
+
+query_packages() {
+    local \
+        NO_CHECK=$1 \
+        VERBOSE=$2 \
+        NULL_SEP=$3 \
+        INVERT=$4 \
+        PKGS \
+        PKG \
+        PKG_NOEXT \
+        ISNT_INSTALLED \
+        P_I
+
+    shift 4
+
+    PKGS=()
+
+    for PKG; do
+        # strip extension
+        PKG_NOEXT=${PKG%.t[xg]z}
+        if [[ $NO_CHECK -eq 0 && $PKG_NOEXT = "$PKG" ]]; then
+            # doesn't look like a package file
+            if [[ $VERBOSE -ne 0 ]]; then
+                printf 'File "%s" doesn'\''t look like a Slackware package (skipping)\n' \
+                    "$PKG" \
+                    >&2
+            fi
+            continue
+        fi
+
+        # truth table
+        # inst  | -i    | add?
+        # 0 | 0 | 1
+        # 0 | 1 | 0
+        # 1 | 0 | 0
+        # 1 | 1 | 1
+        # (add) = (inst) ^ !(-i)
+        # (add) = !(inst) ^ (-i)
+
+        # remember: test returns 0 for true
+        ISNT_INSTALLED=$(package_is_installed "$PKG"; echo $?)
+
+        if [[ $(( ISNT_INSTALLED ^ INVERT )) -eq 0 ]]; then
+            PKGS+=("$PKG")
+        fi
+
+    done
+
+    if [[ ${#PKGS[*]} -lt 1 ]]; then
+        return 1
+    fi
+
+    if [[ $NULL_SEP -ne 0 ]]; then
+        for (( P_I=0; P_I < ${#PKGS[@]} - 1; ++P_I )) ; do
+            echo -n "${PKGS[$P_I]}"
+            echo -ne '\0'
+        done
+        # last one [no null at the end of the list]
+        echo -n "${PKGS[$P_I]}"
+    else
+        (IFS=$'\n'; echo "${PKGS[*]}")
+    fi
+}
+
+query_packages "$ALL_FILES" "$VERBOSE" "$ZERO" "$((INSTALLED^1))" "$@"

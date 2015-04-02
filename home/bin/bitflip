@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+use constant BUFF_SZ => 256;
+
+sub bit_flip {
+    pack 'C*', (map {$_ ^ 255} unpack ('C*', shift))
+}
+
+my $buff;
+foreach my $fn (@ARGV) {
+    open my $fh, '<', $fn
+        or die "Failed to open file `$fn' for reading: $!";
+
+    while (
+        read $fh, $buff, BUFF_SZ
+    ) {
+        print &bit_flip($buff);
+    }
+}

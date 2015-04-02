@@ -1,0 +1,57 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+# renames a file to its lower-case equivalent
+
+use File::Basename qw/ basename dirname /;
+
+use Getopt::Std qw/ getopts /;
+
+&getopts('v', \ my %opts);
+
+my %renamers = (
+    rentolower => sub {
+        my ($base, $dir) = @{{@_}}{qw/ base dir /};
+        "$dir/" . lc $base
+    },
+    rentoupper => sub {
+        my ($base, $dir) = @{{@_}}{qw/ base dir /};
+        "$dir/" . uc $base
+    },
+);
+
+sub transform_filename {
+    my %args = @_;
+
+    if ($args{callback} and ref $args{callback} eq 'CODE') {
+
+        my $dest = &{$args{callback}}(
+            base => &basename($args{filename}),
+            dir => &dirname($args{filename}),
+            path => $args{filename},
+        );
+
+        print STDERR "`$args{filename}' -> `$dest'\n"
+            if $args{verbose};
+
+        my $result = rename $args{filename}, $dest;
+
+        print STDERR "Failed to move `$args{filename}' to `$dest': $!\n"
+            unless $result;
+    }
+}
+
+my $rename_op = $renamers{&basename($0)};
+
+die "Cannot determine operation for program name `$0'"
+    unless $rename_op;
+
+foreach my $filename (@ARGV) {
+    &transform_filename(
+        callback => $rename_op,
+        filename => $filename,
+        verbose => $opts{v},
+    );
+}

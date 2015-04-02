@@ -1,0 +1,65 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+use Getopt::Std     qw/ getopts /;
+
+sub HELP_MESSAGE {
+    my $fh = shift;
+
+    print $fh <<EOF
+Usage: $0 FILE...
+Converts DOS-style line endings ("\\r\\n") to UNIX-style endings ("\\n").
+Adds a newline at the end of the file, if necessary.
+  --help    Show this help message.
+  -p        Preserve time stamps.
+  --        Terminate options list.
+
+Copyright (C) 2010-2013 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+;
+    exit 0
+}
+
+my %opts = (
+    'p' => 0,
+);
+
+&getopts('p', \%opts);
+
+if (@ARGV) {
+    foreach my $file (@ARGV) {
+        # make sure _ contains an lstat-compatible stat buffer
+        lstat $file;
+
+        if (-f _) {
+            my ($atime, $mtime) = (lstat _)[8,9];
+
+            open my $fh_i, '<', $file
+                or die "Cannot open file `$file' for reading: $!";
+
+            my @lines = map { tr,\r\n,,d; $_ . "\n" } <$fh_i>;
+
+            close $fh_i;
+
+            open my $fh_o, '>', $file
+                or die "Cannot open file `$file' for writing: $!";
+
+            print $fh_o @lines;
+
+            if ($opts{'p'}) {
+                utime $atime, $mtime, $file;
+            }
+        }
+    }
+
+} else {
+    while (<>) {
+        tr,\r\n,,d;
+        print "$_\n";
+    }
+}
