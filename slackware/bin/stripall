@@ -1,0 +1,324 @@
+#!/bin/sh
+
+# strips all files in a given directory
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [DIR]...
+strip(1) all files in a given directory.
+
+  -h		Show this help message.
+  -i GLOB	Ignore GLOB when selecting files.
+  -C		Do not use case-sensitive searching.
+  -p		Delete compiled Python modules (\`*.py[oc]') that have an
+		  uncompiled equivalent (\`*.py').
+  -d		Keep debugging symbols (default is to remove them).
+
+Copyright (C) 2010 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+# do not attempt to strip at all
+IGNORE_GLOB=(
+	'*.[oa]'	# object files and static object archives
+	'*.exe'		# Windows binaries
+	'*.dll'		# Windows libraries
+)
+
+# strip using `--strip-debug'
+DEBUG_GLOB=(
+	'*.ko'		# kernel modules
+)
+
+NOCASEGLOB=0
+CLEAN_PYTHON=0
+KEEP_DEBUG=0
+
+while getopts 'hi:C:pd' flag; do
+	case "$flag" in
+		'i')
+			IGNORE_GLOB+=("$OPTARG")
+			;;
+		'C')
+			NOCASEGLOB=1
+			;;
+		'p')
+			CLEAN_PYTHON=1
+			;;
+		'd')
+			KEEP_DEBUG=1
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+# {{{ debugging functions
+
+#format_find_args() {
+#	local \
+#		arg \
+#		arg_idx \
+#		arg_indent=1 \
+#		arg_next \
+#		exec_arg \
+#		exec_idx \
+#		find_args
+#
+#	find_args=("$@")
+#
+#	echo 'find \'
+#
+#	for ((arg_idx = 0; arg_idx < ${#find_args[@]}; ++arg_idx)); do
+#		arg="${find_args[$arg_idx]}"
+#		if [ "$arg" == ')' ]; then
+#			let --arg_indent
+#		elif [[ "$arg" =~ ^-(exec|execdir|ok|okdir)$ ]]; then
+#
+#			# it's a string of execution statements
+#
+#			for ((exec_idx = arg_idx + 1; exec_idx < ${#find_args[@]}; ++exec_idx)); do
+#				exec_arg="${find_args[$exec_idx]}"
+#				# single-quote and ' => '\''
+#				# note: no easier way to do this
+#				exec_arg="'${exec_arg//\'/$(echo \'\\\'\')}'"
+#
+#				arg+=" $exec_arg"
+#				let ++arg_idx
+#
+#				if [[ "$exec_arg" =~ [\;+] ]]; then
+#					# done with this exec
+#					break
+#				fi
+#			done
+#
+#		elif [ "${arg:0:1}" == '-' ]; then
+#			# if it's not a no-argument find switch
+#			if [[ ! "$arg" =~ ^-(true|false|o|a|print|print0|delete|ls)$ ]]; then
+#				# single-quote and ' => '\''
+#				# note: no easier way to do this
+#				arg_next="${find_args[$((arg_idx+1))]}"
+#				arg_next="'${arg_next//\'/$(echo \'\\\'\')}'"
+#
+#				arg+=" $arg_next"
+#				let ++arg_idx
+#			fi
+#		elif [ "$arg" != '(' ]; then
+#			# single-quote and ' => '\''
+#			# note: no easier way to do this
+#			arg="'${arg//\'/$(echo \'\\\'\')}'"
+#		fi
+#
+#		for ((ind = 0; ind < arg_indent; ++ind)); do
+#			echo -n $'\t'
+#		done
+#
+#		if [ "$arg" == '(' ]; then
+#			let ++arg_indent
+#		fi
+#
+#		echo -n "$arg"
+#		if [ "$arg_idx" -lt "$((${#find_args[@]}-1))" ]; then
+#			echo -n ' \'
+#		fi
+#		echo
+#	done
+#}
+# }}} debugging functions
+
+# {{{ setup subprogram (strip, rm) arguments
+
+# ignore python binary objects if we're going to remove them
+if [ "$CLEAN_PYTHON" -ne 0 ]; then
+	IGNORE_GLOB+=('*.py[oc]')
+fi
+
+STRIP_OPTS=(
+	'--preserve-dates'
+)
+
+STRIP_ALL_OPTS=(
+	"${STRIP_OPTS[@]}"
+)
+
+if [ "$KEEP_DEBUG" -eq 0 ]; then
+	STRIP_ALL_OPTS+=(
+		'--strip-all'
+	)
+else
+	STRIP_ALL_OPTS+=(
+		'--strip-unneeded'
+	)
+fi
+
+STRIP_DEBUG_OPTS=(
+	"${STRIP_OPTS[@]}"
+	'--strip-debug'
+)
+
+RM_OPTS=(
+	'--force'
+)
+
+# }}} finished setting up subprogram (strip, rm) arguments
+
+# {{{ setup find(1) arguments
+
+# blank slate
+FIND_OPTS=()
+
+# use either the arguments or the current directory
+FIND_OPTS+=(
+	"${@:-.}"
+	'-type'	'f'
+)
+
+
+
+# {{{ ignore operations
+
+if [ "${#IGNORE_GLOB[*]}" -gt 0 ]; then
+	# begin the parenthetical expression, banged because we're IGNORING the
+	# following patterns
+	FIND_OPTS_IGNORE=('!' '(')
+
+	for globpat in "${IGNORE_GLOB[@]}"; do
+
+		if [ "$NOCASEGLOB" -eq 0 ]; then
+			# sorry for the double-negative; what the conditional
+			# reads as is `if not ignoring case for glob patterns'
+			#
+			# this is the default, so in order to put it as the
+			# first block it had to be written this way
+
+			FIND_OPTS_IGNORE+=('-name')
+		else
+			FIND_OPTS_IGNORE+=('-iname')
+		fi
+
+		FIND_OPTS_IGNORE+=("$globpat" '-o')
+	done
+
+	# remove the last option which contains just `-o' and would cause a
+	# syntax error if sent to find(1)
+	unset FIND_OPTS_IGNORE["$((${#FIND_OPTS_IGNORE[*]}-1))"]
+	# ... a less-clean alternative:
+	#FIND_OPTS_IGNORE+=('-false')
+
+	# end the ignore globbing parenthetical expression
+	FIND_OPTS_IGNORE+=(')')
+fi
+
+# {{{ ignore operations
+
+# {{{ strip(1) operations
+
+FIND_OPTS_STRIP=('(')
+
+if [ "${#DEBUG_GLOB[*]}" -gt 0 ]; then
+	FIND_OPTS_STRIP+=('(' '(')
+	for globpat in "${DEBUG_GLOB[@]}"; do
+		if [ "$NOCASEGLOB" -eq 0 ]; then
+			# sorry for the double-negative; what the conditional
+			# reads as is `if not ignoring case for glob patterns'
+			#
+			# this is the default, so in order to put it as the
+			# first block it had to be written this way
+
+			FIND_OPTS_STRIP+=('-name')
+		else
+			FIND_OPTS_STRIP+=('-iname')
+		fi
+
+		FIND_OPTS_STRIP+=("$globpat" '-o')
+	done
+
+	# remove the last option which contains just `-o' and would cause a
+	# syntax error if sent to find(1)
+	unset FIND_OPTS_STRIP["$((${#FIND_OPTS_STRIP[*]}-1))"]
+	# ... a less-clean alternative:
+	#FIND_OPTS_STRIP+=('-false')
+
+	FIND_OPTS_STRIP+=(
+		')' '('
+			'-exec' 'strip' "${STRIP_DEBUG_OPTS[@]}" '--' '{}' ';'
+			# this will keep it from returning a non-zero status
+			# code
+			'-o' '-true'
+		')' ')'
+		'-o'
+	)
+fi
+
+FIND_OPTS_STRIP+=(
+	'-exec' 'strip' "${STRIP_ALL_OPTS[@]}" '--' '{}' ';'
+
+	# this will keep it from returning a non-zero status code
+	'-o' '-true'
+)
+
+FIND_OPTS_STRIP+=(')')
+
+# }}} end strip(1) operations
+
+# {{{ python object operations
+
+FIND_OPTS_PYTHON=()
+
+if [ "$CLEAN_PYTHON" -ne 0 ]; then
+	FIND_OPTS_PYTHON+=('(')
+
+	if [ "$NOCASEGLOB" -eq 0 ]; then
+		FIND_OPTS_PYTHON+=('-name')
+	else
+		FIND_OPTS_PYTHON+=('-iname')
+	fi
+
+	FIND_OPTS_PYTHON+=(
+		'*.py'
+	)
+
+	# construct the -exec call (rm(1) -f will not return an error code)
+	FIND_OPTS_PYTHON+=('-exec' 'rm' "${RM_OPTS[@]}" '--')
+	for py_bin_ext in o c; do
+		FIND_OPTS_PYTHON+=(
+			"{}$py_bin_ext"
+		)
+	done
+	FIND_OPTS_PYTHON+=(
+		';'
+
+		# this will keep it from returning a non-zero status code
+		'-o' '-true'
+	)
+
+	FIND_OPTS_PYTHON+=(')')
+fi
+
+# }}} end python object operations
+
+# add it up
+FIND_OPTS+=(
+	"${FIND_OPTS_IGNORE[@]}"
+	"${FIND_OPTS_STRIP[@]}"
+	"${FIND_OPTS_PYTHON[@]}"
+)
+
+# }}} finished setting up find(1) arguments
+
+# run it!
+exec find "${FIND_OPTS[@]}"
+#format_find_args "${FIND_OPTS[@]}"
+
+# vi: fdm=marker
