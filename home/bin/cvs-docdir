@@ -1,0 +1,26 @@
+#!/bin/sh
+
+DOCDIR_BASE='usr/doc'
+
+# ensure non-translated messages
+export LC_MESSAGES=C
+
+cvs_rev() {
+	local \
+		dir="${1:-$PWD}"
+
+	if [ -d "$dir" -a -d "$dir/CVS" ]; then
+		if [ -n "$(type -p cvs 2>/dev/null)" ]; then
+			(cd "$dir" && cvs rlog . 2>/dev/null) |
+			grep '^revision ' |
+			wc --lines
+		fi
+	fi
+}
+
+REV="$(cvs_rev "${1:-$PWD}")"
+if [ -n "$REV" ] && [ "$((REV+0))" -gt 0 ]; then
+	echo "$DOCDIR_BASE/$(basename -- "${1:-$PWD}")-r$REV"
+else
+	exec "$(dirname -- "$(readlink -f -- "$0")")/bzr-docdir" "$@"
+fi
