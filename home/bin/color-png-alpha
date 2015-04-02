@@ -1,0 +1,38 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# colors a PNG image's alpha transparency with the specified color
+
+USAGE() {
+    printf 'Usage: %s [-c COLOR] -o [OUT] [FILE]\n' \
+        "${0##*/}"
+}
+
+INFILE='/dev/stdin'
+OUTFILE='/dev/stdout'
+COLOR='white'
+while getopts 'c:o:' FLAG; do
+    case "$FLAG" in
+        'c')
+            COLOR=$OPTARG
+            ;;
+        'o')
+            OUTFILE=$OPTARG
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+if [[ -n $1 ]]; then
+    INFILE=$1
+fi
+
+pngtopnm -mix -background "$COLOR" "$INFILE" |pnmtopng >"$OUTFILE"
