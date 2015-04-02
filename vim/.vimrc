@@ -206,7 +206,7 @@ endif
 set foldmethod=syntax
 " 0: all folds closed upon opening a file
 " 99: all folds open (close with `zc')
-set foldlevelstart=0
+set foldlevelstart=99
 
 " *** syntax-specific folding options ***
 " (note: /ftplugin/* executes after these options are interpreted, so they must
