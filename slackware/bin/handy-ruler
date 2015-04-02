@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# creates a handy-rulered file (`slack-desc') in the current directory
+# takes one argument: the name of the package
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] PACKAGE_NAME FILE
+Generate slack-desc files.
+
+  -h		Show this help message.
+  -b BLURB	Use BLURB as the paragraph(s) of text.
+  -t TITLE	Use TITLE as the title of the package.
+  -d DESC	Use DESC as the text inside the parentheses on the title line.
+  --		Terminate options list.
+
+If FILE is unspecified, output defaults to slack-desc.
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+BLURB=''
+TITLE=''
+DESC=''
+while getopts 'hb:t:d:' flag; do
+	case "$flag" in
+		'b')
+			BLURB="$OPTARG"
+			;;
+		't')
+			TITLE="$OPTARG"
+			;;
+		'd')
+			DESC="$OPTARG"
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$(($OPTIND-1))"
+
+PKG="$1"
+
+# determine how much to indent the handy ruler
+spaces="$(echo -n "$PKG" |tr '[:print:]' ' ')"
+
+# wrap blurb to 70 columns, prefix with package name, and limit to 9 lines
+blurb_lines="$(echo "$BLURB" |fold -w 70 -b -s |sed -e "s/^/$PKG: /;s/ $//" |head -9)"
+
+# make sure there are 9 lines of blurb
+blurb_size="$(echo "$blurb_lines" |wc -l)"
+
+if [ "$blurb_size" -lt 9 ]; then
+	for ((nl = 0; nl < $((9-blurb_size)); ++nl)); do
+		blurb_lines="${blurb_lines}
+$PKG:"
+	done
+fi
+
+cat <<EOF >${2:-slack-desc}
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+$spaces|-----handy-ruler------------------------------------------------------|
+$PKG:${TITLE:+ $TITLE}${DESC:+ ($DESC)}
+$PKG:
+$blurb_lines
+EOF
