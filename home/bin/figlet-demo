@@ -1,0 +1,56 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+FIGLET_DIR='/usr/share/figlet'
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] FILE...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Demo figlet fonts.
+
+  -h        Show this help message.
+  -t TEXT   Show TEXT as the demo text. Defaults to font name.
+  --        Terminate options list.
+
+Copyright (C) 2014 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+TEXT=
+while getopts 'ht:' FLAG; do
+    case "$FLAG" in
+        't')
+            TEXT=$OPTARG
+            ;;
+        'h')
+            HELP_MESSAGE
+            exit 0
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+for FONT in "$FIGLET_DIR"/*.[ft]lf; do
+    FONT=${FONT##*/} # basename
+    FONT=${FONT%.*}  # suffix elim
+    echo "$FONT"
+    echo "${TEXT:-$FONT}" |
+    figlet -f "$FONT"
+    echo
+done
