@@ -120,6 +120,11 @@ if has('gui_running') || &t_Co > 2
 	" Removing search highlighting
 	nnoremap <ESC><ESC> :nohlsearch<CR>
 
+	" Stop the cursor from blinking, ever
+	" Addendum: this was to stop a bug where the cursor disappeared when the
+	" window was maximized, but I decided to just never maximize windows
+	"set guicursor+=a:blinkon0
+
 	"" color tweaks
 	" 1-2: Show trailing whitespace and spaces before a tab:
 	" 3: not so bright as to make comments disappear in evening colorscheme
