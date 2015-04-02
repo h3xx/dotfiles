@@ -1,0 +1,245 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+# decodes any video/audio file supported by mplayer(1) into a standard PCM wav
+# file
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [FILE]...
+Decode any audio/video file to PCM WAV files.
+
+  -h            Show this help message.
+  -j NUM        Use NUM threads when decoding/encoding. Automatically
+                  determined by counting the number of CPU cores.
+  -s NUM        Resample the audio to NUM samples/second.
+  -C            Use the standard CD sampling rate (44.1 kHz).
+  -c NUM        Set the number of output channels.
+  -x EXT        Use EXT as the output file extension (default is \`.wav').
+  -f FORMAT     Use FORMAT as the format (default is \`wav';
+                  see \`ffmpeg -formats' for a full list).
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+# determine number of jobs from number of CPU cores in the system
+NUM_JOBS=$(
+    if [ -f '/proc/cpuinfo' ]; then
+        grep '^processor' '/proc/cpuinfo' |
+        wc --lines
+    else
+        echo 1
+    fi
+)
+
+EXT='.wav'
+SAMPLING_RATE=
+CHANNELS=
+OUT_FORMAT='wav'
+
+while getopts 'j:s:Cc:x:f:h' flag; do
+    case "$flag" in
+        'j')
+            NUM_JOBS=$OPTARG
+            ;;
+        's')
+            SAMPLING_RATE=$OPTARG
+            ;;
+        'C')
+            SAMPLING_RATE=44100
+            ;;
+        'c')
+            CHANNELS=$OPTARG
+            ;;
+        'x')
+            EXT=$OPTARG
+            ;;
+        'f')
+            OUT_FORMAT=$OPTARG
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+    rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup' EXIT
+
+# process multiple files in parallel processes
+#
+# schedules the filenames passed to the function to execute in parallel by
+# calling this script for each file
+#
+# this function only runs if there are multiple files specified on the
+# command line
+#
+# XXX : it is VERY IMPORTANT that the self-calls initiated here are given only
+#   one file argument or this script will loop recursively forever
+schedule_process() {
+    local \
+        XARGS_OPTS \
+        SELF_ARGS \
+        FILE
+
+    # intial options
+    XARGS_OPTS=(
+        '--null'        # accept null-terminated list
+        '--max-args=1'      # send only one list item for each
+                    # process (VERY IMPORTANT!!!)
+        "--max-procs=$NUM_JOBS" # execute on parallel process per core
+        '--'            # terminate option list
+    )
+
+    SELF_ARGS=()
+
+    if [[ -n $SAMPLING_RATE ]]; then
+        SELF_ARGS+=('-s' "$SAMPLING_RATE")
+    fi
+
+    if [[ -n $CHANNELS ]]; then
+        SELF_ARGS+=('-c' "$CHANNELS")
+    fi
+
+    if [[ -n "$EXT" ]]; then
+        SELF_ARGS+=('-x' "$EXT")
+    fi
+
+    if [[ -n $OUT_FORMAT ]]; then
+        SELF_ARGS+=('-f' "$OUT_FORMAT")
+    fi
+
+    SELF_EXEC=(
+        "$0"
+        "${SELF_ARGS[@]}"
+    )
+
+    # add the self-execution to what xargs(1) executes
+    XARGS_OPTS+=(
+        "${SELF_EXEC[@]}"
+    )
+
+    # translate into null-separated list for maximum xargs security
+    for FILE; do
+        echo -n "$FILE"
+        echo -ne '\0'
+    done |
+
+    # pipe it to xargs which will perform the scheduling, passing one
+    # file to another running copy of this script
+    # XXX : it is VERY important that only ONE file file get passed or the
+    #   script will get stuck in an infinite recursion loop
+    xargs "${XARGS_OPTS[@]}"
+}
+
+# process a single file
+#
+# runs only if the script is given only one argument, which happens when the
+# script is self-executed via xargs(1) from the schedule_process() function
+single_process() {
+    wav_decode "$@"
+}
+
+wav_decode() {
+    local \
+        FFMPEG_OPTS \
+        FILE \
+        TEMP
+
+    FFMPEG_OPTS=(
+        '-y' # force overwrite
+        '-f' "$OUT_FORMAT" # force output format
+    )
+
+    if [[ -n $NUM_JOBS ]]; then
+        FFMPEG_OPTS+=('-threads' "$NUM_JOBS")
+    fi
+
+    if [[ -n $SAMPLING_RATE ]]; then
+        FFMPEG_OPTS+=('-ar' "$SAMPLING_RATE")
+    fi
+
+    if [[ -n $CHANNELS ]]; then
+        FFMPEG_OPTS+=('-ac' "$CHANNELS")
+    fi
+
+    for FILE; do
+
+        TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+        TEMP_FILES+=("$TEMP")
+
+        #mplayer \
+        #   -srate 44100 \
+        #   -vo null \
+        #   -vc null \
+        #   -ao pcm:fast:file="$fn.wav" \
+        #   "$fn" || exit
+
+        # (ffmpeg is meant for doing this and does it faster)
+        ffmpeg \
+            -i "$FILE" \
+            "${FFMPEG_OPTS[@]}" \
+            "$TEMP" &&
+
+        touch \
+            --reference="$FILE" \
+            -- \
+            "$TEMP" &&
+
+        chmod \
+            --reference="$FILE" \
+            -- \
+            "$TEMP" &&
+
+        mv \
+            -- \
+            "$TEMP" \
+            "${FILE}${EXT}" ||
+
+            return "$?"
+    done
+}
+
+if [[ $# -eq 1 ]]; then
+    # only one file specified; no need to run parallel processes
+    single_process "$@"
+else
+    # multiple files specified; process them in parallel
+    schedule_process "$@"
+fi
+
+#for FILE; do
+#   TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+#   TEMP_FILES+=("$TEMP")
+#
+#   #mplayer \
+#   #   -srate 44100 \
+#   #   -vo null \
+#   #   -vc null \
+#   #   -ao pcm:fast:file="$fn.wav" \
+#   #   "$fn" || exit
+#
+#   # (ffmpeg is meant for doing this and does it faster)
+#   ffmpeg \
+#       -i "$FILE" \
+#       "${FFMPEG_OPTS[@]}" \
+#       "$TEMP" &&
+#   touch --reference="$FILE" -- "$TEMP" &&
+#   chmod --reference="$FILE" -- "$TEMP" &&
+#   mv -- "$TEMP" "${FILE}${EXT}" || exit
+#done

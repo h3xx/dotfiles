@@ -1,0 +1,164 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+gzip(1) man files recursively, updating symlinks
+Usage: ${0##*/} [-vdhu] [MANDIR]...
+
+  -h        Show this help message.
+  -d        Perform a dry run; do nothing but print the commands to be run.
+  -u        Undo gzipping and symlinking.
+  -v        Turn on verbose output.
+
+Copyright (C) 2010 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+VERBOSE=0
+DRY_RUN=0
+UNDO=0
+
+while getopts 'hvdu' flag; do
+    case "$flag" in
+        'v')
+            VERBOSE=1
+            ;;
+        'd')
+            DRY_RUN=1
+            ;;
+        'u')
+            UNDO=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+if [[ -z $* ]]; then
+    HELP_MESSAGE 1
+fi
+
+abspath() {
+    local PATHCHK
+    for PATHCHK; do
+        # turns out, readlink(1) can do this
+        readlink -m "$PATHCHK"
+    done
+}
+
+_gzipmans() {
+    # set up programs and arguments
+    local \
+        GZIP='gzip -f -9' \
+        CHMOD='chmod 0644' \
+        LN_S='ln -sf' \
+        RM='rm -f' \
+        FIND_GZPARAMS=('!' '-iname' '*.gz') \
+        FIND_LPARAMS=('-type' 'l' '!' '-iname' '*.gz') \
+        LINK_TARGET \
+        MANDIR \
+        OLD_LT
+
+    if [[ $UNDO -ne 0 ]]; then
+        GZIP=${GZIP/#gzip/gunzip}
+        CHMOD=
+        FIND_GZPARAMS=('-iname' '*.gz')
+        FIND_LPARAMS=('-type' 'l' '-iname' '*.gz')
+    fi
+
+    if [[ $VERBOSE -ne 0 ]]; then
+        # cause commands to output verbose information
+        GZIP=${GZIP:+$GZIP -v}
+        CHMOD=${CHMOD/ / -v }
+        LN_S=${LN_S:+$LN_S -v}
+        RM=${RM:+$RM -v}
+    fi
+
+    if [[ $DRY_RUN -ne 0 ]]; then
+        # replace commands with ineffectual text output
+        GZIP=${GZIP:+echo $GZIP}
+        CHMOD=${CHMOD:+echo $CHMOD}
+        LN_S=${LN_S:+echo $LN_S}
+        RM=${RM:+echo $RM}
+    fi
+
+    # further construction of find parameters
+    FIND_GZPARAMS=(
+        '-type' 'f' '('
+        # because sometimes we're used for gzipping infodirs too...
+            '(' '-path' '*/info/dir' '-exec' $RM '--' '{}' ';' ')' '-o'
+            '(' "${FIND_GZPARAMS[@]}"
+                '-exec' $GZIP '--' '{}' ';'
+    )
+
+    if [[ -n $CHMOD ]]; then
+        FIND_GZPARAMS+=(
+                '-exec' $CHMOD '--' '{}.gz' ';'
+        )
+    fi
+
+    FIND_GZPARAMS+=(
+            ')'
+        ')'
+    )
+
+    for MANDIR; do
+        if [[ ! -e $MANDIR ]]; then
+            printf '%s does not exist!\n' "$MANDIR" >&2
+            continue
+        fi
+
+        # gzip files
+        find "$MANDIR" "${FIND_GZPARAMS[@]}"
+
+        # correct symlinks
+        for LINK in $(find "$MANDIR" "${FIND_LPARAMS[@]}") ; do
+            LINK_TARGET=$(
+                RL=$(readlink -- "$LINK")
+                if [[ $UNDO -eq 0 ]]; then
+                    echo "${RL}.gz"
+                else
+                    echo "${RL/%.gz}"
+                fi
+            )
+
+            # compensate for absolute symlinks to a file in the same directory
+            if [[ ${LINK_TARGET:0:1} = '/' &&
+                $(abspath "$(dirname -- "$LINK_TARGET")") = \
+                $(abspath "$(dirname -- "$LINK")") ]]; then
+
+                OLD_LT=$LINK_TARGET
+                LINK_TARGET=${LINK_TARGET##*/} # (basename)
+
+                if [[ $VERBOSE -ne 0 ]]; then
+                    printf 'Corrected absolute symlink "%s" ("%s" => "%s")\n' "$LINK" "$OLD_LT" "$LINK_TARGET" >&2
+                fi
+            fi
+
+            # re-create gzipped symlink
+            $LN_S -- "$LINK_TARGET" "$(
+                if [[ $UNDO -eq 0 ]]; then
+                    echo "${LINK}.gz"
+                else
+                    echo "${LINK/%.gz}"
+                fi
+            )" &&
+            # remove old symlink
+            $RM -- "$LINK"
+        done
+    done
+}
+
+_gzipmans "$@"

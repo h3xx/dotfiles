@@ -1,0 +1,26 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+DOCDIR_BASE='usr/doc'
+
+# ensure non-translated messages
+export LC_MESSAGES=C
+
+git_rev() {
+    local \
+        DIR=${1:-$PWD}
+
+    if [[ -d $DIR/.git ]]; then
+        if hash git &>/dev/null; then
+            git --git-dir="$DIR/.git" rev-list HEAD |
+            wc --lines
+        fi
+    fi
+}
+
+REV=$(git_rev "${1:-$PWD}")
+if [[ -n $REV && $((REV+0)) -gt 0 ]]; then
+    echo "$DOCDIR_BASE/$(basename -- "${1:-$PWD}")-r$REV"
+else
+    exec "$(dirname -- "$(readlink -f -- "$0")")/hg-docdir" "$@"
+fi

@@ -1,0 +1,139 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [FILE]... [DIR]...
+Append doinst.sh information to install .info.gz files into /usr/info/dir.
+
+  -h        Show this help message.
+  -z        Automatically gzip(1) info files.
+  -o DOINST Append to doinst.sh file DOINST.
+
+Copyright (C) 2010 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+# should be used like so (from a build jail):
+#
+# $ rm usr/info/dir
+# $ handy-info-install usr/info/*
+#
+# which will automatically create the `install' directory and append the
+# information to `install/doinst.sh'
+
+# --OR-- [since I'm always forgetting]
+# $ rm usr/info/dir
+# # cd install/
+# $ handy-info-install ../usr/info/*
+#
+# will install the information into `./doinst.sh'
+
+# note: will automatically remove usr/info/dir if passed as an argument
+
+DEST_DOINST='install/doinst.sh'
+USE_INFO_FILE_BASENAME=0
+GZIP_INFOS=0
+INFODIR='/usr/info' # Slackware default
+
+while getopts 'ho:z' flag; do
+    case "$flag" in
+        'o')
+            DEST_DOINST=$OPTARG
+            USE_INFO_FILE_BASENAME=1
+            ;;
+        'z')
+            GZIP_INFOS=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+compress_info() {
+    local \
+        INFOFILE=$1 \
+
+    if [[ ${INFOFILE%.gz} = "$INFOFILE" ]]; then
+        # not yet gzipped
+        gzip -9 -- "$INFOFILE" || return 1
+        INFOFILE+='.gz'
+    fi
+    echo "$INFOFILE"
+}
+
+# append the header for the info file install process
+doinst_header() {
+    local \
+        DOINST=$1 \
+
+    mkdir -p -- "$(dirname -- "$DOINST")" || return
+
+    cat <<EOF >>"$DOINST"
+if [ -x usr/bin/install-info ]; then
+EOF
+}
+
+doinst_entry() {
+    local \
+        DOINST=$1 \
+        INFODIR=$2 \
+        INFOFILE=$3 \
+
+    cat <<EOF >>"$DOINST"
+  chroot . /usr/bin/install-info --info-dir=$INFODIR $INFOFILE >/dev/null 2>&1
+EOF
+}
+
+# append the footer for the info file install process
+doinst_footer() {
+    local \
+        DOINST=$1 \
+
+    cat <<EOF >>"$DOINST"
+fi
+
+EOF
+}
+
+doinst_header "$DEST_DOINST"
+for INFOFILE; do
+
+    if [[ $GZIP_INFOS -ne 0 ]]; then
+        INFOFILE=$(compress_info "$INFOFILE")
+    fi
+
+    # remove the `dir' file if it is passed to us
+    if [[ $(basename -- "$INFOFILE" '.gz') = 'dir' ]]; then
+        rm -fv -- "$INFOFILE"
+    else
+        # else continue as normal
+        if [[ $USE_INFO_FILE_BASENAME -ne 0 ]]; then
+            INFOFILE="usr/info/$(basename -- "$INFOFILE")"
+        fi
+        if [[ $(basename -- "$(dirname -- "$INFOFILE")") != 'info' ]]; then
+            # info file is in a non-standard subdirectory
+            INFOSUBDIR=$(basename -- "$(dirname -- "$INFOFILE")")
+        else
+            INFOSUBDIR=
+        fi
+
+        # install!
+        doinst_entry \
+            "$DEST_DOINST" \
+            "$INFODIR${INFOSUBDIR:+/$INFOSUBDIR}" \
+            "$INFOFILE"
+    fi
+done
+doinst_footer "$DEST_DOINST"
