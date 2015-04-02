@@ -32,6 +32,18 @@
 	ui		= auto
 	pager		= true
 
+[color "diff"]
+	frag		= magenta bold
+	meta		= yellow bold
+	old		= red bold
+	new		= green bold
+	commit		= yellow bold
+
+[color "status"]
+	added		= yellow
+	changed		= green
+	untracked	= cyan
+
 [user]
 	name = Dan Church
 	email = amphetamachine@gmail.com
