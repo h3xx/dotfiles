@@ -297,10 +297,10 @@ endfunction
 "" manual	: manually define folds (default)
 ""		: (fold paragraphs with `zfap')
 set foldmethod=syntax
-set foldlevelstart=1
+"set foldlevelstart=1
 
 " all folds open upon opening a file (close with `zc')
-"set foldlevelstart=99
+set foldlevelstart=99
 
 "" syntax-specific options (note: ~/.vim/ftplugin/* executes after these
 "" options apply, so they must be defined here)
