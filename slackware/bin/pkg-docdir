@@ -1,0 +1,5 @@
+#!/bin/sh
+
+DOCDIR_BASE='usr/doc'
+
+echo "$DOCDIR_BASE/$(basename -- "${1:-$PWD}")"

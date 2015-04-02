@@ -1,0 +1,164 @@
+#!/bin/sh
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+gzip(1) man files recursively, updating symlinks
+Usage: $(basename -- "$0") [-vdhu] [MANDIR]...
+
+  -h		Show this help message.
+  -d		Perform a dry run; do nothing but print the commands to be run.
+  -u		Undo gzipping and symlinking.
+  -v		Turn on verbose output.
+
+Copyright (C) 2010 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+VERBOSE=0
+DRY_RUN=0
+UNDO=0
+
+while getopts 'hvdu' flag; do
+	case "$flag" in
+		'v')
+			VERBOSE=1
+			;;
+		'd')
+			DRY_RUN=1
+			;;
+		'u')
+			UNDO=1
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+if [ -z "$*" ]; then
+	HELP_MESSAGE 1
+fi
+
+abspath() {
+	local pathchk
+	for pathchk; do
+		# turns out, readlink(1) can do this
+		readlink -m "$pathchk"
+	done
+}
+
+_gzipmans() {
+	# set up programs and arguments
+	local \
+		gzip='gzip -f -9' \
+		chmod='chmod 0644' \
+		ln_s='ln -sf' \
+		rm='rm -f' \
+		find_gzparams=('!' '-iname' '*.gz') \
+		find_lparams=('-type' 'l' '!' '-iname' '*.gz') \
+		link_target \
+		mandir \
+		old_lt
+
+	if [ "$UNDO" -ne 0 ]; then
+		gzip="${gzip/#gzip/gunzip}"
+		chmod=''
+		find_gzparams=('-iname' '*.gz')
+		find_lparams=('-type' 'l' '-iname' '*.gz')
+	fi
+
+	if [ "$VERBOSE" -ne 0 ]; then
+		# cause commands to output verbose information
+		gzip="${gzip:+$gzip -v}"
+		chmod="${chmod/ / -v }"
+		ln_s="${ln_s:+$ln_s -v}"
+		rm="${rm:+$rm -v}"
+	fi
+
+	if [ "$DRY_RUN" -ne 0 ]; then
+		# replace commands with ineffectual text output
+		gzip="${gzip:+echo $gzip}"
+		chmod="${chmod:+echo $chmod}"
+		ln_s="${ln_s:+echo $ln_s}"
+		rm="${rm:+echo $rm}"
+	fi
+
+	# further construction of find parameters
+	find_gzparams=(
+		'-type' 'f' '('
+		# because sometimes we're used for gzipping infodirs too...
+			'(' '-path' '*/info/dir' '-exec' $rm '--' '{}' ';' ')' '-o'
+			'(' "${find_gzparams[@]}" 
+				'-exec' $gzip '--' '{}' ';'
+	)
+
+	if [ -n "$chmod" ]; then
+		find_gzparams+=(
+				'-exec' $chmod '--' '{}.gz' ';'
+		)
+	fi
+
+	find_gzparams+=(
+			')'
+		')'
+	)
+
+	for mandir; do
+		if [ ! -e "$mandir" ]; then
+			echo "\`$mandir' doesn't exist!" >&2
+			continue
+		fi
+
+		# gzip files
+		find "$mandir" "${find_gzparams[@]}"
+
+		# correct symlinks
+		for link in $(find "$mandir" "${find_lparams[@]}") ; do
+			link_target="$(
+				rl="$(readlink -- "$link")"
+				if [ "$UNDO" -eq 0 ]; then
+					echo "${rl}.gz"
+				else
+					echo "${rl/%.gz}"
+				fi
+			)"
+
+			# compensate for absolute symlinks to a file in the
+			# same directory
+			if [ "${link_target:0:1}" == '/' -a \
+				"$(abspath "$(dirname -- "$link_target")")" == \
+				"$(abspath "$(dirname -- "$link")")" ]; then
+
+				old_lt="$link_target"
+				link_target="$(basename -- "$link_target")"
+
+				if [ "$VERBOSE" -ne 0 ]; then
+					echo "corrected absolute symlink \`$link' (\`$old_lt' => \`$link_target')" >&2
+				fi
+			fi
+
+			# re-create gzipped symlink
+			$ln_s -- "$link_target" "$(
+				if [ "$UNDO" -eq 0 ]; then
+					echo "${link}.gz"
+				else
+					echo "${link/%.gz}"
+				fi
+			)" &&
+			# remove old symlink
+			$rm -- "$link"
+		done
+	done
+}
+
+_gzipmans "$@"
