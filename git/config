@@ -22,6 +22,18 @@
 	pager = true
 	ui = auto
 
+[color "diff"]
+	frag		= magenta bold
+	meta		= yellow bold
+	old		= red bold
+	new		= green bold
+	commit		= yellow bold
+
+[color "status"]
+	added		= yellow
+	changed		= green
+	untracked	= cyan
+
 [core]
 	# Limit memory when resolving deltas?
 	deltaBaseCacheLimit = 4g
