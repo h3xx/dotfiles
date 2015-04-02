@@ -1,0 +1,69 @@
+#!/bin/sh
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] CUE|BIN [BASE]
+Make bin/cue images into meaningful information using bchunk.
+
+  -h		Show this help message.
+
+Copyright (C) 2012-2013 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+while getopts 'h-' flag; do
+	case "$flag" in
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+FILE_IN="$1"
+
+if [ "x${FILE_IN%.cue}" != "x$FILE_IN" ]; then
+	# has cue extension - use .bin
+	BASE="${FILE_IN%.[Cc][Uu][Ee]}"
+	CUE_IN="$FILE_IN"
+	BIN_IN="$BASE.bin"
+elif [ "x${FILE_IN%.CUE}" != "x$FILE_IN" ]; then
+	# has upper-case cue extension - use .BIN
+	BASE="${FILE_IN%.[Cc][Uu][Ee]}"
+	CUE_IN="$FILE_IN"
+	BIN_IN="$BASE.BIN"
+
+elif [ "x${FILE_IN%.bin}" != "x$FILE_IN" ]; then
+	# passed me a .bin file, huh?
+	BASE="${FILE_IN%.[Bb][Ii][Nn]}"
+	CUE_IN="$BASE.cue"
+	BIN_IN="$FILE_IN"
+elif [ "x${FILE_IN%.BIN}" != "x$FILE_IN" ]; then
+	# passed me a .BIN file, huh?
+	BASE="${FILE_IN%.[Bb][Ii][Nn]}"
+	CUE_IN="$BASE.CUE"
+	BIN_IN="$FILE_IN"
+fi
+
+
+if [ ! -e "$BIN_IN" -o ! -e "$CUE_IN" ]; then
+	echo "$BIN_IN $CUE_IN"
+	echo 'Missing file!' >&2
+	exit 2
+fi
+
+if [ -z "$BASE" ]; then
+	BASE="${2:-track}"
+fi
+
+# good to go
+exec bchunk -w -- "$BIN_IN" "$CUE_IN" "$BASE"
