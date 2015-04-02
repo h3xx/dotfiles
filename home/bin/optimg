@@ -1,0 +1,791 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# optimize image files for size
+
+# CHANGES:
+#
+# 2011-1211-1210 :
+#   * Add `-C' option to not reduce the color type. I've encountered some
+#     programs that will not read images with a color palette (namely
+#     stella and sometimes even gimp). This method is preferable to using
+#     the PREFER_PNGCRUSH method.
+#
+# 2011-1124-1225 :
+#   * Added support for using pngcrush over optipng(1) via the environment
+#     variable `PREFER_PNGCRUSH'. pngcrush may not work as well, but it
+#     still has its merits as it doesn't insist on re-factoring the color
+#     map, a process which can cause errors in some programs.
+#
+# 2011-0814-1808 :
+#   * Added support for omitting the preservation of timestamps via the
+#     `-T' option.
+#   * Fixed bug in reporting section that was causing individual filenames
+#     not to be printed.
+#   * Errs out if it can't preserve Exif information. This is because the
+#     user specifically requests to save this information, and if we can't
+#     do it, the user would most likely be pissed off we optimized the
+#     image but dumped the Exif.
+#
+# 2011-0802-2333 :
+#   * Commented out MNG support, as advmng(1) seems to kill the image's
+#     usability.
+#
+# 2011-0802-2308 :
+#   * [REDACTED] Now supports optimizing MNG files via advmng(1).
+#
+# 2011-0725-2201 :
+#   * Tests for the existence of jhead(1), jpegtran(1) and gifsicle(1) as
+#     they aren't necessarily commonly-distributed programs. jpegtran(1)
+#     has the highest probability of being installed as it is part of the
+#     libjpeg package.
+#   * Specifying `-r' will now recursively process ONLY directories and
+#     not specifying it will process ONLY files. Perhaps one day, that
+#     piped file list I mention in BUGS will allow both, but for now
+#     recursive and non-recursive are mutually exclusive.
+#   * Fixed bugs relating to recursing directories starting with a hyphen.
+#   * More efficient file size counting in file_size() via better stat(1)
+#     arguments.
+#   * Fixed text formatting of the help message.
+#   * Hardier cpu core count detection for if the kernel hackers ever
+#     change the format of /proc/cpuinfo. This also fixes a potentially
+#     dangerous bug related to piping a big list of files to xargs(1) when
+#     `--max-procs=0', which will cause xargs to process ALL the jobs at
+#     once.
+#   * Short-circuited the parallel processing operation if the number of
+#     jobs/CPU cores is equal to 1.
+#   * Recursive operation actually works well now.
+#   * More GNU-style messages.
+#
+# 2011-0718-2328 :
+#   * More and better documentation. Now all the functions have header
+#     documentation.
+#   * Longer options to incidental program calls.
+#   * Numerous warnings about recursion pitfalls and inherent bugs.
+#   * Bug workaround:
+#       pngcrush(1), jpegtran(1) and jhead(1) have no way of accepting
+#       file arguments starting with a dash (`-'). This is not my
+#       fault.
+#     Now the filename is passed through readlink(1) so that it only
+#     processes absolute paths, which [should] never start with a hyphen.
+#   * Workarounds for a few minor security holes.
+#   * Outputs human-readable sizes.
+#   * Short-circuited the file_size() function so it's not doing shell math
+#     where it doesn't need to.
+#   * Recursive operation via find(1) (recursive_selfcall()) now self-calls
+#     with `-q' if it was specified when starting the script.
+#
+# 2010-0715-1300 :
+#   * Now counts freed bytes via stat(1).
+#   * Included -q option for quiet operation.
+#   * Included -r and -x EXTENSION option for recursive scheduling.
+#     Recursive scheduling now supercedes normal scheduling.
+#   * Removed -s option for single files (previously used when scheduling);
+#     now relies on value of `$#' to determine whether more than one file
+#     was indicated on the command line.
+#
+# 2010-0321-2044 :
+#   * Now uses parallel processes via xargs(1).
+#
+# 2010-0125-2015 :
+#   * Fixed some bugs/modularity issues regarding local variables in
+#     functions.
+#   * Included support for [more advanced] optipng(1). It is now preferred
+#     over pngcrush(1) as it seems to do a better job.
+#
+# BUGS:
+#   * Doesn't do that great a job of counting freed bytes on larger
+#     operations using the `-r' (recursive) flag. This is due to find(1)
+#     sending only-so-many file names to the command when using the `-exec
+#     [COMMAND] [ARGS] {} +' syntax. Perhaps implementing a piped file
+#     list would solve it.
+#   * hr_size() function does not round its figures; it only truncates
+#     them. This is due to its only using the built-in shell math
+#     functionality, which is only capable of integer math.
+#
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [--] FILE...
+       ${0##*/} [OPTIONS] -r [--] [DIR]...
+Optimize image files for size.
+
+  -h        Show this help message.
+  -e        Preserve Exif metadata in JPEG files using jhead(1).
+  -j NUM    Run at maximum NUM simultaneous operations. This defaults to
+              the auto-detected number of processors/virtual cores in the
+              system.
+  -q        Be quiet. Produce only error messages on STDERR.
+  -r        Optimize all images found by recursing DIRs. File arguments
+              are ignored.
+  -x SUF    When optimizing recursively via the \`-r' flag, only operate
+              on files whose names match /.*SUF/. May be specified
+              multiple times. Also accepts POSIX-compatible regular
+              expressions. If not specified, recursive operations will
+              operate on all files.
+  -T        Do not preserve timestamp information on optimized images.
+              Default is to preserve as much as possible.
+  -C        Be careful when optimizing PNGs. Sometimes reducing a PNG's
+              color map can cause it to be displayed incorrectly. Most
+              programs can handle it, however.
+  --        Terminate options list.
+
+Currently, this script will only work on the following types of files:
+  * JPEG (\`image/jpeg')                         Using jpegtran(1)
+  * Portable Network Graphics (\`image/png')     Using optipng(1)/pngcrush
+  * Mult-image Network Graphics (\`video/x-mng') Using advmng(1) [not working]
+  * Graphics Interchange Format (\`image/gif')   Using gifsicle(1)
+
+  If the environment variable PREFER_PNGCRUSH is set to a non-empty value, then
+  pngcrush is preferred over optipng(1).
+
+Copyright (C) 2010-2011 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+KEEP_EXIF=0
+# determine number of jobs from number of CPU cores in the system
+NUM_JOBS=$(
+    cpudetect=0
+    if [ -r '/proc/cpuinfo' ]; then
+        cpudetect=$(
+            grep -c '^processor' '/proc/cpuinfo'
+        )
+    fi
+    if [ "$cpudetect" -gt 0 ]; then
+        echo "$cpudetect"
+    else
+        echo 1
+    fi
+)
+QUIET=0
+RECURSIVE=0
+EXTS=()
+PRESERVE_TIMESTAMP=1
+CAREFUL=0
+
+# XXX : Note to self: when adding options, make sure to update
+#   recursive_selfcall() and schedule_process()
+while getopts 'hej:qrx:TC-' flag; do
+    case "$flag" in
+        'e')
+            KEEP_EXIF=1
+            ;;
+        'j')
+            NUM_JOBS=$OPTARG
+            ;;
+        'q')
+            QUIET=1
+            ;;
+        'r')
+            RECURSIVE=1
+            ;;
+        'x')
+            EXTS+=("$OPTARG")
+            ;;
+        'T')
+            PRESERVE_TIMESTAMP=0
+            ;;
+        'C')
+            CAREFUL=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+    rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup' EXIT
+
+# prints out the sum of the sizes, in bytes of all files passed to it
+file_size() {
+    if [ "$#" -gt 1 ]; then
+        # adds all the file sizes by doing a stat on all of them
+        # (separated by `\n'), transforming them into
+        # `LINE+LINE+...LINE+0' and passing them to the Bash expression
+        # evaluator
+        echo "$(($(
+            stat \
+                --printf='%s+' \
+                --dereference \
+                -- \
+                "$@" 2>/dev/null
+        )0))"
+    else
+        # only got one file to check; do it simply
+        stat \
+            --format='%s' \
+            --dereference \
+            -- \
+            "$@" 2>/dev/null
+    fi
+}
+
+# produces a human-readable size from the byte count passed to it
+hr_size() {
+    local \
+        bytes=$1 \
+        units \
+        fact \
+        thresh \
+        decimals \
+        exp \
+        hr_val \
+        hr_unit \
+
+    #units=(B KB MB GB TB PB EB ZB YB) # shell math can only go so far...
+    units=(B KB MB GB TB)
+    fact=1024
+    thresh=9/10
+    decimals=1
+
+    # cycle through units from largest to smallest, exiting when it finds
+    # the largest applicable unit
+    for ((exp = ${#units[@]} - 1; exp > -1; --exp)); do
+        # check if the unit is close enough to the unit's size, within
+        # the threshold
+        if [ "$bytes" -gt "$((fact**exp*${thresh}))" ]; then
+            # we found the applicable unit
+
+            # subdividing bytes makes no sense
+            if [ "$exp" -eq 0 ]; then
+                decimals=0
+            fi
+
+            # must multiply by a factor of 10 here to not truncate
+            # the given number of decimal places after the point
+            hr_val=$((bytes*10**decimals/fact**exp))
+
+            # put the decimal point in
+            if [ "$decimals" -gt 0 ]; then
+                # left: divide and truncate
+                # right: modulus
+                hr_val=$((hr_val/10**decimals)).$((hr_val%10**decimals))
+            fi
+
+            hr_unit=${units[$exp]}
+            break
+        fi
+    done
+
+    if [ -z "$hr_unit" ]; then
+        hr_val=$bytes
+        hr_unit=${units[0]}
+    fi
+
+    echo "${hr_val} ${hr_unit}"
+}
+
+# prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
+get_mimetype() {
+    # XXX : file(1) doesn't always produce the correct mimetype for files;
+    #   possible workaround would be to include
+    #   `--magic-file /etc/file/magic/images'
+    file \
+        --preserve-date \
+        --dereference \
+        --brief \
+        --mime-type \
+        -- \
+        "$@" 2>/dev/null
+}
+
+# copies $2 over to $1 if $2 is smaller than $1
+use_smaller() {
+    # if `$temp' isn't empty and it's of a smaller size than `$file',
+    # preserve every attribute and replace `$file' with `$temp'
+    local \
+        file=$1 \
+        temp=$2 \
+        origsize \
+        tempsize
+
+    origsize=$(file_size "$file")
+    tempsize=$(file_size "$temp")
+
+    if [ -f "$temp" -a \
+        "$tempsize" -gt 0 -a \
+        "$tempsize" -lt "$origsize" ]; then
+
+        # preserve attributes by copying them from the original file to
+        # the temporary one
+        chmod \
+            --reference="$file" \
+            -- \
+            "$temp" &&
+
+        (if [ "$PRESERVE_TIMESTAMP" -ne 0 ]; then
+            touch \
+                --reference="$file" \
+                -- \
+                "$temp" ||
+                exit
+        fi) &&
+
+        (if [ "$UID" -eq 0 ]; then
+            # we're root, so we can chown(1) things
+            chown \
+                --reference="$file" \
+                -- \
+                "$temp" ||
+
+                exit
+        fi) &&
+
+        cp \
+            --preserve=mode,ownership,timestamps \
+            -- \
+            "$temp" \
+            "$file" &&
+
+        local err=$?
+        case "$err" in
+            '0')
+                echo "optimized image \`$file'" >&2
+                ;;
+            *)
+                echo "failed to optimize \`$file'!" >&2
+                ;;
+        esac
+
+    fi
+
+    # protect against unsuccessful following file writes to our temp file
+    rm \
+        --force \
+        -- \
+        "$temp"
+
+}
+
+# optimize a single[*] image file--any image file it can
+#
+# *: can handle multiple files
+optimize_image() {
+    local \
+        image_file \
+        temp
+
+    for image_file; do
+
+        [ -f "$image_file" ] || continue
+
+        # get the absolute path of the image file so that ALL filenames
+        # can be handled, even ones beginning with a hyphen
+        image_file=$(readlink -f -- "$image_file")
+
+        temp=$(mktemp -t "${0##*/}.XXXXXX")
+        TEMP_FILES+=("$temp")
+
+        case "$(get_mimetype "$image_file")" in
+
+'image/jpeg')
+
+    # XXX : jpegtran and jhead can't handle input files starting with `-'
+    (if [ -n "$(type -Pt 'jpegtran')" ]; then
+        jpegtran \
+            -optimize \
+            -outfile "$temp" \
+            "$image_file" >&2 ||
+
+            exit
+    else
+        echo 'No supported JPEG optimizer found.' >&2
+        exit 1
+    fi) &&
+
+    (if [ "$KEEP_EXIF" -ne 0 ]; then
+        if [ -n "$(type -Pt 'jhead')" ]; then
+            # copy EXIF information from original file to the
+            # temporary file
+            # note: there is no long option for `-te'
+            jhead \
+                -te "$image_file" \
+                "$temp" >&2 ||
+
+                exit
+        else
+            echo 'Error: Cannot preserve EXIF information.' >&2
+            # the user specifically requested to save EXIF
+            # information, so if we can't do it, might as well
+            # give an error
+            exit 1
+        fi
+    fi) &&
+
+    use_smaller "$image_file" "$temp"
+
+    ;;
+
+'image/png')
+
+    # truth table:
+    # prefpc| has_pngcrush  | has_optipng   | method
+    # 0 | 0     | 0     | exit
+    # 0 | 0     | 1     | optipng
+    # 0 | 1     | 0     | pngcrush
+    # 0 | 1     | 1     | optipng
+    # 1 | 0     | 0     | exit
+    # 1 | 0     | 1     | optipng
+    # 1 | 1     | 0     | pngcrush
+    # 1 | 1     | 1     | pngcrush
+    #
+    # optipng = (!prefpc -o !has_pngcrush) && has_optipng
+    (if [ \( -z "$PREFER_PNGCRUSH" -o -z "$(type -Pt 'pngcrush')" \) -a -n "$(type -Pt 'optipng')" ]; then
+
+        # XXX : optipng refuses to overwrite files (even though the man
+        #   page says `-force' overrides this)
+        rm -f -- "$temp" &&
+
+        optipng \
+            $([ "$QUIET" -eq 0 ] || echo ' -quiet') \
+            $([ "$CAREFUL" -eq 0 ] || echo ' -nc') \
+            -o7 \
+            -fix \
+            -force \
+            -out "$temp" \
+            -- \
+            "$image_file" >&2 ||
+
+            exit
+
+    elif [ -n "$(type -Pt 'pngcrush')" ]; then
+
+        # XXX : pngcrush can't handle input files starting with `-'
+        pngcrush \
+            $([ "$QUIET" -eq 0 ] || echo '-q') \
+            -brute \
+            "$image_file" \
+            "$temp" >&2 ||
+
+            exit
+
+    else
+        echo 'No supported PNG optimizer found.' >&2
+        exit 1
+    fi) &&
+
+    use_smaller "$image_file" "$temp"
+
+    ;;
+
+'video/x-mng')
+
+    #(if [ -n "$(type -Pt 'advmng')" ]; then
+    #   # advmng optimizes files in-place, but we want to be more
+    #   # careful than that
+    #   cp -- "$image_file" "$temp" &&
+    #
+    #   advmng \
+    #       --recompress \
+    #       --shrink-fast \
+    #       --force \
+    #       $([ "$QUIET" -eq 0 ] || echo '--verbose') \
+    #       -- \
+    #       "$temp" ||
+    #
+    #       exit
+    #
+    #   # XXX : sometimes advmng fucks up the MNG so work around
+    #   #   it by having it re-check its work
+    #   advmng \
+    #       --list \
+    #       -- \
+    #       "$temp" ||
+    #
+    #       exit
+    #
+    #else
+    #   echo 'No supported MNG optimizer found' >&2
+    #   exit 1
+    #fi) &&
+    #
+    #use_smaller "$image_file" "$temp"
+
+    # FIXME : advmng is really, REALLY old and is kind of shit at the whole
+    #     not-fucking-up-your-images thing
+    echo 'Sorry, support for MNG is not yet implemented.' >&2
+
+    ;;
+
+'image/gif')
+
+    (if [ -n "$(type -Pt 'gifsicle')" ]; then
+        # XXX : this opens up a [very minor] symlink attack vector: if
+        #   "$temp" is replaced with a symlink during execution,
+        #   its target will be clobbered with the output from
+        #   gifsicle(1)
+        rm --force -- "$temp" &&
+
+        gifsicle \
+            --optimize=3 \
+            --output "$temp" \
+            "$image_file" >&2 ||
+
+            exit
+    else
+        echo 'No supported GIF optimizer found.' >&2
+        exit 1
+    fi) &&
+
+    use_smaller "$image_file" "$temp"
+
+    ;;
+
+*)
+
+    echo "Image type of \`$image_file' not recognized." >&2
+    ;;
+
+        esac
+    done
+}
+
+# process multiple files in parallel processes
+#
+# schedules the filenames passed to the function to execute in parallel by
+# calling this script for each file
+#
+# this function only runs if there are multiple files specified on the
+# command line
+#
+# XXX : it is VERY IMPORTANT that the self-calls initiated here are given only
+#   one file argument or this script will loop recursively forever
+schedule_process() {
+    local \
+        xargs_opts \
+        self_args \
+        file
+
+    # intial options
+    xargs_opts=(
+        '--null'        # accept null-terminated list
+        '--max-args=1'      # send only one list item for each
+                    # process (VERY IMPORTANT!!!)
+        "--max-procs=$NUM_JOBS" # execute on parallel process per core
+        '--'            # terminate option list
+    )
+
+    self_args=()
+
+    if [ "$KEEP_EXIF" -ne 0 ]; then
+        self_args+=('-e')
+    fi
+
+    if [ "$PRESERVE_TIMESTAMP" -eq 0 ]; then
+        self_args+=('-T')
+    fi
+
+    if [ "$QUIET" -ne 0 ]; then
+        self_args+=('-q')
+    fi
+
+    if [ "$CAREFUL" -ne 0 ]; then
+        self_args+=('-C')
+    fi
+
+    self_args+=('--')   # terminate options list
+
+    self_exec=(
+        "$0"        # call self
+        "${self_args[@]}"
+    )
+
+    # add the self-execution to what xargs(1) executes
+    xargs_opts+=(
+        "${self_exec[@]}"
+    )
+
+    # translate into null-separated list for maximum xargs security
+    for file; do
+        #echo -n "$file"$'\0'   # <~ this won't work
+        echo -n "$file"
+        echo -ne '\0'
+    done |
+
+    # pipe it to xargs which will perform the scheduling, passing one
+    # file to another running copy of this script
+    # XXX : it is VERY important that only ONE file get passed or the
+    #   script will get stuck in an infinite recursion loop
+    xargs "${xargs_opts[@]}"
+}
+
+# process a single file
+#
+# should run only if the script is given only one argument, which happens when
+# the script is self-executed via xargs(1) from the schedule_process() function
+single_process() {
+    optimize_image "$@"
+}
+
+# process directories recursively
+#
+# sends all[*] files, optionally matching a given regex, located in the
+# directories given to a recursive call to this script, whereby the
+# schedule_process() function receives them and processes them in parallel
+#
+# *: does not send all files at once; there ARE system limits you know...
+#    but that doesn't mean that not all files get processed--the list just
+#    gets split up and sent to multiple self-invocations
+recursive_selfcall() {
+    local \
+        dirnames \
+        dir \
+        find_params \
+        self_exec \
+        self_args
+
+    # transform directories passed in into absolute paths in order to
+    # correctly process directory arguments beginning with a hyphen
+    dirnames=()
+    for dir; do
+        dirnames+=("$(readlink -f -- "$dir")")
+    done
+
+    # intial options
+    find_params=(
+        '-P'        # don't dereference symlinks
+        "${dirnames[@]:-.}" # search directories (expands to either
+                    # quoted arguments to this function, or
+                    # `.')
+        '-type' 'f'
+    )
+
+    # add regex to match file extensions if specified with `-x'
+    if [ "${#EXTS[*]}" -gt 0 ]; then
+        find_params+=(
+            '-regextype'    'posix-egrep'
+            '-regex'    '.*\.('"${EXTS[*]/#.}"')'
+        )
+    fi
+
+    self_args=(
+        '-j'    "$NUM_JOBS" # always-set option
+    )
+
+    # pass option switches to self (except for `-r' and `-x`)
+    if [ "$KEEP_EXIF" -ne 0 ]; then
+        self_args+=('-e')
+    fi
+
+    if [ "$PRESERVE_TIMESTAMP" -eq 0 ]; then
+        self_args+=('-T')
+    fi
+
+    if [ "$QUIET" -ne 0 ]; then
+        self_args+=('-q')
+    fi
+
+    if [ "$CAREFUL" -ne 0 ]; then
+        self_args+=('-C')
+    fi
+
+    self_args+=('--')   # terminate options list
+
+    self_exec=(
+        '-exec' "$0"    # the self-call
+        "${self_args[@]}"
+        '{}'    '+' # make sure our clone gets sent all the
+                # matching files
+    )
+
+    find_params+=(
+        "${self_exec[@]}"
+    )
+
+    # now the call to find(1) is simple! (haha)
+    find "${find_params[@]}"
+}
+
+# separate directory arguments from files
+arg_dirs=()
+arg_files=()
+for arg; do
+    if [ -d "$arg" ]; then
+        arg_dirs+=("$arg")
+    elif [ -f "$arg" ]; then
+        arg_files+=("$arg")
+    else
+        echo "Unknown filetype \`$arg'" >&2
+    fi
+done
+
+# if only a single filename was passed in, then we're [most likely] being
+# called from xargs; otherwise, we're scheduling
+
+if [ "$RECURSIVE" -ne 0 ]; then
+    if [ "$QUIET" -eq 0 ]; then
+        recursive_selfcall "${arg_dirs[@]}"
+    else
+        recursive_selfcall "${arg_dirs[@]}" >/dev/null 2>&1
+    fi
+else
+    # no arguments; print out help message like the friendlier
+    # command-line utilities
+    if [ "$#" -eq 0 ]; then
+        HELP_MESSAGE 0
+    fi
+
+    if [ "${#arg_files[@]}" -eq 0 ]; then
+        echo 'No files to process.' >&2
+        if [ "${#arg_dirs[@]}" -ne 0 ]; then
+            echo '(Use `-r'\'' to process directories.)' >&2
+        fi
+        # obligatory stereotypical GNU-style message
+        echo "Try \`${0##*/} -h' for more information." >&2
+        exit 2
+    fi
+
+    begin_filesize=$(file_size "${arg_files[@]}")
+
+    if [ "${#arg_files[@]}" -eq 1 -o "$NUM_JOBS" -eq 1 ]; then
+
+        # only one file or one job specified; no need to run parallel
+        # processes
+        single_process "${arg_files[@]}"
+
+        if [ "${#arg_files[@]}" -eq 1 ]; then
+            report_name=${arg_files[0]}
+        else
+            report_name='all'
+        fi
+
+    else
+        # multiple files specified; process them in parallel
+
+        # schedule jobs
+        if [ "$QUIET" -eq 0 ]; then
+            schedule_process "${arg_files[@]}"
+        else
+            schedule_process "${arg_files[@]}" >/dev/null 2>&1
+        fi
+
+        report_name='all'
+
+    fi
+
+    end_filesize=$(file_size "${arg_files[@]}")
+
+    freed=$((begin_filesize-end_filesize))
+    freed_hr=$(hr_size "$freed")
+
+    # note: this must occur on the same line, because otherwise it gets
+    # separated during asynchronous operations
+    echo "${report_name}: freed ${freed} bytes (${freed_hr})"
+fi
