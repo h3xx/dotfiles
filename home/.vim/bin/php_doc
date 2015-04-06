@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -z "$DISPLAY" ]; then
-	exec elinks "http://www.php.net/$1#layout"
-else
-	exec xdg-open "http://www.php.net/$1#layout"
-fi
