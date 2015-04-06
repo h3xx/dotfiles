@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# opens a program in screen, then opens a new terminal to it
+
+TERMINAL='/usr/bin/mrxvt'
+
+PIDOF='/sbin/pidof'
+PS='/bin/ps'
+
+# 1. figure out the pid of SCREEN
+#	a. make sure it's owned by the current user
+# 2. 	
+
+SCREEN="$($PIDOF SCREEN)"
+
+# all pids - pids not owned by $USER - pids not connected to screen - pids not
+# matching
+

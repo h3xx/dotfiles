@@ -1,0 +1,27 @@
+fbpager.alpha:			255
+fbpager.x:			0
+fbpager.y:			0
+fbpager.workspace.width:	40
+fbpager.workspace.height:	30
+fbpager.workspacesPerRow:	1
+fbpager.followDrag:		false
+fbpager.followMove:		false
+fbpager.changeWorkspaceButton:	2
+fbpager.raiseWindowButton:	3
+fbpager.lowerWindowButton:	3
+fbpager.closeWindowButton:	3 3 1
+fbpager.exitButton:		1 3 3
+fbpager.nextWorkspaceButton:	4
+fbpager.prevWorkspaceButton:	5
+fbpager.moveInWorkspaceButton:	0
+fbpager.dragToWorkspaceButton:	1
+fbpager.align:			LeftToRight
+fbpager.color:			rgb:2/0/0
+fbpager.windowColor:		rgb:3/3/3
+fbpager.focusedWindowColor:	rgb:6/6/6
+fbpager.windowBorderColor:	black
+fbpager.backgroundColor:	rgb:4/0/0
+fbpager.currentBackgroundColor: rgb:6/0/0
+fbpager.multiClickTime:		250
+fbpager.icons:			false
+fbpager.windowBorderWidth:	1
