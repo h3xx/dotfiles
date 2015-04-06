@@ -1,0 +1,212 @@
+# click on the desktop to get menus
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+
+# scroll on the desktop to change workspaces
+OnDesktop Mouse4 :PrevWorkspace
+OnDesktop Mouse5 :NextWorkspace
+
+# scroll on the toolbar to change current window
+OnToolbar Mouse4 :PrevWindow {static groups} (iconhidden=no)
+OnToolbar Mouse5 :NextWindow {static groups} (iconhidden=no)
+
+# alt + left/right click to move/resize a window
+OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindowBorder Move1 :StartMoving
+
+OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+
+# alt + middle click to lower the window
+OnWindow Mod1 Mouse2 :Lower
+
+# control-click a window's titlebar and drag to attach windows
+OnTitlebar Control Mouse1 :StartTabbing
+
+# double click on the titlebar to shade
+OnTitlebar Double Mouse1 :Shade
+
+# left click on the titlebar to move the window
+OnTitlebar Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar Move1  :StartMoving
+
+# middle click on the titlebar and drag to attach windows
+OnTitlebar Mouse2 :StartTabbing
+
+# right click on the titlebar for a menu of options
+OnTitlebar Mouse3 :WindowMenu
+
+# alt-tab
+Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod1 Shift Tab :PrevWindow {groups} (workspace=[current])
+
+# cycle through tabs in the current window
+Mod4 Tab :NextTab
+Mod4 Shift Tab :PrevTab
+
+# go to a specific tab in the current window
+Mod4 1 :Tab 1
+Mod4 2 :Tab 2
+Mod4 3 :Tab 3
+Mod4 4 :Tab 4
+Mod4 5 :Tab 5
+Mod4 6 :Tab 6
+Mod4 7 :Tab 7
+Mod4 8 :Tab 8
+Mod4 9 :Tab 9
+
+# open a terminal
+#Mod1 F1 :Exec xterm
+Mod4 t :Exec xterm -e screen -xRR
+
+# open a dialog to run programs
+#Mod1 F2 :Exec fbrun
+Mod4 r :Exec fbrun
+
+# volume settings, using common keycodes
+# if these don't work, use xev to find out your real keycodes
+#176 :Exec amixer sset Master,0 1+
+#174 :Exec amixer sset Master,0 1-
+#160 :Exec amixer sset Master,0 toggle
+Mod4 Prior :Exec ~/.fluxbox/bin/adjustvolume.sh +5
+None XF86AudioRaiseVolume :Exec ~/.fluxbox/bin/adjustvolume.sh +5
+Mod4 Next :Exec ~/.fluxbox/bin/adjustvolume.sh -5
+None XF86AudioLowerVolume :Exec ~/.fluxbox/bin/adjustvolume.sh -5
+#None XF86AudioPlay :Exec /usr/bin/xmms --play-pause # or -t
+#None XF86AudioPrev :Exec /usr/bin/xmms --rew
+#None XF86AudioNext :Exec /usr/bin/xmms --fwd
+Mod4 End :Exec ~/.fluxbox/bin/toggle-mute
+None XF86AudioMute :Exec ~/.fluxbox/bin/toggle-mute
+Mod4 a :Exec xterm -name alsamixer -e alsamixer
+
+# current window commands
+## (interferes with traditional wm behavior of alt-FX => workspace X)
+#Mod1 F4 :Close
+#Mod1 F5 :Kill
+#Mod1 F9 :Minimize
+#Mod1 F10 :Maximize
+#Mod1 F11 :Fullscreen
+# (old fluxbox bindings)
+Mod4 c :Minimize
+Mod4 g :Maximize
+Mod4 s :Shade
+Mod4 x :Close
+Mod4 Shift x :Kill
+
+# open the window menu
+Mod1 space :WindowMenu
+
+# bring up the menu
+Mod4 m :RootMenu
+
+# exit fluxbox
+Control Mod1 Delete :Exit
+
+# change to previous/next workspace
+Control Mod1 Left :PrevWorkspace
+Control Mod1 Right :NextWorkspace
+# (old fluxbox bindings)
+Mod4 v :PrevWorkspace
+Mod4 b :NextWorkspace
+
+# send the current window to previous/next workspace
+# (interferes with window moving commands)
+#Mod4 Left :SendToPrevWorkspace
+#Mod4 Right :SendToNextWorkspace
+
+# send the current window and follow it to previous/next workspace
+Control Mod4 Left :TakeToPrevWorkspace
+Control Mod4 Right :TakeToNextWorkspace
+
+# workspace management commands
+## Mod4 (windoze key)
+Mod4 F1 :Workspace 1
+Mod4 F2 :Workspace 2
+Mod4 F3 :Workspace 3
+Mod4 F4 :Workspace 4
+Mod4 F5 :Workspace 5
+Mod4 F6 :Workspace 6
+Mod4 F7 :Workspace 7
+Mod4 F8 :Workspace 8
+Mod4 F9 :Workspace 9
+Mod4 F10 :Workspace 10
+Mod4 F11 :Workspace 11
+Mod4 F12 :Workspace 12
+
+## Mod1 (alt key)
+Mod1 F1 :Workspace 1
+Mod1 F2 :Workspace 2
+Mod1 F3 :Workspace 3
+Mod1 F4 :Workspace 4
+Mod1 F5 :Workspace 5
+Mod1 F6 :Workspace 6
+Mod1 F7 :Workspace 7
+Mod1 F8 :Workspace 8
+Mod1 F9 :Workspace 9
+Mod1 F10 :Workspace 10
+Mod1 F11 :Workspace 11
+Mod1 F12 :Workspace 12
+
+# window commands
+#
+# note: NextWindow and PrevWindow take a single numeric argument
+# which is a bitwise mask of the following
+#    1 = Skip lower tabs (treat tabbed groups as a single window)
+#    2 = Skip stuck windows
+#    4 = Skip shaded windows
+# fluxbox-update_configs added '(workspace=[current])' to
+# (Next|Prev)(Window|Group)
+
+# send the current window and change to a specific workspace
+Control F1 :TakeToWorkspace 1
+Control F2 :TakeToWorkspace 2
+Control F3 :TakeToWorkspace 3
+Control F4 :TakeToWorkspace 4
+Control F5 :TakeToWorkspace 5
+Control F6 :TakeToWorkspace 6
+Control F7 :TakeToWorkspace 7
+Control F8 :TakeToWorkspace 8
+Control F9 :TakeToWorkspace 9
+Control F10 :TakeToWorkspace 10
+Control F11 :TakeToWorkspace 11
+Control F12 :TakeToWorkspace 12
+
+# window movement commands
+#Mod4 Up :MoveUp 10
+#Mod4 Down :MoveDown 10
+#Mod4 Left :MoveLeft 10
+#Mod4 Right :MoveRight 10
+
+# alternate keys
+Mod4 Up :MaximizeVertical
+Mod4 Right :MaximizeHorizontal
+
+# start programs in screen and open a terminal to them
+#Mod4 o :Exec (ps -o pid= -C mutt >/dev/null || screen -Xd eval 'screen -t mutt mutt' 'number 1') && mrxvt -e screen -xRR -p mutt
+#Mod4 d :Exec (ps -o pid= -C abook >/dev/null || screen -Xd screen -t abook abook) && mrxvt -e screen -xRR -p abook
+Mod4 Insert :Exec xcalc
+Mod4 l :Exec xlock
+
+Mod4 f :Exec firefox
+Mod4 p :Exec pidgin
+
+Mod4 w :Exec ~/.fluxbox/bin/openbrowser.sh
+
+# take a screenshot
+Mod4 q :Exec ~/.fluxbox/bin/takescreenshot.sh
+
+# audacious control commands
+
+## (these are now covered by 'global hotkeys' plugin)
+#Mod4 n :Exec audtool playlist-advance
+#Mod4 n :Exec audacious -f
+#Mod4 b :Exec audtool playlist-reverse
+#Mod4 b :Exec audacious -r
+#Mod4 k :Exec audtool playback-playpause
+#Mod4 k :Exec audacious -t
+#Mod4 j :Exec audtool jumptofile-show
+
+## (this one still needs an external program)
+#Mod4 i :Exec audtool playlist-shuffle-toggle
