@@ -157,6 +157,12 @@ endif " has('gui_running') || &t_Co > 2
 	let g:airline#extensions#tabline#enabled=1
 	let g:airline#extensions#tabline#show_buffers=0
 "endif " exists(':Airline')
+"
+"if exists(':Git')
+	" for fugitive
+	" \l opens the git revision log
+	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
+"endif " exists(':Git')
 
 " Unicode options
 if has('multi_byte')
