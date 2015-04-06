@@ -1,0 +1,120 @@
+style.name:			
+style.author:			h3xx
+style.date:			2007-1116
+style.credits:			h3xx,satan
+
+toolbar.button:			Flat Gradient Diagonal
+toolbar.button.color:		#626262
+toolbar.button.colorTo:		#343434
+toolbar.button.picColor:	#919191
+
+toolbar.button.pressed:		Flat Gradient Vertical
+toolbar.button.pressed.color:	#7a7a7a
+toolbar.button.pressed.colorTo:	#626262
+
+toolbar.label:			parentrelative
+toolbar.label.color:		#484848
+toolbar.label.colorTo:		#ffffff
+toolbar.label.textColor:	#7a7a7a
+
+toolbar.windowLabel:		Flat Gradient Elliptic
+toolbar.windowLabel.color:	#000000
+toolbar.windowLabel.colorTo:	#4a4a4a
+toolbar.windowLabel.textColor:	#9a9a9a
+
+toolbar.clock:			parentrelative
+toolbar.clock.color:		#484848
+toolbar.clock.colorTo:		#ffffff
+toolbar.clock.textColor:	#9a9a9a
+
+toolbar:			Flat Gradient Rectangle
+toolbar.color:			#343434
+toolbar.colorTo:		#000000
+toolbar.textColor:		#9a9a9a
+toolbar.font:			mono-9
+toolbar.justify:		Center
+
+menu.frame:			Raised Bevel1 Gradient Rectangle
+menu.frame.color:		#434343
+menu.frame.colorTo:		#000000
+menu.frame.textColor:		#ababab
+menu.frame.font:		mono-9
+menu.frame.justify:		Left
+
+menu.title:			Flat Gradient Pyramid
+menu.title.color:		#000000
+menu.title.colorTo:		#808080
+menu.title.textColor:		#cfcfcf
+menu.title.font:		mono-9
+menu.title.justify:		Center
+
+menu.hilite:			Raised Bevel1 Gradient CrossDiagonal
+menu.hilite.color:		#7f7f7f
+menu.hilite.colorTo:		#343434
+menu.hilite.textColor:		#ffffff
+
+menu.bullet:			Triangle
+menu.bullet.position:		Right
+menu.frame.disableColor:	#626262
+
+window.button.focus:		parentrelative
+window.button.focus.color:	#ababab
+window.button.focus.colorTo:	#ffffff
+window.button.focus.picColor:	#000000
+
+window.button.unfocus:		parentrelative
+window.button.unfocus.color:	#ffffff
+window.button.unfocus.colorTo:	#ffffff
+window.button.unfocus.picColor:	#000000
+
+window.grip.focus:		parentrelative
+window.grip.focus.color:	#000000
+window.grip.focus.colorTo:	#ffffff
+
+window.grip.unfocus:		parentrelative
+window.grip.unfocus.color:	#202020
+window.grip.unfocus.colorTo:	#ffffff
+
+window.handle.focus:		Flat Gradient Vertical
+window.handle.focus.color:	#9a9a9a
+window.handle.focus.colorTo:	#343434
+
+window.handle.unfocus:		Flat Gradient Vertical
+window.handle.unfocus.color:	#303030
+window.handle.unfocus.colorTo:	#606060
+
+window.label.focus:		Flat Gradient PipeCross
+window.label.focus.color:	#343434
+window.label.focus.colorTo:	#797979
+window.label.focus.textColor:	#d9d9d9
+window.label.focus.font:	mono-9
+window.label.focus.justify:	Center
+
+window.font:			mono-9
+window.justify:			Center
+window.label.unfocus:		Flat Gradient Diagonal
+window.label.unfocus.color:	#3a3a3a
+window.label.unfocus.colorTo:	#404040
+window.label.unfocus.textColor:	#7a7a7a
+
+window.title.focus:		Flat Gradient PipeCross
+window.title.focus.color:	#343434
+window.title.focus.colorTo:	#ababab
+
+window.title.unfocus:		Flat Gradient Vertical
+window.title.unfocus.color:	#303030
+window.title.unfocus.colorTo:	#606060
+
+window.button.pressed:		Flat Gradient Vertical
+window.button.pressed.color:	#505050
+window.button.pressed.colorTo:	#ffffff
+
+window.frame.focusColor:	#626262
+window.frame.unfocusColor:	#000000
+handleWidth:			5
+frameWidth:			1
+bevelWidth:			1
+borderWidth:			1
+borderColor:			#000000
+
+*Font: mono-9

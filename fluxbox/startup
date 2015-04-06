@@ -1,0 +1,80 @@
+#!/bin/sh
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+
+# You can set your favourite wallpaper here if you don't want
+# to do it from your style.
+#
+# bsetbg -f ~/pictures/wallpaper.png
+#
+# This sets a black background
+# /usr/bin/bsetroot -solid black
+
+# This shows the fluxbox-splash-screen
+# fbsetbg -C /usr/share/fluxbox/splash.jpg
+
+# Other examples. Check man xset for details.
+#
+# Turn off beeps:
+# xset -b
+#
+# Increase the keyboard repeat-rate:
+xset r rate 195 35
+# Increase mouse acceleration:
+xset m 30/10
+# Set DPMS timeouts
+xset dpms 0 0 600
+
+#xset +dpms
+#xset dpms 1200 0 0
+#
+# Your own fonts-dir:
+# xset +fp ~/.font
+
+#
+# Your favourite mouse cursor:
+# xsetroot -cursor_name right_ptr
+#
+# Change your keymap:
+# xmodmap ~/.Xmodmap
+
+# Applications you want to run with fluxbox.
+# MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
+#
+# unclutter -idle 2 &
+# wmnd &
+# wmsmixer -w &
+# idesk &
+
+# restore last wallpaper (~/.fluxbox/lastwallpaper)
+fbsetbg -l
+
+# start the autolocker (default 10 minutes)
+#xautolock &
+
+# start pager
+#fbpager -w & # deprecated
+ipager &
+
+# start root-tail
+~/.fluxbox/bin/root-tail.sh &
+
+# start conky
+conky -q &
+
+#qjackctl &
+volumeicon &
+
+# start glipper (broken)
+#glipper &
+
+# open up a terminal
+xterm -e screen -xRR &
+
+# And last but not least we start fluxbox.
+# Because it is the last app you have to run it with ''exec'' before it.
+
+exec fluxbox
+# or if you want to keep a log:
+# exec /usr/bin/fluxbox -log ~/.fluxbox/log
