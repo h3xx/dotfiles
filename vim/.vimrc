@@ -382,6 +382,10 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#show_buffers=0
 
+" *** vim-fugitive ***
+" \l opens the git revision log
+nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
+
 " *** IDE plugin ***
 let g:IDE_SyntaxScript='~/.vim/plugin/ideSyntax.pl'
 " default "fMOSTw"
