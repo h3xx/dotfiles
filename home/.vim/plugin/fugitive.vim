@@ -670,8 +670,17 @@ function! s:Git(bang, args) abort
     let git .= ' --no-pager'
   endif
   let args = matchstr(a:args,'\v\C.{-}%($|\\@<!%(\\\\)*\|)@=')
-  call s:ExecuteInTree('!'.git.' '.args)
-  call fugitive#reload_status()
+  if exists(':terminal')
+    let dir = s:repo().tree()
+    tabnew
+    execute 'lcd' fnameescape(dir)
+    execute 'terminal' git args
+  else
+    call s:ExecuteInTree('!'.git.' '.args)
+    if has('win32')
+      call fugitive#reload_status()
+    endif
+  endif
   return matchstr(a:args, '\v\C\\@<!%(\\\\)*\|\zs.*')
 endfunction
 
@@ -708,6 +717,7 @@ augroup fugitive_status
   autocmd!
   if !has('win32')
     autocmd FocusGained,ShellCmdPost * call fugitive#reload_status()
+    autocmd BufDelete term://* call fugitive#reload_status()
   endif
 augroup END
 
@@ -973,7 +983,7 @@ function! s:StagePatch(lnum1,lnum2) abort
       execute "Git add --patch -- ".join(map(add,'s:shellesc(v:val)'))
     endif
     if !empty(reset)
-      execute "Git reset --patch -- ".join(map(add,'s:shellesc(v:val)'))
+      execute "Git reset --patch -- ".join(map(reset,'s:shellesc(v:val)'))
     endif
     if exists('first_filename')
       silent! edit!
