@@ -126,16 +126,22 @@ if has('gui_running') || &t_Co > 2
 	" windows
 	"set guicursor+=a:blinkon0
 
+	" force 256-color terminal
+	set t_Co=256
+	set t_AB=[48;5;%dm t_AF=[38;5;%dm
+
 	"" color tweaks
 	" 1-2: Show trailing whitespace and spaces before a tab:
 	" 3: not so bright as to make comments disappear in evening colorscheme
 	" 4: brighter cursor
 	" 5: cooler line numbers
+	" 6: keep black background when running in xterm-256color
 	autocmd ColorScheme *		highlight ExtraWhitespace ctermbg=red guibg=red |
 				\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 				\	hi CursorLine guibg=gray30 |
 				\	hi Cursor guibg=lightgreen |
-				\	hi LineNr guifg=steelblue
+				\	hi LineNr guifg=steelblue |
+				\	hi Normal ctermbg=black
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
@@ -153,11 +159,8 @@ endif " has('gui_running') || &t_Co > 2
 		set guifont=Terminess\ Powerline\ 9
 
 		let g:airline_powerline_fonts=1
-		let g:airline_theme='badwolf'
-	else
-		" the only one that works in my terminal...
-		let g:airline_theme='tomorrow'
 	endif " has('gui_running')
+	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#enabled=1
 	let g:airline#extensions#tabline#show_buffers=0
 "endif " exists(':Airline')
