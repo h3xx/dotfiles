@@ -135,13 +135,15 @@ if has('gui_running') || &t_Co > 2
 	" 3: not so bright as to make comments disappear in evening colorscheme
 	" 4: brighter cursor
 	" 5: cooler line numbers
-	" 6: keep black background when running in xterm-256color
+	" 6: text mode: keep black background when running in xterm-256color
+	" 7: text mode: fix invisible visual mode selection
 	autocmd ColorScheme *		highlight ExtraWhitespace ctermbg=red guibg=red |
 				\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 				\	hi CursorLine guibg=gray30 |
 				\	hi Cursor guibg=lightgreen |
 				\	hi LineNr guifg=steelblue |
-				\	hi Normal ctermbg=black
+				\	hi Normal ctermbg=black |
+				\	hi Visual cterm=reverse
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
