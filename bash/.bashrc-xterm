@@ -1,6 +1,6 @@
 # .bashrc-xterm
 
-if [ "_$TERM" == '_xterm' -o "_$TERM" == '_rxvt' ]; then
+if [[ $TERM =~ ^(xterm|rxvt) ]]; then
 	# change terminal title to current tty or pts -- example: 'pts/6'
 	tty -s && echo -n $'\e]2;'"$(tty | cut -c 6-)"$'\a'
 fi
