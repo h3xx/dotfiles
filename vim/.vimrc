@@ -152,8 +152,11 @@ endif " has('gui_running') || &t_Co > 2
 		set guifont=Terminess\ Powerline\ 9
 
 		let g:airline_powerline_fonts=1
+		let g:airline_theme='badwolf'
+	else
+		" the only one that works in my terminal...
+		let g:airline_theme='tomorrow'
 	endif " has('gui_running')
-	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#enabled=1
 	let g:airline#extensions#tabline#show_buffers=0
 "endif " exists(':Airline')
