@@ -350,16 +350,22 @@ set ttyfast
 " Also switch on highlighting the last used search pattern. (default)
 "set hlsearch
 
+" force 256-color terminal
+set t_Co=256
+set t_AB=[48;5;%dm t_AF=[38;5;%dm
+
 "" color tweaks
 " 1-2: Show trailing whitespace and spaces before a tab:
 " 3: not so bright as to make comments disappear in evening colorscheme
 " 4: brighter cursor
 " 5: cooler line numbers
+" 6: keep black background when running in xterm-256color
 autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red |
 			\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 			\	hi CursorLine guibg=gray30 |
 			\	hi Cursor guibg=lightgreen |
-			\	hi LineNr guifg=steelblue
+			\	hi LineNr guifg=steelblue |
+			\	hi Normal ctermbg=black
 
 " Replace blinding gvim color scheme (makes terminal vim brighter)
 colorscheme evening
