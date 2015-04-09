@@ -125,8 +125,8 @@ if has('gui_running') || &t_Co > 2
 	" window was maximized, but I decided to just never maximize windows
 	"set guicursor+=a:blinkon0
 
-	" force 256-color terminal
-	set t_Co=256
+	" force more colors in the terminal than vim thinks is possible
+	set t_Co=16
 	set t_AB=[48;5;%dm t_AF=[38;5;%dm
 
 	"" color tweaks
