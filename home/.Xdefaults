@@ -66,8 +66,10 @@ XTerm*boldColors:		true
 XTerm*colorBDMode:		true
 XTerm*colorBD:			white
 
-!! brighten up the dark blue a bit
-!*VT100.color4:			#3366ff
+!! tell programs xterm can support 256 colors
+!! addendum: doesn't work without termcap entry >:-E
+!! workaround: xterm -e 'TERM=xterm-256color screen -xRR'
+!XTerm*termName:		xterm-256color
 
 !! Terminology default color scheme:
 *VT100.color1:		#cc3333
@@ -87,20 +89,16 @@ XTerm*colorBD:			white
 *VT100.color15:		#ffffff
 
 !! characters
-!! (fixes not being able to backspace)
-#XTerm*ttyModes:			erase ^h
+!! 1-4: fixes not being able to backspace
+!! 5: shift-click opens highlighted text in browser
+!XTerm*tyModes:			erase ^h
 *VT100.Translations: #override \
-              <Key>BackSpace:	string(0x7F)\n\
-              <Key>Delete:	string("\033[3~")\n\
-              <Key>Home:	string("\033[1~")\n\
-              <Key>End:		string("\033[4~")
-XTerm*ttyModes:			erase ^?
-
-!! special features
-
-! shift-click opens highlighted text in browser
-*VT100.Translations: #override \
+		<Key>BackSpace:	string(0x7F)\n\
+		<Key>Delete:	string("\033[3~")\n\
+		<Key>Home:	string("\033[1~")\n\
+		<Key>End:		string("\033[4~")\n\
 		Shift <Btn1Up>: exec-formatted("google-chrome '%t'", PRIMARY)
+XTerm*ttyModes:			erase ^?
 
 !! UXTerm
 
