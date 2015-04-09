@@ -350,8 +350,8 @@ set ttyfast
 " Also switch on highlighting the last used search pattern. (default)
 "set hlsearch
 
-" force 256-color terminal
-set t_Co=256
+" force more colors in the terminal than vim thinks is possible
+set t_Co=16
 set t_AB=[48;5;%dm t_AF=[38;5;%dm
 
 "" color tweaks
