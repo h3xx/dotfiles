@@ -364,8 +364,10 @@ set ttyfast
 " 5: cooler line numbers
 " 6: text mode: keep black background when running in xterm-256color
 " 7: text mode: fix invisible visual mode selection
+" 8: text mode: comment color more like gui mode
 autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red |
 			\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
+			\	hi Comment cterm=bold ctermfg=blue |
 			\	hi CursorLine guibg=gray30 |
 			\	hi Cursor guibg=lightgreen |
 			\	hi LineNr ctermfg=blue guifg=steelblue |
@@ -387,8 +389,11 @@ colorscheme evening
 set laststatus=2 noru
 if has('gui_running')
 	set guifont=Terminess\ Powerline\ 9
-	let g:airline_powerline_fonts=1
 endif " has('gui_running')
+" (hint: uxterm has the same font set)
+if has('gui_running') || &termencoding == 'utf-8'
+	let g:airline_powerline_fonts=1
+endif
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#show_buffers=0
