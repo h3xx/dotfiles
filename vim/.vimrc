@@ -56,6 +56,9 @@ set backupskip+=/etc/udev/rules.d/*
 "" Subversion commit log messages
 set backupskip+=*/svn-commit.tmp
 
+"" git commit log messages
+set backupskip+=*/COMMIT_EDITMSG
+
 "" Slackware package special files
 "" (if installed, will leave a rogue /install directory)
 set backupskip+=*/install/slack-desc,*/install/slack-required,*/install/slack-suggests,*/install/doinst.sh
