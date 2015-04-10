@@ -139,13 +139,15 @@ if has('gui_running') || &t_Co > 2
 	" 5: cooler line numbers
 	" 6: text mode: keep black background when running in xterm-256color
 	" 7: text mode: fix invisible visual mode selection
+	" 8: text mode: comment color more like gui mode
 	autocmd ColorScheme *		highlight ExtraWhitespace ctermbg=red guibg=red |
 				\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 				\	hi CursorLine guibg=gray30 |
 				\	hi Cursor guibg=lightgreen |
 				\	hi LineNr ctermfg=blue guifg=steelblue |
 				\	hi Normal ctermbg=black |
-				\	hi Visual cterm=reverse
+				\	hi Visual cterm=reverse |
+				\	hi Comment cterm=bold ctermfg=blue
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
@@ -153,27 +155,6 @@ if has('gui_running') || &t_Co > 2
 	" (addendum: only affects terminal vim, looks better regular)
 	"highlight PreProc ctermfg=Magenta
 endif " has('gui_running') || &t_Co > 2
-
-" Fancy Plugin Options
-
-"if exists(':Airline')
-	" for airline
-	set laststatus=2 noru
-	if has('gui_running')
-		set guifont=Terminess\ Powerline\ 9
-
-		let g:airline_powerline_fonts=1
-	endif " has('gui_running')
-	let g:airline_theme='badwolf'
-	let g:airline#extensions#tabline#enabled=1
-	let g:airline#extensions#tabline#show_buffers=0
-"endif " exists(':Airline')
-"
-"if exists(':Git')
-	" for fugitive
-	" \l opens the git revision log
-	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
-"endif " exists(':Git')
 
 " Unicode options
 if has('multi_byte')
@@ -192,6 +173,29 @@ if has('multi_byte')
 	" (default: 'ucs-bom', 'ucs-bom,utf-8,default,latin1' when &encoding
 	"  is set to a Unicode value)
 endif " has('multi_byte')
+
+" Fancy Plugin Options
+
+"if exists(':Airline')
+	" for airline
+	set laststatus=2 noru
+	if has('gui_running')
+		set guifont=Terminess\ Powerline\ 9
+
+	endif " has('gui_running')
+	if has('gui_running') || &termencoding == 'utf-8'
+		let g:airline_powerline_fonts=1
+	endif
+	let g:airline_theme='badwolf'
+	let g:airline#extensions#tabline#enabled=1
+	let g:airline#extensions#tabline#show_buffers=0
+"endif " exists(':Airline')
+"
+"if exists(':Git')
+	" for fugitive
+	" \l opens the git revision log
+	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
+"endif " exists(':Git')
 
 " supplemental spell file
 "set spellfile=~/.vim/spell/en.ascii.add
