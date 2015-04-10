@@ -38,7 +38,7 @@ if !has('autocmd')
 	" use smart indentation
 	set smartindent
 
-endif " has("autocmd")
+endif " !has("autocmd")
 
 "" overrides from using autocmd
 
