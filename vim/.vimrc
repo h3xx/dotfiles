@@ -351,8 +351,8 @@ set ttyfast
 "set hlsearch
 
 " force more colors in the terminal than vim thinks is possible
-set t_Co=16
-set t_AB=[48;5;%dm t_AF=[38;5;%dm
+" (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
+"set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
 "" color tweaks
 " 1-2: Show trailing whitespace and spaces before a tab:
@@ -365,7 +365,7 @@ autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red |
 			\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
 			\	hi CursorLine guibg=gray30 |
 			\	hi Cursor guibg=lightgreen |
-			\	hi LineNr guifg=steelblue |
+			\	hi LineNr ctermfg=blue guifg=steelblue |
 			\	hi Normal ctermbg=black |
 			\	hi Visual cterm=reverse
 
