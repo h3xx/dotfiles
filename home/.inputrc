@@ -20,6 +20,7 @@ set visible-stats on
 #set horizontal-scroll-mode off
 
 # redirection short cuts
+# (esc-KEY in xterm = (esc-KEY && alt-KEY in rxvt))
 "\ew": "2>&1"
 "\eq": "&>/dev/null &"
 "\e\C-q": "2>/dev/null"
@@ -38,10 +39,12 @@ $endif
 
 $if term=xterm
 "\M-l": "la\r"
+"\M-h": " history -a\r"
 $endif
 
 $if term=rxvt
 "\el": "la\r"
+"\eh": " history -a\r"
 $endif
 
 #$if term=putty
@@ -103,11 +106,3 @@ $endif
 # "page up" and "page down" step to the beginning/end of the history
 #"\e[5~": beginning-of-history
 #"\e[6~": end-of-history
-
-$if term=xterm
-"\M-h": " history -a\r"
-$endif
-
-$if term=rxvt
-"\eh": " history -a\r"
-$endif
