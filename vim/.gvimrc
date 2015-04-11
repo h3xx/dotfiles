@@ -6,9 +6,6 @@ if has('gui_running')
 	if &diff
 		" wide view for (g)vimdiff
 		set columns=160
-	else
-		" normal view
-		set columns=80
 	endif " &diff
 
 	" make the window double-wide when splitting windows
