@@ -1,0 +1,90 @@
+# coloring
+# format:
+#	color [object] [foreground] [background] [posix-egrep regex]
+#	mono [object] [attribute] [posix-egrep regex]
+#
+# color codes: white black green magenta blue cyan yellow red default colorx
+# mono codes: none bold underline reverse standout
+
+## mail bodies
+
+# normal text
+color normal		white		default
+
+# underlined text
+color underline		brightgreen	default
+
+# urls
+color body		magenta		default	"(ftp|https?|gopher|news|telnet|finger)://[^ \"\t\r\n]+"
+
+# email addresses
+color body		magenta		default	"[-a-z_0-9.]+@[-a-z_0-9.]+"
+
+# header
+color header		brightred	default	"^(From|Subject|Date|To|Cc|Bcc):"
+color hdrdefault	red		default
+
+# quoted text
+color quoted		brightcyan	default
+
+# attachment headers
+color attachment	brightmagenta	default
+
+# everything below /^--\s*$/
+color signature		red		default
+
+# search patterns in pager
+color search		default		green
+
+# vi-like tildes marking blank lines
+color tilde		cyan		default
+
+# wrapped-line /^\+/ markers
+color markers		brightcyan	default
+
+## index
+
+# selected email
+#color indicator	brightyellow	red
+
+# tree branches (`-->')
+color tree		magenta		default
+
+# (these are not working for some reason)
+# regular new messages
+#color index default         white   "~N !~T !~F !~p !~P"
+# regular tagged messages
+#color index default         cyan    "~T !~F !~p !~P"
+# regular flagged messages
+#color index default         red     "~F !~p !~P"
+# (these are working)
+# deleted messages
+color index red           default "!~N ~D"
+color index red           white   "~N ~D"
+
+## general
+
+# message line text
+#color message		brightcyan	default
+
+# message line error text
+color error		brightred	default
+
+# status line
+#color status		yellow		blue
+
+# Coloring quoted text - coloring the first 7 levels:
+color quoted cyan black
+color quoted1 yellow black
+color quoted2 red black
+color quoted3 green black
+color quoted4 cyan black
+color quoted5 yellow black
+color quoted6 red black
+color quoted7 green black
+
+# attributes when using a mono terminal
+mono header underline "^(From|Subject|Date|To|Cc|Bcc):"
+mono quoted bold
+
+# vi: ft=muttrc
