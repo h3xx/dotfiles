@@ -1,0 +1,39 @@
+# muttrc-keys
+
+# key bindings
+# emacs
+bind generic "\e<" first-entry
+bind generic \e> last-entry
+bind generic { top-page
+bind generic } bottom-page
+bind generic \177 last-entry
+
+# vi and less
+bind pager G bottom
+
+# bogofilter integration
+#macro index S "|bogofilter -s\ns=bulk"	"Learn as spam and save to junk"
+#macro pager S "|bogofilter -s\ns=bulk"	"Learn as spam and save to junk"
+#macro index H "|bogofilter -n\n"	"Learn as ham"
+#macro pager H "|bogofilter -n\n"	"Learn as ham"
+
+# procmail integration
+#macro index A "|procmail\nd"		"Re-sort mail and delete"
+#macro pager A "|procmail\nd"		"Re-sort mail and delete"
+
+# urlview integration
+macro index \cb "|urlview\n"		"View/browse URLs with urlview"
+macro pager \cb "|urlview\n"		"View/browse URLs with urlview"
+
+# screen integration
+## don't stop mutt when ^z is pressed
+unset suspend
+
+# gmail integration
+## d => in order to delete a message from Gmail's server, it must be copied to
+## /[Gmail]/Trash
+account-hook imaps://imap.gmail.com/ 'macro index d "s=[Gmail]/Trash" "Delete from Gmail" ; macro pager d "s=[Gmail]/Trash" "Delete from Gmail"'
+## A => archive
+account-hook imaps://imap.gmail.com/ 'bind pager A delete-message ; bind index A delete-message'
+
+# vi: ft=muttrc
