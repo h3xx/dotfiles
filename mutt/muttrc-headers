@@ -1,0 +1,63 @@
+# user-defined headers
+
+# include my headers when composing
+set hdrs
+
+# let me edit headers when composing
+set edit_headers
+
+# mutt includes this by default (nope)
+my_hdr X-Mailer: `mutt -v |head -1`
+my_hdr X-Editor: `vim --version |head -1 |cut -f -5 -d ' '`
+my_hdr X-Operating-System: `uname -rs`
+my_hdr X-PGP-Key: `gpg --list-keys $USER |head -1 |cut -c 13-20`
+my_hdr X-PGP-Fingerprint: `gpg --fingerprint $USER |head -2 |tail -1 |cut -c 25-`
+my_hdr X-Priority: 3
+my_hdr Importance: Normal
+my_hdr Organization:
+my_hdr Disposition-Notification-To:
+my_hdr Comments:
+## This header only appears to MS Outlook users
+my_hdr X-Message-Flag: WARNING!! Outlook sucks
+
+# Karl Marx
+#my_hdr X-Face: %+SgKfmfSoa|4i33Un=;j($H:\^~BraJ@v2Mp&i50Xs2Mkz)9{6KC>#:&A-9[<B/<5wH5ggZ6&Bth#S|Kcu?4(h~#-uwgGNN45Q;y=UvO=e^?fJsN\pg)sUg6Z(b>X#B'==9KN#76O(z/*.eK:nHdZirwzsbsZ6~uNFiJ)[%kO<80WH)6{jOv7zsV/mz2=f?;@httbX"|/duzZ5Xyhj
+
+# header display order
+hdr_order From Date: From: To: Cc: Bcc: Subject:
+
+# draconian header filter
+ignore *
+
+# important headers
+unignore From: Date Subject To Cc Bcc Reply-To \
+	Sender X-Sender Message-ID
+
+# other useful headers
+unignore Mailing-List	List-Id	Precedence	Approved-By \
+	Organization \
+	X-Confirm-Reading-To	Disposition-Notification-To \
+	Comments \
+	X-Priority	Importance \
+	X-Mailer	User-Agent	X-Editor	X-Operating-System \
+	X-PGP-Key	X-PGP-Fingerprint \
+	X-Bogosity
+
+# lax header filter
+#unignore *
+#unignore Content-Length Lines
+#ignore Delivered-To In-Reply-To
+# uwrf extra headers
+#ignore X-Sieve X-Greylist X-Scanned-By X-Spam-Score
+## uwrf Barracuda spam firewall headers
+#ignore X-ASG-Orig-Subj X-ASG-Debug-ID X-Barracuda-Connect X-Barracuda-Start-Time X-Barracuda-Spam-Score X-Barracuda-Spam-Status X-Barracuda-Spam-Report X-Barracuda-URL X-Barracuda-Virus-Scanned
+# google groups extra headers
+#ignore X-Google-Loop List-Id List-Post List-Help List-Unsubscribe List-Subscribe List-Owner List-Archive X-Apparently-To X-Google-Sender-Auth
+# gmail extra headers
+#ignore DomainKey-Status DKIM-Signature DomainKey-Signature
+# comcast extra headers
+#ignore X-Authority-Analysis Authentication-Results
+# random mailer extra headers
+#ignore X-Authenticated-Sender X-Umn-Remote-Mta X-Umn-Report-As-Spam Thread-Index X-MimeOLE X-YMail-OSG X-Return-Path-Hint X-Roving-ID X-Lumos-SenderID X-Roving-CampaignId X-Roving-StreamId X-IzyMail
+
+# vi: ft=muttrc
