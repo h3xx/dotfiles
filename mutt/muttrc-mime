@@ -1,0 +1,17 @@
+# muttrc-mime
+
+# MIME settings
+
+# automatically convert these types of files (based on ~/.mailcap) into text
+# and insert as part of the mail body
+auto_view application/x-gzip application/x-bzip2 \
+	text/html \
+	application/pdf \
+	text/rtf application/rtf \
+	application/msword
+
+# perform content-based MIME type detection on attachments with the following
+# MIME types
+mime_lookup application/octet-stream
+
+# vi: ft=muttrc

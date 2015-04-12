@@ -1,0 +1,6 @@
+# muttrc-accounts
+
+# gmx integration
+account-hook imaps://imap.gmx.com/ 'set from="ACCOUNT@gmx.com" ; set imap_user="ACCOUNT@gmx.com" ; set imap_pass="PASSWORD" ; set smtp_url="smtps://ACCOUNT\@gmx.com:PASSWORD@mail.gmx.com:465/" ; set imap_keepalive="30" ; set record="imaps://imap.gmx.com/Sent" ; set postponed="imaps://imap.gmx.com/Drafts"'
+
+# vi: ft=muttrc
