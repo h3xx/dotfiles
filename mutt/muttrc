@@ -54,11 +54,19 @@ set sort=threads
 # emulate Gmail's "last message in thread is thread date"
 set sort_aux=date
 
+# more business-like
+set sig_on_top
+
 #set status_format "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" # menu title format (set to default)
 
 # layout
 #set index_format="%4C %Z %{%b %d} %-15.15L (%4l) %s" # default
 set index_format="%4C %Z %{%b %d} %-15.15L (%4c) %s" # use chars, not lines
 
+# random signature from ~/.signature.d
+#set signature="fortune $HOME/.signature.d|"
+
+set charset="utf-8"
+set send_charset="utf-8:us-ascii"
 
 # vi: ft=muttrc
