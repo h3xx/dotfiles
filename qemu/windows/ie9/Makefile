@@ -18,10 +18,15 @@ download: $(URL_LIST)
 		wget --continue "$$url" ;\
 	done
 
-$(OVA): download
+combined.zip: download
+	(for url in $$(<$(URL_LIST)); do \
+		cat $$(basename -- "$$url") ;\
+	done) >$@
+
+$(OVA): combined.zip
 	echo "Extracting virtualbox image"
-	7z x "$$(basename -- "$$(head -1 "$(URL_LIST)")")"
-	touch $@
+	unzip "$<"
+	touch "$@"
 
 $(VMDK): $(OVA)
 	tar xf $(OVA) "$@"
@@ -34,7 +39,7 @@ clean: $(URL_LIST)
 	for url in $$(<$(URL_LIST)); do \
 		$(RM) $$(basename -- "$$url") ;\
 	done
-	$(RM) $(URL_LIST) $(OVA) $(VMDK)
+	$(RM) $(URL_LIST) $(OVA) $(VMDK) combined.zip
 
 .PHONY: download clean
 
