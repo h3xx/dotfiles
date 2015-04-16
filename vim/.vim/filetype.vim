@@ -85,7 +85,7 @@ aug keycommands
 	" use backslash-pipe (or [num]-backslash-pipe) to quickly comment lines
 
 	"" perl, sh, php and various config files use the # comment leader
-	au FileType		perl,sh,php,python,conf,alsaconf,resolv,config,mplayerconf,screen,procmail,muttrc,sudoers,gtkrc,readline,sshconfig,cvsrc,coffee,yaml,squid,remind
+	au FileType		perl,sh,make,php,python,conf,alsaconf,resolv,config,mplayerconf,screen,procmail,muttrc,sudoers,gtkrc,readline,sshconfig,cvsrc,coffee,yaml,squid,remind
 				\ nmap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR> |
 				\ vmap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR>
 
