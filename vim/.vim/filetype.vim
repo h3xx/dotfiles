@@ -91,6 +91,7 @@ aug keycommands
 				\config,
 				\cvsrc,
 				\gtkrc,
+				\make,
 				\mplayerconf,
 				\muttrc,
 				\perl,
