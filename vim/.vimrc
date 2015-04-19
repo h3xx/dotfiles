@@ -200,6 +200,20 @@ endif " has('multi_byte')
 	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
 "endif " exists(':Git')
 
+" IDE plugin
+let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
+" default "fMOSTw"
+" "s" => disable warnings about being unable to generate syntax files (wtf)
+let g:IDE_AdvancedFlags = "fMOsTw"
+
+"if exists(':NERDTree')
+	" activate NERDTree when pressing the minus key
+	nmap <silent> - :NERDTreeToggle<CR>
+	" ignore common RCS directories
+	let NERDTreeIgnore=['^CVS$', '\~$']
+
+"endif " exists(':NERDTree')
+
 " }}}END Fancy Plugin Options
 
 " supplemental spell file
@@ -329,13 +343,12 @@ function! VisualSelection(direction) range
 	let @" = l:saved_reg
 endfunction
 
-" folding
+" folding options
 "" indent	: similarly-indented lines can fold
 "" syntax	: syntax highlighting definitions specify folds
 "" manual	: manually define folds (default)
 ""		: (fold paragraphs with `zfap')
 set foldmethod=syntax
-"set foldlevelstart=1
 
 " all folds open upon opening a file (close with `zc')
 set foldlevelstart=99
@@ -343,63 +356,51 @@ set foldlevelstart=99
 "" syntax-specific options (note: ~/.vim/ftplugin/* executes after these
 "" options apply, so they must be defined here)
 
-" perl
-let perl_fold=1
-"let perl_fold_blocks=1 " (screws up auto-indenting for some reason)
-let perl_nofold_packages=1
+"" perl
+let perl_fold = 1
+"let perl_fold_blocks = 1 " (screws up auto-indenting for some reason)
+let perl_nofold_packages = 1
 
 "" perl extra coloring options
-let perl_extended_vars=1
-let perl_want_scope_in_variables=1
-let perl_include_pod=1
+let perl_extended_vars = 1
+let perl_want_scope_in_variables = 1
+let perl_include_pod = 1
 
-" netrw
-let g:netrw_http_cmd='curl -o'
-let g:netrw_http_xcmd='--silent >'
-
-" vim
-""  0 or doesn't exist: no syntax-based folding
-""  'a' : augroups
-""  'f' : fold functions
-""  'm' : fold mzscheme script
-""  'p' : fold perl     script
-""  'P' : fold python   script
-""  'r' : fold ruby     script
-""  't' : fold tcl      script
+"" vim
+"  0 or doesn't exist: no syntax-based folding
+"  'a' : augroups
+"  'f' : fold functions
+"  'm' : fold mzscheme script
+"  'p' : fold perl     script
+"  'P' : fold python   script
+"  'r' : fold ruby     script
+"  't' : fold tcl      script
 let g:vimsyn_folding = 'af'
 
-" sh
-"" g:is_sh	  : Borne shell (default)
-"" g:is_kornshell : ksh
-"" g:is_posix	  : same as ksh
-"" g:is_bash	  : bash
+"" php
+"let g:php_folding = 1
+
+"" sh
+" g:is_sh	  : Borne shell (default)
+" g:is_kornshell : ksh
+" g:is_posix	  : same as ksh
+" g:is_bash	  : bash
 let g:is_bash = 1
 
-"" g:sh_fold_enabled - enable folding in sh files
-"" possible values:
-""   0 : no syntax folding (default)
-""   1 : enable function folding
-""   2 : enable heredoc folding
-""   4 : enable if/do/for folding
-""   3 : enables function and heredoc folding
+" g:sh_fold_enabled - enable folding in sh files
+" possible values:
+"   0 : no syntax folding (default)
+"   1 : enable function folding
+"   2 : enable heredoc folding
+"   4 : enable if/do/for folding
+"   3 : enables function and heredoc folding
 let g:sh_fold_enabled = 3
 
-" tohtml
+"" tohtml
 "let g:html_use_encoding = 'utf-8'
 let g:html_ignore_folding = 1
 let g:html_use_css = 0
 
-" php
-"let g:php_folding = 1
-
-" IDE plugin
-let g:IDE_SyntaxScript		= "~/.vim/plugin/ideSyntax.pl"
-" default "fMOSTw"
-" "s" => disable warnings about being unable to generate syntax files (wtf)
-let g:IDE_AdvancedFlags		= "fMOsTw"
-
-" activate NERDTree when pressing the minus key
-nmap <silent> - :NERDTreeToggle<CR>
-
-" ignore common RCS directories
-let NERDTreeIgnore=['^CVS$', '\~$']
+"" netrw
+let g:netrw_http_cmd = 'curl -o'
+let g:netrw_http_xcmd = '--silent >'
