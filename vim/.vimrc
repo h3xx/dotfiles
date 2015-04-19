@@ -5,10 +5,7 @@
 " This must be first, because it changes other options as a side effect.
 "set nocompatible
 
-" only use mouse when in normal/command mode
-set mouse=n
-" use mouse all the time (default)
-"if has('mouse')
+if has('mouse')
 	" when and where to use the mouse
 	"" 'n'	: Normal mode
 	"" 'v'	: Visual mode
@@ -17,12 +14,16 @@ set mouse=n
 	"" 'h'	: all previous modes when editing a help file
 	"" 'a'	: all previous modes
 	"" 'r'	: for hit-enter and more-prompt prompt
+	" use mouse all the time (default)
 	"set mouse=a
+	" only use mouse when in normal/command mode
+	" (this is so that middle-click for pasting in a terminal will work)
+	set mouse=n
 
 	" whether the window focus follows the mouse (default off)
 	"" (I can see this becoming very annoying)
 	"set nomousefocus
-"endif " has('mouse')
+endif " has('mouse')
 
 " don't set the terminal title
 " addendum: in a screen(1) session this means setting the text on the status
@@ -152,9 +153,11 @@ if has('gui_running') || &t_Co > 2
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
+
 	" correct some colors
 	" (addendum: only affects terminal vim, looks better regular)
 	"highlight PreProc ctermfg=Magenta
+
 endif " has('gui_running') || &t_Co > 2
 
 " Unicode options
@@ -175,7 +178,7 @@ if has('multi_byte')
 	"  is set to a Unicode value)
 endif " has('multi_byte')
 
-" Fancy Plugin Options
+" {{{BEGIN Fancy Plugin Options
 
 "if exists(':Airline')
 	" for airline
@@ -198,17 +201,20 @@ endif " has('multi_byte')
 	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
 "endif " exists(':Git')
 
+" }}}END Fancy Plugin Options
+
 " supplemental spell file
 "set spellfile=~/.vim/spell/en.ascii.add
 "let &spellfile = "~/.vim/spell/".&spelllang.".".&encoding.".add"
 
 " ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
+" the same effect can be accomplished by running 'vim -p FILES'
 if ! &diff
 	tab all
 endif
 
-" formatting options
+" {{{BEGIN formatting options
 "" bad options
 " a	Automatic formatting of paragraphs.  Every time text is inserted or
 "	deleted the paragraph will be reformatted.  See auto-format.
@@ -246,6 +252,8 @@ set formatoptions+=crq
 if v:version > 703 || v:version == 703 && has("patch541")
 	set formatoptions+=j " Delete comment character when joining commented lines
 endif
+
+" }}}END formatting options
 
 " modify `formatlistpat' to include `*'-ed lists
 "set formatlistpat=^\\s*\\d\\+\[\\]:.)}\\t\ ]\\s*			" default
