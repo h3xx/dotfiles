@@ -31,9 +31,7 @@ endif " has('multi_byte')
 " ***** mouse *****
 " *****************
 
-" Only use mouse when in normal/command mode
-set mouse=n
-"if has('mouse')
+if has('mouse')
 	"" When and where to use the mouse
 	" n Normal mode
 	" v Visual mode
@@ -44,11 +42,14 @@ set mouse=n
 	" r for hit-enter and more-prompt prompt
 	" use mouse all the time (default)
 	"set mouse=a
+	" Only use mouse when in normal/command mode
+	" (this is so that middle-click for pasting in a terminal will work)
+	set mouse=n
 
 	" whether the window focus follows the mouse (default off)
 	"" (I can see this becoming very annoying)
 	"set nomousefocus
-"endif " has('mouse')
+endif " has('mouse')
 
 if !has('autocmd')
 	" Always set autoindenting on (default)
@@ -148,6 +149,7 @@ set nojoinspaces
 
 " Ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
+" The same effect can be accomplished by running 'vim -p FILES'
 if ! &diff
 	tab all
 endif
