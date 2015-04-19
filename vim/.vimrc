@@ -262,7 +262,7 @@ set formatoptions-=anotw
 "	or when the comment leader changes.
 set formatoptions+=crq
 
-" taken from vim-sensible (https://github.com/tpope/vim-sensible)
+" taken from vim-sensible ( https://github.com/tpope/vim-sensible )
 if v:version > 703 || v:version == 703 && has("patch541")
 	set formatoptions+=j " Delete comment character when joining commented lines
 endif
@@ -405,3 +405,5 @@ let g:html_use_css = 0
 "" netrw
 let g:netrw_http_cmd = 'curl -o'
 let g:netrw_http_xcmd = '--silent >'
+" press gx in normal mode to open the URL under the cursor
+let g:netrw_browsex_viewer = 'google-chrome'
