@@ -260,7 +260,7 @@ endif
 "set formatlistpat=^\\s*\\(\\d\\+[\\]:.)}\\t\ ]\\\|\\(\\*\\\|-\\)\\s\\)\\s*
 set formatlistpat=^\\s*[\\d*]\\+\[\\]:.)}\\t\ ]\\s*
 
-"" keys
+"" global keys
 " don't use Ex mode; use Q for formatting (default)
 "map Q gq
 
@@ -304,6 +304,7 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
+" (addendum 2015-04-19: what is this? it doesn't seem to do anything)
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
