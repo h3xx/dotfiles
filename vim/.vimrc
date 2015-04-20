@@ -213,7 +213,7 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 	" ignore common RCS directories
 	let NERDTreeIgnore=['^CVS$', '\~$']
 	" don't use fancy Unicode characters on non-unicode terminals
-	if !has('gui_running') && &termencoding != 'utf-8'
+	if !has('gui_running') || &termencoding != 'utf-8'
 		let NERDTreeDirArrows = 0
 	endif
 
@@ -288,6 +288,9 @@ nnoremap gf <C-W>gf
 
 " hitting ; in normal mode starts a command
 nnoremap ; :
+
+" \v => re-select the text you just pasted
+nnoremap <leader>v V`]
 
 "" GUI clipboard operations
 " Shift-Insert => paste
