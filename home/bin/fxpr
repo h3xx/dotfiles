@@ -177,10 +177,10 @@ L<Data::Dumper>. This is mainly useful for debugging.
 
     $ fxpr 'D [reverse 3..5]'
     $VAR1 = [
-	      5,
-	      4,
-	      3
-	    ];
+	5,
+	4,
+	3
+    ];
 
 
 =cut
@@ -573,7 +573,7 @@ sub _colored {
 	map {&colored($_, $color)} &_to_strings(@_)
 }
 
-sub red 	{ &_colored(qw/ red	/, @_) }
+sub red	{ &_colored(qw/ red	/, @_) }
 sub yellow	{ &_colored(qw/ yellow	/, @_) }
 sub blue	{ &_colored(qw/ blue	/, @_) }
 sub cyan	{ &_colored(qw/ cyan	/, @_) }

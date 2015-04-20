@@ -5,10 +5,7 @@
 " This must be first, because it changes other options as a side effect.
 "set nocompatible
 
-" only use mouse when in normal/command mode
-set mouse=n
-" use mouse all the time (default)
-"if has('mouse')
+if has('mouse')
 	" when and where to use the mouse
 	"" 'n'	: Normal mode
 	"" 'v'	: Visual mode
@@ -17,12 +14,16 @@ set mouse=n
 	"" 'h'	: all previous modes when editing a help file
 	"" 'a'	: all previous modes
 	"" 'r'	: for hit-enter and more-prompt prompt
+	" use mouse all the time (default)
 	"set mouse=a
+	" only use mouse when in normal/command mode
+	" (this is so that middle-click for pasting in a terminal will work)
+	set mouse=n
 
 	" whether the window focus follows the mouse (default off)
 	"" (I can see this becoming very annoying)
 	"set nomousefocus
-"endif " has('mouse')
+endif " has('mouse')
 
 " don't set the terminal title
 " addendum: in a screen(1) session this means setting the text on the status
@@ -152,9 +153,11 @@ if has('gui_running') || &t_Co > 2
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
+
 	" correct some colors
 	" (addendum: only affects terminal vim, looks better regular)
 	"highlight PreProc ctermfg=Magenta
+
 endif " has('gui_running') || &t_Co > 2
 
 " Unicode options
@@ -175,7 +178,7 @@ if has('multi_byte')
 	"  is set to a Unicode value)
 endif " has('multi_byte')
 
-" Fancy Plugin Options
+" {{{BEGIN Fancy Plugin Options
 
 "if exists(':Airline')
 	" for airline
@@ -198,17 +201,34 @@ endif " has('multi_byte')
 	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
 "endif " exists(':Git')
 
+" IDE plugin
+let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
+" default "fMOSTw"
+" "s" => disable warnings about being unable to generate syntax files (wtf)
+let g:IDE_AdvancedFlags = "fMOsTw"
+
+"if exists(':NERDTree')
+	" activate NERDTree when pressing the minus key
+	nmap <silent> - :NERDTreeToggle<CR>
+	" ignore common RCS directories
+	let NERDTreeIgnore=['^CVS$', '\~$']
+
+"endif " exists(':NERDTree')
+
+" }}}END Fancy Plugin Options
+
 " supplemental spell file
 "set spellfile=~/.vim/spell/en.ascii.add
 "let &spellfile = "~/.vim/spell/".&spelllang.".".&encoding.".add"
 
 " ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
+" the same effect can be accomplished by running 'vim -p FILES'
 if ! &diff
 	tab all
 endif
 
-" formatting options
+" {{{BEGIN formatting options
 "" bad options
 " a	Automatic formatting of paragraphs.  Every time text is inserted or
 "	deleted the paragraph will be reformatted.  See auto-format.
@@ -242,10 +262,12 @@ set formatoptions-=anotw
 "	or when the comment leader changes.
 set formatoptions+=crq
 
-" taken from vim-sensible (https://github.com/tpope/vim-sensible)
+" taken from vim-sensible ( https://github.com/tpope/vim-sensible )
 if v:version > 703 || v:version == 703 && has("patch541")
 	set formatoptions+=j " Delete comment character when joining commented lines
 endif
+
+" }}}END formatting options
 
 " modify `formatlistpat' to include `*'-ed lists
 "set formatlistpat=^\\s*\\d\\+\[\\]:.)}\\t\ ]\\s*			" default
@@ -253,7 +275,7 @@ endif
 "set formatlistpat=^\\s*\\(\\d\\+[\\]:.)}\\t\ ]\\\|\\(\\*\\\|-\\)\\s\\)\\s*
 set formatlistpat=^\\s*[\\d*]\\+\[\\]:.)}\\t\ ]\\s*
 
-"" keys
+"" global keys
 " don't use Ex mode; use Q for formatting (default)
 "map Q gq
 
@@ -297,6 +319,7 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
+" (addendum 2015-04-19: what is this? it doesn't seem to do anything)
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
@@ -321,13 +344,12 @@ function! VisualSelection(direction) range
 	let @" = l:saved_reg
 endfunction
 
-" folding
+" folding options
 "" indent	: similarly-indented lines can fold
 "" syntax	: syntax highlighting definitions specify folds
 "" manual	: manually define folds (default)
 ""		: (fold paragraphs with `zfap')
 set foldmethod=syntax
-"set foldlevelstart=1
 
 " all folds open upon opening a file (close with `zc')
 set foldlevelstart=99
@@ -335,63 +357,53 @@ set foldlevelstart=99
 "" syntax-specific options (note: ~/.vim/ftplugin/* executes after these
 "" options apply, so they must be defined here)
 
-" perl
-let perl_fold=1
-"let perl_fold_blocks=1 " (screws up auto-indenting for some reason)
-let perl_nofold_packages=1
+"" perl
+let perl_fold = 1
+"let perl_fold_blocks = 1 " (screws up auto-indenting for some reason)
+let perl_nofold_packages = 1
 
 "" perl extra coloring options
-let perl_extended_vars=1
-let perl_want_scope_in_variables=1
-let perl_include_pod=1
+let perl_extended_vars = 1
+let perl_want_scope_in_variables = 1
+let perl_include_pod = 1
 
-" netrw
-let g:netrw_http_cmd='curl -o'
-let g:netrw_http_xcmd='--silent >'
-
-" vim
-""  0 or doesn't exist: no syntax-based folding
-""  'a' : augroups
-""  'f' : fold functions
-""  'm' : fold mzscheme script
-""  'p' : fold perl     script
-""  'P' : fold python   script
-""  'r' : fold ruby     script
-""  't' : fold tcl      script
+"" vim
+"  0 or doesn't exist: no syntax-based folding
+"  'a' : augroups
+"  'f' : fold functions
+"  'm' : fold mzscheme script
+"  'p' : fold perl     script
+"  'P' : fold python   script
+"  'r' : fold ruby     script
+"  't' : fold tcl      script
 let g:vimsyn_folding = 'af'
 
-" sh
-"" g:is_sh	  : Borne shell (default)
-"" g:is_kornshell : ksh
-"" g:is_posix	  : same as ksh
-"" g:is_bash	  : bash
+"" php
+"let g:php_folding = 1
+
+"" sh
+" g:is_sh	  : Borne shell (default)
+" g:is_kornshell : ksh
+" g:is_posix	  : same as ksh
+" g:is_bash	  : bash
 let g:is_bash = 1
 
-"" g:sh_fold_enabled - enable folding in sh files
-"" possible values:
-""   0 : no syntax folding (default)
-""   1 : enable function folding
-""   2 : enable heredoc folding
-""   4 : enable if/do/for folding
-""   3 : enables function and heredoc folding
+" g:sh_fold_enabled - enable folding in sh files
+" possible values:
+"   0 : no syntax folding (default)
+"   1 : enable function folding
+"   2 : enable heredoc folding
+"   4 : enable if/do/for folding
+"   3 : enables function and heredoc folding
 let g:sh_fold_enabled = 3
 
-" tohtml
+"" tohtml
 "let g:html_use_encoding = 'utf-8'
 let g:html_ignore_folding = 1
 let g:html_use_css = 0
 
-" php
-"let g:php_folding = 1
-
-" IDE plugin
-let g:IDE_SyntaxScript		= "~/.vim/plugin/ideSyntax.pl"
-" default "fMOSTw"
-" "s" => disable warnings about being unable to generate syntax files (wtf)
-let g:IDE_AdvancedFlags		= "fMOsTw"
-
-" activate NERDTree when pressing the minus key
-nmap <silent> - :NERDTreeToggle<CR>
-
-" ignore common RCS directories
-let NERDTreeIgnore=['^CVS$', '\~$']
+"" netrw
+let g:netrw_http_cmd = 'curl -o'
+let g:netrw_http_xcmd = '--silent >'
+" press gx in normal mode to open the URL under the cursor
+let g:netrw_browsex_viewer = 'google-chrome'
