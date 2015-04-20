@@ -109,6 +109,9 @@ set history=512
 " default ai- and gq-wrapping width
 "set textwidth=79
 
+" don't consider "octal" numbers when using C-a and C-x (thanks vim-sensible)
+set nrformats-=octal
+
 " don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
 
