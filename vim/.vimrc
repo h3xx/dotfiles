@@ -76,6 +76,9 @@ set directory=~/.vim/temp//
 " chdir to match current buffer
 set autochdir
 
+" automatically read a file if changed outside of vim (thanks vim-sensible)
+set autoread
+
 " show line numbers
 set number
 
@@ -109,8 +112,8 @@ set history=512
 " don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
 
-" automatically read a file if changed outside of vim (thanks vim-sensible)
-set autoread
+" start scrolling when we're 8 lines away from margins
+set scrolloff=8
 
 " (if terminal is capable of more than monochrome)
 if has('gui_running') || &t_Co > 2
