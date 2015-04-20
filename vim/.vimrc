@@ -118,6 +118,9 @@ set nojoinspaces
 " start scrolling when we're 8 lines away from margins
 set scrolloff=8
 
+" ensure when opening in tabs, no tiny split windows (thanks vim-sensible)
+set tabpagemax=50
+
 " ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
 " the same effect can be accomplished by running 'vim -p FILES'
