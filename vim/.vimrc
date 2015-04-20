@@ -151,21 +151,24 @@ if has('gui_running') || &t_Co > 2
 	"set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
 	"" color tweaks
-	" 1-2: Show trailing whitespace and spaces before a tab:
-	" 3: not so bright as to make comments disappear in evening colorscheme
-	" 4: brighter cursor
-	" 5: cooler line numbers
-	" 6: text mode: keep black background when running in xterm-256color
-	" 7: text mode: fix invisible visual mode selection
-	" 8: text mode: comment color more like gui mode
-	autocmd ColorScheme *		highlight ExtraWhitespace ctermbg=red guibg=red |
-				\	match ExtraWhitespace /\s\+$\| \+\ze\t/ |
+	" 1: Show trailing whitespace and spaces before a tab
+	" 2: not so bright as to make comments disappear in evening colorscheme
+	" 3: brighter cursor
+	" 4: cooler line numbers
+	" 5: text mode: keep black background when running in xterm-256color
+	" 6: text mode: fix invisible visual mode selection
+	" 7: text mode: comment color more like gui mode
+	autocmd ColorScheme *		hi ExtraWhitespace ctermbg=red guibg=red |
 				\	hi CursorLine guibg=gray30 |
 				\	hi Cursor guibg=lightgreen |
 				\	hi LineNr ctermfg=blue guifg=steelblue |
 				\	hi Normal ctermbg=black |
 				\	hi Visual cterm=reverse |
 				\	hi Comment cterm=bold ctermfg=blue
+
+	" 1: Show trailing whitespace and spaces before a tab
+	"	(match commands only apply to the current buffer)
+	autocmd BufWinEnter *		match ExtraWhitespace /\s\+$\| \+\ze\t/
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
@@ -205,9 +208,7 @@ endif " has('multi_byte')
 	endif " has('gui_running')
 	if has('gui_running') || &termencoding == 'utf-8'
 		let g:airline_powerline_fonts=1
-"		let g:airline_left_sep = '»'
 		let g:airline_left_sep = '▓░'
-"		let g:airline_right_sep = '«'
 		let g:airline_right_sep = '░▓'
 	endif
 	let g:airline_theme='badwolf'
