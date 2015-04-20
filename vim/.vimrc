@@ -211,6 +211,10 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 	nmap <silent> - :NERDTreeToggle<CR>
 	" ignore common RCS directories
 	let NERDTreeIgnore=['^CVS$', '\~$']
+	" don't use fancy Unicode characters on non-unicode terminals
+	if !has('gui_running') && &termencoding != 'utf-8'
+		let NERDTreeDirArrows = 0
+	endif
 
 "endif " exists(':NERDTree')
 
