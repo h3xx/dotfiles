@@ -115,6 +115,17 @@ set nojoinspaces
 " start scrolling when we're 8 lines away from margins
 set scrolloff=8
 
+" ensure every file opened from the command line gets opened in its own tab
+" (except when running vimdiff)
+" the same effect can be accomplished by running 'vim -p FILES'
+if ! &diff
+	tab all
+endif
+
+" supplemental spell file
+"set spellfile=~/.vim/spell/en.ascii.add
+"let &spellfile = "~/.vim/spell/".&spelllang.".".&encoding.".add"
+
 " (if terminal is capable of more than monochrome)
 if has('gui_running') || &t_Co > 2
 	" Switch syntax highlighting on when the terminal has colors (default)
@@ -219,17 +230,6 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 "endif " exists(':NERDTree')
 
 " }}}END Fancy Plugin Options
-
-" supplemental spell file
-"set spellfile=~/.vim/spell/en.ascii.add
-"let &spellfile = "~/.vim/spell/".&spelllang.".".&encoding.".add"
-
-" ensure every file opened from the command line gets opened in its own tab
-" (except when running vimdiff)
-" the same effect can be accomplished by running 'vim -p FILES'
-if ! &diff
-	tab all
-endif
 
 " {{{BEGIN formatting options
 "" bad options
