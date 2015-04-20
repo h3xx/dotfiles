@@ -147,6 +147,9 @@ set scrolloff=8
 " Don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
 
+" Don't consider "octal" numbers when using C-a and C-x (thanks vim-sensible)
+set nrformats-=octal
+
 " Ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
 " The same effect can be accomplished by running 'vim -p FILES'
