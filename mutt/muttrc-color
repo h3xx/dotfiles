@@ -52,15 +52,17 @@ color tree		magenta		default
 
 # (these are not working for some reason)
 # regular new messages
-#color index default         white   "~N !~T !~F !~p !~P"
+#color index	default		white   "~N !~T !~F !~p !~P"
 # regular tagged messages
-#color index default         cyan    "~T !~F !~p !~P"
+#color index	default		cyan    "~T !~F !~p !~P"
 # regular flagged messages
-#color index default         red     "~F !~p !~P"
+#color index	default         red     "~F !~p !~P"
 # (these are working)
 # deleted messages
-color index red           default "!~N ~D"
-color index red           white   "~N ~D"
+color index	red		default "!~N ~D"
+color index	red		white   "~N ~D"
+# regular flagged messages
+color index	black		red     "~F !~D"
 
 ## general
 
