@@ -73,11 +73,8 @@ endif " !has("autocmd")
 "" (complains if there are files in the directory not matching *.rules)
 set backupskip+=/etc/udev/rules.d/*
 
-"" Subversion commit log messages
-set backupskip+=*/svn-commit.tmp
-
-"" git commit log messages
-set backupskip+=*/COMMIT_EDITMSG
+"" commit log messages
+set backupskip+=*/svn-commit.tmp,*/COMMIT_EDITMSG
 
 "" Slackware package special files
 "" (if installed, will leave a rogue /install directory)
