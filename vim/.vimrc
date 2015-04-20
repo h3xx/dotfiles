@@ -134,6 +134,9 @@ set autoread
 " Do incremental searching (default)
 "set incsearch
 
+" Start scrolling when the cursor is x lines away from bottom/top margins
+set scrolloff=8
+
 " ********************************
 " ***** normal mode, editing *****
 " ********************************
