@@ -120,6 +120,9 @@ set autochdir
 " Automatically read a file if changed outside of vim (thanks vim-sensible)
 set autoread
 
+" ensure when opening in tabs, no tiny split windows (thanks vim-sensible)
+set tabpagemax=50
+
 " ************************
 " ***** command mode *****
 " ************************
