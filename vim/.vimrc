@@ -6,14 +6,14 @@
 "set nocompatible
 
 if has('mouse')
-	" when and where to use the mouse
-	"" 'n'	: Normal mode
-	"" 'v'	: Visual mode
-	"" 'i'	: Insert mode
-	"" 'c'	: Command-line mode
-	"" 'h'	: all previous modes when editing a help file
-	"" 'a'	: all previous modes
-	"" 'r'	: for hit-enter and more-prompt prompt
+	"" when and where to use the mouse
+	" 'n'	: Normal mode
+	" 'v'	: Visual mode
+	" 'i'	: Insert mode
+	" 'c'	: Command-line mode
+	" 'h'	: all previous modes when editing a help file
+	" 'a'	: all previous modes
+	" 'r'	: for hit-enter and more-prompt prompt
 	" use mouse all the time (default)
 	"set mouse=a
 	" only use mouse when in normal/command mode
