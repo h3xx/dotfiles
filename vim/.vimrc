@@ -421,7 +421,7 @@ let g:netrw_http_xcmd = '--silent >'
 let g:netrw_browsex_viewer = 'google-chrome'
 
 "" local customizations
-"let s:local_vimrc=expand("~/.vimrc-local")
-"if filereadable(s:local_vimrc)
-"	execute "source ".local_vimrc
-"endif
+let s:local_vimrc=expand("~/.vimrc-local")
+if filereadable(s:local_vimrc)
+	execute "source ".s:local_vimrc
+endif
