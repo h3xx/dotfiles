@@ -1,4 +1,7 @@
 [general]
 mouse = 1
 
+[GntWM::binding]
+c-w = window-next
+
 # vi: ft=dosini
