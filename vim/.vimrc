@@ -169,7 +169,7 @@ if has('gui_running') || &t_Co > 2
 
 	" 1: Show trailing whitespace and spaces before a tab
 	"	(match commands only apply to the current buffer)
-	autocmd BufWinEnter *		match ExtraWhitespace /\s\+$\| \+\ze\t/
+	autocmd BufEnter *		match ExtraWhitespace /\s\+$\| \+\ze\t/
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
 	colorscheme evening
