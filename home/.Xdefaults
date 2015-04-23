@@ -97,7 +97,7 @@ XTerm*colorBD:			white
 		<Key>BackSpace:	string(0x7F)\n\
 		<Key>Delete:	string("\033[3~")\n\
 		<Key>Home:	string("\033[1~")\n\
-		<Key>End:		string("\033[4~")\n\
+		<Key>End:	string("\033[4~")\n\
 		Shift <Btn1Up>: exec-formatted("google-chrome '%t'", PRIMARY)
 XTerm*ttyModes:			erase ^?
 
