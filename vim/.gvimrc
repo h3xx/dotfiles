@@ -10,7 +10,7 @@ if has('gui_running')
 
 	" make the window double-wide when splitting windows
 	" (this isn't exact for some reason; windows aren't set to 80 columns)
-	nnoremap <C-W>v :set co=161\|vsplit<CR>
+	nnoremap <C-W>v :if &co<161\|set co=161\|endif\|vsplit<CR>
 
 	" highlight the current cursor line
 	" (not enabled in terminal mode because it looks ugly)
@@ -42,16 +42,5 @@ if has('gui_running')
 "
 "		let g:airline_powerline_fonts=1
 "	endif " exists(':Airline')
-
-	if exists(':NERDTree') && !&diff
-		" activate NERDTree
-		" addendum: takes a long time to load file listings
-		"au VimEnter * NERDTree|wincmd p
-
-		" minus key toggles the file drawer (.vimrc)
-
-		" make sure the window is wide enough
-		set columns=113
-	endif " exists(':NERDTree')
 
 endif " has('gui_running')
