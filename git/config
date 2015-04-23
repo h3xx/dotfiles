@@ -1,4 +1,5 @@
 [alias]
+	# shortcuts
 	subup		= submodule update --init --remote
 	subbranch	= submodule foreach git checkout
 	subbr		= submodule foreach git checkout
@@ -7,6 +8,7 @@
 	ci		= commit
 	co		= checkout
 	w		= whatchanged
+	ca		= commit -a
 	pu		= pull
 	br		= branch
 	up		= pull		# I'm used to svn
