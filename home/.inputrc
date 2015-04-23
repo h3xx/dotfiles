@@ -63,6 +63,9 @@ $endif
 # FIXES BELOW THIS LINE
 #-----
 
+# ctrl-backspace (^H) deletes word
+"\x08": backward-kill-word
+
 $if term=xterm
 # allow the use of the Home/End keys
 "\e[1~": beginning-of-line
