@@ -6,6 +6,7 @@ set showcmd
 set incsearch
 set backup
 " Allow color schemes to do bright colors without forcing bold.
+" (thanks vim-sensible)
 if &t_Co == 8 && $TERM !~# '^linux'
 	set t_Co=16
 endif
