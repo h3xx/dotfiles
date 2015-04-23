@@ -5,6 +5,8 @@ setl fo-=anotw
 setl fo+=tcqlr
 setl comments=s1:/*,mb:*,ex:*/,://,:#
 
+setl keywordprg=~/.vim/bin/php_doc
+
 " Conform to PEAR standards
 " Waste space with four spaces instead of a tab
 setl sts=4 sw=4 ts=8
