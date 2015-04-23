@@ -53,6 +53,7 @@
 [github]
 	user = h3xx
 
+# enables shortcuts like `git clone gh:h3xx/dotfiles.git`
 [url "git@github.com:"]
 	insteadOf	= gh:
 
