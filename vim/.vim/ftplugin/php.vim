@@ -4,6 +4,7 @@ let g:PHP_autoformatcomment = 0
 setl fo-=anotw
 setl fo+=tcqlr
 setl comments=s1:/*,mb:*,ex:*/,://,:#
+setl keywordprg=~/.vim/bin/php_doc
 
 " hopefully this will be less laggy
 "setl fdm=indent

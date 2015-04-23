@@ -54,12 +54,6 @@ aug filetypeoptions
 				\ let g:perldoc_program='perldoc' |
 				\ nmap <buffer> <silent> <F2> :Perldoc<CR>
 
-	" php
-	" (formatoptions is now in after/indent/php.vim because indent scripts
-	" have crazy ideas about how I like php formatted)
-	au FileType		php
-				\ setl keywordprg=~/.vim/bin/php_doc
-
 	" spell	- use spell checking
 	" scs	- use smart case checking (for searching, assume /i flag
 	"	  unless pattern has an uppercase letter in it)
