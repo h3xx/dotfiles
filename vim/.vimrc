@@ -230,7 +230,8 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 
 "if exists(':NERDTree')
 	" activate NERDTree when pressing the minus key
-	nmap <silent> - :NERDTreeToggle<CR>
+	" (first make sure the window is comfortably wide)
+	nmap <silent> - :if has('gui_running') && &co<113\|set co=113\|endif\|NERDTreeToggle<CR>
 	" ignore common RCS directories
 	let NERDTreeIgnore=['^CVS$', '\~$']
 	" don't use fancy Unicode characters on non-unicode terminals
