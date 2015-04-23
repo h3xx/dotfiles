@@ -3,6 +3,7 @@
 [alias]
 	# shortcuts
 	br		= branch
+	ca		= commit -a
 	ci		= commit
 	co		= checkout
 	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
