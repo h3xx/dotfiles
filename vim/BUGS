@@ -1,7 +1,0 @@
-Starting vim with no arguments inside of uxterm with:
-	TERM=xterm
-	TERMCAP='vs|xterm|xterm-color|vs100|xterm terminal emulator (X Window System):am:bs:km:co#120:li#90:ct=\E[3k:ue=\E[m:is=\E[m\E[?1l\E>:rs=\E[m\E[?1l\E>:eA=\E)0:as=^N:ae=^O:ac=aaffggjjkkllmmnnooqqssttuuvvwwxx:kI=\E[2~:kD=:kP=\E[5~:kN=\E[6~:k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~:k5=\E[15~:k6=\E[17~:k7=\E[18~:k8=\E[19~:k9=\E[20~:k0=\E[21~:F1=\E[23~:F2=\E[24~:kh=\E[H:kH=\EOw:ks=:ke=:te=\E[2J\E[?47l\E8:ti=\E7\E[?47h:ms:pt:xn:xo:it#8:RA=\E[?7l:SA=\E?7h:bl=^G:cr=^M:ta=^I:cm=\E[%i%d;%dH:le=^H:up=\E[A:do=\E[B:nd=\E[C:LE=\E[%dD:RI=\E[%dC:UP=\E[%dA:DO=\E[%dB:ho=\E[H:cl=\E[H\E[2J:ce=\E[K:cb=\E[1K:cd=\E[J:sf=\ED:sr=\EM:st=\EH:cs=\E[%i%d;%dr:sc=\E7:rc=\E8:ic=\E[@:IC=\E[%d@:al=\E[L:AL=\E[%dL:dc=\E[P:DC=\E[%dP:dl=\E[M:DL=\E[%dM:so=\E[7m:se=\E[m:us=\E[4m:mb=\E[5m:mh=\E[2m:md=\E[1m:mr=\E[7m:me=\E[m:ku=\E[A:kd=\E[B:kr=\E[C:kl=\E[D:kb=\177:'
-
-causes junk to be put on the screen in the statusline and immediately after the
-last line in the webcome screen. However, the garbage disappears immediately
-upon any key press or mouse click. The garbage also appears when first opening a file.
