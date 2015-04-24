@@ -101,7 +101,7 @@ complete -g groupmod groupdel newgrp
 #	as this does not measure from the beginning of the beginning of the
 #	command.
 
-function _jobspecs {
+_jobspecs() {
 	readarray -t COMPREPLY < <(
 		readarray JOBLINES < <(
 			[ "$1" = 'bg' ] && jobs -s || jobs
@@ -130,7 +130,7 @@ function _jobspecs {
 
 # module removal commands only see installed modules
 complete -F _instkmods rmmod
-function _instkmods {
+_instkmods() {
 	COMPREPLY=(
 		$(cut -f 1 -d ' ' /proc/modules |grep "^$2")
 	)
@@ -138,7 +138,7 @@ function _instkmods {
 
 # module insertion commands see only modules
 complete -o default -F _kmods insmod modprobe
-function _kmods {
+_kmods() {
 	COMPREPLY=(
 		$(find "/lib/modules/$(uname -r)/" \
 			-type f \
@@ -152,7 +152,7 @@ function _kmods {
 # man completes on manual page names
 # TODO: use $MANPATH and $LANG settings
 complete -o default -F _manpages man
-function _manpages {
+_manpages() {
 	local \
 		MANS=() \
 		SECT='[0-9]'
@@ -169,7 +169,7 @@ function _manpages {
 
 # umount only sees mounted file systems
 complete -o default -F _mounts umount df
-function _mounts {
+_mounts() {
 	COMPREPLY=(
 		$(cut -f 2 -d ' ' /proc/mounts |grep "^$2")
 	)
@@ -177,7 +177,7 @@ function _mounts {
 
 # pkg-config
 complete -o default -F _pkg_config pkg-config
-function _pkg_config {
+_pkg_config() {
 	local \
 		PKG_FILES=() \
 		PKG_PATH
@@ -201,7 +201,7 @@ function _pkg_config {
 
 # swapoff
 complete -o default -F _swaps swapoff
-function _swaps {
+_swaps() {
 	COMPREPLY=(
 		$(/sbin/swapon -s | grep -o "^${2:-/}[^ ]*")
 	)
@@ -209,7 +209,7 @@ function _swaps {
 
 # psql sees users after -U
 complete -o default -F _psqlcomp psql
-function _psqlcomp {
+_psqlcomp() {
 	if [ -f ~/.pgpass ]; then
 		case "${COMP_WORDS[$COMP_CWORD-1]}" in
 			'-U')
@@ -222,7 +222,7 @@ function _psqlcomp {
 }
 
 # XXX : debugging function
-#function _listcomp {
+#_listcomp() {
 #	local VARNAME
 #	COMPREPLY=()
 #	for VARNAME in 1 2 COMP_LINE COMP_POINT COMP_KEY COMP_TYPE COMP_CWORD COMP_WORDBREAKS; do

@@ -98,7 +98,7 @@ alias \
 	ll='ls -l'
 
 # handy function to list all files and dirs in a single ls(1)
-function lsr {
+lsr() {
 	find "${@:-.}" -print0 |
 	# XXX : must sort or large file lists will be out of order if split up
 	#	to different ls invocations by xargs
@@ -108,7 +108,7 @@ function lsr {
 }
 
 # same thing as above but filters out .svn, .git, .hg, .bzr
-function lsrr {
+lsrr() {
 	find "${@:-.}" \
 		! \( \
 			-regextype posix-egrep \
@@ -123,7 +123,7 @@ function lsrr {
 }
 
 # same thing, but pipe it through less(1) with coloring
-function lsrl {
+lsrl() {
 	find "${@:-.}" -print0 |
 	# XXX : must sort or large file lists will be out of order if split up
 	#	to different ls invocations by xargs
@@ -134,7 +134,7 @@ function lsrl {
 }
 
 ## editors
-function mydate {
+mydate() {
 	# 0 : yyyy-mmdd
 	# 1 : yyyy-mmdd-hhmm (default)
 	# 2 : yyyy-mmdd-hhmm-ssnn
@@ -234,23 +234,23 @@ alias \
 	rmdirempty1='findd1 -empty -print -delete' \
 	pidof='/sbin/pidof'
 
-function nd {
+nd() {
 	[ -n "$1" -a "$1" != '-' ] && mkdir -p -- "$1" && cd "$1"
 }
 
-#function _cd {
+#_cd() {
 #	# I sometimes type `cd cd DIR'
 #	if [ "_$1" == '_cd' ]; then shift; fi
 #	builtin cd "$@"
 #}
 #alias cd='_cd'
 
-function tcd {
+tcd() {
 	tar xf "$1" &&
 	cd "$(tar tf "$1" |head -1 |cut -f 1 -d /)"
 }
 
-function qrmr {
+qrmr() {
 	# disconnect and destruct
 	# -d	| -e .ok	| r
 	# 0	  x		  1
@@ -294,7 +294,7 @@ function qrmr {
 }
 
 # turn off history (incognito mode)
-function histoff {
+histoff() {
 	unset HISTFILE
 	# decolorize prompt, but set to bright white for clear indication that
 	# history is off
