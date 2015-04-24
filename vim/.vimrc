@@ -255,6 +255,7 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 " tagbar
 "if exists(':TagbarToggle')
 	let g:tagbar_autofocus = 1
+	let g:tagbar_ctags_bin = 'ctags'
 	"let g:tagbar_expand = 1 " doesn't work too well
 	if has('gui_running')
 		nmap <silent> <F8> :if &co<113\|set co=113\|endif\|TagbarToggle<CR>
