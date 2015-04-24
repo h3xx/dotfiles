@@ -141,7 +141,7 @@ XLock.resetsaver: off
 XLock.timeelapsed: on
 XLock.usefirst: on
 !XLock.verbose: off
-!XLock.visual: 
+!XLock.visual:
 !XLock.nice: 10
 !XLock.lockdelay: 0
 !XLock.unlockdelay: 0
@@ -152,16 +152,16 @@ XLock.font: 10x20
 ! helps me see in the dark
 XLock.background: gray20
 XLock.foreground: white
-!XLock.username: Name: 
-!XLock.password: Password: 
+!XLock.username: Name:
+!XLock.password: Password:
 !XLock.info: Enter password to unlock; select icon to lock.
 !XLock.validate: Validating login...
 !XLock.invalid: Invalid login.
 !XLock.invalidCapsLock: Invalid login, Caps Lock on.
 !XLock.attempt:  failed attempt.
 !XLock.attempts:  failed attempts.
-!XLock.geometry: 
-!XLock.icongeometry: 
+!XLock.geometry:
+!XLock.icongeometry:
 !XLock.wireframe: off
 !XLock.use3d: off
 !XLock.delta3d: 1.5
@@ -171,26 +171,26 @@ XLock.foreground: white
 !XLock.both3d: Magenta
 ! text message generation program (-mode flag|marquee|nose)
 XLock.program: fortune -s
-!XLock.messagesfile: 
-!XLock.messagefile: 
-!XLock.message: 
+!XLock.messagesfile:
+!XLock.messagefile:
+!XLock.message:
 !XLock.messagefont: -*-times-*-*-*-*-18-*-*-*-*-*-*-*
-!XLock.cpasswd: 
+!XLock.cpasswd:
 XLock.startCmd: xset +dpms
-!XLock.endCmd: 
-!XLock.pipepassCmd: 
-!XLock.logoutCmd: 
+!XLock.endCmd:
+!XLock.pipepassCmd:
+!XLock.logoutCmd:
 XLock.dpmsstandby: 0
 XLock.dpmssuspend: 0
 XLock.dpmsoff: 1
 XLock.mailCmd: [ -z "$(find ~/Mail/mbox/new -type d -empty)" ]
-!XLock.mailIcon: 
-!XLock.nomailIcon: 
+!XLock.mailIcon:
+!XLock.nomailIcon:
 !XLock.blank.delay: 3000000
 !XLock.blank.count: 1
 !XLock.blank.cycles: 1
 !XLock.blank.size: 1
 !XLock.blank.ncolors: 64
 !XLock.blank.saturation: 1
-!XLock.blank.bitmap: 
+!XLock.blank.bitmap:
 ! vim: ft=xdefaults
