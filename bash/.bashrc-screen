@@ -18,12 +18,13 @@ if [ -n "$STY" ]; then
 	PS1='\[\ek\e\\\]'"$PS1"
 
 	# `exec' calls reset title
-	function exec {
+	_exec() {
 		echo -n $'\ek'"$1"$'\e\\'
 		builtin exec "$@"
 	}
+	alias exec='_exec'
 
-	function fg {
+	_fg() {
 		# this is sloppy but works
 		#echo -ne "\\ek$(eval echo -n "$(builtin jobs "${1:-%+}" 2>/dev/null)" |cut -f 3 -d ' ')\\e\\"
 		# this is a little better
@@ -32,6 +33,7 @@ if [ -n "$STY" ]; then
 		echo -n $'\ek'"$(basename -- "$(builtin jobs "${1:-%+}" 2>/dev/null |cut -d ' ' -f 20)")"$'\e\\'
 		builtin fg "$@"
 	}
+	alias fg='_fg'
 fi
 
 # (addendum: this causes a LOT of problems when ssh-ing from within a screen
