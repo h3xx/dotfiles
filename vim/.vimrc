@@ -209,8 +209,8 @@ endif " has('multi_byte')
 	endif " has('gui_running')
 	if has('gui_running') || &termencoding == 'utf-8'
 		let g:airline_powerline_fonts=1
-		let g:airline_left_sep = '▓░'
-		let g:airline_right_sep = '░▓'
+		"let g:airline_left_sep = '▓░'
+		"let g:airline_right_sep = '░▓'
 	endif
 	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#show_buffers=0
