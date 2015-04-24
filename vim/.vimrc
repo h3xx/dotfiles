@@ -249,6 +249,7 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 
 " tagbar
 "if exists(':TagbarToggle')
+	let g:tagbar_autofocus = 1
 	if has('gui_running')
 		nmap <silent> <F8> :if &co<113\|set co=113\|endif\|TagbarToggle<CR>
 	else
