@@ -184,11 +184,17 @@ endif " has('gui_running') || &t_Co > 2
 if has('multi_byte')
 	" set the display encoding
 	" (default is '', or 'utf-8' in the GUI)
-	if &termencoding == ''
-		" we're probably not using the GUI
-		" note: :set won't allow &-replacement
-		let &termencoding = &encoding
-	endif
+	" addendum: idk, this seems to work for everything, however something
+	" happens to set &termencoding to always be 'utf-8' at this point
+	"
+	" Settings at user interaction time:
+	" term	LC_ALL	| &encoding	&termencoding
+	" --------------+----------------------------
+	" GUI	*	| utf-8		utf-8
+	" xterm	*.utf8	| utf-8		utf-8
+	" xterm -	| utf-8		latin1
+	" uxterm -	| utf-8		utf-8
+	let &termencoding = &encoding
 	" set the internal encoding
 	set encoding=utf-8
 
@@ -256,6 +262,7 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 	else
 		nmap <silent> <F8> :TagbarToggle<CR>
 	endif
+
 "endif " exists(':TagbarToggle')
 "
 " }}}END Fancy Plugin Options
