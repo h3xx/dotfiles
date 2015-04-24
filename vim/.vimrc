@@ -412,8 +412,8 @@ if has('gui_running') || &termencoding == 'utf-8'
 	let g:airline_right_sep='░▓'
 endif
 let g:airline_theme='badwolf'
-let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#show_buffers=0
+let g:airline_extensions=['branch', 'tabline', 'whitespace']
 
 " *** vim-fugitive ***
 " \l opens the git revision log
