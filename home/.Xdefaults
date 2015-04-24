@@ -89,8 +89,8 @@ XTerm*colorBD:			white
 *VT100.color15:		#ffffff
 
 !! characters
-!! 1-4: fixes not being able to backspace
-!! 5: shift-click opens highlighted text in browser
+!! 1-5: fixes not being able to backspace
+!! 6: shift-click opens highlighted text in browser
 !XTerm*tyModes:			erase ^h
 *VT100.Translations: #override \
 		Ctrl <Key>BackSpace:	string(0x08)\n\
