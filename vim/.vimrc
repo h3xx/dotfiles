@@ -233,7 +233,11 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 "if exists(':NERDTree')
 	" activate NERDTree when pressing the minus key
 	" (first make sure the window is comfortably wide)
-	nmap <silent> - :if has('gui_running') && &co<113\|set co=113\|endif\|NERDTreeToggle<CR>
+	if has('gui_running')
+		nmap <silent> - :if &co<113\|set co=113\|endif\|NERDTreeToggle<CR>
+	else
+		nmap <silent> - :NERDTreeToggle<CR>
+	endif
 	" ignore common RCS directories
 	let NERDTreeIgnore=['^CVS$', '\~$']
 	" don't use fancy Unicode characters on non-unicode terminals
@@ -247,7 +251,11 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 "if exists(':TagbarToggle')
 	let g:tagbar_autofocus = 1
 	"let g:tagbar_expand = 1 " doesn't work too well
-	nmap <silent> <F8> :if has('gui_running') && &co<113\|set co=113\|endif\|TagbarToggle<CR>
+	if has('gui_running')
+		nmap <silent> <F8> :if &co<113\|set co=113\|endif\|TagbarToggle<CR>
+	else
+		nmap <silent> <F8> :TagbarToggle<CR>
+	endif
 "endif " exists(':TagbarToggle')
 "
 " }}}END Fancy Plugin Options
