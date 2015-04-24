@@ -245,6 +245,8 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 
 " tagbar
 "if exists(':TagbarToggle')
+	let g:tagbar_autofocus = 1
+	"let g:tagbar_expand = 1 " doesn't work too well
 	nmap <F8> :TagbarToggle<CR>
 "endif " exists(':TagbarToggle')
 "
