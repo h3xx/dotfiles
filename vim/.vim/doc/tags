@@ -115,6 +115,7 @@ add_statusline_func	airline.txt	/*add_statusline_func*
 airline	airline.txt	/*airline*
 airline-accents	airline.txt	/*airline-accents*
 airline-advanced-customization	airline.txt	/*airline-advanced-customization*
+airline-autocommands	airline.txt	/*airline-autocommands*
 airline-branch	airline.txt	/*airline-branch*
 airline-bufferline	airline.txt	/*airline-bufferline*
 airline-capslock	airline.txt	/*airline-capslock*
@@ -124,6 +125,7 @@ airline-contents	airline.txt	/*airline-contents*
 airline-contributions	airline.txt	/*airline-contributions*
 airline-csv	airline.txt	/*airline-csv*
 airline-ctrlp	airline.txt	/*airline-ctrlp*
+airline-ctrlspace	airline.txt	/*airline-ctrlspace*
 airline-customization	airline.txt	/*airline-customization*
 airline-default	airline.txt	/*airline-default*
 airline-eclim	airline.txt	/*airline-eclim*
@@ -144,6 +146,7 @@ airline-quickfix	airline.txt	/*airline-quickfix*
 airline-sections	airline.txt	/*airline-sections*
 airline-syntastic	airline.txt	/*airline-syntastic*
 airline-tabline	airline.txt	/*airline-tabline*
+airline-taboo	airline.txt	/*airline-taboo*
 airline-tagbar	airline.txt	/*airline-tagbar*
 airline-themes	airline.txt	/*airline-themes*
 airline-tmuxline	airline.txt	/*airline-tmuxline*
