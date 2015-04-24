@@ -439,7 +439,11 @@ if !has('gui_running') && &termencoding != 'utf-8'
 endif
 
 " *** tagbar ***
-nmap <F8> :TagbarToggle<CR>
+if has('gui_running')
+	nmap <silent> <F8> :if &co<113\|set co=113\|endif\|TagbarToggle<CR>
+else
+	nmap <silent> <F8> :TagbarToggle<CR>
+endif
 let g:tagbar_autofocus=1
 "let g:tagbar_expand=1 " doesn't work too well
 
