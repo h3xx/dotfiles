@@ -23,7 +23,9 @@ if has('multi_byte')
 	" xterm	*.utf8	| utf-8		utf-8
 	" xterm -	| utf-8		latin1
 	" uxterm -	| utf-8		utf-8
-	let &termencoding=&encoding
+	if !has('gui_running')
+		let &termencoding=&encoding
+	endif
 	" set the internal encoding
 	set encoding=utf-8
 
