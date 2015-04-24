@@ -220,7 +220,7 @@ endif " has('multi_byte')
 	endif
 	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#show_buffers=0
-  let g:airline_extensions = ['branch', 'tabline', 'whitespace', 'tagbar']
+	let g:airline_extensions = ['branch', 'tabline', 'whitespace', 'tagbar']
 "endif " exists(':Airline')
 
 " vim-fugitive
