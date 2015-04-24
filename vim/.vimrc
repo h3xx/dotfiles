@@ -451,6 +451,7 @@ else
 	nmap <silent> <F8> :TagbarToggle<CR>
 endif
 let g:tagbar_autofocus=1
+let g:tagbar_ctags_bin='ctags'
 "let g:tagbar_expand=1 " doesn't work too well
 
 " ***********************************
