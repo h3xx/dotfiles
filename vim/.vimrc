@@ -245,7 +245,7 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 
 " tagbar
 "if exists(':TagbarToggle')
-	nmap <F8> :TagbarToggle<CR>
+	nmap <silent> <F8> :if has('gui_running') && &co<113\|set co=113\|endif\|TagbarToggle<CR>
 "endif " exists(':TagbarToggle')
 "
 " }}}END Fancy Plugin Options
