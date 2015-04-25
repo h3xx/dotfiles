@@ -98,18 +98,20 @@ XTerm*colorBD:                  white
 
 UXTerm*utmpDisplayId:           false
 UXTerm*utmpInhibit:             true
-UXTerm*geometry:                120x90
+UXTerm*geometry:                120x72
 UXTerm*background:              black
 UXTerm*foreground:              gray
 UXTerm*font:                    6x10
 UXTerm*font1:                   6x13
 UXTerm*showMissingGlyphs:       true
-UXTerm*boldFont:                6x10
 UXTerm*boldColors:              true
 UXTerm*colorBDMode:             true
 UXTerm*colorBD:                 white
 UXTerm*keepSelection:           true
 UXTerm*title:                   term
+UXTerm*faceName:                Terminess Powerline:minspace=true
+UXTerm*boldFont:                Terminess Powerline Bold:minspace=true
+UXTerm*faceSize:                10
 
 !! XLock
 
