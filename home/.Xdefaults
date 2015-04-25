@@ -99,13 +99,13 @@ XTerm*colorBD:			white
 		<Key>Home:	string("\033[1~")\n\
 		<Key>End:	string("\033[4~")\n\
 		Shift <Btn1Up>: exec-formatted("google-chrome '%t'", PRIMARY)
-XTerm*ttyModes:			erase ^?
+*VT100*ttyModes:		erase ^?
 
 !! UXTerm
 
 UXTerm*utmpDisplayId:		false
 UXTerm*utmpInhibit:		true
-UXTerm*geometry:		120x90
+UXTerm*geometry:		120x72
 UXTerm*background:		black
 UXTerm*foreground:		gray
 UXTerm*font:			6x10
@@ -117,6 +117,8 @@ UXTerm*colorBDMode:		true
 UXTerm*colorBD:			white
 UXTerm*keepSelection:		true
 UXTerm*title:			term
+UXTerm*faceName:		Terminess Powerline:minspace=true
+UXTerm*faceSize:		10
 
 XLock.mode: blank
 XLock.erasedelay: 0
