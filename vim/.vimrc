@@ -146,7 +146,8 @@ set tabpagemax=50
 "set incsearch
 
 " Start scrolling when the cursor is x lines away from bottom/top margins
-set scrolloff=8
+" (default)
+"set scrolloff=5
 
 " ********************************
 " ***** normal mode, editing *****
