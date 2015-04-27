@@ -61,7 +61,7 @@ img_to_pnm() {
 			pngtopnm "$in" >"$out" ||
 			return
 			;;
-			
+
 		'image/gif')
 			giftopnm --alphaout="$out_alpha" "$in" >"$out" ||
 			return
