@@ -72,19 +72,23 @@ cols=(
 
 # fuck you, I don't care if it's locked
 if fuser -s - "$LOGINS"; then
-    logins_temp="$(mktemp -t "$(basename -- "$0").XXXXXX")"
-    (umask 0077 ; cp -p -- "$LOGINS" "$logins_temp") || exit
-    LOGINS="$logins_temp"
+    db_temp="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+    (umask 0077 ; cp -p -- "$LOGINS" "$db_temp") || exit
+    LOGINS="$db_temp"
 else
     # plug minor security hole re: environment variables being used to
     # shred files
-    logins_temp=''
+    db_temp=''
 fi
 
 cleanup() {
-    if [[ -n $logins_temp ]]; then
-        shred -f -n 1 -u -- "$logins_temp" # secure delete first
-        rm -f -- "$logins_temp" # plain unlink if that fails
+    if [[ -n $db_temp ]]; then
+        shred -f -n 1 -u -- "$db_temp" # secure delete first
+        rm -f -- "$db_temp" # plain unlink if that fails
+        if [[ -e $db_temp ]]; then
+            echo "WARNING: Failed to remove file \`$db_temp'. This file contains sensitive information." >&2
+            echo "Please shred(1) and delete it." >&2
+        fi
     fi
 }
 
