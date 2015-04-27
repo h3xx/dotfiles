@@ -85,6 +85,10 @@ cleanup() {
     if [[ -n $DB_TEMP ]]; then
         shred -f -n 1 -u -- "$DB_TEMP" # secure delete first
         rm -f -- "$DB_TEMP" # plain unlink if that fails
+        if [[ -e $DB_TEMP ]]; then
+            echo "WARNING: Failed to remove file \`$DB_TEMP'. This file contains sensitive information." >&2
+            echo "Please shred(1) and delete it." >&2
+        fi
     fi
 }
 
