@@ -115,8 +115,8 @@ set nrformats-=octal
 " don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
 
-" start scrolling when we're 8 lines away from margins
-set scrolloff=8
+" start scrolling when we're 5 lines away from margins
+set scrolloff=5
 
 " ensure when opening in tabs, no tiny split windows (thanks vim-sensible)
 set tabpagemax=50
