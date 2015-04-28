@@ -418,6 +418,9 @@ endif " has('gui_running')
 if has('gui_running') || &termencoding == 'utf-8'
 	let g:airline_powerline_fonts=1
 endif
+" mixed_indent_algo: the whitespace plugin is broken by default,
+" &tabstop aren't taken into effect when detecting mixed indent
+let g:airline#extensions#whitespace#mixed_indent_algo=1
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline_extensions=['branch', 'tabline', 'whitespace', 'tagbar']
