@@ -166,7 +166,6 @@ if has('gui_running') || &t_Co > 2
 	"highlight PreProc ctermfg=Magenta
 
 	" highlight the current cursor line
-	" (not enabled in terminal mode because it looks ugly)
 	"set cursorline
 	" addendum: hide the cursorline on inactive windows
 	aug CursorLine
