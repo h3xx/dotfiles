@@ -220,6 +220,9 @@ endif " has('multi_byte')
 		"let g:airline_left_sep = '▓░'
 		"let g:airline_right_sep = '░▓'
 	endif
+	" mixed_indent_algo: the whitespace plugin is broken by default,
+	"	&tabstop aren't taken into effect when detecting mixed indent
+	let g:airline#extensions#whitespace#mixed_indent_algo=1
 	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#show_buffers=0
 	let g:airline_extensions = ['branch', 'tabline', 'whitespace', 'tagbar']
