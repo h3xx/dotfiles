@@ -101,8 +101,8 @@ aug keycommands
 				\ noremap <buffer> <silent> <leader>\| :s+^+;+\|nohls<CR>
 
 	" web functions
-	" ,h - insert [X]HTML header in PHP and HTML files
-	au FileType		php,html
+	" ,h - insert HTML header in HTML files
+	au FileType		html
 				\ nmap <buffer> <silent> ,h :so ~/.vim/templates/keys/html5-h.vim<CR> |
 				\ nmap <buffer> <silent> ,j :so ~/.vim/templates/keys/html5-j.vim<CR>
 
@@ -132,7 +132,11 @@ aug keycommands
 	au FileType		sh,perl,html,xml,c,cpp,conf,mplayerconf,vim
 				\ nnoremap <buffer> <silent> ,v :so ~/.vim/templates/keys/hintline-filetype.vim<CR>
 
+	" ,h - insert <?php header in php files
+	" ,E - throw new Exception
+	" ,c - insert filename (without .php), useful for class files
 	au FileType		php
+				\ nmap <buffer> <silent> ,h :so ~/.vim/templates/keys/php-h.vim<CR> |
 				\ nmap <buffer> <silent> ,E :so ~/.vim/templates/keys/php-E.vim<CR> |
 				\ nmap <buffer> <silent> ,c :so ~/.vim/templates/keys/php-c.vim<CR>
 
@@ -329,7 +333,7 @@ aug plugins
 				\ setl omnifunc=javacomplete#Complete |
 				\ setl completefunc=javacomplete#CompleteParamsInfo |
 				\ inoremap <buffer> <C-S-Space> <C-X><C-U><C-P> |
-				\ inoremap <buffer> <C-X><C-U> <C-X><C-U><C-P> 
+				\ inoremap <buffer> <C-X><C-U> <C-X><C-U><C-P>
 aug END " plugins
 
 " vi: ft=vim fdm=syntax
