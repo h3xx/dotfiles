@@ -150,29 +150,15 @@ if has('gui_running') || &t_Co > 2
 	" (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
 	"set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
-	"" color tweaks
-	" 1: Show trailing whitespace and spaces before a tab
-	" 2: not so bright as to make comments disappear in evening colorscheme
-	" 3: brighter cursor
-	" 4: cooler line numbers
-	" 5-6: paint it black
-	" 7: text mode: fix invisible visual mode selection
-	" 8: text mode: comment color more like gui mode
-	autocmd ColorScheme *		hi ExtraWhitespace ctermbg=red guibg=red |
-				\	hi CursorLine guibg=gray30 |
-				\	hi Cursor guibg=lightgreen |
-				\	hi LineNr ctermfg=blue guifg=steelblue |
-				\	hi Normal guibg=black ctermbg=black |
-				\	hi NonText guibg=gray10 |
-				\	hi Visual cterm=reverse |
-				\	hi Comment cterm=bold ctermfg=blue
+	" Show trailing whitespace and spaces before a tab
+	autocmd ColorScheme *		hi ExtraWhitespace ctermbg=red guibg=red
 
-	" 1: Show trailing whitespace and spaces before a tab
+	" Show trailing whitespace and spaces before a tab
 	"	(match commands only apply to the current buffer)
 	autocmd BufEnter *		match ExtraWhitespace /\s\+$\| \+\ze\t/
 
 	" Replace blinding gvim color scheme (makes terminal vim brighter)
-	colorscheme evening
+	colorscheme late_evening
 
 	" correct some colors
 	" (addendum: only affects terminal vim, looks better regular)
