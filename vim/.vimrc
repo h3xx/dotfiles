@@ -383,15 +383,16 @@ set ttyfast
 " 2: not so bright as to make comments disappear in evening colorscheme
 " 3: brighter cursor
 " 4: cooler line numbers
-" 5: text mode: keep black background when running in xterm-256color
-" 6: text mode: fix invisible visual mode selection
-" 7: text mode: comment color more like gui mode
+" 5-6: paint it black
+" 7: text mode: fix invisible visual mode selection
+" 8: text mode: comment color more like gui mode
 autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red |
 			\	hi Comment cterm=bold ctermfg=blue |
 			\	hi CursorLine guibg=gray30 |
 			\	hi Cursor guibg=lightgreen |
 			\	hi LineNr ctermfg=blue guifg=steelblue |
-			\	hi Normal ctermbg=black |
+			\	hi NonText guibg=gray10 |
+			\	hi Normal guibg=black ctermbg=black |
 			\	hi Visual cterm=reverse
 
 " Show trailing whitespace and spaces before a tab
