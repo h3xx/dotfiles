@@ -6,7 +6,7 @@ set hdrs
 # let me edit headers when composing
 set edit_headers
 
-# mutt includes this by default (nope)
+# mutt should include this by default
 my_hdr X-Mailer: `mutt -v |head -1`
 my_hdr X-Editor: `vim --version |head -1 |cut -f -5 -d ' '`
 my_hdr X-Operating-System: `uname -rs`
