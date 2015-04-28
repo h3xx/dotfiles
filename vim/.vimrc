@@ -178,6 +178,18 @@ if has('gui_running') || &t_Co > 2
 	" (addendum: only affects terminal vim, looks better regular)
 	"highlight PreProc ctermfg=Magenta
 
+	" highlight the current cursor line
+	" (not enabled in terminal mode because it looks ugly)
+	"set cursorline
+	" addendum: hide the cursorline on inactive windows
+	aug CursorLine
+		au!
+		au VimEnter * setl cursorline
+		au WinEnter * setl cursorline
+		au BufWinEnter * setl cursorline
+		au WinLeave * setl nocursorline
+	aug END
+
 endif " has('gui_running') || &t_Co > 2
 
 " Unicode options
