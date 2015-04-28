@@ -406,6 +406,17 @@ colorscheme evening
 " (addendum: only affects terminal vim, looks better regular)
 "highlight PreProc ctermfg=Magenta
 
+" highlight the current cursor line
+"set cursorline
+" addendum: hide the cursorline on inactive windows
+aug CursorLine
+	au!
+	au VimEnter * setl cursorline
+	au WinEnter * setl cursorline
+	au BufWinEnter * setl cursorline
+	au WinLeave * setl nocursorline
+aug END
+
 " ********************************
 " ***** fancy plugin options *****
 " ********************************
