@@ -12,18 +12,6 @@ if has('gui_running')
 	" (this isn't exact for some reason; windows aren't set to 80 columns)
 	nnoremap <C-W>v :if &co<161\|set co=161\|endif\|vsplit<CR>
 
-	" highlight the current cursor line
-	" (not enabled in terminal mode because it looks ugly)
-	"set cursorline
-	" addendum: hide the cursorline on inactive windows
-	aug CursorLine
-		au!
-		au VimEnter * setl cursorline
-		au WinEnter * setl cursorline
-		au BufWinEnter * setl cursorline
-		au WinLeave * setl nocursorline
-	aug END
-
 	" don't set the terminal title
 	set title
 
