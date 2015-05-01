@@ -5,7 +5,7 @@
 " This color scheme uses a *really* dark grey background.
 "
 " Forked from evening.vim with the following tweaks:
-" - black backgrounds
+" - almost black backgrounds
 " - cursorline not so bright as to make comments disappear
 " - brighter cursor
 " - cooler colors on line numbers
@@ -21,7 +21,7 @@ endif
 
 let colors_name = "late_evening"
 
-hi Normal ctermbg=black ctermfg=White guifg=White guibg=black
+hi Normal ctermbg=black ctermfg=White guifg=White guibg=grey5
 
 " Groups used in the 'highlight' and 'guicursor' options default value.
 hi ErrorMsg term=standout ctermbg=DarkRed ctermfg=White guibg=Red guifg=White
