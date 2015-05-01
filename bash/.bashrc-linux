@@ -98,6 +98,7 @@ alias \
 	ll='ls -l'
 
 # handy function to list all files and dirs in a single ls(1)
+# usefulness: ***
 lsr() {
 	find "${@:-.}" -print0 |
 	# XXX : must sort or large file lists will be out of order if split up
@@ -108,6 +109,7 @@ lsr() {
 }
 
 # same thing as above but filters out .svn, .git, .hg, .bzr
+# usefulness: ****
 lsrr() {
 	find "${@:-.}" \
 		! \( \
@@ -123,6 +125,7 @@ lsrr() {
 }
 
 # same thing, but pipe it through less(1) with coloring
+# usefulness: **
 lsrl() {
 	find "${@:-.}" -print0 |
 	# XXX : must sort or large file lists will be out of order if split up
@@ -131,24 +134,6 @@ lsrl() {
 	xargs -0 \
 		ls $LS_OPTIONS -dla --color=always |
 	less -R
-}
-
-## editors
-mydate() {
-	# 0 : yyyy-mmdd
-	# 1 : yyyy-mmdd-hhmm (default)
-	# 2 : yyyy-mmdd-hhmm-ssnn
-	case "${1:-1}" in
-		0) # precision to day
-			date '+%Y-%m%d'
-		;;
-		1) # precision to time of day
-			date '+%Y-%m%d-%H%M'
-		;;
-		2) # precision to a hundredth of a second
-			date '+%Y-%m%d-%H%M-%S%02N'
-		;;
-	esac
 }
 
 ## grep
@@ -224,7 +209,6 @@ alias \
 	stopall='ka -s STOP' \
 	startall='ka -s CONT' \
 	j='jobs' \
-	esu='exec su -' \
 	rmr='rm -rf' \
 	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
 	rmp='rm -v -- "$_~"' \
@@ -234,22 +218,28 @@ alias \
 	rmdirempty1='findd1 -empty -print -delete' \
 	pidof='/sbin/pidof'
 
+# create and switch to a new directory
+# usefulness: ****
 nd() {
 	[ -n "$1" -a "$1" != '-' ] && mkdir -p -- "$1" && cd "$1"
 }
 
-#_cd() {
-#	# I sometimes type `cd cd DIR'
-#	if [ "_$1" == '_cd' ]; then shift; fi
-#	builtin cd "$@"
-#}
-#alias cd='_cd'
-
+# untar and cd to the tarball's directory
+# usefulness: *****
+# example:
+# ~ $ tcd foo-1.2.3.tar.xz
+# ~/foo-1.2.3 $ _
 tcd() {
 	tar xf "$1" &&
 	cd "$(tar tf "$1" |head -1 |cut -f 1 -d /)"
 }
 
+# delete a huge directory in the background so you can do more interesting
+# things
+# usefulness: *****
+# options:
+#  -s : shred(1) files before unlinking them
+#
 qrmr() {
 	# disconnect and destruct
 	# -d	| -e .ok	| r
@@ -277,7 +267,7 @@ qrmr() {
 			if [ "$shr" -eq 0 ]; then
 				rm -rf -- "$dir"/* "$dir" &
 			else
-				find "$dir"/* -type f -exec shred -zu -- {} + &&
+				ionice -c 3 find "$dir"/* -type f -exec shred -zu -- {} + &&
 				find "$dir"/* -type d -empty -delete &&
 				rm -rf -- "$dir" &
 			fi
@@ -294,6 +284,7 @@ qrmr() {
 }
 
 # turn off history (incognito mode)
+# usefulness: ?
 histoff() {
 	unset HISTFILE
 	# decolorize prompt, but set to bright white for clear indication that
