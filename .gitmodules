@@ -114,3 +114,7 @@
 	path = vim/.vim/pack/dist/start/yats.vim
 	url = https://github.com/HerringtonDarkholme/yats.vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/Vim-PHP-Doc/after/syntax"]
+	path = vim/.vim/pack/dist/start/Vim-PHP-Doc/after/syntax
+	url = https://github.com/tetsuo13/Vim-PHP-Doc.git
+	branch = master
