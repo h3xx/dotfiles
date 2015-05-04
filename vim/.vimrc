@@ -278,6 +278,13 @@ nnoremap <Esc><Esc> :noh<CR>
 " force opening new tabs when gf-ing
 nnoremap gf <C-W>gf
 
+" remap ctrl-[direction] to window moving
+" (thanks to github.com/bling/minivimrc)
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 " \v => re-select the text you just pasted
 nnoremap <leader>v V`]
 
