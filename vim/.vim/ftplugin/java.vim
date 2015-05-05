@@ -1,4 +1,3 @@
-" Only do this part when compiled with support for autocommands.
 setlocal completefunc=javacomplete#CompleteParamsInfo
 setlocal omnifunc=javacomplete#Complete
 inoremap <buffer> <C-X><C-U> <C-X><C-U><C-P>
