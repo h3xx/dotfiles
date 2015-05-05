@@ -10,5 +10,8 @@ setl keywordprg=~/.vim/bin/php_doc
 setl makeprg=php\ -ln\ % |
 setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
+" search ClassName.php when doing `gf'
+setl suffixesadd=.php
+
 " hopefully this will be less laggy
 "setl fdm=indent
