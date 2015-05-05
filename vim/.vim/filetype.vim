@@ -348,13 +348,4 @@ aug gzipext
 
 aug END " gzipext
 
-aug plugins
-	au!
-	au Filetype			java
-				\ setl omnifunc=javacomplete#Complete |
-				\ setl completefunc=javacomplete#CompleteParamsInfo |
-				\ inoremap <buffer> <C-S-Space> <C-X><C-U><C-P> |
-				\ inoremap <buffer> <C-X><C-U> <C-X><C-U><C-P>
-aug END " plugins
-
 " vi: ft=vim fdm=syntax
