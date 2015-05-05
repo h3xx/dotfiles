@@ -14,3 +14,6 @@ setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 " Conform to PEAR standards
 " Waste space with four spaces instead of a tab
 setl sts=4 sw=4 ts=8
+
+" Search ClassName.php when doing `gf'
+setl suffixesadd=.php
