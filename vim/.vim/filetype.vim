@@ -79,7 +79,7 @@ aug keycommands
 	" use backslash-pipe (or [num]-backslash-pipe) to quickly comment lines
 
 	"" perl, sh, php and various config files use the # comment leader
-	au FileType		alsaconf,coffee,conf,config,cvsrc,gtkrc,make,mplayerconf,muttrc,perl,php,procmail,python,readline,remind,resolv,screen,sh,squid,sshconfig,sudoers,yaml
+	au FileType		alsaconf,coffee,conf,config,cvsrc,gitconfig,gtkrc,make,mplayerconf,muttrc,perl,php,procmail,python,readline,remind,resolv,screen,sh,squid,sshconfig,sudoers,yaml
 				\ noremap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR>
 
 	"" c, javascript and java use the // comment leader
