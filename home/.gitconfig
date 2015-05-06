@@ -23,6 +23,12 @@
 	excludesfile	= ~/.gitignore_global
 	deltaBaseCacheLimit = 4g	# limit memory when resolving deltas?
 
+[merge]
+	tool = meld
+
+#[mergetool "meld"]
+#	cmd = "meld"
+
 [fetch]
 	# auto-fetch submodules upon git pull
 	recurseSubmodules = yes
