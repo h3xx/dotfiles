@@ -84,6 +84,7 @@ aug keycommands
 				\conf,
 				\config,
 				\cvsrc,
+				\gitconfig,
 				\gtkrc,
 				\make,
 				\mplayerconf,
