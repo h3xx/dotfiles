@@ -49,6 +49,12 @@
 [github]
 	user = h3xx
 
+[merge]
+	tool = meld
+
+#[mergetool "meld"]
+#	cmd = "meld"
+
 [push]
 	default = simple
 
