@@ -82,6 +82,10 @@ aug keycommands
 	au FileType		alsaconf,coffee,conf,config,cvsrc,gitconfig,gtkrc,make,mplayerconf,muttrc,perl,php,procmail,python,readline,remind,resolv,screen,sh,squid,sshconfig,sudoers,yaml
 				\ noremap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR>
 
+	"" sql uses the -- comment leader
+	au FileType		sql
+				\ noremap <buffer> <silent> <leader>\| :s+^+--+\|nohls<CR>
+
 	"" c, javascript and java use the // comment leader
 	"" (technically, so does PHP, but I like to pretend I'm writing Perl)
 	au FileType		c,java,javascript
