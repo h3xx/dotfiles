@@ -83,6 +83,11 @@ aug keycommands
 				\ nmap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR> |
 				\ vmap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR>
 
+	"" sql uses the -- comment leader
+	au FileType		sql
+				\ nmap <buffer> <silent> <leader>\| :s+^+--+\|nohls<CR> |
+				\ vmap <buffer> <silent> <leader>\| :s+^+--+\|nohls<CR>
+
 	"" c, javascript and java use the // comment leader
 	"" (technically, so does PHP, but I like to pretend I'm writing Perl)
 	au FileType		c,javascript,java
