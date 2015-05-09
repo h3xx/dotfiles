@@ -1,6 +1,6 @@
 " Getopt::Std call for Perl
 
-:append
+append
 use Getopt::Std	qw/ getopts /;
 
 &getopts('', \ my %opts);
