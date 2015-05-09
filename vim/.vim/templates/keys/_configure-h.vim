@@ -1,5 +1,5 @@
 " simple header for build scripts
-:append
+append
 (build_script="$(readlink -f -- "$BASH_SOURCE")"
 conf_script="${build_script%-build}"
 [ "$build_script" == "$conf_script" -o ! -f "$conf_script" ] ||

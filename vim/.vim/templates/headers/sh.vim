@@ -1,5 +1,5 @@
 " header for shell scripts
 
-:insert
+append
 #!/bin/sh
 .

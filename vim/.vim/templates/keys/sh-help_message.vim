@@ -1,6 +1,6 @@
 " HELP_MESSAGE semi-standard function for shell scripts
 
-:append
+append
 HELP_MESSAGE() {
 	local EXIT_CODE="${1:-0}"
 	cat <<EOF

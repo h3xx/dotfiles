@@ -1,5 +1,5 @@
 " header for xml files
 
-:insert
+append
 <?xml version="1.0" encoding="utf-8"?>
 .

@@ -1,5 +1,5 @@
 " Data::Dumper call for Perl
 
-:append
+append
 {use Data::Dumper; print STDERR Data::Dumper->Dump([]);}
 .

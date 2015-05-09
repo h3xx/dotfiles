@@ -1,4 +1,4 @@
-:insert
+insert
 /*
 Copyright (C) 2012 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).

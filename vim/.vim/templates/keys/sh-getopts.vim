@@ -1,6 +1,6 @@
 " getopts structure for shell scripts
 
-:append
+append
 while getopts 'h' flag; do
 	case "$flag" in
 		'h')

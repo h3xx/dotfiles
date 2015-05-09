@@ -4,7 +4,7 @@
 " expand('%:t:r'): basename of current file, one extension removed
 :0put =printf('package %s::%s;', expand('%:p:h:t'), expand('%:t:r'))
 
-:append
+append
 use strict;
 use warnings;
 
