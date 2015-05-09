@@ -1,6 +1,6 @@
 " exit cleanup process for shell scripts
 
-:append
+append
 TEMP_FILES=()
 
 cleanup() {

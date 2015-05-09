@@ -1,6 +1,6 @@
 " header for XSL transforms
 
-:insert
+insert
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet
 	version="1.0"

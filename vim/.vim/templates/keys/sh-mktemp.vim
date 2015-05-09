@@ -1,5 +1,5 @@
 " mktemp invocation for shell scripts
 
-:append
+append
 ="$(mktemp -t "$(basename -- "$0").XXXXXX")"
 .
