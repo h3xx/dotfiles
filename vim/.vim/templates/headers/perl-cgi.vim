@@ -1,6 +1,6 @@
 " header for perl CGI scripts
 
-:append
+append
 #!/usr/bin/perl -w
 use strict;
 

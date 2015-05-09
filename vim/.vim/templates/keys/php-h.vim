@@ -1,5 +1,5 @@
 " header for php
 
-:insert
+insert
 <?php
 .

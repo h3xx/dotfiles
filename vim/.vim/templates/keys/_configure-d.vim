@@ -1,5 +1,5 @@
 " insert docfile installing meme
-:append
+append
 find . \
 	-type f \
 	-maxdepth 1 \

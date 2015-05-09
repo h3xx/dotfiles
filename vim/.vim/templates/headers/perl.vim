@@ -1,6 +1,6 @@
 " header for perl scripts
 
-:insert
+insert
 #!/usr/bin/perl -w
 use strict;
 .
