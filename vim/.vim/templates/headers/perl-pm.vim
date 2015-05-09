@@ -26,7 +26,10 @@ Dan Church S<E<lt>h3xx@gmx.comE<gt>>
 
 =head1 COPYRIGHT
 
-Copyright 2013 Dan Church.
+Copyright (C) YEAR Dan Church.
+.
+s/YEAR/\=strftime("%Y")/
+append
 
 This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
