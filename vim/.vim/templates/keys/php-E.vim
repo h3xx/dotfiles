@@ -1,5 +1,5 @@
 " begin new Exception
 
-:insert
+insert
 throw new Exception("
 .

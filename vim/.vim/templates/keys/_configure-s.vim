@@ -1,5 +1,5 @@
 " slack-desc heredoc start
-:insert
+insert
 cat <<EOF >b/install/slack-desc &&
 # HOW TO EDIT THIS FILE:
 # The "handy ruler" below makes it easier to edit a package description.  Line
