@@ -60,7 +60,9 @@ hi Constant term=underline ctermfg=Magenta guifg=#ffa0a0 guibg=grey5
 hi Special term=bold ctermfg=LightRed guifg=Orange guibg=grey5
 if &t_Co > 8
   hi Statement term=bold cterm=bold ctermfg=Yellow guifg=#ffff60 gui=bold
-  hi CursorLine cterm=none ctermbg=DarkGrey
+endif
+if &t_Co > 16
+  hi CursorLine cterm=none ctermbg=238
 endif
 hi Ignore ctermfg=DarkGrey guifg=grey20
 
