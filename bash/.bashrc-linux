@@ -249,21 +249,14 @@ tcd() {
 }
 
 # delete a huge directory in the background so you can do more interesting
-# things
+# things with the terminal
 # usefulness: *****
 # options:
-#  -s : shred(1) files before unlinking them
+#  -s : shred(1) files before unlinking them. WARNING: if another instance of
+#	  this function is already running it may simply unlink the files
 #
 qrmr() {
 	# disconnect and destruct
-	# -d	| -e .ok	| r
-	# 0	  x		  1
-	# 1	  0		  0
-	# 1	  1		  2
-	# --
-	# r=1 : normal
-	# r=0 : abort
-	# r=2 : just move
 	local dir fn shr=0
 	# -s => shred instead of just rm
 	if [ "_$1" == '_-s' ]; then
@@ -272,6 +265,15 @@ qrmr() {
 	fi
 
 	for dir in ZZZ YYY; do
+		# truth table
+		# $dir is dir?	| exists $dir/.ok?	|| action
+		# 0		| x			|| 1
+		# 1		| 0			|| 0
+		# 1		| 1			|| 2
+		# --
+		# r=1 : normal; create $dir, move $thing into $dir, start destruct of $dir
+		# r=0 : abort (move on)
+		# r=2 : just move $thing into $dir because $dir is already being destroyed
 		if [ ! -d "$dir" ]; then
 			mkdir -p -- "$dir" &&
 			touch "$dir"/.okaytodelete || return
