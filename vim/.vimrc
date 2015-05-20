@@ -138,6 +138,13 @@ set tabpagemax=50
 " Display incomplete commands (default)
 "set showcmd
 
+" nice tab-completion on the command line
+set wildmenu
+" disable output and VCS files
+set wildignore+=*.o,*.obj,.git,*.class,.svn,*.gem
+" disable temp and backup files
+set wildignore+=*.swp,*~
+
 " ***********************************
 " ***** normal mode, navigation *****
 " ***********************************
