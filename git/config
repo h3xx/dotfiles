@@ -13,10 +13,12 @@
 	br		= branch
 	up		= pull		# I'm used to svn
 	url		= remote -v	# list checkout urls
+	cob		= checkout -b
+	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
 	# option overrides
 	merge		= merge --ff
 	pull		= pull --ff
-	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	#fetch		= fetch --all
 
 [core]
 	pager		= less -R	# handle colors correctly
