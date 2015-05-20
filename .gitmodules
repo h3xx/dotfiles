@@ -26,3 +26,7 @@
 	path = vim/.vim/pack/dist/opt/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-repeat"]
+	path = vim/.vim/pack/dist/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+	branch = master
