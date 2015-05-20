@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:	Dan Church
-" Last Change:	2015 Apr 28
+" Last Change:	2015 May 20
 
 " This color scheme uses a *really* dark grey background.
 "
@@ -12,6 +12,8 @@
 " - text mode: fix invisible visual mode selection
 " - text mode: comment color more like gui mode
 " - GUI-like cursorline in terminals with a lot of colors
+" - Fix yellow-on-white (sort of) in GUI, 16-color and 256-color terminals
+"   (test &wildmenu)
 
 " First remove all existing highlighting.
 set background=dark
@@ -28,8 +30,8 @@ hi Normal ctermbg=black ctermfg=White guifg=White guibg=grey5
 hi ErrorMsg term=standout ctermbg=DarkRed ctermfg=White guibg=Red guifg=White
 hi IncSearch term=reverse cterm=reverse gui=reverse
 hi ModeMsg term=bold cterm=bold gui=bold
-hi StatusLine term=reverse,bold cterm=reverse,bold gui=reverse,bold
-hi StatusLineNC term=reverse cterm=reverse gui=reverse
+hi StatusLine term=reverse,bold cterm=none ctermfg=black ctermbg=7 gui=bold guifg=Black guibg=Gray45
+hi StatusLineNC term=reverse cterm=none ctermfg=black ctermbg=7 gui=bold guifg=Black guibg=Gray45
 hi VertSplit term=reverse cterm=reverse gui=reverse
 hi Visual term=reverse cterm=reverse ctermbg=black guibg=grey60
 hi VisualNOS term=underline,bold cterm=underline,bold gui=underline,bold
@@ -63,6 +65,8 @@ if &t_Co > 8
 endif
 if &t_Co > 16
   hi CursorLine cterm=none ctermbg=238
+  hi StatusLineNC ctermfg=12 ctermbg=248
+  hi StatusLine ctermfg=black ctermbg=248
 endif
 hi Ignore ctermfg=DarkGrey guifg=grey20
 
