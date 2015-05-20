@@ -22,6 +22,10 @@
 	path = vim/.vim/pack/dist/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-repeat"]
+	path = vim/.vim/pack/dist/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/webapi-vim"]
 	path = vim/.vim/pack/dist/start/webapi-vim
 	url = https://github.com/mattn/webapi-vim.git
