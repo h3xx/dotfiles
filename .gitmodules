@@ -34,3 +34,7 @@
 	path = vim/.vim/pack/dist/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-easymotion"]
+	path = vim/.vim/pack/dist/start/vim-easymotion
+	url = https://github.com/Lokaltog/vim-easymotion.git
+	branch = master
