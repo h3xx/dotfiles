@@ -1,0 +1,10 @@
+" be more like Vimium
+set hintchars=sadfjklewcmpgh
+" use bookmarks for O/o/:open completion
+set complete=bsl
+
+" faster scrolling (even arrow keys are faster)
+nnoremap j 4j
+nnoremap k 4k
+
+" vi: ft=vim
