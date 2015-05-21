@@ -1,9 +1,11 @@
 " FUCK YOU, /usr/share/vim/vim75/indent/php.vim! I don't want your stupid
 " formatoptions!
-let g:PHP_autoformatcomment = 0
-setl fo-=anotw
-setl fo+=tcqlr
-setl comments=s1:/*,mb:*,ex:*/,://,:#
+" (addendum: not so bad in later versions; still terrible in the version vim
+" ships with)
+"let g:PHP_autoformatcomment = 0
+"setl fo-=anotw
+"setl fo+=tcqlr
+"setl comments=s1:/*,mb:*,ex:*/,://,:#
 
 setl keywordprg=~/.vim/bin/php_doc
 
