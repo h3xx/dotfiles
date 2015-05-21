@@ -10,6 +10,10 @@
 	path = vim/.vim/pack/dist/start/gist-vim
 	url = https://github.com/mattn/gist-vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-easymotion"]
+	path = vim/.vim/pack/dist/start/vim-easymotion
+	url = https://github.com/Lokaltog/vim-easymotion.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-eunuch"]
 	path = vim/.vim/pack/dist/start/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
