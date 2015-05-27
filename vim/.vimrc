@@ -238,10 +238,12 @@ endif " has('multi_byte')
 "endif " exists(':Git')
 
 " IDE plugin
-let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
-" default "fMOSTw"
-" "s" => disable warnings about being unable to generate syntax files (wtf)
-let g:IDE_AdvancedFlags = "fMOsTw"
+"if exists(':IDE')
+	let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
+	" default "fMOSTw"
+	" "s" => disable warnings about being unable to generate syntax files (wtf)
+	let g:IDE_AdvancedFlags = "fMOsTw"
+"endif " exists(':IDE')
 
 " nerdtree
 "if exists(':NERDTree')
