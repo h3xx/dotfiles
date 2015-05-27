@@ -46,7 +46,10 @@ endif " !has("autocmd")
 " always keep a backup (default)
 "set backup
 
-" {{{BEGIN backupskip
+"
+" ***** backup files *****
+"
+
 " skip backing up of the following patterns
 "set backupskip+=/tmp/*
 
@@ -68,10 +71,18 @@ set backupskip+=*/.cron/*/*
 "" C-x C-e (bash)
 set backupskip+=*/bash-fc-*
 
-" }}}END backupskip
+"
+" ***** swap files *****
+"
 
 " keep vim swap files out of the current working directory
 set directory=~/.vim/temp//
+
+" number of characters typed before swap file is written (default)
+"set updatecount=200
+
+" number of milliseconds in interval between swap file writes (default)
+"set updatetime=4000
 
 " chdir to match current buffer
 set autochdir
@@ -90,12 +101,6 @@ set history=512
 
 " number of undo levels (default)
 "set undolevels=1000
-
-" number of characters typed before swap file is written (default)
-"set updatecount=200
-
-" number of milliseconds in interval between swap file writes (default)
-"set updatetime=4000
 
 " show the cursor position all the time (default)
 "set ruler
