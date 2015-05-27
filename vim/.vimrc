@@ -235,8 +235,6 @@ endif " has('multi_byte')
 
 " vim-fugitive
 "if exists(':Git')
-	" \l opens the git revision log
-	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
 "endif " exists(':Git')
 
 " IDE plugin
