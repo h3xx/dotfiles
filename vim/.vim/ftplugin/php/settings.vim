@@ -14,8 +14,8 @@ setl makeprg=php\ -ln\ % |
 setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
 " Conform to PEAR standards
-" Waste space with four spaces instead of a tab
-setl sts=4 sw=4 ts=8
+" Reference: http://pear.php.net/manual/en/standards.indenting.php
+setl et sts=4 sw=4 ts=4
 
 " Search ClassName.php when doing `gf'
 setl suffixesadd=.php
