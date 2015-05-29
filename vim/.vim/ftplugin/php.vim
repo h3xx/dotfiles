@@ -7,6 +7,10 @@
 "setl fo+=tcqlr
 "setl comments=s1:/*,mb:*,ex:*/,://,:#
 
+" conform to PEAR standards
+" reference: http://pear.php.net/manual/en/standards.indenting.php
+setl ts=4 sw=4 sts=4 et
+
 setl keywordprg=~/.vim/bin/php_doc
 
 " syntax check the current buffer when `:make'
@@ -15,6 +19,3 @@ setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
 " search ClassName.php when doing `gf'
 setl suffixesadd=.php
-
-" hopefully this will be less laggy
-"setl fdm=indent
