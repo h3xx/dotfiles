@@ -6,6 +6,9 @@
 " This must be first, because it changes other options as a side effect.
 "set nocompatible
 
+" use filetype and indent plugins (default)
+"filetype plugin indent on
+
 " ****************************************
 " ***** environment, Unicode options *****
 " ****************************************
@@ -298,33 +301,6 @@ nnoremap <leader>v V`]
 " C-u = undo in insert mode
 inoremap <C-U> <C-G>u<C-U>
 
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-" (addendum 2015-04-19: what is this? it doesn't seem to do anything)
-vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
-
-function! VisualSelection(direction) range
-	let l:saved_reg=@"
-	execute "normal! vgvy"
-
-	let l:pattern=escape(@", '\\/.*$^~[]')
-	let l:pattern=substitute(l:pattern, "\n$", "", "")
-
-	if a:direction == 'b'
-		execute 'normal ?' . l:pattern . '^M'
-	elseif a:direction == 'gv'
-		call CmdLine('vimgrep /'. l:pattern . '/ **/*.')
-	elseif a:direction == 'replace'
-		call CmdLine('%s/'. l:pattern . '/')
-	elseif a:direction == 'f'
-		execute 'normal /' . l:pattern . '^M'
-	endif
-
-	let @/=l:pattern
-	let @"=l:saved_reg
-endfunction
-
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
@@ -459,9 +435,9 @@ endif
 
 " *** tagbar ***
 if has('gui_running')
-	nmap <silent> <F8> :if &co<113\|set co=113\|endif\|TagbarToggle<CR>
+	nmap <silent> <F8> :packadd tagbar<CR>:if &co<113\|set co=113\|endif\|TagbarToggle<CR>
 else
-	nmap <silent> <F8> :TagbarToggle<CR>
+	nmap <silent> <F8> :packadd tagbar<CR>:TagbarToggle<CR>
 endif
 let g:tagbar_autofocus=1
 let g:tagbar_ctags_bin='ctags'
