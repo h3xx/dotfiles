@@ -1,19 +1,21 @@
 " Vim color file
 " Maintainer:	Dan Church
-" Last Change:	2015 May 28
+" Last Change:	2015 May 29
 
 " This color scheme uses a *really* dark grey background.
 "
 " Forked from evening.vim with the following tweaks:
-" - almost black backgrounds
-" - cursorline not so bright as to make comments disappear
-" - brighter cursor
-" - cooler colors on line numbers
-" - text mode: fix invisible visual mode selection
-" - text mode: comment color more like gui mode
+" - Almost black backgrounds
+" - Cursorline not so bright as to make comments disappear
+" - Brighter cursor
+" - Nicer colors on line numbers (like comments with the current line
+"   highlighted if &cursorline)
+" - Text mode: fix invisible visual mode selection
+" - Text mode: comment color more like gui mode
 " - GUI-like cursorline in terminals with a lot of colors
 " - Fix yellow-on-white (sort of) in GUI, 16-color and 256-color terminals
 "   (test &wildmenu)
+" - Fix dark green messages in command mode.
 
 " First remove all existing highlighting.
 set background=dark
@@ -42,7 +44,7 @@ hi Directory term=bold ctermfg=LightCyan guifg=Cyan
 hi LineNr term=underline ctermfg=blue guifg=steelblue
 hi MoreMsg term=bold ctermfg=LightGreen gui=bold guifg=SeaGreen
 hi NonText term=bold ctermfg=LightBlue gui=bold guifg=LightBlue guibg=grey10
-hi Question term=standout ctermfg=LightGreen gui=bold guifg=Green
+hi Question term=standout ctermfg=LightGreen gui=bold guifg=SeaGreen
 hi Search term=reverse ctermbg=Yellow ctermfg=Black guibg=Yellow guifg=Black
 hi SpecialKey term=bold ctermfg=LightBlue guifg=Cyan
 hi Title term=bold ctermfg=LightMagenta gui=bold guifg=Magenta
