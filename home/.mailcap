@@ -110,11 +110,12 @@ text/*; gvim %s					; test=test -n "$DISPLAY"
 text/*; vim %s; needsterminal
 text/*; cat %s; copiousoutput
 
-#image/*; xv %s					; test=test -n "$DISPLAY"
+image/*; xv %s					; test=test -n "$DISPLAY"
 image/*; geeqie %s				; test=test -n "$DISPLAY"
 
 # media
 
+audio/x-mod; modplug123 %s
 audio/*; mplayer %s
 application/ogg; mplayer %s
 application/vnd.rn-realmedia; mplayer %s
