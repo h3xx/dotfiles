@@ -502,7 +502,6 @@ let g:netrw_browsex_viewer = 'google-chrome'
 " ***** load local vimrc *****
 " ****************************
 
-let s:local_vimrc=expand("~/.vimrc-local")
-if filereadable(s:local_vimrc)
-	execute "source ".s:local_vimrc
+if filereadable(expand("\~/.vimrc-local"))
+	source \~/.vimrc-local
 endif
