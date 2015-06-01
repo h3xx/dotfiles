@@ -386,7 +386,7 @@ set ttyfast
 " (note: must occur BEFORE colorscheme invocation)
 autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red
 " (match commands only apply to the current buffer)
-autocmd BufEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
+autocmd BufEnter,WinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
 " Replace blinding gvim color scheme (makes terminal vim brighter)
 colorscheme late_evening
