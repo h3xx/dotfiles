@@ -143,8 +143,10 @@ set tabpagemax=50
 
 " nice tab-completion on the command line
 set wildmenu
-" disable output and VCS files
-set wildignore+=*.o,*.obj,.git,*.class,.svn,*.gem
+" disable VCS files
+set wildignore+=.git,.svn,CVS
+" disable output files
+set wildignore+=*.o,*.obj,*.class,*.gem
 " disable temp and backup files
 set wildignore+=*.swp,*~
 
