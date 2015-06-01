@@ -157,6 +157,9 @@ set wildignore+=*.swp,*~
 " Do incremental searching (default)
 "set incsearch
 
+" Set lines to scroll when the cursor moves off screen (default)
+"set scrolljump=1
+
 " Start scrolling when the cursor is x lines away from bottom/top margins
 " (default)
 "set scrolloff=5
