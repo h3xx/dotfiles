@@ -307,6 +307,10 @@ nnoremap <leader>v V`]
 " C-u = undo in insert mode
 inoremap <C-U> <C-G>u<C-U>
 
+" yank from the cursor to the end of the line, to be consistent
+" with C and D.
+nnoremap Y y$
+
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
