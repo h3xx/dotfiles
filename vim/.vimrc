@@ -447,6 +447,19 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 " *** nerdtree ***
 " activate NERDTree when pressing the minus key
 " (first make sure the window is comfortably wide)
+" TODO	: make this faster
+"	: candidates: NERDTreeMirror\|NERDTreeFind
+"	:  function! NERDTreeInitAsNeeded()
+"     redir => bufoutput
+"     buffers!
+"     redir END
+"     let idx = stridx(bufoutput, "NERD_tree")
+"     if idx > -1
+"         NERDTreeMirror
+"         NERDTreeFind
+"         wincmd l
+"     endif
+" endfunction
 if has('gui_running')
 	nmap <silent> - :if &co<113\|set co=113\|endif\|NERDTreeToggle<CR>
 else
