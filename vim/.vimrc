@@ -316,6 +316,11 @@ inoremap <C-U> <C-G>u<C-U>
 " with C and D.
 nnoremap Y y$
 
+" H/L navigation = beginning/end of line
+" (I have never pressed H or L expecting what they do by default)
+nnoremap H ^
+nnoremap L $
+
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
