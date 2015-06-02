@@ -164,13 +164,15 @@ set wildignore+=*.swp,*~
 " ***** command mode, grep *****
 " ******************************
 
+" To get ack, use:
+" $ wget -O ~/bin/ack http://beyondgrep.com/ack-2.14-single-file && chmod +x ~/bin/ack
 if executable('ack')
 	" use ack over grep (automatically ignores *~)
 	set grepprg=ack\ --nogroup\ --nocolor
 else
 	" ignore backup files when using :grep
 	set grepprg=grep\ -n\ --exclude=*~\ $*\ /dev/null
-endif
+endif " executable('ack')
 
 " ***********************************
 " ***** normal mode, navigation *****
