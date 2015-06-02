@@ -93,7 +93,7 @@
 #	  over pngcrush(1) as it seems to do a better job.
 #
 # BUGS:
-# 	* Doesn't do that great a job of counting freed bytes on larger
+#	* Doesn't do that great a job of counting freed bytes on larger
 #	  operations using the `-r' (recursive) flag. This is due to find(1)
 #	  sending only-so-many file names to the command when using the `-exec
 #	  [COMMAND] [ARGS] {} +' syntax. Perhaps implementing a piped file
@@ -131,10 +131,10 @@ Optimize image files for size.
   --		Terminate options list.
 
 Currently, this script will only work on the following types of files:
-  * JPEG (\`image/jpeg')                       	 Using jpegtran(1)
-  * Portable Network Graphics (\`image/png')  	 Using optipng(1)/pngcrush
+  * JPEG (\`image/jpeg')                         Using jpegtran(1)
+  * Portable Network Graphics (\`image/png')     Using optipng(1)/pngcrush
   * Mult-image Network Graphics (\`video/x-mng') Using advmng(1) [not working]
-  * Graphics Interchange Format (\`image/gif')	 Using gifsicle(1)
+  * Graphics Interchange Format (\`image/gif')   Using gifsicle(1)
 
   If the environment variable PREFER_PNGCRUSH is set to a non-empty value, then
   pngcrush is preferred over optipng(1).
@@ -314,7 +314,7 @@ use_smaller() {
 		temp="$2" \
 		origsize \
 		tempsize
-	
+
 	origsize="$(file_size "$file")"
 	tempsize="$(file_size "$temp")"
 
