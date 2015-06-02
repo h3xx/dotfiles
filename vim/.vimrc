@@ -160,6 +160,9 @@ set wildignore+=*.o,*.obj,*.class,*.gem
 " disable temp and backup files
 set wildignore+=*.swp,*~
 
+" ignore backup files when using :grep
+set grepprg=grep\ -n\ --exclude=*~\ $*\ /dev/null
+
 " ***********************************
 " ***** normal mode, navigation *****
 " ***********************************
