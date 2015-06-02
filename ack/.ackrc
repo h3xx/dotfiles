@@ -1,0 +1,4 @@
+--color-filename=bold yellow
+--color-match=bold red
+--color-lineno=bold blue
+# vi: ft=conf
