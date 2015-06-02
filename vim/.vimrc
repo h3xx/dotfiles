@@ -333,7 +333,9 @@ nnoremap Y y$
 " H/L navigation = beginning/end of line
 " (I have never pressed H or L expecting what they do by default)
 nnoremap H ^
+vnoremap H ^
 nnoremap L $
+vnoremap L $
 
 " bind gK to grep word under cursor
 "nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
