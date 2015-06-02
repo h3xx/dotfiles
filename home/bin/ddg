@@ -1,0 +1,113 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+# opens elinks to the specified (or un-specified) search query
+
+if [[ -z "${BROWSER:=$(which -a elinks links lynx curl |head -1)}" ]]; then
+    echo 'No suitable text mode browser found.' >&2
+    echo 'Set BROWSER environment variable to specify one manually.' >&2
+    exit 2
+fi
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [QUERY]...
+Search DuckDuckGo
+
+Options:
+  -d            Use as a dictionary by adding \`define:' before the search
+                  term.
+  -e KEY=VALUE  Manually append a URL parameter.
+  -h            Show this help message.
+  -q            Use exact phrase matching by surrounding QUERY with double
+                quotes. Has the same effect as \`-f search -v as_epq'.
+  -s DOMAIN     Limit search results to pages within DOMAIN by prefixing QUERY
+                  with \`site:DOMAIN '.
+  -S            Use safe search.
+  -v STRING     Use STRING as the query parameter key name. Default is \`q'.
+
+You can manually specify the browser the link opens with by setting the
+\`BROWSER' environment variable.
+
+For more information, see https://duckduckgo.com/params.html
+
+Copyright (C) 2010-2015 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+QUERY_PREFIX=
+QUERY_VAR='q'
+EXTRA_ARGS=()
+QUOTE=0
+#ENCODING='UTF-8' # TODO : add as option
+while getopts 'ds:qSe:v:h-' flag; do
+    case "$flag" in
+        'd')
+            QUERY_PREFIX='define:'
+            QUERY_VAR='q'
+            ;;
+        's')
+            QUERY_PREFIX="site:$OPTARG "
+            QUERY_VAR='q'
+            ;;
+        'q')
+            QUOTE=1
+            ;;
+        'S')
+            EXTRA_ARGS+=('kp=1')
+            ;;
+        'e')
+            EXTRA_ARGS+=("$OPTARG")
+            ;;
+        'v')
+            QUERY_VAR=$OPTARG
+            ;;
+        'h'|'-')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+url_encode() {
+    perl -MURI::Escape -e 'print &uri_escape($_), "\n" foreach @ARGV' "$@"
+}
+
+collate_args() {
+
+    #for ((arg_i=0; arg_i < ${#EXTRA_ARGS[@]}-1; ++arg_i)) ; do
+    #   echo -n "${EXTRA_ARGS[$arg_i]}&"
+    #done
+    #echo -n "${EXTRA_ARGS[$arg_i]}"
+
+    local args=$(IFS=; echo "${EXTRA_ARGS[*]/%/&}")
+    echo -n "${args%&}"
+}
+
+# set the encoding
+#EXTRA_ARGS+=("ie=$ENCODING")
+
+QUERY=$*
+
+if [[ $QUOTE -ne 0 ]]; then
+    QUERY="\"$QUERY\""
+fi
+
+EXTRA_ARGS+=("${QUERY_VAR}=$(url_encode "${QUERY_PREFIX}${QUERY}")")
+
+# add browser name to args
+if [[ ${EXTRA_ARGS[*]#client=} = ${EXTRA_ARGS[*]} ]]; then
+    EXTRA_ARGS+=("client=$(url_encode "$(basename "$BROWSER")")")
+fi
+
+url="https://duckduckgo.com/?$(collate_args)"
+
+exec $BROWSER "$url"
