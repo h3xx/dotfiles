@@ -8,3 +8,5 @@ clean:
 
 %.dat: %
 	strfile $<
+
+.PHONY: all clean
