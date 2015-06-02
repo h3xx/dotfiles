@@ -1,1 +1,7 @@
 browser elinks
+bind-key "j" down feedlist
+bind-key "k" up feedlist
+bind-key "j" next articlelist
+bind-key "k" prev articlelist
+bind-key "h" quit articlelist
+bind-key "l" open feedlist
