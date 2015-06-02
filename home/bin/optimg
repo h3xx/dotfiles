@@ -5,6 +5,9 @@
 
 # CHANGES:
 #
+# 2015-0602-1428 :
+#   * Automatically rotate images from Exif orientation when stripping Exif.
+#
 # 2011-1211-1210 :
 #   * Add `-C' option to not reduce the color type. I've encountered some
 #     programs that will not read images with a color palette (namely
@@ -145,7 +148,7 @@ Currently, this script will only work on the following types of files:
   If the environment variable PREFER_PNGCRUSH is set to a non-empty value, then
   pngcrush is preferred over optipng(1).
 
-Copyright (C) 2010-2011 Dan Church.
+Copyright (C) 2010-2015 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -398,11 +401,28 @@ optimize_image() {
 'image/jpeg')
 
     # XXX jpegtran and jhead cannot handle input files starting with -
+
+    local TEMP1=$(mktemp -t "${0##*/}.XXXXXX")
+    TEMP_FILES+=("$TEMP1")
+
+    cp -a -- "$IMAGE_FILE" "$TEMP1" &&
+
+    # rotate image according to the orientation saved in the Exif information
+    # if we are not going to save the Exif information itself
+    if [[ $KEEP_EXIF -eq 0 ]]; then
+        if hash jhead &>/dev/null; then
+            jhead \
+                -autorot "$TEMP1" >&2 ||
+            return
+        fi
+    fi &&
+
+    # optimize the image
     if hash jpegtran &>/dev/null; then
         jpegtran \
             -optimize \
             -outfile "$TEMP" \
-            "$IMAGE_FILE" \
+            "$TEMP1" \
             >&2 ||
         return
 
