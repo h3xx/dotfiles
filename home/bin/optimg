@@ -143,7 +143,7 @@ Currently, this script will only work on the following types of files:
   If the environment variable PREFER_PNGCRUSH is set to a non-empty value, then
   pngcrush is preferred over optipng(1).
 
-Copyright (C) 2010-2011 Dan Church.
+Copyright (C) 2010-2015 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
