@@ -4,6 +4,10 @@
 
 # CHANGES:
 #
+# 2015-0602-1428 :
+#	* Automatically rotate images from Exif orientation when stripping
+#	  Exif.
+#
 # 2011-1211-1210 :
 #	* Add `-C' option to not reduce the color type. I've encountered some
 #	  programs that will not read images with a color palette (namely
@@ -21,10 +25,10 @@
 #	  `-T' option.
 #	* Fixed bug in reporting section that was causing individual filenames
 #	  not to be printed.
-#	* Errs out if it can't preserve EXIF information. This is because the
+#	* Errs out if it can't preserve Exif information. This is because the
 #	  user specifically requests to save this information, and if we can't
 #	  do it, the user would most likely be pissed off we optimized the
-#	  image but dumped the EXIF.
+#	  image but dumped the Exif
 #
 # 2011-0802-2333 :
 #	* Commented out MNG support, as advmng(1) seems to kill the image's
@@ -338,7 +342,7 @@ use_smaller() {
 		fi) &&
 
 		(if [ "$UID" -eq 0 ]; then
-			# we're root, so we can chown(1) things
+			# we are root, so we can chown(1) things
 			chown \
 				--reference="$file" \
 				-- \
@@ -379,7 +383,8 @@ use_smaller() {
 optimize_image() {
 	local \
 		image_file \
-		temp
+		temp \
+		temp1
 
 	for image_file; do
 
@@ -396,12 +401,30 @@ optimize_image() {
 
 'image/jpeg')
 
-	# XXX : jpegtran and jhead can't handle input files starting with `-'
+	# XXX : jpegtran and jhead cannot handle input files starting with -
+
+	temp1="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+	TEMP_FILES+=("$temp1")
+
+	cp -a -- "$image_file" "$temp1" &&
+
+	# rotate image according to the orientation saved in the Exif
+	# information if we are not going to save the Exif information itself
+	(if [ "$KEEP_EXIF" -eq 0 ]; then
+		if [ -n "$(type -Pt 'jhead')" ]; then
+
+			jhead \
+				-autorot "$temp1" >&2 ||
+				exit
+		fi
+	fi) &&
+
+	# optimize the image
 	(if [ -n "$(type -Pt 'jpegtran')" ]; then
 		jpegtran \
 			-optimize \
 			-outfile "$temp" \
-			"$image_file" >&2 ||
+			"$temp1" >&2 ||
 
 			exit
 	else
@@ -409,20 +432,20 @@ optimize_image() {
 		exit 1
 	fi) &&
 
+	# back up Exif information
 	(if [ "$KEEP_EXIF" -ne 0 ]; then
 		if [ -n "$(type -Pt 'jhead')" ]; then
-			# copy EXIF information from original file to the
+			# copy Exif information from original file to the
 			# temporary file
-			# note: there is no long option for `-te'
 			jhead \
 				-te "$image_file" \
 				"$temp" >&2 ||
 
 				exit
 		else
-			echo 'Error: Cannot preserve EXIF information.' >&2
-			# the user specifically requested to save EXIF
-			# information, so if we can't do it, might as well
+			echo 'Error: Cannot preserve Exif information.' >&2
+			# the user specifically requested to save Exif
+			# information, so if we can not do it, might as well
 			# give an error
 			exit 1
 		fi
@@ -449,7 +472,7 @@ optimize_image() {
 	(if [ \( -z "$PREFER_PNGCRUSH" -o -z "$(type -Pt 'pngcrush')" \) -a -n "$(type -Pt 'optipng')" ]; then
 
 		# XXX : optipng refuses to overwrite files (even though the man
-		#	page says `-force' overrides this)
+		#	page says -force overrides this)
 		rm -f -- "$temp" &&
 
 		optipng \
@@ -466,7 +489,7 @@ optimize_image() {
 
 	elif [ -n "$(type -Pt 'pngcrush')" ]; then
 
-		# XXX : pngcrush can't handle input files starting with `-'
+		# XXX : pngcrush cannot handle input files starting with -
 		pngcrush \
 			$([ "$QUIET" -eq 0 ] || echo '-q') \
 			-brute \
