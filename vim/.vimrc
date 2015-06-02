@@ -150,8 +150,17 @@ set wildignore+=*.o,*.obj,*.class,*.gem
 " disable temp and backup files
 set wildignore+=*.swp,*~
 
-" ignore backup files when using :grep
-set grepprg=grep\ -n\ --exclude=*~\ $*\ /dev/null
+" ******************************
+" ***** command mode, grep *****
+" ******************************
+
+if executable('ack')
+	" use ack over grep (automatically ignores *~)
+	set grepprg=ack\ --nogroup\ --nocolor
+else
+	" ignore backup files when using :grep
+	set grepprg=grep\ -n\ --exclude=*~\ $*\ /dev/null
+endif
 
 " ***********************************
 " ***** normal mode, navigation *****
@@ -322,6 +331,9 @@ nnoremap Y y$
 " (I have never pressed H or L expecting what they do by default)
 nnoremap H ^
 nnoremap L $
+
+" bind gK to grep word under cursor
+"nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " ************************************
 " ***** key bindings, paste mode *****
