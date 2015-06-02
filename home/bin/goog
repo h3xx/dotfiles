@@ -1,0 +1,170 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+# opens elinks to the specified (or un-specified) search query
+
+if [[ -z "${BROWSER:=$(which -a elinks links lynx curl |head -1)}" ]]; then
+    echo 'No suitable text mode browser found.' >&2
+    echo 'Set BROWSER environment variable to specify one manually.' >&2
+    exit 2
+fi
+
+HELP_MESSAGE() {
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [QUERY]...
+Search Google
+
+Options:
+  -c STRING     Send STRING as client parameter. Has the same effect as
+                  \`-e client=STRING'.
+  -d            Use Google as a dictionary by adding \`define:' before the
+                  search term.
+  -e KEY=VALUE  Manually append a URL parameter.
+  -f STRING     Use STRING as the function name. Default is \`search'.
+  -h            Show this help message.
+  -l LANG       Set the source language parameter for Google Language Tools'
+                  translation service by adding \`sl=LANG' to the URL
+                  parameters.
+  -n NUM        Limit search to NUM results.
+  -q            Use exact phrase matching by surrounding QUERY with double
+                  quotes. Has the same effect as \`-f search -v as_epq'.
+  -s DOMAIN     Limit search results to pages within DOMAIN by prefixing QUERY
+                  with \`site:DOMAIN '.
+  -t            Translate using Google Language Tools. Has the same effect as
+  -T            Translate backwards.
+                  \`-f translate_t -v text -e layout=2'.
+  -v STRING     Use STRING as the query parameter key name. Default is \`q'.
+
+You can manually specify the browser the link opens with by setting the
+\`BROWSER' environment variable.
+
+For more information on Google's query parameters, see
+http://googlesystem.blogspot.com/2006/07/meaning-of-parameters-in-google-query.html
+
+Copyright (C) 2007-2015 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+QUERY_PREFIX=''
+QUERY_VAR='q'
+FUNCTION='search'
+EXTRA_ARGS=()
+HOME_LANG='en'
+SOURCE_LANG=''
+BACK_TRANS=0
+ENCODING='UTF-8' # TODO : add as option
+while getopts 'ds:l:tTqn:c:e:f:v:h-' flag; do
+    case "$flag" in
+        'd')
+            QUERY_PREFIX='define:'
+            QUERY_VAR='q'
+            FUNCTION='search'
+            ;;
+        's')
+            QUERY_PREFIX="site:$OPTARG "
+            QUERY_VAR='q'
+            FUNCTION='search'
+            ;;
+        'l')
+            SOURCE_LANG="$OPTARG"
+            ;;
+        't')
+            QUERY_PREFIX=''
+            QUERY_VAR='text'
+            FUNCTION='translate_t'
+            # side-by-side layout; just looks prettier
+            EXTRA_ARGS+=('layout=2')
+            ;;
+        'T')
+            BACK_TRANS=1
+            QUERY_PREFIX=''
+            QUERY_VAR='text'
+            FUNCTION='translate_t'
+            # side-by-side layout; just looks prettier
+            EXTRA_ARGS+=('layout=2')
+            ;;
+        'q')
+            # use exact phrase matching by specifying variable used
+            # by Advanced Search
+            QUERY_VAR='as_epq'
+            ;;
+        'n')
+            # limit number of results to ${OPTARG}
+            EXTRA_ARGS+=("num=${OPTARG}")
+            ;;
+        'c')
+            EXTRA_ARGS+=("client=${OPTARG}")
+            ;;
+        'e')
+            EXTRA_ARGS+=("$OPTARG")
+            ;;
+        'f')
+            FUNCTION="$OPTARG"
+            ;;
+        'v')
+            QUERY_VAR="$OPTARG"
+            ;;
+        'h'|'-')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+url_encode() {
+    perl -MURI::Escape -e 'print &uri_escape($_), "\n" foreach @ARGV' "$@"
+}
+
+collate_args() {
+
+    #for ((arg_i=0; arg_i < ${#EXTRA_ARGS[@]}-1; ++arg_i)) ; do
+    #   echo -n "${EXTRA_ARGS[$arg_i]}&"
+    #done
+    #echo -n "${EXTRA_ARGS[$arg_i]}"
+
+    local args="$(IFS=''; echo "${EXTRA_ARGS[*]/%/&}")"
+    echo -n "${args%&}"
+}
+
+if [[ "$BACK_TRANS" -ne 0 ]]; then
+    if [[ -n "$HOME_LANG" ]]; then
+        EXTRA_ARGS+=("sl=$(url_encode "$HOME_LANG")")
+    fi
+    if [[ -n "$SOURCE_LANG" ]]; then
+        EXTRA_ARGS+=("hl=$(url_encode "$SOURCE_LANG")")
+    fi
+else
+    if [[ -n "$HOME_LANG" ]]; then
+        EXTRA_ARGS+=("hl=$(url_encode "$HOME_LANG")")
+    fi
+    if [[ -n "$SOURCE_LANG" ]]; then
+        EXTRA_ARGS+=("sl=$(url_encode "$SOURCE_LANG")")
+    fi
+fi
+
+# set the encoding
+EXTRA_ARGS+=("ie=$ENCODING")
+
+EXTRA_ARGS+=("${QUERY_VAR}=${QUERY_PREFIX}${*//&/%26}")
+
+# add browser name to args
+if [[ "${EXTRA_ARGS[*]#client=}" == "${EXTRA_ARGS[*]}" ]]; then
+    EXTRA_ARGS+=("client=$(url_encode "$(basename "$BROWSER")")")
+fi
+
+# add browser name to args
+if [[ "${EXTRA_ARGS[*]#hl=}" == "${EXTRA_ARGS[*]}" ]]; then
+    EXTRA_ARGS+=('hl=en')
+fi
+
+url="https://www.google.com/${FUNCTION}?$(collate_args)"
+
+exec $BROWSER "$url"
