@@ -1,0 +1,181 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+our $VERSION = '0.2.1';
+
+require Config::General;
+
+use constant CONFIG     => "$0.conf";
+use constant LOG        => "$ENV{HOME}/.log/lastfm.log";
+use constant DUR_MIN    => 30;
+
+require Net::LastFM::Submission;
+use Getopt::Std qw/ getopts /;
+
+sub HELP_MESSAGE {
+    my $fh = shift || *STDERR;
+    my $default_config = "$0.conf";
+    print $fh <<EOF
+Usage: $0 [OPTIONS]
+Submit a track to Last.fm.
+
+Options:
+  --help        Show this help message.
+  -c CONFIG     Load config file. Default is $default_config.
+  -l LOG        Log to LOG. Config index "log".
+  -u USERNAME   Login as USERNAME. Config index "username".
+  -p PASSWORD   Login with password PASSWORD. Config index "password".
+  -k API_KEY    Specify API key. You get this from Last.fm. Config index
+                  "api_key".
+  -s API_SECRET Specify API secret. You get this from Last.fm. Config index
+                  "api_secret".
+
+Track data:
+  -a ARTIST     Artist (required).
+  -t TITLE      Track name (required).
+  -d SECONDS    Track duration in seconds (required, <30).
+  -n INT        Track number indexed from 1.
+  -b ALBUM      Album name.
+
+Configuration file is loaded by Config::General. An example format would be:
+
+  username=alice
+  password=secret!
+  api_key=22596363b3de40b06f981fb85d82312e8c0ed511
+  api_secret=6f5902ac237024bdd0c176cb93063dc4
+  log=/var/log/lastfm.log
+
+Copyright (C) 2011-2015 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    ;
+    exit 0
+}
+
+my %opts;
+
+@opts{qw/ a b d n t /} = ('') x 5;
+
+&getopts('a:b:d:n:t:c:l:u:p:k:s:', \%opts);
+
+# load config from file
+my %cfg;
+my $config_file = (defined $opts{c} ? $opts{c} : CONFIG);
+if (!-r $config_file) {
+    die "Unable to open config file `$config_file' for reading: $!";
+}
+%cfg = Config::General->new($config_file)->getall;
+
+# interpret options
+my %option_map = (
+    l => 'log',
+    u => 'username',
+    p => 'password',
+    k => 'api_key',
+    s => 'api_secret',
+);
+foreach my $k (keys %option_map) {
+    $cfg{$option_map{$k}} = $opts{$k} if defined $opts{$k};
+}
+
+$cfg{log} = LOG unless defined $cfg{log};
+
+open my $logf, '>>', $cfg{log}
+    or die "Unable to open log file `$cfg{log}' for writing: $!";
+
+sub logmsg {
+    my $ts = localtime;
+    foreach my $msg (@_) {
+        printf $logf "[%s] %s\n", $ts, $msg;
+        if (-t STDERR) {
+            print STDERR "$msg\n";
+        }
+    }
+}
+
+sub flatten_duration {
+    # converts duration places to bare seconds
+    # e.g. '1:20' => 80
+    my ($dur, $exp, $exp_i, $flat) = (shift, 60, 0, 0);
+    foreach my $place (reverse split /\D+/, $dur) {
+        $flat += $place * ($exp ** $exp_i++);
+    }
+    $flat
+}
+
+my %scrobbler_opts = (
+    user        => $cfg{username},
+    password    => $cfg{password},
+    api_key     => $cfg{api_key},
+    secret_key  => $cfg{api_secret},
+    client_ver  => $VERSION,
+);
+my %scrobble_buf = (
+    artist      => $opts{a},
+    title       => $opts{t},
+    length      => &flatten_duration($opts{d}),
+    album       => $opts{b},
+    id          => $opts{n},
+);
+
+# do some corrections
+foreach my $key (keys %scrobble_buf) {
+    next unless defined $scrobble_buf{$key};
+    # remove spaces from beginning and end of strings
+    $scrobble_buf{$key} =~ s/(^\s+|\s+$)//g;
+    # compress all whitespace to a single space
+    $scrobble_buf{$key} =~ s/\s+/ /g;
+}
+
+# for reporting/logging
+my $submit_string =
+    join '; ',
+    map {
+        $scrobble_buf{$_} = '' unless defined $scrobble_buf{$_};
+        "$_: $scrobble_buf{$_}"
+    } sort keys %scrobble_buf;
+
+my $submit_status;
+foreach my $req_opt (qw/ artist title length /) {
+    unless (length $scrobble_buf{$req_opt}) {
+        $submit_status = "MISSING `$req_opt'";
+    }
+}
+
+# submit
+
+my $submit = Net::LastFM::Submission->new(%scrobbler_opts);
+my $handshake_result = $submit->handshake;
+
+unless (($handshake_result->{status} || '') eq 'OK') {
+    $submit_status = "Handshake failed: $handshake_result->{error}";
+
+    if (defined $handshake_result->{reason}) {
+        $submit_status .=
+            " reason: $handshake_result->{reason}";
+    }
+}
+
+unless (defined $submit_status) {
+    if ($scrobble_buf{length} < DUR_MIN) {
+        $submit_status = 'TOO SHORT';
+    } else {
+        # note: now_playing doesn't work; don't even try it
+        my $submit_result = $submit->submit(%scrobble_buf);
+        unless (($submit_result->{status} || '') eq 'OK') {
+            $submit_status = "Submit failed: $submit_result->{error}";
+            if (defined $submit_result->{reason}) {
+                $submit_status .=
+                    " reason: $submit_result->{reason}";
+            }
+        } else {
+            $submit_status = 'OK';
+        }
+    }
+}
+
+&logmsg("$submit_status [$submit_string]");
