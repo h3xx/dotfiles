@@ -300,6 +300,7 @@ let g:sh_fold_enabled = 3
 "map Q gq
 
 " hitting ; in normal mode starts a command
+" (possible conflict: ; repeats last 'f' character jump)
 nnoremap ; :
 
 " remove search highlighting
