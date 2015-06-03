@@ -299,6 +299,7 @@ let g:sh_fold_enabled=3
 "set backspace=2
 
 " hitting ; in normal mode starts a command
+" (possible conflict: ; repeats last 'f' character jump)
 nnoremap ; :
 
 " Remove search highlighting
