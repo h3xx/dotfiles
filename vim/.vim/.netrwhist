@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/usr/share/media/src/git/chromium-building'
-let g:netrw_dirhist_2='/home/h3xx/downloads/build/jabberd-2.3.2/b/usr/libexec/jabberd'
-let g:netrw_dirhist_3='/home/h3xx/.vim/plugin'
-let g:netrw_dirhist_4='/home/h3xx/.vim'
-let g:netrw_dirhist_5='/home/h3xx/.vim/plugin'
