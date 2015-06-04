@@ -393,6 +393,9 @@ set number
 " send more drawing commands to the terminal
 set ttyfast
 
+" disable startup message
+set shortmess+=I
+
 " ***************************
 " ***** display, colors *****
 " ***************************
