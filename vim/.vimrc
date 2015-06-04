@@ -319,11 +319,6 @@ nnoremap <C-l> <C-w>l
 " \v => re-select the text you just pasted
 nnoremap <leader>v V`]
 
-" visual shifting does not exit visual mode (thanks
-" github.com/spf13/spf13-vim)
-vnoremap < <gv
-vnoremap > >gv
-
 " C-u = undo in insert mode
 inoremap <C-U> <C-G>u<C-U>
 
