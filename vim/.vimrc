@@ -191,13 +191,6 @@ set nojoinspaces
 " Don't consider "octal" numbers when using C-a and C-x (thanks vim-sensible)
 set nrformats-=octal
 
-" Ensure every file opened from the command line gets opened in its own tab
-" (except when running vimdiff)
-" The same effect can be accomplished by running 'vim -p FILES'
-if ! &diff
-	tab all
-endif
-
 " Modify `formatlistpat' to include `*'-ed lists
 "set formatlistpat=^\\s*\\d\\+\[\\]:.)}\\t\ ]\\s*			" default
 "set formatlistpat=^\\s*\\(\\d\\+\\\|\\*\\\|-\\)[]:.)}\\t\ ]\\s*	" almost works
@@ -528,4 +521,12 @@ let g:netrw_browsex_viewer='google-chrome'
 
 if filereadable(expand('~/.vimrc-local'))
 	source \~/.vimrc-local
+endif
+
+" Ensure every file opened from the command line gets opened in its own tab
+" (except when running vimdiff)
+" The same effect can be accomplished by running 'vim -p FILES'
+" (note: this must occur last because sometime netrw causes issues)
+if ! &diff
+	tab all
 endif
