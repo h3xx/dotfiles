@@ -19,6 +19,9 @@
 	merge		= merge --ff
 	pull		= pull --ff
 	#fetch		= fetch --all
+	# tattle = tell our remote about branch (or delete it with :branch)
+	# usefulness: TODO
+	tattle		= push --set-upstream origin
 
 [core]
 	pager		= less -R	# handle colors correctly
