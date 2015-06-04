@@ -1,5 +1,15 @@
 # mail folder locations
 
+# (shortcuts to remote folders, use c<Tab><Tab> to list mailboxes)
+
+# gmail integration
+set folder=imaps://imap.gmail.com/
+mailboxes =INBOX
+
+# gmx integration
+set folder=imaps://imap.gmx.com/
+mailboxes =INBOX
+
 # main mail tree (for prefixing maildirs with `=')
 set folder=~/Mail
 
