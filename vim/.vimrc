@@ -137,13 +137,6 @@ set autoread
 " ensure when opening in tabs, no tiny split windows (thanks vim-sensible)
 set tabpagemax=50
 
-" ensure every file opened from the command line gets opened in its own tab
-" (except when running vimdiff)
-" the same effect can be accomplished by running 'vim -p FILES'
-if ! &diff
-	tab all
-endif
-
 " ************************
 " ***** command mode *****
 " ************************
@@ -545,4 +538,12 @@ let g:netrw_browsex_viewer = 'google-chrome'
 
 if filereadable(expand("\~/.vimrc-local"))
 	source \~/.vimrc-local
+endif
+
+" ensure every file opened from the command line gets opened in its own tab
+" (except when running vimdiff)
+" the same effect can be accomplished by running 'vim -p FILES'
+" (note: this must occur last because sometime netrw causes issues)
+if ! &diff
+	tab all
 endif
