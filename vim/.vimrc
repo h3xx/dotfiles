@@ -378,6 +378,9 @@ set number
 " Show the cursor position all the time (default)
 "set ruler
 
+" Disable startup message
+set shortmess+=I
+
 " Show the current mode (default)
 "set showmode
 
