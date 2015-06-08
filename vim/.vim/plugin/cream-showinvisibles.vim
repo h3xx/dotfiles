@@ -159,7 +159,11 @@ function! Cream_listchars_init()
 	elseif     strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
 		" ellipses
 		execute "set listchars+=precedes:" . nr2char(133)
+	elseif strlen(substitute(strtrans(nr2char(8230)), ".", "x", "g")) == 1
+		" ellipses (2nd try)
+		execute "set listchars+=precedes:" . nr2char(8230)
 	elseif strlen(substitute(strtrans(nr2char(8249)), ".", "x", "g")) == 1
+	\&& v:lang != "C"
 		" mathematical lessthan (digraph <1)
 		execute "set listchars+=precedes:" . nr2char(8249)
 	elseif strlen(substitute(strtrans(nr2char(8592)), ".", "x", "g")) == 1
@@ -178,7 +182,11 @@ function! Cream_listchars_init()
 	elseif     strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
 		" ellipses
 		execute "set listchars+=extends:" . nr2char(133)
+	elseif strlen(substitute(strtrans(nr2char(8230)), ".", "x", "g")) == 1
+		" ellipses (2nd try)
+		execute "set listchars+=extends:" . nr2char(8230)
 	elseif strlen(substitute(strtrans(nr2char(8250)), ".", "x", "g")) == 1
+	\&& v:lang != "C"
 		" mathematical greaterthan (digraph >1)
 		execute "set listchars+=extends:" . nr2char(8250)
 	elseif strlen(substitute(strtrans(nr2char(8594)), ".", "x", "g")) == 1
