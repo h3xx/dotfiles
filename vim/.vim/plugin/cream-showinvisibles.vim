@@ -1,8 +1,8 @@
-"=
+"======================================================================
 " cream-showinvisibles.vim
 "
 " Cream -- An easy-to-use configuration of the famous Vim text editor
-" [ http://cream.sourceforge.net ] Copyright (C) 2001-2011 Steve Hall
+" [ http://cream.sourceforge.net ] Copyright (C) 2002-2004  Steve Hall
 "
 " License:
 "
@@ -92,13 +92,17 @@
 " o Initial Release
 "
 
+if !exists("g:creamInvisibleShortCut")
+  let g:creamInvisibleShortCut = "<F4>"
+endif
+
 " don't load mappings or autocmd if used with Cream (elsewhere)
 if !exists("$CREAM")
 
 	" mappings
-	imap <silent> <F4> <C-b>:call Cream_list_toggle("i")<CR>
-	vmap <silent> <F4> :<C-u>call Cream_list_toggle("v")<CR>
-	nmap <silent> <F4>      :call Cream_list_toggle("n")<CR>
+	exec "imap <silent> " . g:creamInvisibleShortCut . " <C-o>:call Cream_list_toggle(\"i\")<cr>"
+	exec "vmap <silent> " . g:creamInvisibleShortCut . " :<C-u>call Cream_list_toggle(\"v\")<cr>"
+	exec "nmap <silent> " . g:creamInvisibleShortCut . " :call Cream_list_toggle(\"n\")<cr>"
 
 	" initialize on Buffer enter/new
 	autocmd BufNewFile,BufEnter * call Cream_list_init()
@@ -120,10 +124,7 @@ function! Cream_listchars_init()
 	set listchars=
 
 	" tab
-	if v:version < 603
-		" greaterthan, followed by space
-		execute "set listchars+=tab:" . nr2char(62) . '\ '
-	elseif strlen(substitute(strtrans(nr2char(187)), ".", "x", "g")) == 1
+	if     strlen(substitute(strtrans(nr2char(187)), ".", "x", "g")) == 1
 		" right angle quote, guillemotright followed by space (digraph >>)
 		execute "set listchars+=tab:" . nr2char(187) . '\ '
 	else
@@ -132,10 +133,7 @@ function! Cream_listchars_init()
 	endif
 
 	" eol
-	if v:version < 603
-		" dollar sign
-		execute "set listchars+=eol:" . nr2char(36)
-	elseif strlen(substitute(strtrans(nr2char(182)), ".", "x", "g")) == 1
+	if     strlen(substitute(strtrans(nr2char(182)), ".", "x", "g")) == 1
 		" paragrah symbol (digraph PI)
 		execute "set listchars+=eol:" . nr2char(182)
 	else
@@ -144,10 +142,7 @@ function! Cream_listchars_init()
 	endif
 
 	" trail
-	if v:version < 603
-		" period
-		execute "set listchars+=trail:" . nr2char(46)
-	elseif strlen(substitute(strtrans(nr2char(183)), ".", "x", "g")) == 1
+	if     strlen(substitute(strtrans(nr2char(183)), ".", "x", "g")) == 1
 		" others digraphs: 0U 0M/M0 sB .M 0m/m0 RO
 		" middle dot (digraph .M)
 		execute "set listchars+=trail:" . nr2char(183)
@@ -157,21 +152,14 @@ function! Cream_listchars_init()
 	endif
 
 	" precedes
-	if v:version < 603
-		" underscore
-		execute "set listchars+=precedes:" . nr2char(95)
-	elseif !has("gui_running") && &termencoding != "utf-8"
+	if !has("gui_running") && &termencoding != "utf-8"
 	"elseif Cream_has("ms") && &encoding == "utf-8"
 		" underscore
 		execute "set listchars+=precedes:" . nr2char(95)
-	elseif strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
+	elseif     strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
 		" ellipses
 		execute "set listchars+=precedes:" . nr2char(133)
-	elseif strlen(substitute(strtrans(nr2char(8230)), ".", "x", "g")) == 1
-		" ellipses (2nd try)
-		execute "set listchars+=precedes:" . nr2char(8230)
 	elseif strlen(substitute(strtrans(nr2char(8249)), ".", "x", "g")) == 1
-	\&& v:lang != "C"
 		" mathematical lessthan (digraph <1)
 		execute "set listchars+=precedes:" . nr2char(8249)
 	elseif strlen(substitute(strtrans(nr2char(8592)), ".", "x", "g")) == 1
@@ -183,21 +171,14 @@ function! Cream_listchars_init()
 	endif
 
 	" extends
-	if v:version < 603
-		" underscore
-		execute "set listchars+=extends:" . nr2char(95)
-	elseif !has("gui_running") && &termencoding != "utf-8"
+	if !has("gui_running") && &termencoding != "utf-8"
 	"elseif Cream_has("ms") && &encoding == "utf-8"
 		" underscore
 		execute "set listchars+=extends:" . nr2char(95)
-	elseif strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
+	elseif     strlen(substitute(strtrans(nr2char(133)), ".", "x", "g")) == 1
 		" ellipses
 		execute "set listchars+=extends:" . nr2char(133)
-	elseif strlen(substitute(strtrans(nr2char(8230)), ".", "x", "g")) == 1
-		" ellipses (2nd try)
-		execute "set listchars+=extends:" . nr2char(8230)
 	elseif strlen(substitute(strtrans(nr2char(8250)), ".", "x", "g")) == 1
-	\&& v:lang != "C"
 		" mathematical greaterthan (digraph >1)
 		execute "set listchars+=extends:" . nr2char(8250)
 	elseif strlen(substitute(strtrans(nr2char(8594)), ".", "x", "g")) == 1
@@ -207,6 +188,44 @@ function! Cream_listchars_init()
 		" underscore
 		execute "set listchars+=extends:" . nr2char(95)
 	endif
+
+
+	"if &encoding == "latin1"
+	"    " decimal 187 followed by a space (032)
+	"    execute "set listchars+=tab:" . nr2char(187) . '\ '
+	"    " decimal 182
+	"    execute "set listchars+=eol:" . nr2char(182)
+	"    " decimal 183
+	"    execute "set listchars+=trail:" . nr2char(183)
+	"    " decimal 133 (ellipses Â)
+	"    execute "set listchars+=precedes:" . nr2char(133)
+	"    execute "set listchars+=extends:" . nr2char(133)
+	"
+	"" patch 6.1.469 fixes list with multi-byte chars! (2003-04-16)
+	"elseif &encoding == "utf-8" && v:version >=602
+	"\|| &encoding == "utf-8" && v:version == 601 && has("patch469")
+	"    " decimal 187 followed by a space (032)
+	"    execute "set listchars+=tab:" . nr2char(187) . '\ '
+	"    " decimal 182
+	"    execute "set listchars+=eol:" . nr2char(182)
+	"    " decimal 9642 (digraph sB âª )
+	"    " decimal 9675 (digraph m0 â )
+	"    " decimal 9679 (digraph M0 â )
+	"    " decimal 183
+	"    execute "set listchars+=trail:" . nr2char(183)
+	"    " decimal 8222 (digraph :9 â )
+	"    " decimal 8249 (digraph <1 â¹ )
+	"    execute "set listchars+=precedes:" . nr2char(8249)
+	"    " decimal 8250 (digraph >1 âº )
+	"    execute "set listchars+=extends:" . nr2char(8250)
+	"
+	"else
+	"    set listchars+=tab:>\ 		" decimal 62 followed by a space (032)
+	"    set listchars+=eol:$		" decimal 36
+	"    set listchars+=trail:.		" decimal 46
+	"    set listchars+=precedes:_	" decimal 95
+	"    set listchars+=extends:_	" decimal 95
+	"endif
 
 endfunction
 call Cream_listchars_init()
@@ -236,7 +255,6 @@ function! Cream_list_toggle(mode)
 			set nolist
 			let g:LIST = 0
 		endif
-		"call Cream_menu_settings_invisibles()
 	else
 		call confirm(
 		\"Error: global uninitialized in Cream_list_toggle()", "&Ok", 1, "Error")
