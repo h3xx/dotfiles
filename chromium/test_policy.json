@@ -2,6 +2,9 @@
  * /etc/opt/chrome/policies/managed/test_policy.json
  */
 {
+	// *** privacy-related policies *** //
+	// Disable phoning home to Google, both for spying and convenience
+
 	// Disable "Sign in to Chrome" bullshit (deprecated; use SyncDisabled)
 	"SigninAllowed": false,
 	// Disable synchronization of data with Google
@@ -20,4 +23,12 @@
 	// Prevent app promotions from appearing on the new tab page (double yuk)
 	// (removed because Google supposedly learned their lesson)
 	"HideWebStorePromo": true,
+
+	// *** security-related policies *** //
+
+	// "If you set this setting to enabled the automatic search and
+	// installation of missing plugins will be disabled in Chromium."
+	// -- Chrome policy list
+	// It's the "automated installation" that scares me.
+	"DisablePluginFinder": true,
 }
