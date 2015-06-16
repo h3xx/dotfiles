@@ -1,0 +1,12 @@
+/**
+ * /etc/opt/chrome/policies/managed/test_policy.json
+ */
+{
+	// Disable "Sign in to Chrome" bullshit
+	"SigninAllowed": false,
+	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
+	"CloudPrintProxyEnabled": false,
+	"CloudPrintSubmitEnabled": false,
+	// Prevent app promotions from appearing on the new tab page (double yuk)
+	"HideWebStorePromo": true,
+}
