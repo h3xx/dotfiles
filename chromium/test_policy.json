@@ -11,6 +11,8 @@
 	"CloudPrintSubmitEnabled": false,
 	// Don't use Google's spell checking service, don't even ask me.
 	"SpellCheckServiceEnabled": false,
+	// Don't use Google Translate to translate pages, don't even ask me.
+	"TranslateEnabled": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
 	// (removed because Google supposedly learned their lesson)
 	"HideWebStorePromo": true,
