@@ -13,6 +13,8 @@
 	"SpellCheckServiceEnabled": false,
 	// Don't use Google Translate to translate pages, don't even ask me.
 	"TranslateEnabled": false,
+	// Don't use Google's autosuggest when searching, don't even ask me.
+	"SearchSuggestEnabled": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
 	// (removed because Google supposedly learned their lesson)
 	"HideWebStorePromo": true,
