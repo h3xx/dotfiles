@@ -4,6 +4,8 @@
 {
 	// Disable "Sign in to Chrome" bullshit
 	"SigninAllowed": false,
+	// Disable synchronization of data with Google
+	"SyncDisabled": true,
 	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
 	"CloudPrintProxyEnabled": false,
 	"CloudPrintSubmitEnabled": false,
