@@ -31,4 +31,6 @@
 	// -- Chrome policy list
 	// It's the "automated installation" that scares me.
 	"DisablePluginFinder": true,
+	// Completely disable running "background apps" while chrome is closed
+	"BackgroundModeEnabled": false,
 }
