@@ -178,9 +178,6 @@ endif " executable('ack')
 " (default)
 "set scrolloff=5
 
-" Control where new windows from splits are placed
-set splitbelow splitright
-
 " ********************************
 " ***** normal mode, editing *****
 " ********************************
@@ -496,9 +493,12 @@ let g:netrw_banner=0
 " horizontally split the window when opening a file via <cr>
 let g:netrw_browse_split=4
 " split files below
-"let g:netrw_alto=1
+let g:netrw_alto=1
 " ignore dot files, swap files and backup files
-let g:netrw_list_hide='.\+\(\.swp\|\~\)$'
+" note: netrw loves to append characters to filenames sometimes for no reason
+let g:netrw_list_hide='.*\(\~\|swp\)\*\?$'
+
+let g:netrw_hide=1
 let g:netrw_winsize=10
 " activate netrw when pressing the minus key
 nmap <silent> - :Sexplore<CR>
