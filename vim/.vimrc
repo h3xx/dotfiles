@@ -174,6 +174,9 @@ endif " executable('ack')
 " start scrolling when we're 5 lines away from bottom/top margins
 set scrolloff=5
 
+" control where new windows from splits are placed
+set splitbelow splitright
+
 " set lines to scroll when the cursor moves off screen (default)
 "set scrolljump=1
 
@@ -465,34 +468,6 @@ let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
 "  's'" : disable warnings about being unable to generate syntax files (wtf)
 let g:IDE_AdvancedFlags = "fMOsTw"
 
-" *** nerdtree ***
-" activate NERDTree when pressing the minus key
-" (first make sure the window is comfortably wide)
-" TODO	: make this faster
-"	: candidates: NERDTreeMirror\|NERDTreeFind
-"	:  function! NERDTreeInitAsNeeded()
-"     redir => bufoutput
-"     buffers!
-"     redir END
-"     let idx = stridx(bufoutput, "NERD_tree")
-"     if idx > -1
-"         NERDTreeMirror
-"         NERDTreeFind
-"         wincmd l
-"     endif
-" endfunction
-if has('gui_running')
-	nmap <silent> - :if &co<113\|set co=113\|endif\|NERDTreeToggle<CR>
-else
-	nmap <silent> - :NERDTreeToggle<CR>
-endif
-" ignore common RCS directories
-let NERDTreeIgnore=['^CVS$', '\~$']
-" don't use fancy Unicode characters on non-unicode terminals
-if !has('gui_running') && &termencoding != 'utf-8'
-	let NERDTreeDirArrows = 0
-endif
-
 " *** tagbar ***
 let g:tagbar_autofocus = 1
 let g:tagbar_ctags_bin = 'ctags'
@@ -531,6 +506,19 @@ let g:netrw_http_cmd = 'curl -o'
 let g:netrw_http_xcmd = '--silent >'
 " press gx in normal mode to open the URL under the cursor
 let g:netrw_browsex_viewer = 'google-chrome'
+" use tree style with decorations
+let g:netrw_liststyle = 3
+" suppress the banner
+let g:netrw_banner = 0
+" horizontally split the window when opening a file via <cr>
+let g:netrw_browse_split = 4
+" split files below
+"let g:netrw_alto = 1
+" ignore dot files, swap files and backup files
+let g:netrw_list_hide = '.\+\(\.swp\|\~\)$'
+let g:netrw_winsize = 10
+" activate netrw when pressing the minus key
+nmap <silent> - :Sexplore<CR>
 
 " ****************************
 " ***** load local vimrc *****
