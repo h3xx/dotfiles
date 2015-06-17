@@ -517,9 +517,9 @@ let g:netrw_alto = 1
 let g:netrw_list_hide = '.*\(\~\|swp\)\*\?$'
 
 let g:netrw_hide = 1
-let g:netrw_winsize = 10
+let g:netrw_winsize = 15
 " activate netrw when pressing the minus key
-nmap <silent> - :Sexplore<CR>
+nmap <silent> - :Vexplore<CR>
 
 " ****************************
 " ***** load local vimrc *****
