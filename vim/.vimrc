@@ -492,8 +492,9 @@ let g:netrw_banner=0
 let g:netrw_browse_split=4
 " preview window shown in a vertically split window
 let g:netrw_preview=1
-" split files below
+" split files below, right
 let g:netrw_alto=1
+let g:netrw_altv=1
 " ignore dot files, swap files and backup files
 " note: netrw loves to append characters to filenames sometimes for no reason
 let g:netrw_list_hide='.*\(\~\|swp\)\*\?$'
