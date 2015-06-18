@@ -513,9 +513,8 @@ let g:netrw_preview = 1
 let g:netrw_alto = 1
 let g:netrw_altv = 1
 " ignore dot files, swap files and backup files
-" note: netrw loves to append a literal * to filenames for no reason hence
-" \*\?$
-let g:netrw_list_hide = '.*\(\~\|swp\)\*\?$'
+" note: netrw loves to append a literal * to filenames sometimes for no reason
+let g:netrw_list_hide = '.*\(\~\|swp\)[/*|@=]\?$'
 
 let g:netrw_hide = 1
 let g:netrw_winsize = 26
