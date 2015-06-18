@@ -497,7 +497,7 @@ let g:netrw_alto=1
 let g:netrw_altv=1
 " ignore dot files, swap files and backup files
 " note: netrw loves to append characters to filenames sometimes for no reason
-let g:netrw_list_hide='.*\(\~\|swp\)\*\?$'
+let g:netrw_list_hide='.*\(\~\|swp\)[/*|@=]\?$'
 
 let g:netrw_hide=1
 let g:netrw_winsize=26
