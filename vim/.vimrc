@@ -515,6 +515,10 @@ let g:netrw_altv = 1
 " ignore dot files, swap files and backup files
 " note: netrw loves to append a literal * to filenames sometimes for no reason
 let g:netrw_list_hide = '.*\(\~\|swp\)[/*|@=]\?$'
+" ignore all RCS dirs
+let g:netrw_list_hide .= ',^\(CVS\|\.git\|\.svn\|\.hg\)/$'
+" ignore CVS backups
+let g:netrw_list_hide .= ',^\.#.*[/*|@=]\?$'
 
 let g:netrw_hide = 1
 let g:netrw_winsize = 26
