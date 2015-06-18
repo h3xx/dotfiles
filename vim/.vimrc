@@ -518,7 +518,7 @@ let g:netrw_altv = 1
 " regular files:  [*|@=]\?
 " directories:    /
 " ignore dot files, swap files and backup files (regular files only)
-let g:netrw_list_hide = '.*\(\~\|swp\)[*|@=]\?$'
+let g:netrw_list_hide = '\(\~\|^\..*\.swp\)[*|@=]\?$'
 " ignore all RCS dirs (directories only)
 let g:netrw_list_hide .= ',^\(CVS\|\.git\|\.svn\|\.hg\)/$'
 " ignore CVS backups (regular files only)
