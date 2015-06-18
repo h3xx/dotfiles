@@ -512,13 +512,17 @@ let g:netrw_preview = 1
 " split files below, right
 let g:netrw_alto = 1
 let g:netrw_altv = 1
-" ignore dot files, swap files and backup files
-" note: netrw loves to append a literal * to filenames sometimes for no reason
-let g:netrw_list_hide = '.*\(\~\|swp\)[/*|@=]\?$'
-" ignore all RCS dirs
+" ignore some filename patterns
+" note: netrw loves to append characters to filenames sometimes for no reason
+" all entries:    [/*|@=]\?
+" regular files:  [*|@=]\?
+" directories:    /
+" ignore dot files, swap files and backup files (regular files only)
+let g:netrw_list_hide = '.*\(\~\|swp\)[*|@=]\?$'
+" ignore all RCS dirs (directories only)
 let g:netrw_list_hide .= ',^\(CVS\|\.git\|\.svn\|\.hg\)/$'
-" ignore CVS backups
-let g:netrw_list_hide .= ',^\.#.*[/*|@=]\?$'
+" ignore CVS backups (regular files only)
+let g:netrw_list_hide .= ',^\.#.*[*|@=]\?$'
 
 let g:netrw_hide = 1
 let g:netrw_winsize = 26
