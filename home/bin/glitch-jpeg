@@ -1,0 +1,126 @@
+#!/usr/bin/perl -w
+use strict;
+
+use Getopt::Std	qw/ getopts /;
+
+sub HELP_MESSAGE {
+	my $fh = shift || *STDOUT;
+	print $fh qq%
+Usage: $0 IMG_IN IMG_OUT
+Cause deliberate errors in an image file (or any file).
+
+  -b BLOCK_SIZE		Mess up this number of bytes at a time (Default 5).
+  -p RATIO		Probability that any given block will be messed up
+			  (Default 0.001).
+  -n MAX_ERRORS		The maximum number of errors to be output, negative to
+			  disable and not limit (Default -1).
+  -s BYTES		Skip BYTES bytes before beginning errors. This can be
+			  used to preserve headers (Default 512).
+  -P BLOCKS		Skip causing errors in BLOCKS number of blocks after
+			  causing an error. This can help with high-error
+			  images (Default 1).
+
+Copyright (C) 2013 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+%;
+
+	exit 0;
+}
+
+my %opts = (
+	'b'	=> 5,		# block size
+	'p'	=> 0.001,	# probability of error
+	'n'	=> -1,
+	's'	=> 512,
+	'P'	=> 1,
+);
+&getopts('b:p:n:s:P:', \%opts);
+
+sub glitch_jpeg {
+	my ($img_in, $img_out, $bs, $chance, $num_errors, $skip_first, $post_fuck_skip) = @_;
+
+	open my $in, '<', $img_in
+		or die "Unable to open image `$img_in' for reading: $!";
+	open my $out, '>', $img_out
+		or die "Unable to open file `$img_out' for writing: $!";
+
+	binmode $in;
+	binmode $out;
+
+	# skip fucking up some bytes
+	my $buff;
+	read $in, $buff, $skip_first
+		or die "Reading failed: $!";
+	print $out $buff;
+
+	my @errors = (
+		\&bit_flip,
+		\&least_sig_bit_flip,
+		\&rot_right,
+		\&guff,
+		\&zero,
+		\&rev,
+	);
+
+	while (read $in, $buff, $bs) {
+		if ($num_errors == 0 or rand > $chance) {
+			# normal passthrough
+			print $out $buff;
+		} else {
+			# cause deliberate error
+			my $errfunc = $errors[rand @errors];
+
+			$buff = &{$errfunc}($buff, $bs);
+			print $out $buff;
+
+			# skip after fucking up - can help pull high-error
+			# images back from the void of not being able to be
+			# rendered
+			for (1 .. $post_fuck_skip) {
+				read $in, $buff, $bs or last;
+				print $out $buff;
+			}
+
+			--$num_errors;
+		}
+	}
+}
+
+@ARGV > 1 or &HELP_MESSAGE;
+
+&glitch_jpeg(@ARGV[0..1], @opts{qw/ b p n s P /});
+
+# the error routines
+# arg 1: the block being errored
+# arg 2: the block size
+# return: the errored block
+
+sub bit_flip {
+	pack 'C*', (map {$_ ^ 255} unpack ('C*', shift))
+}
+
+sub least_sig_bit_flip {
+	pack 'C*', (map {$_ ^ 1} unpack ('C*', shift))
+}
+
+sub rot_right {
+	my $buff = shift;
+	(chop $buff) . $buff
+}
+
+sub guff {
+	my (undef, $bs) = @_;
+	(chr rand 256) x $bs
+}
+
+sub zero {
+	my (undef, $bs) = @_;
+	pack 'C*', (0) x $bs
+}
+
+sub rev {
+	my $buff = shift;
+	reverse $buff
+}
