@@ -16,6 +16,8 @@
 " - Fix yellow-on-white (sort of) in GUI, 16-color and 256-color terminals
 "   (test &wildmenu)
 " - Fix dark green messages in command mode.
+" - Fix inability to see netrw marked files when using gui fonts that don't
+"   like bold (type mf in netrw, controlled by TabLineSel highlight)
 
 " First remove all existing highlighting.
 set background=dark
@@ -58,6 +60,7 @@ hi DiffDelete term=bold ctermfg=Blue ctermbg=DarkCyan gui=bold guifg=Blue guibg=
 hi CursorColumn term=reverse ctermbg=Black guibg=grey40
 hi CursorLine term=underline cterm=underline guibg=grey30
 hi Comment cterm=bold ctermfg=blue
+hi TabLineSel term=bold cterm=reverse gui=reverse
 
 " Groups for syntax highlighting
 hi Constant term=underline ctermfg=Magenta guifg=#ffa0a0 guibg=grey5
