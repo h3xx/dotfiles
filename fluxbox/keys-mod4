@@ -62,6 +62,9 @@ Mod4 9 :Tab 9
 # TERM is set here because xterm refuses to set it via *termName
 Mod4 t :Exec xterm -e 'TERM=xterm-256color screen -xRR'
 
+# open mutt
+None XF86Mail :Exec xterm -e 'TERM=xterm-256color mutt'
+
 # open a dialog to run programs
 #Mod1 F2 :Exec fbrun
 Mod4 r :Exec fbrun
@@ -94,6 +97,7 @@ Mod4 c :Minimize
 Mod4 g :Maximize
 Mod4 s :Shade
 Mod4 x :Close
+Mod4 z :Stick
 Mod4 Shift x :Kill
 
 # open the window menu
