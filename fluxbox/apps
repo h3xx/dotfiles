@@ -1,49 +1,18 @@
-[group]  (workspace=[current])
- [app] (name=dillo)
-[end]
-[app] (name=gimp)
-  [Workspace]	{5}
-[end]
-[app] (name=pidgin)
+[app] (name=fbrun) (class=FbRun)
+  [Position]	(CENTER)	{0 0}
   [Sticky]	{yes}
 [end]
 [app] (name=alsamixer)
   [Sticky]	{yes}
   [Layer]	{6}
 [end]
-[app] (name=Eclipse)
-  [Workspace]	{4}
-[end]
-[app] (name=scummvm)
-  [Position]	(UPPERLEFT)	{480 360}
-[end]
-[app] (name=SWT)
-[end]
-[app] (name=Xdialog)
-[end]
-[transient] (name=firefox-bin) (class=Firefox-bin)
-  [Dimensions]	{744 633}
-  [Position]	(UPPERLEFT)	{387 300}
-  [Close]	{yes}
-[end]
-[app] (name=Blender)
-  [Dimensions]	{1667 986}
-  [Position]	(UPPERLEFT)	{-274 0}
-[end]
-[app] (name=fbrun) (class=FbRun)
+[app] (name=wmstickynotes) (class=Wmstickynotes)
   [Sticky]	{yes}
+  [Layer]	{6}
 [end]
-[app] (name=qjackctl) (class=Qjackctl) (role=qjackctlMainForm)
+[app] (name=pidgin)
   [Sticky]	{yes}
-[end]
-[app] (name=boincmgr) (class=Boincmgr)
-  [Workspace]	{1}
 [end]
 [app] (name=xterm) (class=XTerm)
   [Position]	(UPPERLEFT)	{712 0}
-[end]
-[app] (name=google-chrome) (class=Google-chrome)
-[end]
-[app] (name=OctodadDadliestCatch) (class=OctodadDadliestCatch)
-  [Layer]	{2}
 [end]
