@@ -58,7 +58,9 @@ fbsetbg -l
 ipager &
 
 # start root-tail
-~/.fluxbox/bin/root-tail.sh &
+if [[ -x ~/.fluxbox/bin/root-tail.sh ]]; then
+    ~/.fluxbox/bin/root-tail.sh &
+fi
 
 # start conky
 conky -q &
@@ -77,4 +79,4 @@ xterm -e 'TERM=xterm-256color screen -xRR' &
 
 exec fluxbox
 # or if you want to keep a log:
-# exec /usr/bin/fluxbox -log ~/.fluxbox/log
+# exec fluxbox -log ~/.fluxbox/log
