@@ -29,9 +29,6 @@ xset dpms 0 0 600
 # syndaemon disables the trackpad while typing
 #syndaemon -i 1 -KR &
 
-#xset +dpms
-#xset dpms 1200 0 0
-#
 # Your own fonts-dir:
 # xset +fp ~/.font
 
