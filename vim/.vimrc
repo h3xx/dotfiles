@@ -504,7 +504,8 @@ let g:netrw_browsex_viewer = 'google-chrome'
 " use tree style with decorations
 let g:netrw_liststyle = 3
 " suppress the banner
-let g:netrw_banner = 0
+" addendum : show it but fold it (see .vim/after/ftplugin/netrw.vim)
+"let g:netrw_banner = 0
 " horizontally split the window when opening a file via <cr>
 let g:netrw_browse_split = 4
 " preview window shown in a vertically split window.
