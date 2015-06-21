@@ -525,9 +525,10 @@ let g:netrw_list_hide .= ',^\(CVS\|\.git\|\.svn\|\.hg\)/$'
 let g:netrw_list_hide .= ',^\.#.*[*|@=]\?$'
 
 let g:netrw_hide = 1
-let g:netrw_winsize = 26
-" activate netrw when pressing the minus key
-nmap <silent> - :Vexplore<CR>
+" note: setting this variable causes weird effects when opening files via <cr>
+"let g:netrw_winsize = 26
+" activate netrw at 26 characters width when pressing the minus key
+nmap <silent> - :26Vexplore<CR>
 
 " ****************************
 " ***** load local vimrc *****
