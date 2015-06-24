@@ -3,5 +3,5 @@
 if [ -z "$DISPLAY" ]; then
 	exec elinks "http://php.net/$1#layout"
 else
-	exec xdg-open "http://php.net/$1#layout"
+	exec google-chrome "http://php.net/$1#layout"
 fi
