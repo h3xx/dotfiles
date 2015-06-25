@@ -38,7 +38,7 @@ session.screen0.slit.direction:	Vertical
 session.screen0.slit.placement:	BottomLeft
 session.screen0.window.focus.alpha:	255
 session.screen0.window.unfocus.alpha:	255
-session.screen0.tab.placement:	LeftTop
+session.screen0.tab.placement:	TopLeft
 session.screen0.tab.width:	66
 session.screen0.noFocusWhileTypingDelay:	0
 session.screen0.rowPlacementDirection:	LeftToRight
