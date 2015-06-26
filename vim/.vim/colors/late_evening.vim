@@ -34,7 +34,7 @@ hi Normal ctermbg=black ctermfg=White guifg=White guibg=grey5
 hi ErrorMsg term=standout ctermbg=DarkRed ctermfg=White guibg=Red guifg=White
 hi IncSearch term=reverse cterm=reverse gui=reverse
 hi ModeMsg term=bold cterm=bold gui=bold
-hi StatusLine term=reverse,bold cterm=none ctermfg=black ctermbg=7 gui=bold guifg=Black guibg=Gray45
+hi StatusLine term=bold cterm=bold ctermbg=black gui=bold guibg=grey20
 hi StatusLineNC term=reverse cterm=reverse gui=reverse
 hi VertSplit term=reverse cterm=reverse gui=reverse
 hi Visual term=reverse cterm=reverse ctermbg=black guibg=grey60
@@ -70,7 +70,7 @@ if &t_Co > 8
 endif
 if &t_Co > 16
   hi CursorLine cterm=none ctermbg=238
-  hi StatusLine ctermfg=black ctermbg=248
+  hi StatusLine cterm=none ctermbg=238
 "  hi StatusLineNC ctermfg=12 ctermbg=248
 endif
 hi Ignore ctermfg=DarkGrey guifg=grey20
