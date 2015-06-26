@@ -4,49 +4,21 @@
 
 # office files
 application/msword; libreoffice %s		; test=test -n "$DISPLAY"
-application/msword; gvim -c ':%!catdoc' %s	; test=test -n "$DISPLAY"
-application/msword; vim -c ':%!catdoc' %s; needsterminal
-application/msword; catdoc %s; copiousoutput
-
 text/rtf; libreoffice %s			; test=test -n "$DISPLAY"
-text/rtf; gvim -c ':%!catdoc' %s		; test=test -n "$DISPLAY"
-text/rtf; vim -c ':%!catdoc' %s; needsterminal
-text/rtf; catdoc %s; copiousoutput
-
 application/rtf; libreoffice %s			; test=test -n "$DISPLAY"
-application/rtf; gvim -c ':%!catdoc' %s		; test=test -n "$DISPLAY"
-application/rtf; vim -c ':%!catdoc' %s; needsterminal
-application/rtf; catdoc %s; copiousoutput
-
 application/excel; libreoffice %s		; test=test -n "$DISPLAY"
-application/excel; gvim -c ':%!xls2csv /dev/stdin' %s	; test=test -n "$DISPLAY"
-application/excel; vim -c ':%!xls2csv /dev/stdin' %s; needsterminal
-application/excel; xls2csv %s; copiousoutput
 
 application/pdf; xpdf %s			; test=test -n "$DISPLAY"
 application/pdf; pdftotext %s -; copiousoutput
-
-application/postscript; gv %s			; test=test -n "$DISPLAY"
-application/postscript; gvim %s			; test=test -n "$DISPLAY"
-application/postscript; vim %s; needsterminal
 
 # misc other m$ office formats
 application/vnd.openxmlformats-officedocument.presentationml.presentation; libreoffice %s ; test=test -n "$DISPLAY"
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; libreoffice %s ; test=test -n "$DISPLAY"
 
-
 # compressed files
-application/x-gzip; gvim %s			; test=test -n "$DISPLAY"
 application/x-gzip; vim %s; needsterminal
-application/x-gzip; zcat %s; copiousoutput
-
-application/x-bzip2; gvim %s			; test=test -n "$DISPLAY"
 application/x-bzip2; vim %s; needsterminal
-application/x-bzip2; bzcat %s; copiousoutput
-
-application/x-xz; gvim %s			; test=test -n "$DISPLAY"
 application/x-xz; vim %s; needsterminal
-application/x-xz; xzcat %s; copiousoutput
 
 # archives
 application/x-rpm; rpm -l %s; copiousoutput
@@ -62,27 +34,17 @@ application/x-rar-compressed; xarchiver %s	; test=test -n "$DISPLAY"
 application/x-rar; rar lt %s; copiousoutput
 application/x-rar-compressed; rar lt %s; copiousoutput
 
-application/x-zip; xarchiver %s			; test=test -n "$DISPLAY"
-application/x-zip; zipinfo %s; copiousoutput
-application/x-zip; gvim %s			; test=test -n "$DISPLAY"
 application/x-zip; vim %s; needsterminal
+application/x-zip-compressed; vim %s; needsterminal
 
 # code
-application/x-shellscript; gvim %s		; test=test -n "$DISPLAY"
+
 application/x-shellscript; vim %s; needsterminal
-application/x-shellscript; cat %s; copiousoutput
-
-application/x-perl; gvim %s			; test=test -n "$DISPLAY"
 application/x-perl; vim %s; needsterminal
-application/x-perl; cat %s; copiousoutput
-
-text/x-c; gvim %s				; test=test -n "$DISPLAY"
+application/x-httpd-php; vim %s; needsterminal
+application/postscript; vim %s; needsterminal
 text/x-c; vim %s; needsterminal
-text/x-c; cat %s; copiousoutput
-
-text/x-java; gvim %s				; test=test -n "$DISPLAY"
 text/x-java; vim %s; needsterminal
-text/x-java; cat %s; copiousoutput
 
 # code - markup
 
@@ -92,7 +54,6 @@ text/x-java; cat %s; copiousoutput
 text/html; elinks -dump 1 %s; copiousoutput
 text/html; elinks %s; needsterminal
 
-application/xrds+xml; gvim %s			; test=test -n "$DISPLAY"
 application/xrds+xml; vim %s; needsterminal
 
 # this is a little too vague
@@ -106,15 +67,11 @@ application/x-bittorrent; bittorrent %s		; test=test -n "$DISPLAY"
 application/x-bittorrent; bittorrent-curses %s; needsterminal
 
 
-text/*; gvim %s					; test=test -n "$DISPLAY"
 text/*; vim %s; needsterminal
-text/*; cat %s; copiousoutput
-
-image/*; xv %s					; test=test -n "$DISPLAY"
-image/*; geeqie %s				; test=test -n "$DISPLAY"
 
 # media
 
+image/*; geeqie %s				; test=test -n "$DISPLAY"
 audio/x-mod; modplug123 %s
 audio/*; mplayer %s
 application/ogg; mplayer %s
