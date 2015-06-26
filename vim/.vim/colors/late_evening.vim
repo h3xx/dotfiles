@@ -5,20 +5,26 @@
 " This color scheme uses a *really* dark grey background.
 "
 " Forked from evening.vim with the following tweaks:
+
+" ** Aesthetic fixes **
 " - Almost black backgrounds
 " - Cursorline not so bright as to make comments disappear
 " - Brighter cursor
 " - Brighter green messages
 " - Nicer colors on line numbers (like comments with the current line
 "   highlighted if &cursorline)
+" - Replace awful-looking yellow-on-white when using wildmenu
+
+" ** Bug fixes **
 " - Text mode: fix invisible visual mode selection
-" - Text mode: comment color more like gui mode
-" - GUI-like cursorline in terminals with a lot of colors
-" - Fix yellow-on-white (sort of) in GUI, 16-color and 256-color terminals
-"   (test &wildmenu)
-" - Fix dark green messages in command mode.
 " - Fix inability to see netrw marked files when using gui fonts that don't
 "   like bold (type mf in netrw, controlled by TabLineSel highlight)
+" - Fix many inconsistencies between gui and console (evening.vim):
+"   * PreProc: blue in console, magenta in gui
+"   * Comment: cyan in console, blue in gui
+"   * CursorLine: underline in console (256 colors), gray in gui
+"   * Special: salmon in console (256 colors), red in console (8 colors),
+"     orange in gui
 
 " First remove all existing highlighting.
 set background=dark
