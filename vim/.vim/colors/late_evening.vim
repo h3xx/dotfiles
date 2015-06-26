@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:	Dan Church
-" Last Change:	2015 May 29
+" Last Change:	2015 Jun 26
 
 " This color scheme uses a *really* dark grey background.
 "
@@ -8,6 +8,7 @@
 " - Almost black backgrounds
 " - Cursorline not so bright as to make comments disappear
 " - Brighter cursor
+" - Brighter green messages
 " - Nicer colors on line numbers (like comments with the current line
 "   highlighted if &cursorline)
 " - Text mode: fix invisible visual mode selection
@@ -44,9 +45,9 @@ hi Cursor guibg=lightgreen guifg=Black
 hi lCursor guibg=Cyan guifg=Black
 hi Directory term=bold ctermfg=LightCyan guifg=Cyan
 hi LineNr term=underline ctermfg=blue guifg=steelblue
-hi MoreMsg term=bold ctermfg=LightGreen gui=bold guifg=SeaGreen
+hi MoreMsg term=bold ctermfg=LightGreen gui=bold guifg=#60ff60
 hi NonText term=bold ctermfg=LightBlue gui=bold guifg=LightBlue guibg=grey10
-hi Question term=standout ctermfg=LightGreen gui=bold guifg=SeaGreen
+hi Question term=standout ctermfg=LightGreen gui=bold guifg=#60ff60
 hi Search term=reverse ctermbg=Yellow ctermfg=Black guibg=Yellow guifg=Black
 hi SpecialKey term=bold ctermfg=LightBlue guifg=Cyan
 hi Title term=bold ctermfg=LightMagenta gui=bold guifg=Magenta
