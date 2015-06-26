@@ -58,7 +58,7 @@ hi FoldColumn term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=
 hi DiffAdd term=bold ctermbg=DarkBlue guibg=DarkBlue
 hi DiffChange term=bold ctermbg=DarkMagenta guibg=DarkMagenta
 hi DiffDelete term=bold ctermfg=Blue ctermbg=DarkCyan gui=bold guifg=Blue guibg=DarkCyan
-hi CursorColumn term=reverse ctermbg=Black guibg=grey40
+hi CursorColumn term=reverse ctermbg=Black guibg=grey30
 hi CursorLine term=underline cterm=underline guibg=grey30
 hi Comment cterm=bold ctermfg=blue
 hi TabLineSel term=bold cterm=reverse gui=reverse
@@ -66,6 +66,10 @@ hi TabLineSel term=bold cterm=reverse gui=reverse
 " Groups for syntax highlighting
 hi Constant term=underline ctermfg=Magenta guifg=#ffa0a0 guibg=grey5
 hi Special term=bold ctermfg=LightRed guifg=Orange guibg=grey5
+" bug fix
+hi PreProc ctermfg=magenta
+
+" Modifications for more colors
 if &t_Co > 8
   hi Statement term=bold cterm=bold ctermfg=Yellow guifg=#ffff60 gui=bold
 endif
@@ -73,6 +77,12 @@ if &t_Co > 16
   hi CursorLine cterm=none ctermbg=238
   hi StatusLine cterm=none ctermbg=238
 "  hi StatusLineNC ctermfg=12 ctermbg=248
+  hi Type ctermfg=82
+  hi MoreMsg ctermfg=82
+  hi Question ctermfg=82
+  hi Title ctermfg=165
+  hi WarningMsg ctermfg=196
+  hi Constant ctermfg=217
 endif
 hi Ignore ctermfg=DarkGrey guifg=grey20
 
