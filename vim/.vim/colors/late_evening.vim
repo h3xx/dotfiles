@@ -37,7 +37,7 @@ hi ModeMsg term=bold cterm=bold gui=bold
 hi StatusLine term=bold cterm=bold ctermbg=black gui=bold guibg=grey20
 hi StatusLineNC term=reverse cterm=reverse gui=reverse
 hi VertSplit term=reverse cterm=reverse gui=reverse
-hi Visual term=reverse cterm=reverse ctermbg=black guibg=grey60
+hi Visual term=reverse cterm=reverse ctermbg=black guibg=grey40
 hi VisualNOS term=underline,bold cterm=underline,bold gui=underline,bold
 hi DiffText term=reverse cterm=bold ctermbg=Red gui=bold guibg=Red
 hi Cursor guibg=lightgreen guifg=Black
