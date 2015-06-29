@@ -319,6 +319,8 @@ inoremap <M-h> <C-o>h
 inoremap <M-j> <C-o>j
 inoremap <M-k> <C-o>k
 inoremap <M-l> <C-o>l
+inoremap <M-w> <C-o>w
+inoremap <M-b> <C-o>b
 
 " \v => re-select the text you just pasted
 nnoremap <leader>v V`]
