@@ -64,7 +64,7 @@ hi FoldColumn term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=
 hi DiffAdd term=bold ctermbg=DarkBlue guibg=DarkBlue
 hi DiffChange term=bold ctermbg=DarkMagenta guibg=DarkMagenta
 hi DiffDelete term=bold ctermfg=Blue ctermbg=DarkCyan gui=bold guifg=Blue guibg=DarkCyan
-hi CursorColumn term=reverse ctermbg=Black guibg=grey30
+hi CursorColumn term=reverse ctermbg=238 guibg=grey30
 hi CursorLine term=underline cterm=none ctermbg=238 guibg=grey30
 hi Comment cterm=bold ctermfg=blue
 hi TabLineSel term=bold cterm=reverse gui=reverse
@@ -85,6 +85,7 @@ endif
 " Low color support
 if &t_Co < 17
   hi CursorLine cterm=underline ctermbg=none
+  hi CursorColumn cterm=reverse ctermbg=Black
   hi StatusLine cterm=bold ctermbg=black
   hi Type ctermfg=green
   hi MoreMsg ctermfg=LightGreen
