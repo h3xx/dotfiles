@@ -312,6 +312,14 @@ noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
+" enable the "arrow keys" in insert mode by holding Alt
+" (note: like any insert mode mapping, this breaks some ASCII characters, use
+" paste mode)
+inoremap <M-h> <C-o>h
+inoremap <M-j> <C-o>j
+inoremap <M-k> <C-o>k
+inoremap <M-l> <C-o>l
+
 " \v => re-select the text you just pasted
 nnoremap <leader>v V`]
 
