@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:	Dan Church
-" Last Change:	2015 Jun 26
+" Last Change:	2015 Jun 29
 
 " Forked from evening.vim with the following tweaks:
 
@@ -12,6 +12,7 @@
 " - Nicer colors on line numbers (like comments with the current line
 "   highlighted if &cursorline)
 " - Replace awful-looking yellow-on-white when using wildmenu
+" - Turn delimiters white instead of orange
 
 " ** Bug fixes **
 " - Text mode: fix invisible visual mode selection
@@ -74,6 +75,7 @@ hi Ignore ctermfg=DarkGrey guifg=grey20
 " Groups for syntax highlighting
 hi Constant term=underline ctermfg=217 guifg=#ffa0a0 guibg=grey5
 hi Special term=bold ctermfg=LightRed guifg=Orange guibg=grey5
+hi Delimiter term=bold ctermfg=white guifg=white
 " bug fix
 hi PreProc ctermfg=magenta
 
