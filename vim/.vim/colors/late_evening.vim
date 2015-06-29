@@ -2,8 +2,6 @@
 " Maintainer:	Dan Church
 " Last Change:	2015 Jun 26
 
-" This color scheme uses a *really* dark grey background.
-"
 " Forked from evening.vim with the following tweaks:
 
 " ** Aesthetic fixes **
@@ -26,8 +24,10 @@
 "   * Special: salmon in console (256 colors), red in console (8 colors),
 "     orange in gui
 
-" First remove all existing highlighting.
+" This color scheme uses a *really* dark grey background.
 set background=dark
+
+" First remove all existing highlighting.
 hi clear
 if exists("syntax_on")
   syntax reset
