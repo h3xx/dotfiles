@@ -22,6 +22,8 @@
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
 	tattle		= push --set-upstream origin
+	# use this to blow away all untracked files and unstaged changes
+	nuke		= !git clean -x -d -f && git co --force
 
 [core]
 	pager		= less -R	# handle colors correctly
