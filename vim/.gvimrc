@@ -12,8 +12,10 @@ if has('gui_running')
 	" (this isn't exact for some reason; windows aren't set to 80 columns)
 	nnoremap <C-W>v :if &co<161\|set co=161\|endif\|vsplit<CR>
 
-	" no toolbar (useless)
-	set guioptions-=T
+	" T: no toolbar (useless)
+	" m: no menu (gets in the way of using Meta in key combos)
+	set guioptions-=T guioptions-=m
+
 
 	" Fancy Plugin Options
 
