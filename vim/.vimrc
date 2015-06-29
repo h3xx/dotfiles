@@ -307,10 +307,10 @@ nnoremap gf <C-W>gf
 
 " remap ctrl-[direction] to window moving
 " (thanks to github.com/bling/minivimrc)
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
 
 " \v => re-select the text you just pasted
 nnoremap <leader>v V`]
@@ -324,10 +324,8 @@ nnoremap Y y$
 
 " H/L navigation = beginning/end of line
 " (I have never pressed H or L expecting what they do by default)
-nnoremap H ^
-vnoremap H ^
-nnoremap L $
-vnoremap L $
+noremap H ^
+noremap L $
 
 " bind gK to grep word under cursor
 "nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
