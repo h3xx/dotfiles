@@ -1,0 +1,4 @@
+[submodule "vim/.vim/pack/dist/opt/vim-late_evening"]
+	path = vim/.vim/pack/dist/opt/vim-late_evening
+	url = https://github.com/h3xx/vim-late_evening.git
+	branch = master
