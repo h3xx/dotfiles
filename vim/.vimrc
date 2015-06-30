@@ -394,8 +394,9 @@ set number
 " send more drawing commands to the terminal
 set ttyfast
 
-" disable startup message
-set shortmess+=I
+" I: disable startup message
+" c: don't give useless ins-completion-menu messages in the statusbar
+set shortmess+=Ic
 
 " ***************************
 " ***** display, colors *****
