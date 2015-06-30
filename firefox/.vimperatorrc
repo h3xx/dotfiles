@@ -1,5 +1,12 @@
 " be more like Vimium
-set hintchars=sadfjklewcmpgh
+"set hintchars=sadfjklewcmpgh
+
+" left hand keys only
+"set hintchars=qazwsxedcrtfgv
+
+" left hand, top-row keys only
+set hintchars=qwertyasdfg
+
 " use bookmarks for O/o/:open completion
 set complete=bsl
 
