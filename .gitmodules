@@ -2,3 +2,7 @@
 	path = vim/.vim/pack/dist/opt/vim-late_evening
 	url = https://github.com/h3xx/vim-late_evening.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-eunuch"]
+	path = vim/.vim/pack/dist/start/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+	branch = master
