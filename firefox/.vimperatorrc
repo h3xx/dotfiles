@@ -5,7 +5,7 @@
 "set hintchars=qazwsxedcrtfgv
 
 " left hand, top-row keys only
-set hintchars=qwertyasdfg
+set hintchars=asdfgqwert
 
 " use bookmarks for O/o/:open completion
 set complete=bsl
