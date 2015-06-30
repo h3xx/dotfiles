@@ -379,8 +379,9 @@ set number
 " Show the cursor position all the time (default)
 "set ruler
 
-" Disable startup message
-set shortmess+=I
+" I: Disable startup message
+" c: Don't give useless ins-completion-menu messages in the statusbar
+set shortmess+=Ic
 
 " Show the current mode (default)
 "set showmode
