@@ -381,7 +381,10 @@ set number
 
 " I: Disable startup message
 " c: Don't give useless ins-completion-menu messages in the statusbar
-set shortmess+=Ic
+set shortmess+=I
+if v:version > 704 || has("patch314")
+	set shortmess+=c
+endif
 
 " Show the current mode (default)
 "set showmode
