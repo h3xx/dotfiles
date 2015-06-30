@@ -396,7 +396,10 @@ set ttyfast
 
 " I: disable startup message
 " c: don't give useless ins-completion-menu messages in the statusbar
-set shortmess+=Ic
+set shortmess+=I
+if v:version > 704 || v:version == 704 && has("patch541")
+	set shortmess+=c
+endif
 
 " ***************************
 " ***** display, colors *****
