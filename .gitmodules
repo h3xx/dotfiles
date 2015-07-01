@@ -22,3 +22,7 @@
 	path = vim/.vim/pack/dist/start/webapi-vim
 	url = https://github.com/mattn/webapi-vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/opt/tagbar"]
+	path = vim/.vim/pack/dist/opt/tagbar
+	url = https://github.com/majutsushi/tagbar.git
+	branch = master
