@@ -11,6 +11,7 @@
 	st		= status
 	subbr		= submodule foreach git checkout
 	subbranch	= submodule foreach git checkout
+	subinit		= submodule init
 	submaster	= submodule foreach git checkout master
 	subup		= submodule update --init --remote
 	up		= pull # I'm used to svn
