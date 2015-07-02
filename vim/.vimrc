@@ -180,6 +180,10 @@ set scrolloff=5
 " do incremental searching (default)
 "set incsearch
 
+" do not redraw screen until macros, etc. are done drawing to the screen
+" (better responsiveness over SSH and slow terminals)
+set lazyredraw
+
 " ********************************
 " ***** normal mode, editing *****
 " ********************************
