@@ -67,6 +67,7 @@ conky -q &
 
 #qjackctl &
 volumeicon &
+redshift &
 
 # start glipper (broken)
 #glipper &
