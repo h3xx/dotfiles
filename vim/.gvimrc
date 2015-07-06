@@ -17,6 +17,10 @@ if has('gui_running')
 	set guioptions-=T guioptions-=m
 
 
+	if has('mouse')
+		set mouse=n
+	endif " has('mouse')
+
 	" Fancy Plugin Options
 
 "	if exists(':Airline')
