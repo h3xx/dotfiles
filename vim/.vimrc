@@ -12,6 +12,14 @@
 " use filetype and indent plugins (default)
 "filetype plugin indent on
 
+if !has('autocmd')
+	" always set autoindenting on (default)
+	"set autoindent
+	" use smart indentation
+	set smartindent
+
+endif " !has("autocmd")
+
 " ****************************************
 " ***** environment, Unicode options *****
 " ****************************************
@@ -56,22 +64,14 @@ if has('mouse')
 	" 'r'	: for hit-enter and more-prompt prompt
 	" use mouse all the time (default)
 	"set mouse=a
-	" only use mouse when in normal/command mode
-	" (this is so that middle-click for pasting in a terminal will work)
-	set mouse=n
+	" never use the mouse!
+	" (middle-click for pasting in a terminal will still work)
+	set mouse=
 
 	" whether the window focus follows the mouse (default off)
 	"" (I can see this becoming very annoying)
 	"set nomousefocus
 endif " has('mouse')
-
-if !has('autocmd')
-	" always set autoindenting on (default)
-	"set autoindent
-	" use smart indentation
-	set smartindent
-
-endif " !has("autocmd")
 
 " ************************
 " ***** backup files *****
