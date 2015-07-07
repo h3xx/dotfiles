@@ -1,6 +1,3 @@
-" because typically quickfix is a tiny window
-setl scrolloff=1
-
 " fold the header
 setl foldmethod=expr foldexpr=getline(v:lnum)=~'^\"' foldlevel=0
 
