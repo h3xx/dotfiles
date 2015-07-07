@@ -8,6 +8,10 @@ setl path+=/usr/share/perl5/vendor_perl
 setl path+=/usr/lib64/perl5
 setl path+=/usr/share/perl5
 
+" needed for perldoc integration
+let g:perldoc_program='perldoc' |
+nmap <buffer> <silent> <F2> :Perldoc<CR>
+
 "" i486
 "setl path+=/usr/lib/perl5/vendor_perl
 "setl path+=/usr/share/perl5/vendor_perl
