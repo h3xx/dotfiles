@@ -278,43 +278,8 @@ aug END " sourcecode
 "
 "aug END " binary
 
-" Files that should not have FILENAME~ backups saved
-" (addendum: this is more efficiently defined in the vimrc using the
-" `backupskip' [alias `bsk'] variable)
-"aug nobackups
-	"au!
-
-	" Don't backup files used in building Slackware packages.
-	"au BufNewFile,BufRead	*/install/slack-desc,*/install/doinst.sh,*/install/slack-required,*/install/slack-suggests
-	"				\ setl nobk
-
-	" Don't backup cron scripts (or they'll run twice)
-	"au BufNewFile,BufRead	*/.cron/*/*
-	"				\ setl nobk
-
-	" Create .orig backups for scripts.
-	"au BufNewFile,BufRead	*/bin/*		setl pm=".orig"
-
-"aug END " nobackups
-
 " append compressors/decompressors to file pre-processing
 aug gzipext
-
-	" xz-utils (already implemented in system Vim)
-	"au BufReadPre,FileReadPre	*.xz
-	"			\ setlocal bin
-	"au BufReadPost,FileReadPost	*.xz
-	"			\ call gzip#read("xz -d")
-	"au BufWritePost,FileWritePost	*.xz
-	"			\ call gzip#write("xz")
-	"au FileAppendPre		*.xz
-	"			\ call gzip#appre("xzcat")
-	"au FileAppendPost		*.xz
-	"			\ call gzip#write("xz")
-
-	"" archive support
-	"au BufReadCmd			*.tar.xz,*.txz
-	"			\ call tar#Browse(expand("<amatch>"))
 
 	" 7zip (not working)
 	"au BufReadPre,FileReadPre	*.7z
