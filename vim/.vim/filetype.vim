@@ -229,12 +229,6 @@ aug sourcecode
 	"au BufNewFile		*.sci
 	"			\ exe 'norm afunction '.expand('%:t:r').'()\nendfunction\<esc>O// FIXME: description stub\n\n// Arguments:\n//\tFIXME: arguments stub\n//\n// Returns FIXME: return stub\n//!\n\<esc>'
 
-	" It's All Text! (Firefox plugin)
-	"" Waffles.fm description text (last line inserts `Track listing'
-	"" header and `Source:' footer)
-	au BufNewFile		waffles.fm*,*/waffles/*.txt
-				\ exe "norm o[size=3][b]Track listing[/b][/size]\r\rSource: [url=][/url]\<esc>gg"
-
 aug END " sourcecode
 
 " Use vim as a hex editor
