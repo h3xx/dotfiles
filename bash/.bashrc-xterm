@@ -1,7 +1,7 @@
 # .bashrc-xterm
 
 if [[ $TERM =~ ^(xterm|rxvt) ]]; then
-	# change terminal title to current tty or pts -- example: 'pts/6'
+	# change terminal title to current tty or pts -- example: 'pts/6@mybox'
 	tty -s && echo -n $'\e]2;'"$(tty | cut -c 6-)@$(uname -n)"$'\a'
 fi
 
