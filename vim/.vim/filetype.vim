@@ -45,25 +45,6 @@ aug END " views
 "
 "aug END " filetypedetect
 
-" set up some quick filetype-based options
-aug filetypeoptions
-	au!
-
-	" spell	- use spell checking
-	" scs	- use smart case checking (for searching, assume /i flag
-	"	  unless pattern has an uppercase letter in it)
-	" nojs	- don't insert two spaces after a period when j-ing or gq-ing
-	au FileType		text,mail
-				\ setl spell scs fo+=t fo-=r
-
-	" undo the settings on vim help files and CMake*.txt (detected above as
-	" 'text')
-	" addendum: not necessary anymore
-"	au FileType		help,cmake
-"				\ setl nospell noscs
-
-aug END " filetypeoptions
-
 aug keycommands
 	au!
 
