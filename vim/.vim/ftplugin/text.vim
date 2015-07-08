@@ -12,6 +12,8 @@ setl formatoptions+=nt
 "	in Insert mode.
 setl formatoptions-=c formatoptions-=r
 
+setl spell
+
 " list regex
 " default: "^\s*\d\+[\]:.)}\t ]\s*"
 " format bulleted lists ([*+-]\s) like numbered lists
