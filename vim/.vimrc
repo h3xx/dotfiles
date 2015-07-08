@@ -547,6 +547,14 @@ let g:netrw_hide = 1
 " activate netrw at 26 characters width when pressing the minus key
 nmap <silent> - :26Vexplore<CR>
 
+" bug workaround:
+" set bufhidden=wipe in netrw windows to circumvent a bug where vim won't let
+" you quit (!!!) if a netrw buffer doesn't like it
+" also buftype should prevent you from :w
+" (reproduce bug by opening netrw, :e ., :q)
+let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
+let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
+
 " ****************************
 " ***** load local vimrc *****
 " ****************************
