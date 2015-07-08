@@ -12,7 +12,9 @@ setl formatoptions+=nt
 "	in Insert mode.
 setl formatoptions-=c formatoptions-=r
 
-setl spell
+if !&readonly
+	setl spell
+endif
 
 " list regex
 " default: "^\s*\d\+[\]:.)}\t ]\s*"
