@@ -1,2 +1,2 @@
-set spell
-set colorcolumn=72
+setl spell
+setl colorcolumn=72
