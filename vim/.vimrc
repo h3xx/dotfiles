@@ -301,7 +301,12 @@ let g:sh_fold_enabled = 3
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
-nnoremap ; :
+noremap ; :
+
+" reverse function of ' and `
+" ' => more accurate jumping, ` => less accurate jumping
+noremap ` '
+noremap ' `
 
 " remove search highlighting
 nnoremap <ESC><ESC> :nohlsearch<CR>
