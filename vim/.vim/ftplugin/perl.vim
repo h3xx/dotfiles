@@ -9,7 +9,7 @@ setl path+=/usr/lib64/perl5
 setl path+=/usr/share/perl5
 
 " needed for perldoc integration
-let g:perldoc_program='perldoc' |
+let g:perldoc_program='perldoc'
 nmap <buffer> <silent> <F2> :Perldoc<CR>
 
 "" i486
