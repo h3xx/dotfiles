@@ -1,7 +1,3 @@
-" needed for perldoc integration
-let g:perldoc_program='perldoc'
-nmap <buffer> <silent> <F2> :Perldoc<CR>
-
 " set path according to perl's @INC variable
 " can be updated using:
 " # perl -e 'printf "setl path+=%s\n" x @INC, @INC'
