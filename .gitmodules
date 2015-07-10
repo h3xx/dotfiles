@@ -42,3 +42,7 @@
 	path = vim/.vim/pack/dist/opt/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git
 	branch = master
+[submodule "vim/.vim/pack/dist/opt/perldoc-vim"]
+	path = vim/.vim/pack/dist/opt/perldoc-vim
+	url = https://github.com/hotchpotch/perldoc-vim.git
+	branch = master
