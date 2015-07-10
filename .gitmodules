@@ -1,3 +1,7 @@
+[submodule "vim/.vim/pack/dist/opt/perldoc-vim"]
+	path = vim/.vim/pack/dist/opt/perldoc-vim
+	url = https://github.com/hotchpotch/perldoc-vim.git
+	branch = master
 [submodule "vim/.vim/pack/dist/opt/tagbar"]
 	path = vim/.vim/pack/dist/opt/tagbar
 	url = https://github.com/majutsushi/tagbar.git
