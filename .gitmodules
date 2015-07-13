@@ -1,3 +1,7 @@
+[submodule "vim/.vim/pack/dist/opt/javacomplete"]
+	path = vim/.vim/pack/dist/opt/javacomplete
+	url = https://github.com/Shougo/javacomplete.git
+	branch = master
 [submodule "vim/.vim/pack/dist/opt/perldoc-vim"]
 	path = vim/.vim/pack/dist/opt/perldoc-vim
 	url = https://github.com/hotchpotch/perldoc-vim.git
