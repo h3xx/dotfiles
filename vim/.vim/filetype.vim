@@ -186,6 +186,9 @@ aug g2planet
 	" g2planet-specific autocmds
 	au!
 
+	au FileType php
+				\ nmap <buffer> <silent> ,W :so ~/.vim/templates/keys/g2planet-php-W.vim<CR> |
+
 aug END " g2planet
 
 " vi: ft=vim fdm=syntax
