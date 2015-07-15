@@ -105,6 +105,9 @@ set backupskip+=*/bash-fc-*
 " Keep vim swap files out of the current working directory
 set directory=~/.vim/temp//
 
+" Keep vim undo files out of the current working directory
+set undodir=~/.vim/temp//
+
 " Number of characters typed before swap file is written (default)
 "set updatecount=200
 
