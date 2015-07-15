@@ -9,6 +9,7 @@
 	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
 	pu		= pull
 	st		= status
+	sub		= submodule
 	subbr		= submodule foreach git checkout
 	subbranch	= submodule foreach git checkout
 	subinit		= submodule init
