@@ -50,3 +50,7 @@
 	path = vim/.vim/pack/dist/opt/javacomplete
 	url = git://github.com/Shougo/javacomplete.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-textobj-user"]
+	path = vim/.vim/pack/dist/start/vim-textobj-user
+	url = git://github.com/kana/vim-textobj-user.git
+	branch = master
