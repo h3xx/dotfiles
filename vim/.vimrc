@@ -37,8 +37,8 @@ if has('multi_byte')
 	if !has('gui_running')
 		let &termencoding=&encoding
 	endif
-	" set the internal encoding
-	set encoding=utf-8
+	" set the internal encoding (messes up terminal encoding detection)
+	"set encoding=utf-8
 
 	" &fileencoding (controls how characters in the internal encoding will be
 	" written to the file) will be set according to &fileencodings
