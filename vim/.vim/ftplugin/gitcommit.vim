@@ -1,2 +1,2 @@
 setl spell
-setl colorcolumn=72
+setl colorcolumn=+0
