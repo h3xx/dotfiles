@@ -40,8 +40,8 @@ if has('multi_byte')
 	if !has('gui_running')
 		let &termencoding = &encoding
 	endif
-	" set the internal encoding
-	set encoding=utf-8
+	" set the internal encoding (messes up terminal encoding detection)
+	"set encoding=utf-8
 
 	" &fileencoding (controls how characters in the internal encoding will
 	" be written to the file) will be set according to &fileencodings
@@ -473,8 +473,6 @@ endif " has('gui_running')
 " (hint: uxterm has the same font set)
 if has('gui_running') || &termencoding == 'utf-8'
 	let g:airline_powerline_fonts=1
-	"let g:airline_left_sep = '▓░'
-	"let g:airline_right_sep = '░▓'
 endif
 " mixed_indent_algo: the whitespace plugin is broken by default,
 "	&tabstop aren't taken into effect when detecting mixed indent
