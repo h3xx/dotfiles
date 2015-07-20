@@ -54,7 +54,9 @@ $endif
 # postgresql shortcuts
 $if psql
 	"\e-s":	"select * from "
+	"\e-r":	"rollback;begin;"
 	$if term=xterm
+	"\M-r":	"rollback;begin;"
 	"\M-s":	"select * from "
 	$endif
 $endif
