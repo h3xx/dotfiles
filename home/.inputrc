@@ -87,6 +87,12 @@ $if term=xterm
 # enable Alt-. insertion of last typed argument
 "\M-.":		yank-last-arg
 
+# Unicode strings uxterm likes to send along with control signals:
+# alt-.
+"\xc2":		""
+# alt-h
+"\xc3":		""
+
 # alt-space is a different character than a space and can cause baffling errors
 "\xa0":		" "
 $endif
