@@ -42,4 +42,16 @@ textPageBreaks	yes
 # "no".
 textKeepTinyChars yes
 
+# use some vi key mappings
+bind h		any scrollLeft(16)
+bind l		any scrollRight(16)
+bind k		any scrollUp(16)
+bind j		any scrollDown(16)
+bind ctrl-u	any prevPage
+bind ctrl-d	any nextPage
+bind /		any find
+bind ?		any find
+bind n		any findNext
+bind N		any findNext
+
 # vi: ft=conf tw=78
