@@ -7,6 +7,18 @@ include /etc/xpdfrc
 # vertical scroll bar for the whole document. This defaults to `no'.
 continuousView yes
 
+# Use some vi key mappings
+bind h          any scrollLeft(16)
+bind l          any scrollRight(16)
+bind k          any scrollUp(16)
+bind j          any scrollDown(16)
+bind ctrl-u     any prevPage
+bind ctrl-d     any nextPage
+bind /          any find
+bind ?          any find
+bind n          any findNext
+bind N          any findNext
+
 # Sets the initial zoom factor. A number specifies a zoom percentage, where
 # 100 means 72 dpi. You may also specify `page', to fit the page to the window
 # size, or `width', to fir the page width to the window width.
