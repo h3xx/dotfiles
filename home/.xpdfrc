@@ -1,0 +1,45 @@
+# Include system-wide xpdfrc
+include /etc/xpdfrc
+
+# Sets the command executed when you click on a URL link. The string `%s' will
+# be replaced with the URL. This has no default value.
+urlCommand	"xdg-open %s"
+
+# Sets the command executed wuth you click on a movie annotation. The string
+# `%s' will be replaced with the movie file name. This has no default value.
+movieCommand	"mplayer %s"
+
+# Sets the initial zoom factor. A number specifies a zoom percentage, where
+# 100 means 72 dpi. You may also specify `page', to fit the page to the window
+# size, or `width', to fir the page width to the window width.
+initialZoom	width
+
+# If set to `yes', xpdf will start in continuous view mode, i.e., with one
+# vertical scroll bar for the whole document. This defaults to `no'.
+continuousView	yes
+
+# Sets the encoding to use for text output. (This can be overridden with the
+# `-enc' switch on the command line.) The encoding-name must be defined with
+# the unicodeMap command (see above). This defaults to `Latin1'.
+textEncoding	UTF-8
+
+# Sets the end-of-line convention to use for text output. The options are:
+#     `unix'	= LF
+#     `dos'	= CR+LF
+#     `mac'	= CR
+# (This can be overridden with the "-eol" switch on the command line.) The
+# default value is based on the OS where xpdf and pdftotext were built.
+textEOL		unix
+
+# If set to "yes", text extraction will insert page breaks (form feed
+# characters) between pages. This defaults to "yes".
+textPageBreaks	yes
+
+# If set to "yes", text extraction will keep all characters. If set to "no",
+# text extraction will discard tiny (smaller than 3 point) characters after
+# the first 50000 per page, avoiding extremely slow run times for PDF files
+# that use special fonts to do shading or cross-hatching. This defaults to
+# "no".
+textKeepTinyChars yes
+
+# vi: ft=conf tw=78
