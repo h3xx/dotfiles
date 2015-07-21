@@ -39,8 +39,9 @@
 #	cmd = "meld"
 
 [fetch]
-	# auto-fetch submodules upon git pull
-	recurseSubmodules = yes
+	# auto-fetch submodules upon git pull only if the superproject has a
+	# commit that updates the submodule pointer
+	recurseSubmodules = on-demand
 
 [color]
 	branch		= auto
