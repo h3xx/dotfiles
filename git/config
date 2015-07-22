@@ -15,6 +15,7 @@
 	subbranch	= submodule foreach git checkout
 	subinit		= submodule init
 	submaster	= submodule foreach git checkout master
+	subpull		= submodule foreach git pull origin master
 	subup		= submodule update --init --remote
 	up		= pull # I'm used to svn
 	url		= remote -v # list checkout urls
