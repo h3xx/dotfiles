@@ -6,7 +6,7 @@
 	ci		= commit
 	co		= checkout
 	cob		= checkout -b
-	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	logg		= log --show-signature --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
 	pu		= pull
 	st		= status
 	sub		= submodule
@@ -43,6 +43,11 @@
 	added		= yellow
 	changed		= green
 	untracked	= cyan
+
+[commit]
+	# automatically gpg-sign all commits
+	# (aliasing commit=commit -S does not work)
+	gpgSign = yes
 
 [core]
 	# Limit memory when resolving deltas?
