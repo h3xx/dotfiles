@@ -16,7 +16,7 @@
 	up		= pull		# I'm used to svn
 	url		= remote -v	# list checkout urls
 	cob		= checkout -b
-	logg		= log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	logg		= log --show-signature --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
 	# option overrides
 	merge		= merge --ff
 	pull		= pull --ff
@@ -26,6 +26,11 @@
 	tattle		= push --set-upstream origin
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
+
+[commit]
+	# automatically gpg-sign all commits
+	# (aliasing commit=commit -S does not work)
+	gpgSign		= yes
 
 [core]
 	pager		= less -R	# handle colors correctly
