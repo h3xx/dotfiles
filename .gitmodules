@@ -58,3 +58,7 @@
 	path = vim/.vim/pack/dist/start/vim-textobj-indent
 	url = https://github.com/kana/vim-textobj-indent.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-textobj-entire"]
+	path = vim/.vim/pack/dist/start/vim-textobj-entire
+	url = https://github.com/kana/vim-textobj-entire.git
+	branch = master
