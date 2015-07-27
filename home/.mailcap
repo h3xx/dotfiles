@@ -37,6 +37,7 @@ application/x-rar-compressed; rar lt %s; copiousoutput
 
 application/x-zip; vim %s; needsterminal
 application/x-zip-compressed; vim %s; needsterminal
+application/zip; vim %s; needsterminal
 
 # code
 
