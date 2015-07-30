@@ -21,7 +21,7 @@ if [[ $- = *i* ]]; then
 		gpg-agent \
 		; do
 
-		if [ -f ~/".bashrc-$rc_name" ]; then
+		if [[ -f ~/.bashrc-$rc_name ]]; then
 			# for figuring out why new prompts lag
 			#echo ".bashrc-$rc_name" >&2
 			#time . ~/".bashrc-$rc_name"
