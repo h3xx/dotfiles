@@ -385,6 +385,7 @@
 		[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 		[exec] (netwalk) {netwalk}
 		[exec] (openttd) {openttd} <~/.fluxbox/icons/openttd.xpm>
+		[exec] (pioneers) {pioneers} <~/.fluxbox/icons/pioneers.xpm>
 		[exec] (quake) {nq-sdl -winsize 1680 1050} <~/.fluxbox/icons/quake.xpm>
 		[exec] (quake: scourge of armagon) {nq-sdl -winsize 1680 1050 -game hipnotic} <~/.fluxbox/icons/quake.xpm>
 		[exec] (quake: dissolution of eternity) {nq-sdl -winsize 1680 1050 -game rogue} <~/.fluxbox/icons/quake.xpm>
