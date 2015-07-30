@@ -37,7 +37,7 @@
 # 1	   | 1	      | 0   | load envf
 # 1	   | 1	      | 1   | na
 
-#if [ ! -f "$gpg_envf" -o "$gpg_envf" -nt "$gpg_sock" ]; then
+#if [[ ! -f "$gpg_envf" -o "$gpg_envf" -nt "$gpg_sock" ]]; then
 #	# env file was altered; possible security breach
 #	killall -s KILL -u "$USER" -v -w gpg-agent
 #	killall -s KILL -u "$USER" -q -w gpg-agent
@@ -58,7 +58,7 @@
 
 ##### KEEP IT SIMPLE STUPID! #####
 # (from gpg-agent man page)
-if [ -f ~/.gpg-agent-info ]; then
+if [[ -f ~/.gpg-agent-info ]]; then
 	. ~/.gpg-agent-info
 	export GPG_AGENT_INFO
 	export SSH_AUTH_SOCK
