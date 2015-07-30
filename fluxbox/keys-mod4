@@ -57,32 +57,17 @@ Mod4 7 :Tab 7
 Mod4 8 :Tab 8
 Mod4 9 :Tab 9
 
-# open a terminal
-#Mod1 F1 :Exec xterm
-# TERM is set here because xterm refuses to set it via *termName
-Mod4 t :Exec xterm -e 'TERM=xterm-256color screen -xRR'
-
-# open mutt
-None XF86Mail :Exec xterm -e 'TERM=xterm-256color mutt'
-
-# open a dialog to run programs
-#Mod1 F2 :Exec fbrun
+## open a dialog to run programs
 Mod4 r :Exec fbrun
 
-# volume settings, using common keycodes
-# if these don't work, use xev to find out your real keycodes
-#176 :Exec amixer sset Master,0 1+
-#174 :Exec amixer sset Master,0 1-
-#160 :Exec amixer sset Master,0 toggle
+## volume settings, using common keycodes
 Mod4 Prior :Exec ~/.fluxbox/bin/adjustvolume.sh +5
-None XF86AudioRaiseVolume :Exec ~/.fluxbox/bin/adjustvolume.sh +5
 Mod4 Next :Exec ~/.fluxbox/bin/adjustvolume.sh -5
-None XF86AudioLowerVolume :Exec ~/.fluxbox/bin/adjustvolume.sh -5
-#None XF86AudioPlay :Exec /usr/bin/xmms --play-pause # or -t
-#None XF86AudioPrev :Exec /usr/bin/xmms --rew
-#None XF86AudioNext :Exec /usr/bin/xmms --fwd
 Mod4 End :Exec ~/.fluxbox/bin/toggle-mute
+None XF86AudioRaiseVolume :Exec ~/.fluxbox/bin/adjustvolume.sh +5
+None XF86AudioLowerVolume :Exec ~/.fluxbox/bin/adjustvolume.sh -5
 None XF86AudioMute :Exec ~/.fluxbox/bin/toggle-mute
+# open mixer
 Mod4 a :Exec xterm -name alsamixer -e alsamixer
 
 # current window commands
@@ -188,30 +173,26 @@ Control F12 :TakeToWorkspace 12
 Mod4 Up :MaximizeVertical
 Mod4 Right :MaximizeHorizontal
 
+##### user programs #####
+
+# open a terminal
+#Mod1 F1 :Exec xterm
+# TERM is set here because xterm refuses to set it via *termName
+Mod4 t :Exec xterm -e 'TERM=xterm-256color screen -xRR'
+
+# open mutt
+None XF86Mail :Exec xterm -e 'TERM=xterm-256color mutt'
+
 # start programs in screen and open a terminal to them
 #Mod4 o :Exec (ps -o pid= -C mutt >/dev/null || screen -Xd eval 'screen -t mutt mutt' 'number 1') && mrxvt -e screen -xRR -p mutt
 #Mod4 d :Exec (ps -o pid= -C abook >/dev/null || screen -Xd screen -t abook abook) && mrxvt -e screen -xRR -p abook
 Mod4 Insert :Exec xcalc
+None XF86Calculator :Exec xcalc
 Mod4 l :Exec xlock
 
 Mod4 f :Exec firefox
-Mod4 p :Exec pidgin
 
 Mod4 w :Exec ~/.fluxbox/bin/openbrowser.sh
 
 # take a screenshot
 Mod4 q :Exec ~/.fluxbox/bin/takescreenshot.sh
-
-# audacious control commands
-
-## (these are now covered by 'global hotkeys' plugin)
-#Mod4 n :Exec audtool playlist-advance
-#Mod4 n :Exec audacious -f
-#Mod4 b :Exec audtool playlist-reverse
-#Mod4 b :Exec audacious -r
-#Mod4 k :Exec audtool playback-playpause
-#Mod4 k :Exec audacious -t
-#Mod4 j :Exec audtool jumptofile-show
-
-## (this one still needs an external program)
-#Mod4 i :Exec audtool playlist-shuffle-toggle
