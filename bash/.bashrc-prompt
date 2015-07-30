@@ -42,8 +42,6 @@ esac
 PS1='\[\e[01;30m\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \[\e[01;30m\]]=\[\e[37m\] \$\[\e[0m\] '
 
 # prepend error string checking, as any prior command will overwrite $?
-#PROMPT_COMMAND="err=\$?; [ \$err -ne 0 ] && echo -e '$NORMAL$YELLOW'\"[\$err]\"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
-## (this one ensures $err doesn't escape and uses better quoting)
 PROMPT_COMMAND='(err="$?"; [ "$err" -eq 0 ] || echo -e '\''\e[0;33m'\''"[$err]")'"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
 
 # clean up
