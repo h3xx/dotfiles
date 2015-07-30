@@ -218,18 +218,18 @@ _swaps() {
 }
 
 # psql sees users after -U
-complete -o default -F _psqlcomp                psql
-_psqlcomp() {
-        if [ -f ~/.pgpass ]; then
-                case "${COMP_WORDS[$COMP_CWORD-1]}" in
-                        '-U')
-                                COMPREPLY=(
-                                        $(cut -f 4 -d ':' ~/.pgpass |grep "^$2")
-                                )
-                                ;;
-                esac
-        fi
-}
+if [ -f ~/.pgpass ]; then
+	complete -o default -F _psqlcomp                psql
+	_psqlcomp() {
+			case "${COMP_WORDS[$COMP_CWORD-1]}" in
+				'-U')
+					COMPREPLY=(
+						$(cut -f 4 -d ':' ~/.pgpass |grep "^$2")
+					)
+					;;
+			esac
+	}
+fi
 
 # XXX : debugging function
 #_listcomp() {
