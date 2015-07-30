@@ -32,10 +32,10 @@ alias \
 ##	 This was causing problems say, when building from a tarball extracted
 ##	 in an RCS-controlled directory.
 #alias \
-#	svn-docdir='([ -d .svn ] && echo "usr/doc/$(basename -- "$PWD")-r$(svn info "$PWD" |grep ^Revision: |cut -f 2 -d '\'' '\'')" || git-docdir)' \
-#	git-docdir='([ -d .git ] && echo "usr/doc/$(basename -- "$PWD")-r$(git --git-dir="$PWD/.git" rev-list HEAD |wc -l)" || hg-docdir)' \
-#	hg-docdir='([ -d .hg ]   && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && hg tip |grep -oP '\''^changeset:\s*\d+'\'' |grep -oP '\''\d+'\'')" || cvs-docdir)' \
-#	cvs-docdir='([ -d CVS ]  && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && cvs rlog . 2>/dev/null |grep '\''^revision '\'' |wc -l)" || pkg-docdir)' \
+#	svn-docdir='([[ -d .svn ]] && echo "usr/doc/$(basename -- "$PWD")-r$(svn info "$PWD" |grep ^Revision: |cut -f 2 -d '\'' '\'')" || git-docdir)' \
+#	git-docdir='([[ -d .git ]] && echo "usr/doc/$(basename -- "$PWD")-r$(git --git-dir="$PWD/.git" rev-list HEAD |wc -l)" || hg-docdir)' \
+#	hg-docdir='([[ -d .hg ]]   && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && hg tip |grep -oP '\''^changeset:\s*\d+'\'' |grep -oP '\''\d+'\'')" || cvs-docdir)' \
+#	cvs-docdir='([[ -d CVS ]]  && echo "usr/doc/$(basename -- "$PWD")-r$(cd "$PWD" && cvs rlog . 2>/dev/null |grep '\''^revision '\'' |wc -l)" || pkg-docdir)' \
 #	pkg-docdir='(echo "usr/doc/$(basename "$PWD")")'
 
 # this is the old definition of dconf, before the new 64-bit library dir
@@ -61,7 +61,7 @@ chkpkg() {
 catpkg() {
 	(for name; do
 		for pkg in $(chkpkg "$name") ; do
-			if [ -f "/var/log/scripts/$pkg" ]; then
+			if [[ -f "/var/log/scripts/$pkg" ]]; then
 				cat "/var/log/scripts/$pkg"
 			fi
 			cat "/var/log/packages/$pkg"
@@ -76,7 +76,7 @@ pkglook() {
 		install_list
 
 	for pkg; do
-		if [ -f "$pkg" ]; then
+		if [[ -f "$pkg" ]]; then
 			if tar tf "$pkg" 'install' >/dev/null 2>&1; then
 				mapfile -t install_list < <(
 					tar tf "$pkg" 'install' |

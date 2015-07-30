@@ -36,7 +36,7 @@ case "$HOSTNAME" in
 esac
 
 # select appropriate index for color (user=0; root=1)
-[ "$UID" -ne 0 ] ; BASE_COLOR="${COLORS[${BASE_COLOR[$?]}]}"
+[[ "$UID" -ne 0 ]] ; BASE_COLOR="${COLORS[${BASE_COLOR[$?]}]}"
 
 # hint: 01;30m = bright black, 0;37m = normal white, 0;37 = white, 0m = normal
 PS1='\[\e[01;30m\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \[\e[01;30m\]]=\[\e[37m\] \$\[\e[0m\] '
@@ -50,8 +50,8 @@ unset \
 	BASE_COLOR
 
 # April Fools' Day prank
-if [ "$(date +%m%d)" == '0401' ]; then
-	PROMPT_COMMAND+=' ; (if [ $RANDOM -le 8000 ]; then printf "\0337\033[%d;%dH\033[4%dm \033[m\0338" $((RANDOM%LINES+1)) $((RANDOM%COLUMNS+1)) $((RANDOM%8)); fi)'
+if [[ "$(date +%m%d)" == '0401' ]]; then
+	PROMPT_COMMAND+=' ; (if [[ $RANDOM -le 8000 ]]; then printf "\0337\033[%d;%dH\033[4%dm \033[m\0338" $((RANDOM%LINES+1)) $((RANDOM%COLUMNS+1)) $((RANDOM%8)); fi)'
 	# technicolor prompt variant
-	#PROMPT_COMMAND+=' ; (if [ $RANDOM -le 8000 ]; then printf "\033[4%dm" $((RANDOM%8)); fi)'
+	#PROMPT_COMMAND+=' ; (if [[ $RANDOM -le 8000 ]]; then printf "\033[4%dm" $((RANDOM%8)); fi)'
 fi

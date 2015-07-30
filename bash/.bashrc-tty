@@ -6,7 +6,7 @@
 #UNICODE_FONT='Goha-12'
 
 # if we're not running through a terminal emulator
-if [ "_$TERM" == '_linux' ]; then
+if [[ "_$TERM" == '_linux' ]]; then
 	#unicode_start "$UNICODE_FONT" 2>/dev/null
 
 	# stop the tty blanker

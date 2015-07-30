@@ -5,8 +5,8 @@
 # check to see that screen is running
 # ...or if we're running through su(1)
 # ...and we're not running through SSH
-#if [ -n "$STY" -o "x$0" == 'x-su' -o -z "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]; then
-if [ -n "$STY" ]; then
+#if [[ -n "$STY" -o "x$0" == 'x-su' -o -z "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]]; then
+if [[ -n "$STY" ]]; then
 	# prompt
 
 	# method 1: using PROMPT_COMMAND, which executes after each bash
@@ -38,9 +38,9 @@ fi
 
 # (addendum: this causes a LOT of problems when ssh-ing from within a screen
 # session)
-#elif [ -n "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]; then
+#elif [[ -n "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]]; then
 #	# we're logged in through ssh
-#	if [ -z "$DISPLAY" ]; then
+#	if [[ -z "$DISPLAY" ]]; then
 #		# start screen if we're not using X forwarding
 #		exec screen -xRR
 #	fi

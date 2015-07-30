@@ -11,7 +11,7 @@ if [[ $- = *i* ]]; then
 	#	# this seems more efficient
 	#	# Append any additional sh scripts found in /etc/profile.d/:
 	#	for profile_script in /etc/profile.d/*.sh ; do
-	#		if [ -x "$profile_script" ]; then
+	#		if [[ -x "$profile_script" ]]; then
 	#			. "$profile_script"
 	#		fi
 	#	done
@@ -36,7 +36,7 @@ if [[ $- = *i* ]]; then
 		xterm \
 		gpg-agent ; do
 
-		if [ -f "${HOME}/.bashrc-${rc_name}" ]; then
+		if [[ -f "${HOME}/.bashrc-${rc_name}" ]]; then
 			# for figuring out why new prompts lag
 			#echo ".bashrc-$rc_name" >&2
 			#time . "${HOME}/.bashrc-${rc_name}"

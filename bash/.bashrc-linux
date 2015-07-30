@@ -2,7 +2,7 @@
 # universal defs
 
 ## path
-[ -e ~/bin ] && export PATH="${PATH:+$PATH:}$HOME/bin"
+[[ -e ~/bin ]] && export PATH="${PATH:+$PATH:}$HOME/bin"
 
 ## bash builtin variables
 HISTTIMEFORMAT='%s'		# the beloved Second of Our Linux
@@ -10,7 +10,7 @@ HISTFILESIZE=65535
 HISTSIZE=65535
 HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:esu:rma:rmp:fol:pfol"
 HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
-[ -e ~/.hosts ] && HOSTFILE="$HOME/.hosts"	# for @-completion
+[[ -e ~/.hosts ]] && HOSTFILE="$HOME/.hosts"	# for @-completion
 
 
 # I'm liking gvim better and better
@@ -71,7 +71,7 @@ shopt -u \
 	sourcepath
 
 # only verify ! event substitutions if we're root
-if [ "$UID" -eq 0 ]; then
+if [[ "$UID" -eq 0 ]]; then
 	shopt -s histverify
 fi
 
@@ -82,7 +82,7 @@ stty stop ''
 alias rc='$EDITOR ~/.bashrc-linux'
 
 ## login counter
-#if [ -f ~/.login_count ]; then
+#if [[ -f ~/.login_count ]]; then
 #	expr $(cat ~/.login_count) + 1 >~/.login_count
 #else
 #	echo "1" >~/.login_count
@@ -175,7 +175,7 @@ alias \
 # this makes the header show up in grepped results
 # usefulness: TODO
 _ps() {
-	if [ ! -t 1 ]; then
+	if [[ ! -t 1 ]]; then
 		\ps "$@" |sed -e '1w /dev/stderr' -e '1d'
 	else
 		\ps "$@"
@@ -236,7 +236,7 @@ alias \
 # create and switch to a new directory
 # usefulness: ****
 nd() {
-	[ -n "$1" -a "$1" != '-' ] && mkdir --parents -- "$1" && cd "$1"
+	[[ -n "$1" && "$1" != '-' ]] && mkdir --parents -- "$1" && cd "$1"
 }
 
 # untar and cd to the tarball's directory
@@ -260,7 +260,7 @@ qrmr() {
 	# disconnect and destruct
 	local dir fn shr=0
 	# -s => shred instead of just rm
-	if [ "_$1" == '_-s' ]; then
+	if [[ "_$1" == '_-s' ]]; then
 		shr=1
 		shift 1
 	fi
@@ -275,13 +275,13 @@ qrmr() {
 		# r=1 : normal; create $dir, move $thing into $dir, start destruct of $dir
 		# r=0 : abort (move on)
 		# r=2 : just move $thing into $dir because $dir is already being destroyed
-		if [ ! -d "$dir" ]; then
+		if [[ ! -d "$dir" ]]; then
 			mkdir -p -- "$dir" &&
 			touch "$dir"/.okaytodelete || return
 			for fn; do
 				mv -- "$fn" "$(mktemp -dp "$dir" 'qrmr.XXXXXX')"
 			done
-			if [ "$shr" -eq 0 ]; then
+			if [[ "$shr" -eq 0 ]]; then
 				rm -rf -- "$dir"/* "$dir" &
 			else
 				ionice -c 3 find "$dir"/* -type f -exec shred -zu -- {} + &&
@@ -289,7 +289,7 @@ qrmr() {
 				rm -rf -- "$dir" &
 			fi
 			return 0
-		elif [ -e "$dir"/.okaytodelete ]; then
+		elif [[ -e "$dir"/.okaytodelete ]]; then
 			for fn; do
 				mv -- "$fn" "$(mktemp -dp "$dir" 'qrmr.XXXXXX')"
 			done
@@ -310,6 +310,6 @@ histoff() {
 }
 
 ## source global defs
-#if [ -f /etc/bashrc ]; then
+#if [[ -f /etc/bashrc ]]; then
 #	. /etc/bashrc
 #fi
