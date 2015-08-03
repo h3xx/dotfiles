@@ -54,10 +54,10 @@ application/zip=gvim.desktop
 inode/directory=xfe.desktop
 inode/symlink=xfe.desktop
 
-audio/mpeg=smplayer.desktop
-audio/ogg=smplayer.desktop
-audio/x-flac=smplayer.desktop
-audio/x-wav=smplayer.desktop
+audio/mpeg=audacious.desktop
+audio/ogg=audacious.desktop
+audio/x-flac=audacious.desktop
+audio/x-wav=audacious.desktop
 
 video/mp4=smplayer.desktop
 video/x-flv=smplayer.desktop
