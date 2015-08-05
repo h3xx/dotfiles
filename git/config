@@ -17,11 +17,11 @@
 	up		= pull		# I'm used to svn
 	url		= remote -v	# list checkout urls
 	cob		= checkout -b
-	logg		= log --show-signature --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)%GK%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
 	# option overrides
 	merge		= merge --ff
 	pull		= pull --ff
-	#fetch		= fetch --all
+
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
 	tattle		= push --set-upstream origin
