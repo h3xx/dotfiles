@@ -20,7 +20,7 @@
 # xset -b
 #
 # Increase the keyboard repeat-rate:
-xset r rate 195 35
+xset r rate 145 45
 # Increase mouse acceleration:
 xset m 30/10
 # Set DPMS timeouts
