@@ -5,5 +5,10 @@ fix:
 			ln -svTf "$$(readlink "$$bashrc" |sed -e 's,dotfiles/home,dotfiles/bash,')" "$$bashrc" ;\
 		fi ;\
 	done)
+	(if [[ "$$(readlink ~/.ipager)" =~ dotfiles/home ]]; then \
+		nl="$$(readlink ~/.ipager |sed -e 's,dotfiles/home/\.ipager,dotfiles/ipager,')" ;\
+		rm ~/.ipager &&\
+		ln -svTf "$$nl" ~/.ipager ;\
+	fi)
 
 .PHONY: fix
