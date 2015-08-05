@@ -6,7 +6,7 @@
 	ci		= commit
 	co		= checkout
 	cob		= checkout -b
-	logg		= log --show-signature --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)%GK%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
 	pu		= pull
 	st		= status
 	sub		= submodule
