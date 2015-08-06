@@ -17,7 +17,7 @@
 	up		= pull		# I'm used to svn
 	url		= remote -v	# list checkout urls
 	cob		= checkout -b
-	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)%GK%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
+	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)(%G?)%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
 	# option overrides
 	merge		= merge --ff
 	pull		= pull --ff
