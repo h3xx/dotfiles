@@ -230,8 +230,7 @@ alias \
 	pfol='test -d "$_" && pushd "$_" || pushd "$(dirname -- "$_")"' \
 	rmdirempty='findd -empty -print -delete' \
 	rmdirempty1='findd1 -empty -print -delete' \
-	brokensymlinks='find -L . -type l' \
-	pidof='/sbin/pidof'
+	brokensymlinks='find -L . -type l'
 
 # create and switch to a new directory
 # usefulness: ****
