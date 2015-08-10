@@ -36,6 +36,13 @@ if [[ -n "$STY$TMUX" ]]; then
 	alias fg='_fg'
 fi
 
+if [[ -n "$TMUX" ]]; then
+	if [[ "$UID" == 0 ]]; then
+		tmux set-option -t main window-status-current-format '#[fg=black,bg=red]#I:#W#F'
+		tmux set-option -t main window-status-format "#[fg=black,bg=red]#I:#W#F"
+	fi
+fi
+
 # (addendum: this causes a LOT of problems when ssh-ing from within a screen
 # session)
 #elif [[ -n "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]]; then
