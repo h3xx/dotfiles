@@ -2,11 +2,11 @@
 
 # screen-related options
 
-# check to see that screen is running
+# check to see that we're running inside of screen or tmux
 # ...or if we're running through su(1)
 # ...and we're not running through SSH
 #if [[ -n "$STY" -o "x$0" == 'x-su' -o -z "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]]; then
-if [[ -n "$STY" ]]; then
+if [[ -n "$STY$TMUX" ]]; then
 	# prompt
 
 	# method 1: using PROMPT_COMMAND, which executes after each bash
