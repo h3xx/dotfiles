@@ -18,7 +18,7 @@
 [encoding] {UTF-8}
 #	[exec] (mrxvt) {mrxvt} <~/.fluxbox/icons/mrxvt.xpm>
 	# TERM is set here because xterm refuses to set it via *termName
-	[exec] (xterm) {xterm -e 'TERM=xterm-256color screen -xRR'} <~/.fluxbox/icons/xterm.xpm>
+	[exec] (xterm) {xterm -e 'TERM=xterm-256color tmux new -A -s main'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
 	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/google-chrome.xpm>
 #	[exec] (chromium) {chromium --ignore-gpu-blocklist --process-per-site --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/chromium.xpm>
