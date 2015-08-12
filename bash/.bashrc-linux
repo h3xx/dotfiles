@@ -143,18 +143,15 @@ alias grep='grep --color=auto'
 export LYNX_CFG="$HOME/.lynx.cfg"
 
 ## chmod
+# usefulness: ****
 alias \
 	privatize='find . \( -type f -exec chmod 0600 -- {} \; \) -o \( -type d -exec chmod 0700 -- {} \; \)' \
 	publicize='find . \( -type f -exec chmod 0644 -- {} \; \) -o \( -type d -exec chmod 0755 -- {} \; \)' \
 	ppublicize='find . \( -type f ! -perm +0111 -exec chmod 0644 -- {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0755 -- {} \; \)' \
 	pprivatize='find . \( -type f ! -perm +0111 -exec chmod 0600 -- {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0700 -- {} \; \)'
 
-## autotools
-# (handled by script now)
-#alias \
-#	def_autogen='(aclocal --force ; autoheader --force ; libtoolize --force ; automake --force --add-missing ; autoconf --force)'
-
 ## find
+# usefulness: *****
 alias \
 	findi='find . -iname' \
 	find1='find . -maxdepth 1 -mindepth 1' \
@@ -176,9 +173,9 @@ alias \
 # usefulness: TODO
 _ps() {
 	if [[ ! -t 1 ]]; then
-		\ps "$@" |sed -e '1w /dev/stderr' -e '1d'
+		ps "$@" |sed -e '1w /dev/stderr' -e '1d'
 	else
-		\ps "$@"
+		ps "$@"
 	fi
 }
 
