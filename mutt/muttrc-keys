@@ -22,8 +22,8 @@ bind pager G bottom
 #macro pager A "|procmail\nd"		"Re-sort mail and delete"
 
 # urlview integration
-macro index \cb "|urlview\n"		"View/browse URLs with urlview"
-macro pager \cb "|urlview\n"		"View/browse URLs with urlview"
+macro index \cy "|urlview\n"		"View/browse URLs with urlview"
+macro pager \cy "|urlview\n"		"View/browse URLs with urlview"
 
 # screen integration
 ## don't stop mutt when ^z is pressed
