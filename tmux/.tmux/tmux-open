@@ -1,0 +1,10 @@
+#!/bin/bash
+
+color="${3:-white}"
+exec="$1"
+name="${2:-$exec}"
+if [[ -n "$exec" ]]; then
+	tmux new-window -n "$name" "$exec"
+	tmux set -q window-status-format         "#[fg=$color]#I:#W#F"
+	tmux set -q window-status-current-format "#[fg=$color,reverse]#I:#W#F"
+fi
