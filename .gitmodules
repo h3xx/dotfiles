@@ -62,3 +62,7 @@
 	path = vim/.vim/pack/dist/start/vim-textobj-entire
 	url = git://github.com/kana/vim-textobj-entire.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-textobj-line"]
+	path = vim/.vim/pack/dist/start/vim-textobj-line
+	url = git://github.com/kana/vim-textobj-line.git
+	branch = master
