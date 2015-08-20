@@ -7,7 +7,9 @@
 	co		= checkout
 	cob		= checkout -b
 	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)(%G?)%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
+	p		= push
 	pu		= pull
+	sf		= submodule foreach
 	st		= status
 	sub		= submodule
 	subbr		= submodule foreach git checkout
@@ -16,7 +18,7 @@
 	submaster	= submodule foreach git checkout master
 	subpull		= submodule foreach git pull origin master
 	subup		= submodule update --init --remote
-	up		= pull # I'm used to svn
+	up		= pull # typo
 	url		= remote -v # list checkout urls
 	w		= whatchanged
 
