@@ -11,6 +11,7 @@
 	st		= status
 	ci		= commit
 	co		= checkout
+	cp		= cherry-pick
 	w		= whatchanged
 	ca		= commit -a
 	pu		= pull
