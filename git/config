@@ -1,7 +1,7 @@
 [alias]
 	# shortcuts
 	sub		= submodule
-	subup		= submodule update --init --remote
+	subup		= submodule update --init
 	subinit		= submodule init
 	sf		= submodule foreach
 	subbranch	= submodule foreach git checkout
