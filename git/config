@@ -18,7 +18,7 @@
 	subinit		= submodule init
 	submaster	= submodule foreach git checkout master
 	subpull		= submodule foreach git pull origin master
-	subup		= submodule update --init --remote
+	subup		= submodule update --init
 	up		= pull # typo
 	url		= remote -v # list checkout urls
 	w		= whatchanged
