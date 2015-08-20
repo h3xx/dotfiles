@@ -3,6 +3,7 @@
 	sub		= submodule
 	subup		= submodule update --init --remote
 	subinit		= submodule init
+	sf		= submodule foreach
 	subbranch	= submodule foreach git checkout
 	subbr		= submodule foreach git checkout
 	submaster	= submodule foreach git checkout master
@@ -13,8 +14,9 @@
 	w		= whatchanged
 	ca		= commit -a
 	pu		= pull
+	p		= push
 	br		= branch
-	up		= pull		# I'm used to svn
+	up		= pull # typo
 	url		= remote -v	# list checkout urls
 	cob		= checkout -b
 	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)(%G?)%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
