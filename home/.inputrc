@@ -28,6 +28,12 @@ $if bash
 "\eg":		"&>~/.garbage.out &"
 "\e\C-g":	"2>~/.garbage.out"
 
+"\M-d":		"git diff "
+"\M-s":		"git st "
+"\M-u":		"git pull"
+"\M-m":		"git commit -m '"
+"\M-o":		"git co "
+
 # redirection short cuts
 $if term=xterm
 "\M-w":		"2>&1"
