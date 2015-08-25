@@ -14,6 +14,7 @@
 	cp		= cherry-pick
 	w		= whatchanged
 	ca		= commit -a
+	f		= fetch
 	pu		= pull
 	p		= push
 	br		= branch
