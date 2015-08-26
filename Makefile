@@ -1,3 +1,4 @@
+all: dootfiles
 
 fix:
 	(for bashrc in ~/.bashrc* ~/.bash_profile; do \
@@ -11,4 +12,7 @@ fix:
 		ln -svTf "$$nl" ~/.ipager ;\
 	fi)
 
-.PHONY: fix
+dootfiles:
+	@echo "thank mr skeltal"
+
+.PHONY: all fix dootfiles
