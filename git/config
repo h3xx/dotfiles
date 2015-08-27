@@ -152,6 +152,9 @@
 [url "git@github.com:"]
 	insteadOf	= gh:
 
+[url "git@git.g2planet.com:"]
+	insteadOf	= g2:
+
 [push]
 	default = simple
 
