@@ -1,5 +1,6 @@
 [alias]
 	# shortcuts
+	h		= help
 	sub		= submodule
 	subup		= submodule update --init
 	subinit		= submodule init
