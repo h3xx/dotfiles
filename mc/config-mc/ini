@@ -109,6 +109,7 @@ timeformat_recent=%b %e %H:%M
 [Colors]
 base_color=
 color_terminals=
+screen-256color=
 xterm-256color=
 xterm=
 
