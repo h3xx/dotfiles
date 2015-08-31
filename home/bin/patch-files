@@ -1,0 +1,34 @@
+#!/usr/bin/perl -w
+use strict;
+
+our $VERSION = '0.2';
+
+use Getopt::Std	qw/ getopts /;
+
+sub HELP_MESSAGE {
+	require Pod::Text;
+	use File::Basename	qw/ basename /;
+	my ($fh, $name) = (shift, &basename($0));
+	print $fh <<EOF
+Usage: $name [FILES]
+Give the bare list of files inside of a unified diff.
+
+Copyright (C) 2012-2015 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	;
+
+	exit 0;
+}
+
+&getopts('', \ my %opts);
+
+# prints the list of affected files for unified diffs
+
+#my @files = map {/^\+\+\+ ([^\t]+)/} grep {/^\+\+\+/} <>;
+
+my @files = map {chomp;/^\+\+\+ ([^\t]+)/} <>;
+
+print join ("\n", @files), "\n";
