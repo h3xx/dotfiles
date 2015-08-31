@@ -3,11 +3,16 @@
 --\pset null '%[%033[1;31m%]NULL%[%033[0m%]'
 \pset null 'NULL'
 
--- use expanded table format
---\x auto
+-- use expanded table format when necessary
+\x auto
+-- (same thing except use it always)
+--\pset expanded
 
 -- color prompt
 --\set PROMPT1 '%M:%[%033[1;31m%]%>%[%033[0m%] %n@%/%R%#%x '
 --\set PROMPT1 '%M:%> %n@%/%R%#%x '
+
+-- increase the number of remembered commands
+\set HISTSIZE 65535
 
 -- vi: ft=sql
