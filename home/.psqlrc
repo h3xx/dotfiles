@@ -10,7 +10,7 @@
 
 -- color prompt
 --\set PROMPT1 '%M:%[%033[1;31m%]%>%[%033[0m%] %n@%/%R%#%x '
---\set PROMPT1 '%M:%> %n@%/%R%#%x '
+\set PROMPT1 '%M:%> %n@%~ %R%#%x '
 
 -- increase the number of remembered commands
 \set HISTSIZE 65535
