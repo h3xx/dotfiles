@@ -2,13 +2,20 @@
 
 # MIME settings
 
+# note: text/enriched is an alternative standard for email
+
 # automatically convert these types of files (based on ~/.mailcap) into text
 # and insert as part of the mail body
-auto_view application/x-gzip application/x-bzip2 \
+auto_view \
+	application/x-gzip application/x-bzip2 \
 	text/html \
 	application/pdf \
 	text/rtf application/rtf \
+	text/enriched \
 	application/msword
+
+# save html part for last
+alternative_order text/plain text/enriched text/html
 
 # perform content-based MIME type detection on attachments with the following
 # MIME types
