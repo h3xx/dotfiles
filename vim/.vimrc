@@ -306,7 +306,7 @@ noremap ` '
 noremap ' `
 
 " Remove search highlighting
-nnoremap <Esc><Esc> :noh<CR>
+nnoremap <F1> :noh<CR>
 
 " force opening new tabs when gf-ing
 nnoremap gf <C-W>gf
