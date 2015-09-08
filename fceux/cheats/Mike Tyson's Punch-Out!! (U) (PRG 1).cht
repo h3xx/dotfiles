@@ -1,0 +1,22 @@
+S:0391:60:Infinite Hit Points
+S:0324:09:Infinite Hearts (Stamina)
+S:0342:09:Infinite Stars (Uppercuts)
+S:0398:00:1 Hit Knockdowns
+S:03ca:03:1 Knockdown TKOs
+S:03d8:80:Can Gain Hit Points Every Round
+S:0305:00:Infinite Time
+SC:A185:01:00:Start On Von Kaiser
+SC:A185:02:00:Start On Piston Honda
+SC:A185:03:00:Start On Don Flamenco
+SC:A185:04:00:Start On King Hippo
+SC:A185:05:00:Start On Great Tiger
+SC:A185:06:00:Start On Bald Bull
+SC:A185:07:00:Start On Piston Honda #2
+SC:A185:08:00:Start On Soda Popinski
+SC:A185:09:00:Start On Bald Bull #2
+SC:A185:0a:00:Start On Don Flamenco #2
+SC:A185:0b:00:Start On Mr. Sandman
+SC:A185:0c:00:Start On Super Macho Man
+SC:A185:0d:00:Start On Mike Tyson
+S:03d8:01:No Extra Hit Points Between Rounds
+SC:86eb:bd:9d:No Points (Can't win by decision)

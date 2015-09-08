@@ -1,0 +1,18 @@
+SC:d41a:09:03:Start With 9 Lives
+S:0022:09:Infinite Lives
+SC:d432:08:02:Start With Full Hit Point Containers
+SC:d537:80:20:Start With Full Hit Points
+S:0507:08:Full Hit Point Containers
+S:0503:80:Infinite Hit Points
+S:0516:01:Invincible
+S:050e:63:Infinite Slingshot
+S:0501:63:Infinite Bombs
+S:0502:63:Infinite Molotov Cocktails
+S:0500:08:Infinite Keys
+SC:d460:1f:01:Start With All Weapons
+S:050b:1f:Have All Weapons
+S:0509:ff:Have All Items (1/2)
+S:050a:ff:Have All Items (2/2)
+S:0508:ff:Have All Magic Locator Devices
+SC:89b1:04:02:High Jump Without Spring Shoes
+S:050d:3f:All Goonies Rescued

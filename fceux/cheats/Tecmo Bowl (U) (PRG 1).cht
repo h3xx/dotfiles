@@ -1,0 +1,20 @@
+S:003f:99:P1 Score Is 99 (Doesn't display)
+S:0044:99:P2 Score Is 99 (Doesn't display)
+SC:8527:05:04:P1 Gets 5 Downs
+SC:8527:09:04:P1 Gets 9 Downs
+SC:912E:05:04:P2 Gets 5 Downs
+SC:912E:09:04:P2 Gets 9 Downs
+S:008e:00:Infinite Downs (Turn off to end)
+S:059F:01:CPU Kicks Poorly
+SC:8516:02:01:1st Quarter Is 2:30 Long
+SC:8539:02:01:2nd Quarter Is 2:30 Long
+SC:8568:02:01:3rd Quarter Is 2:30 Long
+SC:858B:02:01:4th Quarter Is 2:30 Long
+SC:8516:00:01:1st Quarter Is 0:30 Long
+SC:8539:00:01:2nd Quarter Is 0:30 Long
+SC:8568:00:01:3rd Quarter Is 0:30 Long
+SC:858B:00:01:4th Quarter Is 0:30 Long
+SC:8527:03:04:P1 Gets 3 Downs
+SC:8527:01:04:P1 Gets 1 Down
+SC:912E:03:04:P2 Gets 3 Downs
+SC:912E:01:04:P2 Gets 1 Down

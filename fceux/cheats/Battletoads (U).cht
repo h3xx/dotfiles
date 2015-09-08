@@ -1,0 +1,25 @@
+SC:e5fa:08:03:Start With 9 Lives (Both players)
+SC:e5fa:62:03:Start With 99 Lives (Both players)
+S:0011:05:P1 Infinite Lives
+S:051a:2f:P1 Infinite Hit Points
+S:0574:7e:P1 Invincibile (Must turn off at various times)
+S:04b1:20:P1 Has a Weapon
+S:0012:05:P2 Infinite Lives
+S:051b:2f:P2 Infinite Hit Points
+S:0575:7e:P2 Invincibile (Must turn off at various times)
+S:04b2:20:P2 Has a Weapon
+SC:8e53:e4:d8:High Jump
+SC:8e53:f0:d8:Super High Jump
+SC:a6b5:00:01:Faster Attack
+SC8320:02:00:Start On Level 2
+SC:8320:03:00:Start On Level 3
+SC:8320:04:00:Start On Level 4
+SC:8320:05:00:Start On Level 5
+SC:8320:06:00:Start On Level 6
+SC:8320:07:00:Start On Level 7
+SC:8320:08:00:Start On Level 8
+SC:8320:09:00:Start On Level 9
+SC:8320:0a:00:Start On Level 10
+SC:8320:0b:00:Start On Level 11
+SC:8320:0c:00:Start On Level 12
+SC:e5fa:00:03:Start With 1 Life (Both players)

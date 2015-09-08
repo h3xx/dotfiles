@@ -1,0 +1,20 @@
+SC:d2ad:09:03:Start With 9 Lives
+SC:d2ad:99:03:Start With 99 Lives
+S:0049:09:Infinite Lives
+SC:f933:00:01:No Damage From Bullets
+SC:9d4e:00:05:No Damage From Dying
+SC:86f7:04:02:Start With 40 Hit Points (1/2)
+SC:86f9:04:02:Start With 40 Hit Points (2/2)
+SC:86f7:09:02:Start With 90 Hit Points (1/2)
+SC:86f9:09:02:Start With 90 Hit Points (2/2)
+S:005a:09:Infinite Hit Points (Turn off at the end of stage)
+S:03d0:81:Invincible
+S:03e4:01:Have Flash Buster
+S:03e4:02:Have Megasmasher
+S:03e4:03:Have Mega Buster
+S:03db:02:Have High Speed
+S:0060:01:Have Flash Bomb
+S:0061:01:Have Crash Ball
+SC:d2ad:01:03:Start With 1 Life
+SC:86f7:01:02:Start With 10 Hit Points (1/2)
+SC:86f9:01:02:Start With 10 Hit Points (2/2)

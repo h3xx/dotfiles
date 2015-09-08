@@ -1,0 +1,11 @@
+SC:a32e:5a:3c:Start With 90 Seconds (Both players)
+S:0044:63:P1 Infinite Time
+S:0045:63:P2 Infinite Time
+S:0043:01:Infinite Time (Both players)
+SC:a2d2:70:46:Slower Timer (1/2)
+SC:a2de:70:46:Slower Timer (2/2)
+SC:a2d2:F0:46:Super Slower Timer (1/2)
+SC:a2de:F0:46:Super Slower Timer (2/2)
+SC:a32e:28:3c:Start With 40 Seconds (Both players)
+SC:a2d2:36:46:Faster Timer (1/2)
+SC:a2de:36:46:Faster Timer (2/2)

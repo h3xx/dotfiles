@@ -1,0 +1,22 @@
+SC:9c13:09:03:Start With 9 Lives (1 player game)
+SC:9c13:63:03:Start With 99 Lives (1 player game)
+SC:9c2a:09:03:Start With 9 Lives (2 player game)
+SC:9c2a:63:03:Start With 99 Lives (2 player game)
+S:000d:03:Infinite Lives (Both players)
+S:0100:05:Have Slow (Most of the time)
+S:0129:04:Have Laser
+S:0129:02:Have Extension
+S:0128:01:Have Catch
+S:0138:10:Catch Doesn't Automatically Release
+SC:9c1f:05:01:Start On Round 5
+SC:9c1f:0a:01:Start On Round 10
+SC:9c1f:0f:01:Start On Round 15
+SC:9c1f:14:01:Start On Round 20
+SC:9c1f:19:01:Start On Round 25
+SC:9c1f:1e:01:Start On Round 30
+SC:9c1f:23:01:Start On Round 35
+SC:9c1f:24:01:Start On Final Round
+S:9c13:01:Start With 1 Life (1 player game)
+SC:9c2a:01:03:Start With 1 Life (2 player game)
+S:0129:00:No Laser or Extend
+S:0100:09:Ball Always Moves Fast

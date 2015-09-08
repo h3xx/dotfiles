@@ -1,0 +1,16 @@
+S:010a:09:Start With 9 Lives and 9 Continues
+S:010a:63:Start With 99 Lives and 99 Continues
+S:02be:09:Infinite Lives
+S:02bf:09:Infinite Continues
+SC:c5d0:0f:0a:More Hit Points (1/2)
+SC:c889:0f:0a:More Hit Points (2/2)
+S:02ab:0b:Infinite Hit Points
+S:02a2:01:Have Knife
+S:02a2:02:Have Nun-chucks
+S:0204:40:Infinite Time
+S:010a:01:Start With 1 Life and 1 Continue
+S:02be:01:Start With 1 Life, No 1-Ups
+S:02bf:00:No Continues
+S:02a2:00:Can't Use Weapons
+SC:c5d0:06:0a:Fewer Hit Points (1/2)
+SC:c889:06:0a:Fewer Hit Points (2/2)

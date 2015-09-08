@@ -1,0 +1,33 @@
+SC:ca35:09:02:Start With 9 Lives
+SC:ca35:63:02:Start With 99 Lives
+S:004a:09:Infinite Lives
+S:0779:06:Infinite Hit Points
+S:07E0:03:No Damage From Enemies In Side Game
+SC:AE72:EE:CE:Less Damage From Spikes
+S:04cc:01:Start With Rocket Launcher
+S:04cd:01:Start With Wide Cannon
+S:04ce:01:Start With Joe's Machinegun
+S:04cf:01:Start With 3-Way
+S:04d2:01:Start With Pendant
+S:04d3:01:Start With Helmet
+S:04d4:01:Start With Bulletproof Vest
+S:04d9:01:Start With Flare Bomb
+S:04da:01:Start With Medicine
+S:04db:01:Start With Permit
+S:04dc:01:Start With Steel Boots
+S:04dd:01:Start With Rapid Fire Device
+S:04e1:01:Start With Beta Communicator
+S:04e2:01:Start With Gamma Communicator
+S:04e3:01:Start With Delta Communicator
+S:04c2:00:Infinite Medicine (When equipped)
+S:0697:ff:POW Lasts Until You Leave the Room
+S:04c1:01:Flare Bombs Unnecessary In Area 4
+S:04f7:01:Hidden Passages Revealed
+S:04fa:09:Infinite Continues
+SC:ca35:09:02:Start With 1 Life
+S:004a:00:Start With 1 Life, No 1-Ups
+S:0779:00:No Bonus Hit Points
+S:04da:00:Can't Obtain Medicine (Item)
+S:04fa:00:No Continues
+SC:BE97:04:06:Only 40 Seconds to Escape
+SC:BE97:03:06:Only 30 Seconds to Escape

@@ -1,0 +1,30 @@
+SC:cacd:09:03:Start With 9 Lives
+SC:cacd:63:03:Start With 99 Lives
+S:008e:09:Infinite Lives
+S:05d0:06:Infinite Hit Points
+S:008c:09:Infinite Keys
+SC:afc4:18:0a:High Jump
+SC:afce:fb:fd:Fast Jump
+SC:afc4:40:0a:Super High Jump
+SC:afce:f8:fd:Super Fast Jump
+SC:d84b:10:40:Moon Gravity
+SC:aff4:fa:fc:Fast Jump Out of Water (1/2)
+SC:b001:f9:fb:Fast Jump Out of Water (1/2)
+SC:b5ce:ff:b4:Fly Longer As Bee
+SC:b650:24:20:Fly Forever As Bee
+SC:de7d:ff:78:Stun Lasts Longer
+SC:b25e:01:03:Toads Tame Faster
+SC:b29f:01:03:Moles Tame Faster
+SC:b013:01:03:Lizards Tame Faster
+SC:b280:01:03:Gorillas Tame Faster
+SC:b56f:01:03:Bees Tame Faster
+SC:cab9:01:00:Start On Level 2
+SC:cab9:02:00:Start On Level 3
+SC:cab9:03:00:Start On Level 4
+SC:cab9:04:00:Start On Level 5
+SC:cab9:05:00:Start On Level 6
+SC:cab9:06:00:Start On Level 7
+SC:cab9:07:00:Start On Level 8
+SC:cab9:08:00:Start On Level 8, Part 2
+SC:cacd:00:03:Start With 1 Life
+S:008e:00:Start With 1 Life, No 1-Ups

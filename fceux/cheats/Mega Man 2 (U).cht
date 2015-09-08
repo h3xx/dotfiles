@@ -1,0 +1,28 @@
+SC:8073:09:03:Start With 9 Lives
+SC:8073:63:03:Start With 99 Lives
+S:00a8:0b:Infinite Lives
+S:06c0:1c:Infinite Hit Points
+S:00a7:04:Infinite Energy Tanks
+S:004b:01:Invincible
+S:009b:ff:Have All Items
+S:009c:1c:Infinite Atomic Fire
+S:009d:1c:Infinite Air Shooter
+S:009e:1c:Infinite Leaf Shield
+S:009f:1c:Infinite Bubble Lead
+S:00a0:1c:Infinite Quick-Boomerang
+S:00a1:1c:Infinite Time-Stopper
+S:00a2:1c:Infinite Metal-Blade
+S:00a3:1c:Infinite Crash Bomber
+S:00a4:1c:Infinite Item-1
+S:00a5:1c:Infinite Item-2
+S:00a6:1c:Infinite Item-3
+S:003c:07:High Jump
+S:003c:10:Super High Jump
+S:009a:ff:All Bosses Defeated
+SC:8118:0e:1c:Bosses Have Half Hit Points
+SC:8118:01:1c:Bosses Have 1 Hit Point
+SC:da09:02:04:Quickman's Beams Half Speed
+SC:8073:01:03:Start With 1 Life
+SC:8118:38:1c:Bosses Have Half Hit Points
+SC:d78e:28:14:Most Enemies Have Double Hit Points
+SC:da09:05:04:Quickman's Beams Even Faster

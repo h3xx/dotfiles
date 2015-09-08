@@ -1,0 +1,30 @@
+SC:f6f5:7f:3f:P1 & P2 Start With Max Stamina
+S:04bf:7f:P1 Infinite Stamina
+S:04c0:7f:P2 Infinite Stamina
+SC:f70d:09:00:P1 Start With $920
+SC:f71c:09:00:P2 Start With $920
+S:04c9:09:P1 Infinite Money
+S:04cc:09:P2 Infinite Money
+SC:f46f:c9:58:Don't Lose Money At Death
+SC:f6d8:3f:0f:P1 & P2 Start With Maxed Stats
+S:049f:3f:P1 Punch Maxed
+S:04a3:3f:P1 Kick Maxed
+S:04a7:3f:P1 Weapon Maxed
+S:04ab:3f:P1 Throw Maxed
+S:04af:3f:P1 Agility Maxed
+S:04b3:3f:P1 Defense Maxed
+S:04b7:3f:P1 Strength Maxed
+S:04bb:3f:P1 Will Power Maxed
+S:04c3:7f:P1 Max Power Maxed
+S:04a0:3f:P2 Punch Maxed
+S:04a4:3f:P2 Kick Maxed
+S:04a8:3f:P2 Weapon Maxed
+S:04ac:3f:P2 Throw Maxed
+S:04b0:3f:P2 Agility Maxed
+S:04b4:3f:P2 Defense Maxed
+S:04b8:3f:P2 Strength Maxed
+S:04bc:3f:P2 Will Power Maxed
+S:04c4:7f:P2 Max Power Maxed
+SC:aaa5:08:05:Standing High Jump
+SC:aaa9:08:05:Walking High Jump
+SC:aaad:09:06:Running High Jump

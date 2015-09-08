@@ -1,0 +1,14 @@
+SC:e400:09:02:Start With 9 Lives
+SC:e400:63:02:Start With 99 Lives
+S:0039:09:Infinite Lives
+S:07c5:07:Infinite Hit Points
+S:07c1:01:Have a Gun
+S:07c0:ff:Infinite Bullets
+S:07c1:05:Have Whip
+S:07c1:03:Have Bat
+S:07c1:02:Have Knife
+S:07ce:08:Have Bulletproof Vest
+SC:e400:00:02:Start With 1 Life
+S:0039:00:Start With 1 Life, No 1-Ups
+S:07c1:00:Can't Use Weapons
+S:07ce:00:Can't Use Bulletproof Vests

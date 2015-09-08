@@ -1,0 +1,16 @@
+S:0034:09:P1 Infinite Lives
+S:0084:FF:P1 Invincible (Can't kill enemies on collisions)
+S:0080:03:P1 Have Fast Speed
+S:0086:02:P1 Have Missiles
+S:0076:01:P1 Have Ripple
+S:0076:02:P1 Have Laser
+S:0082:01:P1 Have Force Field
+S:0078:05:P1 Power Up Level At Option (Players must share 2 options)
+S:0035:09:P2 Infinite Lives
+S:0085:FF:P2 Invincible (Can't kill enemies on collisions)
+S:0081:03:P2 Have Fast Speed
+S:0087:02:P2 Have Missiles
+S:0077:01:P2 Have Ripple
+S:0077:02:P2 Have Laser
+S:0083:01:P2 Have Force Field
+S:0079:05:P2 Power Up Level At Option (Players must share 2 options)

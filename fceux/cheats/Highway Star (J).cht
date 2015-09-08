@@ -1,0 +1,12 @@
+SC:DE38:7f:3f:Slower Timer
+SC:DE38:Ff:3f:Much Slower Timer
+SC:de3b:45:c6:Infinite Time
+SC:c581:02:00:Fast Acceleration
+SC:cec5:e3:e5:Start On Course X (Part 1)
+SC:c029:01:00:Start On Course 2 (Use with part 1)
+SC:c029:02:00:Start On Course 3 (Use with part 1)
+SC:c029:03:00:Start On Course 4 (Use with part 1)
+SC:c029:04:00:Start On Course 5 (Use with part 1)
+SC:c029:05:00:Start On Course 6 (Use with part 1)
+SC:c029:06:00:Start On Course 7 (Use with part 1)
+SC:c029:07:00:Start On Course 8 (Use with part 1)

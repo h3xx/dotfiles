@@ -1,0 +1,15 @@
+S:006a:00:Time Stays At Zero
+S:03b6:00:Heat Never Rises
+SC:c0bc:ff:18:Faster Acceleration With A
+SC:c0bd:ff:3f:Faster Acceleration With B
+SC:c0d1:05:03:Higher Top Speed With A
+SC:c0d2:05:03:Higher Top Speed With B
+SC:c0d1:07:03:Super High Top Speed With A
+SC:c0d2:07:03:Super High Top Speed With B
+SC:d9a4:00:0f:Recover Faster
+SC:c0bc:0c:18:Slower Acceleration With A
+SC:c0bd:1f:3f:Slower Acceleration With B
+SC:c0d1:02:03:Lower Top Speed With A
+SC:c0d2:02:03:Lower Top Speed With B
+SC:c0d1:01:03:Super Low Top Speed With A
+SC:c0d2:01:03:Super Low Top Speed With B

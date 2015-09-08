@@ -1,0 +1,35 @@
+SC:e53b:08:02:Start With 9 Lives
+SC:e53b:62:02:Start With 99 Lives
+S:0076:09:Infinite Lives
+SC:e53f:1a:10:Start With More Hit Points (1/2)
+SC:e3f5:1a:10:Start With More Hit Points (2/2)
+S:0065:10:Infinite Hit Points
+S:0095:30:Stay Invincible After Hit
+S:00c9:81:Have Throwing Star
+S:00c9:82:Have Windmill Star
+S:00c9:85:Have Jump-N-Slash
+S:00c9:80:Have Fire Wheel
+S:00c9:84:Have Fire Ring (Glitched in some areas)
+SC:dbe2:0a:05:Blue Boxes Give Double Ninja Points
+SC:dbe6:14:0a:Red Boxes Give Double Ninja Points
+SC:dbe2:63:05:Blue Boxes Give 99 Ninja Points
+SC:dbe6:63:0a:Red Boxes Give 99 Ninja Points
+S:0064:63:Infinite Ninja Points (Must turn off at the end of an act)
+SC:ef67:01:03:Throwing Star Costs 1
+SC:efae:01:05:Windmill Star Costs 1
+SC:ee0d:01:05:Jump-N-Slash Costs 1 (1/2)
+SC:ed69:01:05:Jump-N-Slash Costs 1 (2/2)
+SC:ef03:01:05:Fire Wheel Costs 1
+SC:ef67:00:03:Throwing Star Is Free
+SC:efae:00:05:Windmill Star Is Free
+SC:ee0d:00:05:Jump-N-Slash Is Free (1/2)
+SC:ed69:00:05:Jump-N-Slash Is Free (2/2)
+SC:ef03:00:05:Fire Wheel Lasts Forever
+SC:ed04:fb:fc:High Jump (1/2)
+SC:eda8:fb:fc:High Jump (2/2)
+SC:f7f0:00:01:Infinite Time
+SC:e53b:00:02:Start With 1 Life
+SC:e53f:0a:10:Start With Fewer Hit Points (1/2)
+SC:e3f5:0a:10:Start With Fewer Hit Points (2/2)
+SC:e53f:01:10:Start With 1 Hit Point (1/2)
+SC:e3f5:01:10:Start With 1 Hit Point (2/2)

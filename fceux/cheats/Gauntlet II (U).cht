@@ -1,0 +1,41 @@
+S:0739:FF:P1 Infinite Hit Points
+S:0743:01:P1 Infinite Keys
+S:0748:01:P1 Infinite Potions
+S:0702:3F:P1 All Power Ups
+S:07A8:00:P1 Can Shoot Faster
+S:071B:01:P1 Has Super Shot
+S:0707:01:P1 Invisible
+S:0711:01:P1 Repulsive
+S:0716:01:P1 Has Reflective Shot
+S:0720:01:P1 Has Transportability
+S:073A:FF:P2 Infinite Hit Points
+S:0744:01:P2 Infinite Keys
+S:0749:01:P2 Infinite Potions
+S:0703:3F:P2 All Power Ups
+S:07A9:00:P2 Can Shoot Faster
+S:071C:01:P2 Has Super Shot
+S:0708:01:P2 Invisible
+S:0712:01:P2 Repulsive
+S:0717:01:P2 Has Reflective Shot
+S:0721:01:P2 Has Transportability
+S:073B:FF:P3 Infinite Hit Points
+S:0745:01:P3 Infinite Keys
+S:074A:01:P3 Infinite Potions
+S:0704:3F:P3 All Power Ups
+S:07AA:00:P3 Can Shoot Faster
+S:071D:01:P3 Has Super Shot
+S:0709:01:P3 Invisible
+S:0713:01:P3 Repulsive
+S:0718:01:P3 Has Reflective Shot
+S:0722:01:P3 Has Transportability
+S:073C:FF:P4 Infinite Hit Points
+S:0746:01:P4 Infinite Keys
+S:074B:01:P4 Infinite Potions
+S:0705:3F:P4 All Power Ups
+S:07AB:00:P4 Can Shoot Faster
+S:071E:01:P4 Has Super Shot
+S:070A:01:P4 Invisible
+S:0714:01:P4 Repulsive
+S:0719:01:P4 Has Reflective Shot
+S:0723:01:P4 Has Transportability
+S:060B:7F:Infinite Time In Treasure/Secret Rooms

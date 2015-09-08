@@ -1,0 +1,16 @@
+S:0028:09:P1 Infinite Lives
+S:0029:09:P2 Infinite Lives
+S:0680:01:P1 Invincible
+S:0600:02:P1 Has T
+S:0600:03:P1 Has F
+S:0600:04:P1 Has L
+S:0600:01:P1 Has S
+S:0681:01:P2 Invincible
+S:0601:02:P2 Has T
+S:0601:03:P2 Has F
+S:0601:04:P2 Has L
+S:0601:01:P2 Has S
+S:0028:00:P1 1 Life, No 1-Ups
+S:0029:00:P2 1 Life, No 1-Ups
+S:0600:00:P1 Has Regular Gun
+S:0601:00:P2 Has Regular Gun

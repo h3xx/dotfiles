@@ -1,0 +1,13 @@
+SC:db0b:09:02:Start With 9 Lives
+S:0361:09:Infinite Lives
+S:034a:00:Infinite Hit Points
+SC:8bac:03:01:Magic Coin Lasts Longer
+S:0075:01:Always Have Magic Coin (Must turn off at end of stage)
+S:007d:01:Invincible
+S:00a1:01:Have Remote Control
+S:00a3:06:Have Both Keys
+S:07a0:05:High Jump
+S:07a0:06:Super High Jump
+S:00b0:3c:Infinite Time
+SC:db0b:00:02:Start With 1 Life
+S:0361:00:1 Life, No 1-Ups

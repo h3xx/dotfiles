@@ -1,0 +1,20 @@
+S:610b:02:P1 Infinite Hit Points
+S:6120:ff:P1 Max Damage
+S:6121:ff:P1 Max Hit %
+S:6122:ff:P1 Max Absorb
+S:6123:ff:P1 Max Evade %
+S:614b:02:P2 Infinite Hit Points
+S:6160:ff:P2 Max Damage
+S:6161:ff:P2 Max Hit %
+S:6162:ff:P2 Max Absorb
+S:6163:ff:P2 Max Evade %
+S:618b:02:P3 Infinite Hit Points
+S:61a0:ff:P3 Max Damage
+S:61a1:ff:P3 Max Hit %
+S:61a2:ff:P3 Max Absorb
+S:61a3:ff:P3 Max Evade %
+S:61cb:02:P4 Infinite Hit Points
+S:61e0:ff:P4 Max Damage
+S:61e1:ff:P4 Max Hit %
+S:61e2:ff:P4 Max Absorb
+S:61e3:ff:P4 Max Evade %

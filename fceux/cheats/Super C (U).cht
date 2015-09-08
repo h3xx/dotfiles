@@ -1,0 +1,27 @@
+SC:e5a3:08:02:Start With 9 Lives (Both players)
+SC:e5a3:62:02:Start With 99 Lives (Both players)
+S:0053:0a:P1 Infinite Lives
+S:0054:0a:P2 Infinite Lives
+S:0059:0a:Infinite Continues
+S:00d4:ff:P1 Invincible
+S:00d5:ff:P2 Invincible
+S:00b8:82:P1 Has Spray
+S:00b8:84:P1 Has Flame Thrower
+S:00b8:81:P1 Has Machine Gun
+S:00b8:83:P1 Has Laser
+S:00b8:85:P1 Has Charged Flame Thrower (Not normally possible)
+S:00b8:86:P1 Has Flame Thrower Explosion (Not normally possible)
+S:00b9:82:P2 Has Spray
+S:00b9:84:P2 Has Flame Thrower
+S:00b9:81:P2 Has Machine Gun
+S:00b9:83:P2 Has Laser
+S:00b9:85:P2 Has Charged Flame Thrower (Not normally possible)
+S:00b9:86:P2 Has Flame Thrower Explosion (Not normally possible)
+SC:e5a3:00:02:Start With 1 Life (Both players)
+S:0053:00:P1 Start With 1 Life, No 1-Ups
+S:0054:00:P2 Start With 1 Life, No 1-Ups
+S:0059:00:No Continues
+S:00b8:00:P1 No Special Guns
+S:00b9:00:P2 No Special Guns
+S:00d4:00:P1 No Invincibility
+S:00d5:00:P2 No Invincibility
