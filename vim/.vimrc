@@ -481,7 +481,7 @@ endif
 let g:airline#extensions#whitespace#mixed_indent_algo=1
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#show_buffers=0
-let g:airline_extensions = ['branch', 'tabline', 'whitespace', 'tagbar']
+let g:airline_extensions = ['branch', 'tabline', 'whitespace']
 
 " *** IDE plugin ***
 let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
