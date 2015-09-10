@@ -113,6 +113,9 @@ set directory=~/.vim/temp//
 " keep vim undo files out of the current working directory
 set undodir=~/.vim/temp//
 
+" hide those backups
+set backupdir=~/.vim/temp//
+
 " number of characters typed before swap file is written (default)
 "set updatecount=200
 
