@@ -104,6 +104,9 @@ set backupskip+=*/bash-fc-*
 " ***** swap files, metadata *****
 " ********************************
 
+" Hide those backups
+set backupdir=~/.vim/temp//
+
 " Keep vim swap files out of the current working directory
 set directory=~/.vim/temp//
 
