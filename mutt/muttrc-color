@@ -85,7 +85,7 @@ color error		brightred	default
 #color status		yellow		blue
 
 # attributes when using a mono terminal
-mono header underline "^(From|Subject|Date|To|Cc|Bcc):"
+mono header bold "^(From|Subject|Date|To|Cc|Bcc):"
 mono quoted bold
 
 # vi: ft=muttrc
