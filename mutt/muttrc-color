@@ -26,6 +26,15 @@ color hdrdefault	red		default
 
 # quoted text
 color quoted		brightcyan	default
+# coloring the first 7 levels:
+color quoted		cyan		default
+color quoted1		yellow		default
+color quoted2		red		default
+color quoted3		green		default
+color quoted4		cyan		default
+color quoted5		yellow		default
+color quoted6		red		default
+color quoted7		green		default
 
 # attachment headers
 color attachment	brightmagenta	default
@@ -74,16 +83,6 @@ color error		brightred	default
 
 # status line
 #color status		yellow		blue
-
-# Coloring quoted text - coloring the first 7 levels:
-color quoted cyan black
-color quoted1 yellow black
-color quoted2 red black
-color quoted3 green black
-color quoted4 cyan black
-color quoted5 yellow black
-color quoted6 red black
-color quoted7 green black
 
 # attributes when using a mono terminal
 mono header underline "^(From|Subject|Date|To|Cc|Bcc):"
