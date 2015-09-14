@@ -13,6 +13,7 @@
 	p		= push
 	pu		= pull
 	sf		= submodule foreach
+	show-unmerged	= show-branch --topo-order --topics --sha1-name
 	st		= status
 	sub		= submodule
 	subbr		= submodule foreach git checkout
