@@ -89,4 +89,7 @@
 [push]
 	default = simple
 
+[pul]
+	ff = only
+
 # vi: ft=gitconfig
