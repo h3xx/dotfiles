@@ -45,7 +45,7 @@
 	deltaBaseCacheLimit = 4g	# limit memory when resolving deltas?
 
 [merge]
-	tool = meld
+	tool = vimdiff
 
 #[mergetool "meld"]
 #	cmd = "meld"
