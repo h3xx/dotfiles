@@ -72,10 +72,7 @@
 	user = h3xx
 
 [merge]
-	tool = meld
-
-#[mergetool "meld"]
-#	cmd = "meld"
+	tool = vimdiff
 
 [push]
 	default = simple
