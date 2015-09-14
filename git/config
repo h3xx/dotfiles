@@ -74,6 +74,11 @@
 [merge]
 	tool = vimdiff
 
+[pull]
+	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
+	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
+	ff = only
+
 [push]
 	default = simple
 
