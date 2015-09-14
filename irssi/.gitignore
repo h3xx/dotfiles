@@ -1,0 +1,2 @@
+# let's not publish our private keys, tyvm
+*.pem
