@@ -186,6 +186,9 @@ endif " executable('ack')
 " (default)
 "set scrolloff=5
 
+" do not time out when entering mapped key sequences
+set notimeout
+
 " ********************************
 " ***** normal mode, editing *****
 " ********************************
