@@ -192,6 +192,9 @@ set scrolloff=5
 " (better responsiveness over SSH and slow terminals)
 set lazyredraw
 
+" do not time out when entering mapped key sequences
+set notimeout
+
 " ********************************
 " ***** normal mode, editing *****
 " ********************************
