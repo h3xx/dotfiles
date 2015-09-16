@@ -30,7 +30,7 @@ set header_cache=~/.cache/mutt
 set message_cachedir=~/.cache/mutt
 
 # gvim doesn't work here
-set editor=vi
+set editor="vim '+normal }'"
 
 # don't ask me if i want to append to mailboxes
 set noconfirmappend
