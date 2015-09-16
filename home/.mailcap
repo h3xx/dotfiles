@@ -50,7 +50,7 @@ text/x-java; vim %s; needsterminal
 
 # code - markup
 
-#text/html; lynx -dump -force_html %s; copiousoutput
+#text/html; lynx -assume_charset=%{charset} -dump -force_html %s; copiousoutput
 #text/html; lynx -dump -force_html %s; needsterminal
 # ELinks seems to be better at this
 text/html; elinks -dump 1 %s; copiousoutput
