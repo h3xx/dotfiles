@@ -69,4 +69,15 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%4c) %s" # use chars, not lines
 set charset="utf-8"
 set send_charset="utf-8:us-ascii"
 
+# SSL hardening
+set ssl_force_tls=yes
+set ssl_starttls=yes
+set ssl_use_sslv2=no
+set ssl_use_sslv3=no
+set ssl_use_tlsv1=no
+set ssl_use_tlsv1_1=no
+set ssl_use_tlsv1_2=yes
+set ssl_verify_dates=yes
+set ssl_verify_host=yes
+
 # vi: ft=muttrc
