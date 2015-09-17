@@ -8,7 +8,7 @@
 	subbranch	= submodule foreach git checkout
 	subbr		= submodule foreach git checkout
 	submaster	= submodule foreach git checkout master
-	subpull		= submodule foreach git pull origin master
+	subpull		= submodule foreach git pull
 	st		= status
 	ci		= commit
 	co		= checkout
