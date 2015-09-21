@@ -193,7 +193,9 @@ set scrolloff=5
 set lazyredraw
 
 " do not time out when entering mapped key sequences
-set notimeout
+" (addendum: does not work well with imapped F1-F10 keys because they send
+" "\eO? in xterm)
+"set notimeout
 
 " ********************************
 " ***** normal mode, editing *****
