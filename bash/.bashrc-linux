@@ -1,9 +1,6 @@
 # .bashrc-linux
 # universal defs
 
-## path
-[[ -e ~/bin ]] && export PATH="${PATH:+$PATH:}$HOME/bin"
-
 ## bash builtin variables
 HISTTIMEFORMAT='%s'		# the beloved Second of Our Linux
 HISTFILESIZE=65535
@@ -11,12 +8,6 @@ HISTSIZE=65535
 HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:esu:rma:rmp:fol:pfol"
 HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
 [[ -e ~/.hosts ]] && HOSTFILE="$HOME/.hosts"	# for @-completion
-
-
-# I'm liking gvim better and better
-#[ -z "$EDITOR" ] && export EDITOR="${DISPLAY:+g}vim"
-export PAGER='less' EDITOR='vim'
-alias vi='$EDITOR'
 
 ## signal processing
 
@@ -138,9 +129,6 @@ lsrl() {
 
 ## grep
 alias grep='grep --color=auto'
-
-## lynx
-export LYNX_CFG="$HOME/.lynx.cfg"
 
 ## chmod
 # usefulness: ****

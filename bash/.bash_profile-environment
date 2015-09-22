@@ -1,0 +1,12 @@
+# .bash_profile-environment
+
+if [[ -e ~/bin ]]; then
+	PATH=~/bin:$PATH
+fi
+
+# Standard editor, pager
+export PAGER='less' EDITOR='vim'
+alias vi='$EDITOR'
+
+# lynx
+[[ -e ~/.lynx.cfg ]] && export LYNX_CFG="$HOME/.lynx.cfg"
