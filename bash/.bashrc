@@ -33,8 +33,7 @@ if [[ $- = *i* ]]; then
 		slackware{,"-${USER}"} \
 		progcomp \
 		"${HOSTNAME}"{,"-${USER}"} \
-		xterm \
-		gpg-agent ; do
+		xterm ; do
 
 		if [[ -f "${HOME}/.bashrc-${rc_name}" ]]; then
 			# for figuring out why new prompts lag
