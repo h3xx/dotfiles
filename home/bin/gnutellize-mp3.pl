@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 sub HELP_MESSAGE {
 	my $fh = shift;
@@ -52,7 +52,10 @@ my %tagformats;
 
 	('%s') x 8,
 	'(Disc %d)',
-	'%02d',
+	sub {
+		# if number, %02d, else %2s
+		$_[0] =~ /\D/ ? '%2s' : '%02d'
+	},
 	'of %02d',
 	'(%04d)',
 );
@@ -192,7 +195,11 @@ sub tag_filename {
 	foreach my $tagname (@layout) {
 
 		if (defined $tags{$tagname} and length $tags{$tagname}) {
-			push @patterns, $tagformats{$tagname};
+			my $selected_format = $tagformats{$tagname};
+			if (ref $selected_format eq 'CODE') {
+				$selected_format = &{$selected_format}($tags{$tagname});
+			}
+			push @patterns, $selected_format;
 			push @parts, $tags{$tagname};
 		}
 	}
