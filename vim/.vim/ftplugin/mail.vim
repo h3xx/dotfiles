@@ -1,4 +1,7 @@
-" complete my mutt aliases
+" do not persist undo files (unnecessary)
+setl noundofile
+
+" plugin: complete my mutt aliases
 setl omnifunc=muttaliasescomplete#Complete
 
 setl spell
