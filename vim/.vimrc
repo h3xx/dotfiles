@@ -80,7 +80,7 @@ endif " has('mouse')
 "set backup
 
 " Skip backing up of the following patterns
-"set backupskip+=/tmp/*
+" default: "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*"
 
 "" udev rules
 "" (complains if there are files in the directory not matching *.rules)
@@ -96,9 +96,6 @@ set backupskip+=*/install/slack-desc,*/install/slack-required,*/install/slack-su
 "" crontab files
 "" (if left in the directory, they will execute twice)
 set backupskip+=*/.cron/*/*
-
-"" C-x C-e (bash)
-set backupskip+=*/bash-fc-*
 
 " ********************************
 " ***** swap files, metadata *****
