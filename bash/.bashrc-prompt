@@ -46,18 +46,19 @@ esac
 # hint: \e)0 sets G1 to special characters, \x0e puts terminal into G1 mode, \x0f puts terminal into normal mode
 #gps1='$(__git_ps1 '\''\e[38;5;202m:%s'\'')'
 gps1=''
+err='$(err=$?; [[ $err -eq 0 ]] || echo -e '\''\e[0;33m'\''" [$err]")'
 
-PS1='\[\e)0'"$FRAME_COLOR"''$'\x0e''\]lqq[\l \['$'\x0f'"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\n\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
+PS1='\[\e)0'"$FRAME_COLOR"''$'\x0e''\]lqqu\l \['$'\x0f'"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h \['"$FRAME_COLOR"$'\x0e''\]tq\`'"$err"'\n\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
 
 # prepend error string checking, as any prior command will overwrite $?
-PROMPT_COMMAND='(err="$?"; [ "$err" -eq 0 ] || echo -e '\''\e[0;33m'\''"[$err]")'"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
 
 # clean up
 unset \
 	COLORS \
 	BASE_COLOR \
 	FRAME_COLOR \
-	gps1
+	gps1 \
+	err
 
 # April Fools' Day prank
 if [[ $(date +%m%d) = '0401' ]]; then
