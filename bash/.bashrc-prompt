@@ -43,9 +43,10 @@ esac
 # hint: 01;30m = bright black, 0;37m = normal white, 0;37 = white, 0m = normal
 #PS1='\['"$FRAME_COLOR"'\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \['"$FRAME_COLOR"'\]]=\[\e[37m\] \$\[\e[0m\] '
 
+test -f /usr/doc/git-2.5.1/contrib/completion/git-prompt.sh && . "$_"
+
 # hint: \e)0 sets G1 to special characters, \x0e puts terminal into G1 mode, \x0f puts terminal into normal mode
-#gps1='$(__git_ps1 '\''\e[38;5;202m:%s'\'')'
-gps1=''
+gps1='$(__git_ps1 '\''\e[38;5;202m:%s'\'')'
 err='$(err="$?"; [[ "$err" -eq 0 ]] || echo -e '\''\e[0;33m'\''" [$err]")'
 
 PS1='\[\e)0'"$FRAME_COLOR"''$'\x0e''\]lqqu\l \['$'\x0f'"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h \['"$FRAME_COLOR"$'\x0e''\]tq\`'"$err"'\n\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
