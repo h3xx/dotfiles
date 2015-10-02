@@ -17,6 +17,8 @@ COLORS['WHITE']='\e[37m'
 #COLORS['BLINK']='\e[05m'
 #COLORS['REVERSE']='\e[07m'
 
+FRAME_COLOR='\e[01;30m'
+
 # BASE_COLOR=(user root)
 case "$HOSTNAME" in
 	'necronomicon.slackware')
@@ -39,7 +41,13 @@ esac
 [[ "$UID" -ne 0 ]] ; BASE_COLOR="${COLORS[${BASE_COLOR[$?]}]}"
 
 # hint: 01;30m = bright black, 0;37m = normal white, 0;37 = white, 0m = normal
-PS1='\[\e[01;30m\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \[\e[01;30m\]]=\[\e[37m\] \$\[\e[0m\] '
+#PS1='\['"$FRAME_COLOR"'\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \['"$FRAME_COLOR"'\]]=\[\e[37m\] \$\[\e[0m\] '
+
+# hint: \e)0 sets G1 to special characters, \x0e puts terminal into G1 mode, \x0f puts terminal into normal mode
+#gps1='$(__git_ps1 '\''\e[38;5;202m:%s'\'')'
+gps1=''
+
+PS1='\[\e)0'"$FRAME_COLOR"''$'\x0e''\]lqq[\l \['$'\x0f'"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\n\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
 
 # prepend error string checking, as any prior command will overwrite $?
 PROMPT_COMMAND='(err="$?"; [ "$err" -eq 0 ] || echo -e '\''\e[0;33m'\''"[$err]")'"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
@@ -47,7 +55,9 @@ PROMPT_COMMAND='(err="$?"; [ "$err" -eq 0 ] || echo -e '\''\e[0;33m'\''"[$err]")
 # clean up
 unset \
 	COLORS \
-	BASE_COLOR
+	BASE_COLOR \
+	FRAME_COLOR \
+	gps1
 
 # April Fools' Day prank
 if [[ "$(date +%m%d)" == '0401' ]]; then
