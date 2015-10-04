@@ -4,7 +4,7 @@
 $include /etc/inputrc
 
 # do not make noise
-#set bell-style none
+set bell-style none
 
 # append demarkation characters [*/@%=] to special entries
 set visible-stats on
