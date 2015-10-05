@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # fluxbox startup-script:
 #
 # Lines starting with a '#' are ignored.
@@ -30,7 +30,9 @@ xset dpms 0 0 600
 #syndaemon -i 1 -KR &
 
 # Your own fonts-dir:
-# xset +fp ~/.font
+if [[ -d ~/.font ]]; then
+	xset +fp ~/.font
+fi
 
 #
 # Your favourite mouse cursor:
