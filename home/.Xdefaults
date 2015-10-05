@@ -57,11 +57,11 @@ XTerm*wideFont:                 DejaVu Sans-10:minspace=true
 
 !XTerm*veryBoldFont:            true
 !XTerm*colorAttrMode:           true
-XTerm*boldColors:               true
 !XTerm*veryBoldColors:          4
 
-!XTerm*boldMode:                false
+!! bold=bright colors (as well as bold font)
 XTerm*colorBDMode:              true
+XTerm*boldColors:               true
 XTerm*colorBD:                  white
 
 !! tell programs xterm can support 256 colors
