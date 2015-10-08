@@ -480,6 +480,9 @@ endif " has('gui_running')
 " (hint: uxterm has the same font set)
 if has('gui_running') || &termencoding == 'utf-8'
 	let g:airline_powerline_fonts=1
+else
+	let g:airline_left_sep = '»'
+	let g:airline_right_sep = '«'
 endif
 " mixed_indent_algo: the whitespace plugin is broken by default,
 "	&tabstop aren't taken into effect when detecting mixed indent
