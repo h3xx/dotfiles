@@ -83,7 +83,13 @@
 [push]
 	default = simple
 
+# automatically prune remotely-deleted branches
+[fetch]
+	prune = true
+
+# only do deliberate and explicit merges, never automatic (pull) or silent (ff merge)
 [pull]
+	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
 	ff = only
 
 [merge]
