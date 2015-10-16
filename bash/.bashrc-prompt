@@ -53,7 +53,7 @@ PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"'
 PROMPT_COMMAND+=';__git_ps1 '\
 \''\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'\'' '\
 \'' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '\'' '\
-\''\e[38;5;202m:%s'\'
+\''\[\\e[38;5;202m\]:%s'\'
 
 # prepend error string checking, as any prior command will overwrite $?
 
