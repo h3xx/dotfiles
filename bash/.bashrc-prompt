@@ -46,7 +46,7 @@ esac
 test -f /usr/doc/git-2.5.1/contrib/completion/git-prompt.sh && . "$_"
 
 # hint: \e)0 sets G1 to special characters, \x0e puts terminal into G1 mode, \x0f puts terminal into normal mode
-#gps1='$(__git_ps1 '\''\e[38;5;202m:%s'\'')'
+#gps1='$(__git_ps1 '\''\[\\e[38;5;202m\]:%s'\'')'
 err='$(err="$?"; [[ "$err" -eq 0 ]] || echo -ne '\''\e[0;33m'\''" [$err]")'
 # first line
 PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"' \x0f'"$BASE_COLOR$USER"'\e[0;37m@'"$BASE_COLOR$(uname -n)"' '"$FRAME_COLOR"'\x0etq`%s\n'\'' "'"$err"'")'
@@ -54,7 +54,7 @@ PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"'
 PROMPT_COMMAND+=';__git_ps1 '\
 \''\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'\'' '\
 \'' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '\'' '\
-\''\e[38;5;202m:%s'\'
+\''\[\\e[38;5;202m\]:%s'\'
 
 #PS1='\['"$FRAME_COLOR"''$'\x0e''\]mq[ \['$'\x0f''\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
 
