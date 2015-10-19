@@ -73,7 +73,7 @@ PROMPT_COMMAND=\
 \'"$line1"\'\""$err"\"\''\n'\
 "$line2_frame $line2_mid"\'' '\
 \'"$line2_last"\'' '\
-\''\['"$GIT_COLOR"'\]:%s'\'
+\''\['"${GIT_COLOR/\\/\\\\}"'\]:%s'\'
 
 # alternate setup:
 #gps1='$(__git_ps1 '\''\['"$GIT_COLOR"'\]:%s'\'')'
