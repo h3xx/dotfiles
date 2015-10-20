@@ -10,6 +10,7 @@
 	f		= fetch
 	h		= help
 	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)(%G?)%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
+	m		= merge
 	p		= push
 	pu		= pull
 	sf		= submodule foreach
