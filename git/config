@@ -16,6 +16,7 @@
 	w		= whatchanged
 	ca		= commit -a
 	f		= fetch
+	m		= merge
 	pu		= pull
 	p		= push
 	br		= branch
