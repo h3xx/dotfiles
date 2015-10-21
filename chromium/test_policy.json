@@ -1,12 +1,13 @@
 /**
  * /etc/opt/chrome/policies/managed/test_policy.json
+ * @see http://www.chromium.org/administrators/policy-list-3
  */
 {
 	// *** privacy-related policies *** //
 	// Disable phoning home to Google, both for spying and convenience
 
 	// Disable "Sign in to Chrome" bullshit (deprecated; use SyncDisabled)
-	"SigninAllowed": false,
+	//"SigninAllowed": false,
 	// Disable synchronization of data with Google
 	"SyncDisabled": true,
 	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
@@ -20,8 +21,11 @@
 	"SearchSuggestEnabled": false,
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
+	"DeviceMetricsReportingEnabled": false, // chromium-OS
+	// Disable opting-in to sending data to Google's Safe Browsing program
+	"SafeBrowsingExtendedReportingOptInAllowed": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
-	// (removed because Google supposedly learned their lesson)
+	// (deprecated because Google supposedly learned their lesson)
 	"HideWebStorePromo": true,
 
 	// *** security-related policies *** //
@@ -33,4 +37,7 @@
 	"DisablePluginFinder": true,
 	// Completely disable running "background apps" while chrome is closed
 	"BackgroundModeEnabled": false,
+	// Disable DHCP-server based proxy setting, malicious DHCP servers
+	// could use this to capture traffic
+	"WPADQuickCheckEnabled": false,
 }
