@@ -2,11 +2,11 @@
 
 # screen-related options
 
-# check to see that we're running inside of screen or tmux
+# check to see that we're running inside of screen
 # ...or if we're running through su(1)
 # ...and we're not running through SSH
 #if [[ -n "$STY" -o "x$0" == 'x-su' -o -z "$SSH_CLIENT$SSH_CONNECTION$SSH_TTY" ]]; then
-if [[ -n "$STY$TMUX" ]]; then
+if [[ -n "$STY" ]]; then
 	# prompt
 
 	# method 1: using PROMPT_COMMAND, which executes after each bash
@@ -19,7 +19,7 @@ if [[ -n "$STY$TMUX" ]]; then
 
 	# `exec' calls reset title
 	_exec() {
-		echo -n $'\ek'"$1"$'\e\\'
+		printf '\ek%s\e\\' "$1"
 		builtin exec "$@"
 	}
 	alias exec='_exec'
@@ -30,7 +30,8 @@ if [[ -n "$STY$TMUX" ]]; then
 		# this is a little better
 		#echo -ne "\\ek$(eval echo -n "$(jobs "${1:-%+}" 2>/dev/null |cut -d ' ' -f 20)")\\e\\"
 		# this doesn't work as well, but is way more secure
-		echo -n $'\ek'"$(basename -- "$(builtin jobs "${1:-%+}" 2>/dev/null |cut -d ' ' -f 20)")"$'\e\\'
+		printf '\ek%s\e\\' \
+			"$(basename -- "$(builtin jobs "${1:-%+}" 2>/dev/null |cut -d ' ' -f 20)")"
 		builtin fg "$@"
 	}
 	alias fg='_fg'
