@@ -211,7 +211,7 @@ alias \
 	startall='ka -s CONT' \
 	j='jobs' \
 	rmr='rm -rf' \
-	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
+	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*|.*_(BACKUP|BASE|LOCAL|REMOTE)_.*)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
 	rmp='rm -v -- "$_~"' \
 	fol='test -d "$_" && cd "$_" || cd "$(dirname -- "$_")"' \
 	pfol='test -d "$_" && pushd "$_" || pushd "$(dirname -- "$_")"' \
