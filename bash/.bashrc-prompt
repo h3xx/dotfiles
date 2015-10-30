@@ -47,7 +47,7 @@ esac
 #original:PROMPT_COMMAND='(err="$?"; [[ "$err" -eq 0 ]] || echo -e '\''\e[0;33m'\''"[$err]")'"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
 #original: PS1='\['"$FRAME_COLOR"'\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \['"$FRAME_COLOR"'\]]=\[\e[37m\] \$\[\e[0m\] '
 
-test -f /usr/doc/git-2.5.1/contrib/completion/git-prompt.sh && . "$_"
+test -f /usr/doc/git-2.6.3/contrib/completion/git-prompt.sh && . "$_"
 
 # hint: \e)0 sets G1 to special characters,
 #	\x0e puts terminal into G1 mode,
