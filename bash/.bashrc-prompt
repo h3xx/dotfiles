@@ -19,7 +19,7 @@ COLORS['WHITE']='\e[37m'
 
 FRAME_COLOR='\e[01;30m'
 ERR_COLOR='\e[0;33m'
-GIT_COLOR='\e[38;5;202m'
+GIT_COLOR='\e[01;38;5;208m'
 
 # BASE_COLOR=(user root)
 case "$HOSTNAME" in
