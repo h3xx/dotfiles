@@ -29,7 +29,7 @@ $if bash
 "\e\C-g":	"2>~/.garbage.out"
 
 "\M-d":		"git diff "
-"\M-s":		"git st "
+"\M-s":		"git s "
 "\M-u":		"git pull"
 "\M-m":		"git commit -m '"
 "\M-o":		"git co "
