@@ -1,30 +1,32 @@
 [alias]
 	# shortcuts
 	h		= help
+	s		= status
+	c		= commit
+	f		= fetch
+	m		= merge
+	p		= push
+	b		= branch
+	cp		= cherry-pick
+	co		= checkout
+	cob		= checkout -b
+	pu		= pull
+	up		= pull # typo
+	sf		= submodule foreach
 	sub		= submodule
 	subup		= submodule update --init
 	subinit		= submodule init
-	sf		= submodule foreach
 	subbranch	= submodule foreach git checkout
 	subbr		= submodule foreach git checkout
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
-	st		= status
-	ci		= commit
-	co		= checkout
-	cp		= cherry-pick
 	w		= whatchanged
-	ca		= commit -a
-	f		= fetch
-	m		= merge
-	pu		= pull
-	p		= push
-	br		= branch
-	up		= pull # typo
 	url		= remote -v	# list checkout urls
-	cob		= checkout -b
 	logg		= log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%an%d%C(reset) %C(magenta)(%G?)%C(reset) %s %C(green)(%cr)%C(reset)' --date=relative
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
+	# backward compatibility
+	br		= !read -p \"use git b! [OK]\" && git branch
+	st		= !read -p \"use git s! [OK]\" && git status
 
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
