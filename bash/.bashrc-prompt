@@ -47,7 +47,54 @@ esac
 #original:PROMPT_COMMAND='(err="$?"; [[ "$err" -eq 0 ]] || echo -e '\''\e[0;33m'\''"[$err]")'"${PROMPT_COMMAND:+ ; $PROMPT_COMMAND}"
 #original: PS1='\['"$FRAME_COLOR"'\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \['"$FRAME_COLOR"'\]]=\[\e[37m\] \$\[\e[0m\] '
 
+GIT_PS1_SHOWCOLORHINTS=1
+GIT_PS1_SHOWDIRTYSTATE=1
 test -f /usr/doc/git-2.6.3/contrib/completion/git-prompt.sh && . "$_"
+
+# ricing: add custom coloring
+# @override
+__git_ps1_colorize_gitstring ()
+{
+	if [[ -n ${ZSH_VERSION-} ]]; then
+		local c_red='%F{red}'
+		local c_green='%F{green}'
+		local c_lblue='%F{blue}'
+		local c_clear='%f'
+	else
+		# Using \[ and \] around colors is necessary to prevent
+		# issues with command line editing/browsing/completion!
+		local c_red='\[\e[01;38;5;222;48;5;235m\]'
+		local c_green='\[\e[01;38;5;121;48;5;235m\]'
+		local c_lblue='\[\e[01;38;5;81;48;5;233m\]'
+		local c_clear='\[\e[0m\]'
+	fi
+	local bad_color=$c_red
+	local ok_color=$c_green
+	local flags_color="$c_lblue"
+
+	local branch_color=""
+	if [ $detached = no ]; then
+		branch_color="$ok_color"
+	else
+		branch_color="$bad_color"
+	fi
+	c="$branch_color$c"
+
+	z="$c_clear$z"
+	if [ "$w" = "*" ]; then
+		w="$bad_color$w"
+	fi
+	if [ -n "$i" ]; then
+		i="$ok_color$i"
+	fi
+	if [ -n "$s" ]; then
+		s="$flags_color$s"
+	fi
+	if [ -n "$u" ]; then
+		u="$bad_color$u"
+	fi
+	r="$c_clear$r"
+}
 
 # hint: \e)0 sets G1 to special characters,
 #	\x0e puts terminal into G1 mode,
@@ -73,9 +120,10 @@ PROMPT_COMMAND=\
 \'"$line1"\'\""$err"\"\''\n'\
 "$line2_frame $line2_mid"\'' '\
 \'"$line2_last"\'' '\
-\''\['"${GIT_COLOR/\\/\\\\}"'\]¦%s'\'
+\''¦%s'\'
 
 # alternate setup:
+#GIT_COLOR='\e[01;38;5;208m'
 #gps1='$(__git_ps1 '\''\['"$GIT_COLOR"'\]¦%s'\'')'
 #PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"' \x0f'"$BASE_COLOR$USER"'\e[0;37m@'"$BASE_COLOR$(uname -n)"' '"$FRAME_COLOR"'\x0etq`%s\n'\'' "'"$err"'")'
 #PS1='\['"$FRAME_COLOR"'\]'$'\x0e''mq['$'\x0f' '\[\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
@@ -88,7 +136,6 @@ unset \
 	BASE_COLOR \
 	FRAME_COLOR \
 	ERR_COLOR \
-	GIT_COLOR \
 	line1 line1_frame line1_mid line1_last \
 	line2_frame line2_mid line2_last \
 	err
