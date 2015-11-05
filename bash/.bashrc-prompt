@@ -56,13 +56,13 @@ test -f /usr/doc/git-2.6.3/contrib/completion/git-prompt.sh && . "$_"
 err='$(err="$?"; [[ "$err" -eq 0 ]] || echo -n '\''\['"$ERR_COLOR"'\]'\''" [$err]")'
 
 # first line
-line1_frame='\[\e)0'"$FRAME_COLOR"'\]'$'\x0e''lqqu'$'\x0f''\l'
+line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu'$'\x0f''\l'
 line1_mid="$BASE_COLOR"'\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
-line1_last='\['"$FRAME_COLOR"'\]'$'\x0e''tq\`'$'\x0f'
+line1_last='\['"$FRAME_COLOR"'\016\]tq\`'$'\x0f'
 
 line1="$line1_frame $line1_mid $line1_last"
 
-line2_frame='\['"$FRAME_COLOR"'\]'$'\x0e''mq['$'\x0f'
+line2_frame='\['"$FRAME_COLOR"'\016\]mq['$'\x0f'
 line2_mid='\[\e[0m\]\w'
 line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
 
