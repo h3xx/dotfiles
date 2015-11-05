@@ -73,10 +73,10 @@ PROMPT_COMMAND=\
 \'"$line1"\'\""$err"\"\''\n'\
 "$line2_frame $line2_mid"\'' '\
 \'"$line2_last"\'' '\
-\''\['"${GIT_COLOR/\\/\\\\}"'\]:%s'\'
+\''\['"${GIT_COLOR/\\/\\\\}"'\]¦%s'\'
 
 # alternate setup:
-#gps1='$(__git_ps1 '\''\['"$GIT_COLOR"'\]:%s'\'')'
+#gps1='$(__git_ps1 '\''\['"$GIT_COLOR"'\]¦%s'\'')'
 #PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"' \x0f'"$BASE_COLOR$USER"'\e[0;37m@'"$BASE_COLOR$(uname -n)"' '"$FRAME_COLOR"'\x0etq`%s\n'\'' "'"$err"'")'
 #PS1='\['"$FRAME_COLOR"'\]'$'\x0e''mq['$'\x0f' '\[\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
 # still works:
