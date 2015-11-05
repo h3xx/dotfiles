@@ -507,6 +507,11 @@ else
 	nmap <silent> <F8> :packadd tagbar<CR>:TagbarToggle<CR>
 endif
 
+" *** arcane plugins ***
+" prevent some built-in, unused plugins from loading
+let g:loaded_vimballPlugin = 1
+let g:loaded_getscriptPlugin = 1
+
 " ***********************************
 " ***** syntax specific options *****
 " ***********************************
