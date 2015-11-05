@@ -64,7 +64,7 @@ line1="$line1_frame $line1_mid $line1_last"
 
 line2_frame='\['"$FRAME_COLOR"'\]'$'\x0e''mq['$'\x0f'
 line2_mid='\[\e[0m\]\w'
-line2_last=' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
+line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
 
 # second line
 # hint: __git_ps1 PRE POST GITPATTERN
