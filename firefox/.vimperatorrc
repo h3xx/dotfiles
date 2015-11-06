@@ -14,4 +14,7 @@ set complete=bsl
 nnoremap j 4j
 nnoremap k 4k
 
+" restore Private Mode window shortcut
+nnoremap <C-S-p> :winopen -private<cr>
+
 " vi: ft=vim
