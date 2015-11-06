@@ -45,7 +45,6 @@ esac
 # hint: 01;30m = bright black, 0;37m = normal white, 0;37 = white, 0m = normal
 
 GIT_PS1_SHOWCOLORHINTS=1
-GIT_PS1_SHOWDIRTYSTATE=1
 test -f /usr/doc/git-2.6.3/contrib/completion/git-prompt.sh && . "$_"
 
 # ricing: add custom coloring
