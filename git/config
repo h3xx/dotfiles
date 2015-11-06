@@ -13,6 +13,8 @@
 	m		= merge
 	p		= push
 	pu		= pull
+	r		= reset
+	rh		= reset --hard
 	s		= status
 	sf		= submodule foreach
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
