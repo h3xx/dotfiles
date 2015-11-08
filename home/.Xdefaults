@@ -102,6 +102,9 @@ XTerm*colorBD:                  white
         Shift <Btn1Up>:         exec-formatted("xdg-open '%t'", PRIMARY)
 *VT100*ttyModes:                erase ^?
 
+!! select paths/URLs with 3 clicks
+XTerm*on3Clicks:                regex ([[:alpha:]]+://)?([[:alnum:]!#&+,./:=?@_~-]|(%[[:xdigit:]][[:xdigit:]]))+
+
 !! UXTerm
 
 UXTerm*utmpDisplayId:           false
