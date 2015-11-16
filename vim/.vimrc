@@ -491,6 +491,11 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline_extensions = ['branch', 'tabline', 'whitespace']
 
+" *** vim-gitgutter ***
+" wait until I save the file to update signs
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
+
 " *** IDE plugin ***
 let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
 " default "fMOSTw"
