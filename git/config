@@ -3,12 +3,15 @@
 	h		= help
 	s		= status
 	c		= commit
+	ca		= commit --amend
 	f		= fetch
 	m		= merge
 	p		= push
+	u		= push -u
 	b		= branch
 	r		= reset
 	rh		= reset --hard
+	rb		= rebase
 	cp		= cherry-pick
 	co		= checkout
 	cob		= checkout -b
