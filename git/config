@@ -4,6 +4,7 @@
 	b		= branch
 	br		= !read -p \"use git b! [OK]\" && git branch
 	c		= commit
+	ca		= commit --amend
 	co		= checkout
 	cob		= checkout -b
 	cp		= cherry-pick
@@ -14,6 +15,7 @@
 	p		= push
 	pu		= pull
 	r		= reset
+	rb		= rebase
 	rh		= reset --hard
 	s		= status
 	sf		= submodule foreach
@@ -26,6 +28,7 @@
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	subup		= submodule update --init
+	u		= push -u
 	up		= pull # typo
 	url		= remote -v # list checkout urls
 	w		= whatchanged
