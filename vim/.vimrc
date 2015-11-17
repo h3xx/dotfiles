@@ -509,6 +509,12 @@ else
 	nmap <silent> <F8> :packadd tagbar<CR>:TagbarToggle<CR>
 endif
 
+" *** ctrl-p ***
+" c-t is unusable here because it's mapped in tmux
+let g:ctrlp_prompt_mappings = {
+	\ 'AcceptSelection("t")': ['<c-g>'],
+	\ }
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin = 1
