@@ -74,3 +74,7 @@
 	path = font/ohsnapmod
 	url = git://github.com/h3xx/ohsnapmod.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/ctrlp.vim"]
+	path = vim/.vim/pack/dist/start/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
+	branch = master
