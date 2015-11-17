@@ -494,6 +494,12 @@ let g:tagbar_autofocus=1
 let g:tagbar_ctags_bin='ctags'
 "let g:tagbar_expand=1 " doesn't work too well
 
+" *** ctrl-p ***
+" c-t is unusable here because it's mapped in tmux
+let g:ctrlp_prompt_mappings={
+	\ 'AcceptSelection("t")': ['<c-g>'],
+	\ }
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin=1
