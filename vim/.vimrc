@@ -309,6 +309,9 @@ let g:sh_fold_enabled = 3
 " allow backspacing over everything in insert mode (default)
 "set backspace=2
 
+" two-stroke saving instead of four-stroke
+nnoremap <C-s> :w<cr>
+
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
 noremap ; :
