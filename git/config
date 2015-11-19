@@ -12,6 +12,7 @@
 	r		= reset
 	rh		= reset --hard
 	rb		= rebase
+	mt		= mergetool
 	cp		= cherry-pick
 	co		= checkout
 	cob		= checkout -b
