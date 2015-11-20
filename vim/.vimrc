@@ -349,6 +349,10 @@ nnoremap Y y$
 noremap H ^
 noremap L $
 
+" override default C-u, C-d scrolling because I don't like it
+nnoremap <C-u> 10k
+nnoremap <C-d> 10j
+
 " bind gK to grep word under cursor
 "nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
