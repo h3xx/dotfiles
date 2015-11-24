@@ -1,0 +1,202 @@
+#!/bin/sh
+# vi: noet sts=4 sw=4 ts=4
+
+# script to indicate battery level
+
+STYLE='percent'
+
+while getopts 'hpgc' FLAG; do
+	case "$FLAG" in
+		'p')
+			STYLE='percent'
+			;;
+		'g')
+			STYLE='graphic'
+			;;
+		'c')
+			STYLE='color_percent'
+			;;
+		'h')
+			HELP_MESSAGE
+			exit 0
+			;;
+		*)
+			printf 'Unrecognized flag: %s\n' \
+				"$FLAG" \
+				>&2
+			USAGE >&2
+			exit 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+HEART_FULL=0
+HEART_HALF=o
+HEART_EMPTY=.
+NUM_HEARTS=5
+
+main() {
+	BATTERY_STATUS=$(battery_status $1)
+	[ -z "$BATTERY_STATUS" ] && return
+
+	case "$STYLE" in
+		'graphic')
+			print_graphic "$BATTERY_STATUS"
+			;;
+		'percent')
+			print_percent "$BATTERY_STATUS"
+			;;
+		'color_percent')
+			print_color_percent "$BATTERY_STATUS"
+			;;
+	esac
+
+}
+
+print_graphic() {
+	local PERC=$1
+
+	local HB=$((PERC*NUM_HEARTS/100)) \
+		REMAINDER=$((PERC%(100/NUM_HEARTS)))
+
+	for ((I=0; I<HB; ++I)); do
+		printf $HEART_FULL
+	done
+
+	if [ "$REMAINDER" -ne 0 -a "$I" -lt "$NUM_HEARTS" ]; then
+		printf $HEART_HALF
+		let ++I
+	fi
+
+	for ((; I<NUM_HEARTS; ++I)); do
+		printf $HEART_EMPTY
+	done
+
+	echo
+}
+
+print_percent() {
+	local PERC=$1
+	printf '%s%%\n' $PERC
+}
+
+print_color_percent() {
+	local PERC=$1
+	local BGCOLOR \
+		COLOR_RESET='\e[0m'
+
+	if [ $PERC -lt 20 ]; then
+		BGCOLOR='\e[3;1;31m' # bright red
+	elif [ $PERC -lt 50 ]; then
+		BGCOLOR='\e[3;1;33m' # bright yellow
+	else
+		BGCOLOR='\e[3;1;32m' # bright green
+	fi
+
+	local ALIGN=$((NUM_HEARTS/2))
+	printf "${BGCOLOR}%-${NUM_HEARTS}s${COLOR_RESET}\n" \
+		$(printf "%${ALIGN}s%%" $PERC)
+}
+
+linux_get_bat() {
+	local BF=$(cat $BAT_FULL)
+	local BN=$(cat $BAT_NOW)
+	echo $(( 100 * BN / BF ))
+}
+
+openbsd_get_bat() {
+	BF=$(sysctl -n hw.sensors.acpibat0.amphour0 |  cut -d ' ' -f 1)
+	BN=$(sysctl -n hw.sensors.acpibat0.amphour3 |  cut -d ' ' -f 1)
+	echo "(($BN * 100) / $BF)" | bc -l | awk -F '.' '{ print $1 }';
+}
+
+freebsd_get_bat() {
+	sysctl -n hw.acpi.battery.life
+}
+
+battery_status() {
+	local BATPATH STATUS BAT_FULL BAT_NOW
+
+	case $(uname -s) in
+		'Linux')
+			BATPATH=${BATPATH:-/sys/class/power_supply/BAT0}
+			STATUS=$BATPATH/status
+			[ "$1" = $(cat $STATUS) ] || [ "$1" = "" ] || return 0
+			if [ -f "$BATPATH/energy_full" ]; then
+				NAMING='energy'
+			elif [ -f "$BATPATH/charge_full" ]; then
+				NAMING='charge'
+			elif [ -f "$BATPATH/capacity" ]; then
+				cat "$BATPATH/capacity"
+				return 0
+			fi
+			BAT_FULL=$BATPATH/${NAMING}_full
+			BAT_NOW=$BATPATH/${NAMING}_now
+			linux_get_bat
+			;;
+		'FreeBSD')
+			STATUS=$(sysctl -n hw.acpi.battery.state)
+			case $1 in
+				"Discharging")
+					if [ $STATUS -eq 1 ]; then
+						freebsd_get_bat
+					fi
+					;;
+				"Charging")
+					if [ $STATUS -eq 2 ]; then
+						freebsd_get_bat
+					fi
+					;;
+				"")
+					freebsd_get_bat
+					;;
+			esac
+			;;
+		'OpenBSD')
+			openbsd_get_bat
+			;;
+		'Darwin')
+			case $1 in
+				'Discharging')
+					EXT='No'
+					;;
+				'Charging')
+					EXT='Yes'
+					;;
+			esac
+
+			ioreg -c AppleSmartBattery -w0 |
+				grep -o '"[^"]*" = [^ ]*' |
+				sed -e 's/= //g' -e 's/"//g' |
+				sort |
+				while read KEY VALUE; do
+					case $KEY in
+						'MaxCapacity')
+							MAXCAP=$VALUE
+							;;
+						'CurrentCapacity')
+							CURCAP=$VALUE
+							;;
+						'ExternalConnected')
+							if [ -n "$EXT" ] && [ "$EXT" != "$VALUE" ]; then
+								exit
+							fi
+							;;
+						'FullyCharged')
+							if [ "$VALUE" = "Yes" ]; then
+								exit
+							fi
+							;;
+					esac
+					if [[ -n $MAXCAP && -n $CURCAP ]]; then
+						echo $(( 100 * $CURCAP / $MAXCAP ))
+						break
+					fi
+				done
+		esac
+}
+
+main
+
