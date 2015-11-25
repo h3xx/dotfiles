@@ -141,7 +141,8 @@ aug keycommands
 				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/php-h.vim<CR> |
 				\ nnoremap <buffer> <silent> ,E :so ~/.vim/templates/keys/php-E.vim<CR> |
 				\ nnoremap <buffer> <silent> ,c :so ~/.vim/templates/keys/php-c.vim<CR> |
-				\ nnoremap <buffer> <silent> ,D :so ~/.vim/templates/keys/php-D.vim<CR>
+				\ nnoremap <buffer> <silent> ,D :so ~/.vim/templates/keys/php-D.vim<CR> |
+				\ nnoremap <buffer> <silent> ,<C-d> :so ~/.vim/templates/keys/php-c-D.vim<CR>
 
 	" build script build files
 	" ,h - insert header file from /tmp/svn/_configure/__header
