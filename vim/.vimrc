@@ -85,21 +85,6 @@ endif " has('mouse')
 " skip backing up of the following patterns
 " default: "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*"
 
-"" udev rules
-"" (complains if there are files in the directory not matching *.rules)
-set backupskip+=/etc/udev/rules.d/*
-
-"" commit log messages
-set backupskip+=*/svn-commit.tmp,*/COMMIT_EDITMSG
-
-"" Slackware package special files
-"" (if installed, will leave a rogue /install directory)
-set backupskip+=*/install/slack-desc,*/install/slack-required,*/install/slack-suggests,*/install/doinst.sh
-
-"" crontab files
-"" (if left in the directory, they will execute twice)
-set backupskip+=*/.cron/*/*
-
 " ********************************
 " ***** swap files, metadata *****
 " ********************************
