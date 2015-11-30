@@ -66,16 +66,16 @@
 	pager		= true
 
 [color "diff"]
-	frag		= magenta bold
-	meta		= yellow bold
-	old		= red bold
-	new		= green bold
-	commit		= yellow bold
+	frag		= bold 165 235
+	meta		= bold 39 235
+	old		= bold 196 235
+	new		= bold 154 235
+	commit		= bold 235 154
 
 [color "status"]
-	added		= yellow
-	changed		= green
-	untracked	= cyan
+	added		= bold 154 235
+	changed		= bold 166 235
+	untracked	= bold 81 235
 
 [user]
 	name = Dan Church
