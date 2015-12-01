@@ -58,6 +58,7 @@
 	added		= bold 154 235
 	changed		= bold 166 235
 	untracked	= bold 81 235
+	unmerged	= bold 196 235
 
 [commit]
 	# automatically gpg-sign all commits
