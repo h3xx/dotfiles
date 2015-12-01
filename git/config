@@ -12,6 +12,8 @@
 	r		= reset
 	rh		= reset --hard
 	rb		= rebase
+	rbc		= rebase --continue
+	rba		= rebase --abort
 	mt		= mergetool
 	cp		= cherry-pick
 	co		= checkout
@@ -78,6 +80,12 @@
 	untracked	= bold 81 235
 	unmerged	= bold 196 235
 
+[color "decorate"]
+	HEAD		= bold 81 235
+	branch		= bold 121 235
+	remoteBranch	= bold 222 235
+	tag		= bold 222 235
+
 [user]
 	name = Dan Church
 	email = amphetamachine@gmail.com
@@ -104,5 +112,8 @@
 
 [merge]
 	ff = false
+
+[log]
+	decorate = true
 
 # vi: ft=gitconfig
