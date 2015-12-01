@@ -70,7 +70,7 @@
 	meta		= bold 39 235
 	old		= bold 196 235
 	new		= bold 154 235
-	commit		= bold 235 154
+	commit		= bold 232 154
 
 [color "status"]
 	added		= bold 154 235
