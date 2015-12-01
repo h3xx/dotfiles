@@ -73,6 +73,7 @@
 	old		= bold 196 235
 	new		= bold 154 235
 	commit		= bold 232 154
+	func		= bold 222 235
 
 [color "status"]
 	added		= bold 154 235
