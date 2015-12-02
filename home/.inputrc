@@ -28,10 +28,11 @@ $if bash
 "\eg":		"&>~/.garbage.out &"
 "\e\C-g":	"2>~/.garbage.out"
 
-"\M-d":		"git diff "
+"\M-d":		"git d "
+"\M-c":		"git c "
 "\M-s":		"git s "
-"\M-u":		"git pull"
-"\M-m":		"git commit -m '"
+"\M-u":		"git pu"
+"\M-m":		"git m "
 "\M-o":		"git co "
 
 # redirection short cuts
