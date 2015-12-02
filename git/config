@@ -2,6 +2,7 @@
 	# shortcuts
 	h		= help
 	s		= status
+	d		= diff
 	c		= commit
 	ca		= commit --amend
 	f		= fetch
