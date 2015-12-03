@@ -287,79 +287,66 @@ let g:sh_fold_enabled=3
 "set backspace=2
 
 " two-stroke saving instead of four-stroke
+" usefulness: *+ (@h3xx is still training)
 nnoremap <C-s> :w<cr>
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
+" usefulness: **
 noremap ; :
 
 " reverse function of ' and `
 " ' => more accurate jumping, ` => less accurate jumping
+" usefulness: ****
 noremap ` '
 noremap ' `
 
 " Remove search highlighting
+" usefulness: ***
 nnoremap <F1> :noh<CR>
 
 " force opening new tabs when gf-ing
+" usefulness: ***
 nnoremap gf <C-W>gf
 
 " remap ctrl-[direction] to window moving
 " (thanks to github.com/bling/minivimrc)
+" usefulness: *****
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
 " \v => re-select the text you just pasted
+" usefulness: **
 nnoremap <leader>v V`]
 
 " C-u = undo in insert mode
+" usefulness: *
 inoremap <C-U> <C-G>u<C-U>
 
 " yank from the cursor to the end of the line, to be consistent
 " with C and D.
+" usefulness: **
 nnoremap Y y$
 
 " H/L navigation = beginning/end of line
 " (I have never pressed H or L expecting what they do by default)
+" usefulness: *****
 noremap H ^
 noremap L $
 
 " override default C-u, C-d scrolling because I don't like it
+" usefulness: ***
 nnoremap <C-u> 10k
 nnoremap <C-d> 10j
-
-" bind gK to grep word under cursor
-"nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
 
-"" GUI clipboard operations
-" Shift-Insert => paste
-noremap <S-Insert> "+gP
-" for insert mode
-"map! <S-Insert> <C-R>+
-" (these are better)
-imap <S-Insert> <F10><C-R>+<F11>
-cmap <S-Insert> <C-R>+
-
-" Ctrl-Shift-Insert => paste after (insert mode N/A)
-map <C-S-Insert> "+gp
-
-" Ctrl-Insert => copy
-"" line in command mode, selection in visual mode
-nmap <C-Insert> "+yy
-vmap <C-Insert> "+y
-
-" Shift-Del => cut
-"" line in command mode, selection in visual mode
-nmap <S-Del> "+dd
-vmap <S-Del> "+x
-
 " Paste mode
+" usefulness: ****
 map <F10> :set paste<CR>
 map <F11> :set nopaste<CR>
 imap <F10> <C-O>:set paste<CR>
@@ -413,7 +400,7 @@ set ttyfast
 
 " Show trailing whitespace and spaces before a tab
 " (note: must occur BEFORE colorscheme invocation)
-autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=red
+autocmd ColorScheme * hi ExtraWhitespace term=reverse ctermbg=red guibg=red
 " (match commands only apply to the current buffer)
 autocmd BufEnter,WinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
