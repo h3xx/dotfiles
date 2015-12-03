@@ -450,12 +450,6 @@ let g:airline_extensions=['branch', 'tabline', 'whitespace']
 let g:gitgutter_realtime=0
 let g:gitgutter_eager=0
 
-" *** IDE plugin ***
-let g:IDE_SyntaxScript='~/.vim/plugin/ideSyntax.pl'
-" default "fMOSTw"
-" 's' => disable warnings about being unable to generate syntax files (wtf)
-let g:IDE_AdvancedFlags='fMOsTw'
-
 " *** tagbar ***
 if has('gui_running')
 	nmap <silent> <F8> :packadd tagbar<CR>:if &co<113\|set co=113\|endif\|TagbarToggle<CR>
