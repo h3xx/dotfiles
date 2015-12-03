@@ -456,12 +456,6 @@ let g:airline_extensions = ['branch', 'tabline', 'whitespace']
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
 
-" *** IDE plugin ***
-let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
-" default "fMOSTw"
-"  's'" : disable warnings about being unable to generate syntax files (wtf)
-let g:IDE_AdvancedFlags = "fMOsTw"
-
 " *** tagbar ***
 let g:tagbar_autofocus = 1
 let g:tagbar_ctags_bin = 'ctags'
