@@ -170,10 +170,6 @@ set scrolloff=5
 " do incremental searching (default)
 "set incsearch
 
-" do not redraw screen until macros, etc. are done drawing to the screen
-" (better responsiveness over SSH and slow terminals)
-set lazyredraw
-
 " do not time out when entering mapped key sequences
 " (addendum: does not work well with imapped F1-F10 keys because they send
 " "\eO? in xterm)
@@ -295,79 +291,66 @@ let g:sh_fold_enabled = 3
 "set backspace=2
 
 " two-stroke saving instead of four-stroke
+" usefulness: *+ (@h3xx is still training)
 nnoremap <C-s> :w<cr>
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
+" usefulness: **
 noremap ; :
 
 " reverse function of ' and `
 " ' => more accurate jumping, ` => less accurate jumping
+" usefulness: ****
 noremap ` '
 noremap ' `
 
 " remove search highlighting
+" usefulness: ***
 nnoremap <F1> :noh<CR>
 
 " force opening new tabs when gf-ing
+" usefulness: ***
 nnoremap gf <C-W>gf
 
 " remap ctrl-[direction] to window moving
 " (thanks to github.com/bling/minivimrc)
+" usefulness: *****
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
 " \v => re-select the text you just pasted
+" usefulness: **
 nnoremap <leader>v V`]
 
 " C-u = undo in insert mode
+" usefulness: *
 inoremap <C-U> <C-G>u<C-U>
 
 " yank from the cursor to the end of the line, to be consistent
 " with C and D.
+" usefulness: **
 nnoremap Y y$
 
 " H/L navigation = beginning/end of line
 " (I have never pressed H or L expecting what they do by default)
+" usefulness: *****
 noremap H ^
 noremap L $
 
 " override default C-u, C-d scrolling because I don't like it
+" usefulness: ***
 nnoremap <C-u> 10k
 nnoremap <C-d> 10j
-
-" bind gK to grep word under cursor
-"nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
 
-"" GUI clipboard operations
-" Shift-Insert => paste
-noremap <S-Insert> "+gP
-" for insert mode
-"map! <S-Insert> <C-R>+
-" (these are better)
-imap <S-Insert> <F10><C-R>+<F11>
-cmap <S-Insert> <C-R>+
-
-" Ctrl-Shift-Insert => paste after (insert mode N/A)
-map <C-S-Insert> "+gp
-
-" Ctrl-Insert => copy
-"" line in command mode, selection in visual mode
-nmap <C-Insert> "+yy
-vmap <C-Insert> "+y
-
-" Shift-Del => cut
-"" line in command mode, selection in visual mode
-nmap <S-Del> "+dd
-vmap <S-Del> "+x
-
 " paste mode
+" usefulness: ****
 map <F10> :set paste<CR>
 map <F11> :set nopaste<CR>
 imap <F10> <C-O>:set paste<CR>
@@ -395,6 +378,10 @@ set number
 " send more drawing commands to the terminal
 set ttyfast
 
+" do not redraw screen until macros, etc. are done drawing to the screen
+" (better responsiveness over SSH and slow terminals)
+set lazyredraw
+
 " I: disable startup message
 " c: don't give useless ins-completion-menu messages in the statusbar
 set shortmess+=I
@@ -406,49 +393,40 @@ endif
 " ***** display, colors *****
 " ***************************
 
-" (if terminal is capable of more than monochrome)
-if has('gui_running') || &t_Co > 2
-	" Switch syntax highlighting on when the terminal has colors (default)
-	"syntax on
-	" Also switch on highlighting the last used search pattern. (default)
-	"set hlsearch
+" Switch syntax highlighting on when the terminal has colors (default)
+"syntax on
+" Also switch on highlighting the last used search pattern. (default)
+"set hlsearch
 
-	" stop the cursor from blinking, ever
-	" addendum: this was to stop a bug where the cursor disappeared when
-	" the window was maximized, but I decided to just never maximize
-	" windows
-	"set guicursor+=a:blinkon0
+" force more colors in the terminal than vim thinks is possible
+" (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
+"set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
-	" force more colors in the terminal than vim thinks is possible
-	" (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
-	"set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
+" Show trailing whitespace and spaces before a tab (note: must occur
+" BEFORE colorscheme invocation)
+autocmd ColorScheme *		hi ExtraWhitespace term=reverse ctermbg=red guibg=red
 
-	" Show trailing whitespace and spaces before a tab
-	autocmd ColorScheme *		hi ExtraWhitespace ctermbg=red guibg=red
+" Show trailing whitespace and spaces before a tab
+"	(match commands only apply to the current buffer)
+autocmd BufEnter,WinEnter *	match ExtraWhitespace /\s\+$\| \+\ze\t/
 
-	" Show trailing whitespace and spaces before a tab
-	"	(match commands only apply to the current buffer)
-	autocmd BufEnter,WinEnter *	match ExtraWhitespace /\s\+$\| \+\ze\t/
+" Replace blinding gvim color scheme (makes terminal vim brighter)
+colorscheme late_evening
 
-	" Replace blinding gvim color scheme (makes terminal vim brighter)
-	colorscheme late_evening
+" correct some colors
+" (addendum: only affects terminal vim, looks better regular)
+"highlight PreProc ctermfg=Magenta
 
-	" correct some colors
-	" (addendum: only affects terminal vim, looks better regular)
-	"highlight PreProc ctermfg=Magenta
-
-	" highlight the current cursor line
-	"set cursorline
-	" addendum: hide the cursorline on inactive windows
-	aug CursorLine
-		au!
-		au VimEnter * setl cursorline
-		au WinEnter * setl cursorline
-		au BufWinEnter * setl cursorline
-		au WinLeave * setl nocursorline
-	aug END
-
-endif " has('gui_running') || &t_Co > 2
+" highlight the current cursor line
+"set cursorline
+" addendum: hide the cursorline on inactive windows
+aug CursorLine
+	autocmd!
+	autocmd VimEnter * setl cursorline
+	autocmd WinEnter * setl cursorline
+	autocmd BufWinEnter * setl cursorline
+	autocmd WinLeave * setl nocursorline
+aug END
 
 " ********************************
 " ***** fancy plugin options *****

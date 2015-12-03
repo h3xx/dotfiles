@@ -34,4 +34,10 @@ if has('gui_running')
 "		let g:airline_powerline_fonts=1
 "	endif " exists(':Airline')
 
+	" Stop the cursor from blinking, ever
+	" addendum: this was to stop a bug where the cursor disappeared when
+	" the window was maximized, but I decided to just never maximize
+	" windows
+	"set guicursor+=a:blinkon0
+
 endif " has('gui_running')
