@@ -67,6 +67,7 @@
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
 	fsck-fix	= !~/.config/git/bin/git-fsck-fix.sh
+	mreq		= !~/.config/git/bin/git-open-pull-request-gitlab.sh
 
 [commit]
 	# automatically gpg-sign all commits
