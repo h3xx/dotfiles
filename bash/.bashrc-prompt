@@ -1,7 +1,10 @@
 # .bashrc-prompt
 
 ## prompt
-#PS1='\u@\h:\w\$ ' # factory default
+
+if [[ "$TERM" = 'dumb' ]]; then
+PS1='\u@\h:\w\$ ' # factory default
+else
 ## define colors
 declare -A COLORS
 COLORS['BLACK']='\e[30m'
@@ -144,4 +147,5 @@ if [[ "$(date +%m%d)" == '0401' ]]; then
 	PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }"'(if [[ $RANDOM -le 8000 ]]; then printf "\0337\033[%d;%dH\033[4%dm \033[m\0338" $((RANDOM%LINES+1)) $((RANDOM%COLUMNS+1)) $((RANDOM%8)); fi)'
 	# technicolor prompt variant
 	#PROMPT_COMMAND+=' ; (if [[ $RANDOM -le 8000 ]]; then printf "\033[4%dm" $((RANDOM%8)); fi)'
+fi
 fi
