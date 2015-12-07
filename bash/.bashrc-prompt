@@ -102,7 +102,7 @@ __git_ps1_colorize_gitstring ()
 #	\x0e puts terminal into G1 mode,
 #	\x0f puts terminal into normal mode
 
-err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \['"$ERR_COLOR"'\]'\''"[$err]")'
+err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \['"$ERR_COLOR"'\]'\''"[$err]"'\''\e[0m'\'')'
 
 # first line
 line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu'$'\x0f''\l'
