@@ -1,4 +1,4 @@
-set main-view	= line-number:no,interval=5 id:yes date:short author:full commit-title:yes,graph,refs,overflow=no
+set main-view	= line-number:no,interval=5 id:no date:short author:full commit-title:yes,graph,refs,overflow=no
 
 # copy most of the color scheme from ~/.gitconfig
 
@@ -34,7 +34,6 @@ set git-colors = \
 	diff.meta=committer \
 	diff.meta=header \
 	diff.commit=cursor \
-	diff.commit=id \
 
 color title-blur		39	235	bold
 color title-focus		39	232	bold reverse
@@ -45,6 +44,7 @@ color "+++ "			39	235 bold
 
 # = diff.commit (lime green)
 color graph-commit		154	default bold
+color id			154	235 bold
 
 color status			82	default
 
