@@ -1,3 +1,5 @@
+set main-view	= line-number:no,interval=5 id:yes date:short author:full commit-title:yes,graph,refs,overflow=no
+
 # copy most of the color scheme from ~/.gitconfig
 
 set git-colors = \
