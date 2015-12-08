@@ -1,0 +1,65 @@
+# copy most of the color scheme from ~/.gitconfig
+
+set git-colors = \
+	diff.meta=diff-header \
+	diff.meta=diff-index \
+	diff.meta=diff-oldmode \
+	diff.meta=diff-newmode \
+	diff.frag=diff-chunk \
+	diff.old=diff-del \
+	diff.new=diff-add \
+	\
+	grep.filename=grep.file \
+	grep.linenumber=grep.line-number \
+	grep.separator=grep.delimiter \
+	\
+	status.branch=status.header \
+	status.added=stat-staged \
+	status.updated=stat-staged \
+	status.changed=stat-unstaged \
+	status.untracked=stat-untracked \
+	\
+	decorate.remoteBranch=main-remote \
+	decorate.remoteBranch=main-tracked \
+	decorate.tag=main-tag \
+	decorate.tag=main-local-tag \
+	decorate.HEAD=main-head \
+	decorate.branch=main-ref \
+	\
+	diff.frag=date \
+	diff.func=diff-stat \
+	diff.meta=author \
+	diff.meta=committer \
+	diff.meta=header \
+	diff.commit=cursor \
+
+color title-blur		39	235	bold
+color title-focus		39	232	bold reverse
+
+# = diff.meta (neon blue)
+color "--- "			39	235 bold
+color "+++ "			39	235 bold
+
+# = diff.commit (lime green)
+color graph-commit		154	default bold
+
+color status			82	default
+
+# lines in digraph
+color palette-0			165	default bold
+color palette-1			39	default bold
+color palette-2			222	default bold
+color palette-3			166	default bold
+color palette-4			121	default bold
+color palette-5			82	default bold
+color palette-6			160	default bold
+color palette-7			238	default bold
+# repeat
+color palette-8			165	default
+color palette-9			39	default
+color palette-10		222	default
+color palette-11		166	default
+color palette-12		121	default
+color palette-13		82	default
+color palette-14		160	default
+color palette-15		238	default
