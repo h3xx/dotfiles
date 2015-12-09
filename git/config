@@ -31,7 +31,7 @@
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	w		= whatchanged
 	url		= remote -v	# list checkout urls
-	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 39 235)%an%C(reset) %C(bold 165 235)(%G?)%C(reset)%C(bold 121 235)%d%C(reset) %s %C(bold 222 235)(%cr)%C(reset)' --date=relative
+	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
 	# backward compatibility
 	br		= !read -p \"use git b! [OK]\" && git branch
