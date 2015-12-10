@@ -1,51 +1,47 @@
 set main-view	= line-number:no,interval=5 id:no date:short author:full commit-title:yes,graph,refs,overflow=no
 
-# copy most of the color scheme from ~/.gitconfig
+# Color Scheme for Tig
+# Based mostly on the colors from the badwolf airline theme
+color header			39	235	bold
 
-set git-colors = \
-	diff.meta=diff-header \
-	diff.meta=diff-index \
-	diff.meta=diff-oldmode \
-	diff.meta=diff-newmode \
-	diff.frag=diff-chunk \
-	diff.old=diff-del \
-	diff.new=diff-add \
-	\
-	grep.filename=grep.file \
-	grep.linenumber=grep.line-number \
-	grep.separator=grep.delimiter \
-	\
-	status.branch=status.header \
-	status.added=stat-staged \
-	status.updated=stat-staged \
-	status.changed=stat-unstaged \
-	status.untracked=stat-untracked \
-	\
-	decorate.remoteBranch=main-remote \
-	decorate.remoteBranch=main-tracked \
-	decorate.tag=main-tag \
-	decorate.tag=main-local-tag \
-	decorate.HEAD=main-head \
-	decorate.branch=main-ref \
-	\
-	diff.frag=date \
-	diff.func=diff-stat \
-	diff.meta=author \
-	diff.meta=committer \
-	diff.meta=header \
-	diff.commit=cursor \
+# diff view
+color diff-header		39	235	bold
+color diff-index		39	235	bold
+color diff-oldmode		39	235	bold
+color diff-newmode		39	235	bold
+color diff-stat			222	235	bold
+color diff-chunk		165	235	bold
+color diff-add			154	235	bold
+color diff-del			196	235	bold
+color " +"			154	default
+color " -"			196	default
+color "--- "			39	235	bold
+color "+++ "			39	235	bold
+color "Merge: "			222	235	bold
+color "commit "			154	235	bold
+color "Commit: "		39	235	bold
+color "CommitDate: "		165	235	bold
+color "Author: "		39	235	bold
+color "AuthorDate: "		165	235	bold
+color "Tagger: "		222	235	bold
+color "TaggerDate: "		222	235	bold
 
+# main view
+color author			39	235	bold
+color date			165	235	bold
+color graph-commit		154	default bold
+color id			154	235	bold
+color main-remote		222	235	bold
+color main-tracked		222	235	bold
+color main-tag			222	235	bold
+color main-local-tag		222	235	bold
+color main-head			81	235	bold
+color main-ref			121	235	bold
+
+# window dressing
 color title-blur		39	235	bold
 color title-focus		39	232	bold reverse
-
-# = diff.meta (neon blue)
-color "--- "			39	235 bold
-color "+++ "			39	235 bold
-
-# = diff.commit (lime green)
-color graph-commit		154	default bold
-color id			154	235 bold
-
+color cursor			232	154	bold
 color status			82	default
 
 # lines in digraph
