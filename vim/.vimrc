@@ -380,7 +380,8 @@ endif
 " Don't set the terminal title
 " addendum: in a screen(1) session this means setting the text on the status
 " bar, which is actually nice
-"set notitle
+" addendum1: tmux not so much
+set notitle
 
 " Send more drawing commands to the terminal
 set ttyfast
