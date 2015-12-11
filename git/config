@@ -76,8 +76,6 @@
 	gpgSign = yes
 
 [core]
-	# Limit memory when resolving deltas?
-	deltaBaseCacheLimit = 4g
 	excludesfile = ~/.gitignore_global
 	# -R: Handle colors correctly
 	pager = less -R
