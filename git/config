@@ -51,7 +51,6 @@
 [core]
 	pager		= less -R	# handle colors correctly
 	excludesfile	= ~/.gitignore_global
-	deltaBaseCacheLimit = 4g	# limit memory when resolving deltas?
 
 [merge]
 	tool = vimdiff
