@@ -115,6 +115,7 @@ OPTIONS=menucolors
 
 MENUCOLOR=" blessed| B($| )"=green
 MENUCOLOR=" holy"=green
+MENUCOLOR=" unholy"=red
 MENUCOLOR=" cursed| C($| )"=red
 
 # Source: http://alt.org/nethack/userdata/t/tjr2/tjr2.nh343rc
