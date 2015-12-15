@@ -483,6 +483,10 @@ let perl_extended_vars=1
 let perl_want_scope_in_variables=1
 let perl_include_pod=1
 
+"" PHP-Indenting-for-VIm
+" Indent case statements according to PEAR standards
+let g:PHP_vintage_case_default_indent=1
+
 "" sh
 " g:is_sh Borne shell (default)
 " g:is_kornshell ksh
