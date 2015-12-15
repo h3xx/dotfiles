@@ -270,6 +270,8 @@ let g:vimsyn_folding = 'af'
 
 "" php
 "let g:php_folding = 1
+" indent according to PEAR standards
+let g:PHP_vintage_case_default_indent = 1
 
 " g:sh_fold_enabled - enable folding in sh files
 " possible values:
