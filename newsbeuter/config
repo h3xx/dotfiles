@@ -1,7 +1,20 @@
 browser elinks
+
+# use vi keys
 bind-key "j" down feedlist
 bind-key "k" up feedlist
 bind-key "j" next articlelist
 bind-key "k" prev articlelist
 bind-key "h" quit articlelist
 bind-key "l" open feedlist
+
+# Color Scheme for Newsbeuter
+# Based mostly on the colors from the badwolf airline theme
+color article			default		default
+color background		default		default
+color info			color39		color232	bold reverse
+color listfocus			color232	color154	bold
+color listfocus_unread		default		default		bold reverse
+color listnormal		default		default
+color listnormal_unread		color165	color235	bold
+# vi: ft=conf
