@@ -13,6 +13,7 @@
 	h		= help
 	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
 	m		= merge
+	ma		= merge --abort
 	mt		= mergetool
 	p		= push
 	pu		= pull
@@ -21,6 +22,7 @@
 	rba		= rebase --abort
 	rbc		= rebase --continue
 	rh		= reset --hard
+	rs		= reset --soft
 	s		= status
 	sf		= submodule foreach
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
@@ -33,7 +35,6 @@
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	subup		= submodule update --init
 	u		= push -u
-	up		= pull # typo
 	url		= remote -v # list checkout urls
 	w		= whatchanged
 
