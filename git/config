@@ -7,11 +7,13 @@
 	ca		= commit --amend
 	f		= fetch
 	m		= merge
+	ma		= merge --abort
 	p		= push
 	u		= push -u
 	b		= branch
 	r		= reset
 	rh		= reset --hard
+	rs		= reset --soft
 	rb		= rebase
 	rbc		= rebase --continue
 	rba		= rebase --abort
@@ -20,7 +22,6 @@
 	co		= checkout
 	cob		= checkout -b
 	pu		= pull
-	up		= pull # typo
 	sf		= submodule foreach
 	sub		= submodule
 	subup		= submodule update --init
