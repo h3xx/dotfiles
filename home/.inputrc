@@ -33,6 +33,7 @@ $if bash
 "\M-s":		"git s "
 "\M-u":		"git pu"
 "\M-p":		"git p "
+"\M-f":		"git f "
 "\M-m":		"git m "
 "\M-o":		"git co "
 
