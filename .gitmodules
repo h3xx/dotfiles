@@ -6,6 +6,10 @@
 	path = mutt/mutt-colors-neonwolf
 	url = https://github.com/h3xx/mutt-colors-neonwolf.git
 	branch = master
+[submodule "tig/tig-colors-neonwolf"]
+	path = tig/tig-colors-neonwolf
+	url = https://github.com/h3xx/tig-colors-neonwolf.git
+	branch = master
 [submodule "vim/.vim/pack/dist/opt/PHP-Indenting-for-VIm"]
 	path = vim/.vim/pack/dist/opt/PHP-Indenting-for-VIm
 	url = https://github.com/2072/PHP-Indenting-for-VIm.git
