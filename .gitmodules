@@ -1,6 +1,6 @@
 [submodule "vim/.vim/pack/dist/opt/vim-late_evening"]
 	path = vim/.vim/pack/dist/opt/vim-late_evening
-	url = git@github.com:h3xx/vim-late_evening.git
+	url = https://github.com/h3xx/vim-late_evening.git
 	branch = main
 [submodule "vim/.vim/pack/dist/start/vim-eunuch"]
 	path = vim/.vim/pack/dist/start/vim-eunuch
@@ -76,7 +76,7 @@
 	branch = master
 [submodule "font/ohsnapmod"]
 	path = font/ohsnapmod
-	url = git://github.com/h3xx/ohsnapmod.git
+	url = https://github.com/h3xx/ohsnapmod.git
 	branch = main
 [submodule "vim/.vim/pack/dist/start/ctrlp.vim"]
 	path = vim/.vim/pack/dist/start/ctrlp.vim
@@ -84,15 +84,15 @@
 	branch = master
 [submodule "mutt/mutt-colors-neonwolf"]
 	path = mutt/mutt-colors-neonwolf
-	url = git@github.com:h3xx/mutt-colors-neonwolf.git
+	url = https://github.com/h3xx/mutt-colors-neonwolf.git
 	branch = main
 [submodule "tig/tig-colors-neonwolf"]
 	path = tig/tig-colors-neonwolf
-	url = git@github.com:h3xx/tig-colors-neonwolf.git
+	url = https://github.com/h3xx/tig-colors-neonwolf.git
 	branch = main
 [submodule "git/git-colors-neonwolf"]
 	path = git/git-colors-neonwolf
-	url = git@github.com:h3xx/git-colors-neonwolf.git
+	url = https://github.com/h3xx/git-colors-neonwolf.git
 	branch = main
 [submodule "vim/.vim/pack/dist/start/lightline.vim"]
 	path = vim/.vim/pack/dist/start/lightline.vim
@@ -104,11 +104,11 @@
 	branch = master
 [submodule "fluxbox/styles/solaris"]
 	path = fluxbox/styles/solaris
-	url = git@github.com:h3xx/fluxbox-style-solaris.git
+	url = https://github.com/h3xx/fluxbox-style-solaris.git
 	branch = main
 [submodule "newsbeuter/newsbeuter-colors-neonwolf"]
 	path = newsbeuter/newsbeuter-colors-neonwolf
-	url = git@github.com:h3xx/newsbeuter-colors-neonwolf.git
+	url = https://github.com/h3xx/newsbeuter-colors-neonwolf.git
 	branch = main
 [submodule "vim/.vim/pack/dist/start/yats.vim"]
 	path = vim/.vim/pack/dist/start/yats.vim
