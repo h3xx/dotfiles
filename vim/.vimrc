@@ -293,8 +293,12 @@ let g:sh_fold_enabled = 3
 "set backspace=2
 
 " two-stroke saving instead of four-stroke
-" usefulness: *+ (@h3xx is still training)
+" usefulness: **+ (@h3xx is still training)
 nnoremap <C-s> :w<cr>
+
+" Alt+s = fugitive's :Gst
+" rhymes with .inputrc mapping
+nnoremap <A-s> :Gst<cr>
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
@@ -326,10 +330,6 @@ noremap <C-l> <C-w>l
 " \v => re-select the text you just pasted
 " usefulness: **
 nnoremap <leader>v V`]
-
-" C-u = undo in insert mode
-" usefulness: *
-inoremap <C-U> <C-G>u<C-U>
 
 " yank from the cursor to the end of the line, to be consistent
 " with C and D.
