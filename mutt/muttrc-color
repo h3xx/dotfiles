@@ -6,50 +6,51 @@
 # color codes: white black green magenta blue cyan yellow red default colorx
 # mono codes: none bold underline reverse standout
 
+source ~/.mutt/mutt-colors-neonwolf-256.muttrc
 ## mail bodies
 
 # normal text
-color normal		white		default
+#color normal		white		default
 
 # underlined text
-color underline		brightgreen	default
+#color underline		brightgreen	default
 
 # urls
-color body		magenta		default	"(ftp|https?|gopher|news|telnet|finger)://[^ \"\t\r\n]+"
+#color body		magenta		default	"(ftp|https?|gopher|news|telnet|finger)://[^ \"\t\r\n]+"
 
 # email addresses
-color body		magenta		default	"[-a-z_0-9.]+@[-a-z_0-9.]+"
+#color body		magenta		default	"[-a-z_0-9.]+@[-a-z_0-9.]+"
 
 # header
-color header		brightred	default	"^(From|Subject|Date|To|Cc|Bcc):"
-color hdrdefault	red		default
+#color header		brightred	default	"^(From|Subject|Date|To|Cc|Bcc):"
+#color hdrdefault	red		default
 
 # quoted text
-color quoted		brightcyan	default
+#color quoted		brightcyan	default
 # coloring the first 7 levels:
-color quoted		cyan		default
-color quoted1		yellow		default
-color quoted2		red		default
-color quoted3		green		default
-color quoted4		cyan		default
-color quoted5		yellow		default
-color quoted6		red		default
-color quoted7		green		default
+#color quoted		cyan		default
+#color quoted1		yellow		default
+#color quoted2		red		default
+#color quoted3		green		default
+#color quoted4		cyan		default
+#color quoted5		yellow		default
+#color quoted6		red		default
+#color quoted7		green		default
 
 # attachment headers
-color attachment	brightmagenta	default
+#color attachment	brightmagenta	default
 
 # everything below /^--\s*$/
-color signature		red		default
+#color signature		red		default
 
 # search patterns in pager
-color search		default		green
+#color search		default		green
 
 # vi-like tildes marking blank lines
-color tilde		cyan		default
+#color tilde		cyan		default
 
 # wrapped-line /^\+/ markers
-color markers		brightcyan	default
+#color markers		brightcyan	default
 
 ## index
 
@@ -57,7 +58,7 @@ color markers		brightcyan	default
 #color indicator	brightyellow	red
 
 # tree branches (`-->')
-color tree		magenta		default
+#color tree		magenta		default
 
 # (these are not working for some reason)
 # regular new messages
@@ -68,10 +69,10 @@ color tree		magenta		default
 #color index	default         red     "~F !~p !~P"
 # (these are working)
 # deleted messages
-color index	red		default "!~N ~D"
-color index	red		white   "~N ~D"
+#color index	red		default "!~N ~D"
+#color index	red		white   "~N ~D"
 # regular flagged messages
-color index	black		red     "~F !~D"
+#color index	black		red     "~F !~D"
 
 ## general
 
@@ -79,13 +80,13 @@ color index	black		red     "~F !~D"
 #color message		brightcyan	default
 
 # message line error text
-color error		brightred	default
+#color error		brightred	default
 
 # status line
 #color status		yellow		blue
 
 # attributes when using a mono terminal
-mono header bold "^(From|Subject|Date|To|Cc|Bcc):"
-mono quoted bold
+#mono header bold "^(From|Subject|Date|To|Cc|Bcc):"
+#mono quoted bold
 
 # vi: ft=muttrc
