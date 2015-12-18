@@ -76,6 +76,17 @@
 	commit		= bold 232 154
 	func		= bold 222 235
 
+[color "grep"]
+	linenumber	= bold 165 235
+	filename	= bold 39 235
+	separator	= bold 82 235
+	match		= bold 154 235
+	function	= bold 222
+	selected	= bold 255 235
+	context		= 240
+	#matchContext	= ? # matching text in context lines
+	#matchSelected	= ? # matching text in selected lines
+
 [color "status"]
 	added		= bold 154 235
 	changed		= bold 166 235
