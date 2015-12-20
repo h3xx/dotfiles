@@ -281,11 +281,9 @@ aug gzipext
 	"			\ call tar#Browse(expand("<amatch>"))
 
 	" other ZIP-based archives
-	"" *.egg	: Python egg-based distribution
-	"" *.jpa	: JPF plug-ins archive
 	"" *.odt	: OpenDocument text
 	"" *.odm	: OpenDocument text
-	au BufReadCmd			*.egg,*.jpa,*.k3b,*.odt,*.odm,*.epub,*.pk3
+	au BufReadCmd			*.k3b,*.odt,*.odm,*.epub,*.pk3
 				\ call zip#Browse(expand("<amatch>"))
 
 aug END " gzipext
