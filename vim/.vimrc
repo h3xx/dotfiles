@@ -296,9 +296,11 @@ let g:sh_fold_enabled = 3
 " usefulness: **+ (@h3xx is still training)
 nnoremap <C-s> :w<cr>
 
-" Alt+s = fugitive's :Gst
+" Alt+s, Alt+p, Alt+f = common fugitive commands
 " rhymes with .inputrc mapping
 nnoremap <A-s> :Gst<cr>
+nnoremap <A-p> :Gpush
+nnoremap <A-f> :Gfetch
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
