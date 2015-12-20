@@ -285,7 +285,7 @@ aug gzipext
 	"" *.jpa	: JPF plug-ins archive
 	"" *.odt	: OpenDocument text
 	"" *.odm	: OpenDocument text
-	au BufReadCmd			*.egg,*.jpa,*.k3b,*.odt,*.odm,*.epub
+	au BufReadCmd			*.egg,*.jpa,*.k3b,*.odt,*.odm,*.epub,*.pk3
 				\ call zip#Browse(expand("<amatch>"))
 
 aug END " gzipext
