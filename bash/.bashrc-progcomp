@@ -54,7 +54,8 @@ complete -A disabled		enable
 # BEGIN USER FUNCTIONS
 # user commands see only users
 complete -u			su usermod userdel passwd \
-				chage write chfn groups w
+				chage chfn groups w \
+				finger talk write
 
 # group commands see only groups
 complete -g			groupmod groupdel newgrp
