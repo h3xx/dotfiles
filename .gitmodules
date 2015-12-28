@@ -86,3 +86,7 @@
 	path = tig/tig-colors-neonwolf
 	url = git@github.com:h3xx/tig-colors-neonwolf.git
 	branch = master
+[submodule "git/git-colors-neonwolf"]
+	path = git/git-colors-neonwolf
+	url = git@github.com:h3xx/git-colors-neonwolf.git
+	branch = master
