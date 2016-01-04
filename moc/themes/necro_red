@@ -1,6 +1,6 @@
 # Author: Dan Church <amphetamachine@gmail.com>
 
-background		= red		black   
+background		= red		black
 frame			= black		black		bold
 window_title		= red		black		bold
 directory		= black		black		bold
@@ -10,7 +10,7 @@ selected_playlist	= black		magenta
 file			= red		black		bold
 selected_file		= black		red
 marked_file		= yellow	black		bold
-marked_selected_file 	= yellow	red		bold
+marked_selected_file	= yellow	red		bold
 info			= black		black		bold
 selected_info		= black		red
 marked_info		= red		black		bold
