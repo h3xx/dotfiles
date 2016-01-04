@@ -19,6 +19,8 @@
 	rba		= rebase --abort
 	mt		= mergetool
 	cp		= cherry-pick
+	cpc		= cherry-pick --continue
+	cpa		= cherry-pick --abort
 	co		= checkout
 	cob		= checkout -b
 	pu		= pull
