@@ -12,9 +12,14 @@ bind-key "l" open feedlist
 # Based mostly on the colors from the badwolf airline theme
 color article			default		default
 color background		default		default
-color info			color39		color232	bold reverse
+color info			color232	color39		bold
 color listfocus			color232	color154	bold
-color listfocus_unread		default		default		bold reverse
+color listfocus_unread		color232	color154	bold
 color listnormal		default		default
 color listnormal_unread		color165	color235	bold
+
+# article header
+highlight article ^(Feed|Title|Link|Date):.*$		color81		color235		bold
+#TODO:highlight article ^Feed:				color165	color235		bold
+
 # vi: ft=conf
