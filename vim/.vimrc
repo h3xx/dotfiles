@@ -301,6 +301,7 @@ nnoremap <C-s> :w<cr>
 nnoremap <A-s> :Gst<cr>
 nnoremap <A-p> :Gpush
 nnoremap <A-f> :Gfetch
+nnoremap <A-u> :Gpull
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
