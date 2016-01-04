@@ -9,6 +9,8 @@
 	co		= checkout
 	cob		= checkout -b
 	cp		= cherry-pick
+	cpa		= cherry-pick --abort
+	cpc		= cherry-pick --continue
 	d		= diff
 	f		= fetch
 	h		= help
