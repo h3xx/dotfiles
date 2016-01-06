@@ -449,6 +449,11 @@ if has('gui_running') || &termencoding == 'utf-8'
 else
 	let g:airline_left_sep = '»'
 	let g:airline_right_sep = '«'
+	let g:airline_symbols = {
+				\ 'linenr' : '¶',
+				\ 'branch' : 'µ',
+				\ 'crypt' : '¤',
+				\ }
 endif
 " mixed_indent_algo: the whitespace plugin is broken by default,
 "	&tabstop aren't taken into effect when detecting mixed indent
