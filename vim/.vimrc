@@ -459,6 +459,9 @@ endif
 "	&tabstop aren't taken into effect when detecting mixed indent
 let g:airline#extensions#whitespace#mixed_indent_algo=1
 let g:airline_theme='badwolf'
+" use old behavior for short, relative filename
+let g:airline_section_c = airline#section#create(['%<', 'file', ' ', 'readonly'])
+" I prefer tabs
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline_extensions = ['branch', 'tabline', 'whitespace']
 
