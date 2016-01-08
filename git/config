@@ -9,7 +9,6 @@
 	m		= merge
 	ma		= merge --abort
 	p		= push
-	u		= push -u
 	b		= branch
 	r		= reset
 	rh		= reset --hard
