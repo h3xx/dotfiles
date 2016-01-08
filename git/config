@@ -1,5 +1,11 @@
 # vi: ft=gitconfig ts=8 sts=8 sw=8 noet
 
+[advice]
+	# I know how to stage files now, git status
+	statusHints =
+	# I also know all about detatched heads, tyvm
+	detachedHead =
+
 [alias]
 	b		= branch
 	c		= commit
