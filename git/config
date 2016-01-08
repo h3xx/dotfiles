@@ -36,7 +36,6 @@
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	subup		= submodule update --init
-	u		= push -u
 	url		= remote -v # list checkout urls
 	w		= whatchanged
 
