@@ -27,8 +27,7 @@
 	sub		= submodule
 	subup		= submodule update --init
 	subinit		= submodule init
-	subbranch	= submodule foreach git checkout
-	subbr		= submodule foreach git checkout
+	subco		= submodule foreach git checkout
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	w		= whatchanged
