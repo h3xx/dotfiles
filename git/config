@@ -29,8 +29,7 @@
 	sf		= submodule foreach
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
 	sub		= submodule
-	subbr		= submodule foreach git checkout
-	subbranch	= submodule foreach git checkout
+	subco		= submodule foreach git checkout
 	subinit		= submodule init
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
