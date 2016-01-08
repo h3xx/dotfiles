@@ -54,13 +54,22 @@
 	pager		= less -R	# handle colors correctly
 	excludesfile	= ~/.gitignore_global
 
+[pull]
+	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
+	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
+	ff = only
+
 [merge]
+	# merges should only be explicit merges, regardless of whether they're ff merges
+	ff = false
 	tool = vimdiff
 
 [fetch]
 	# auto-fetch submodules upon git pull only if the superproject has a
 	# commit that updates the submodule pointer
 	recurseSubmodules = on-demand
+	# automatically prune remotely-deleted branches
+	prune = true
 
 [color]
 	branch		= auto
@@ -86,18 +95,6 @@
 
 [push]
 	default = simple
-
-# automatically prune remotely-deleted branches
-[fetch]
-	prune = true
-
-# only do deliberate and explicit merges, never automatic (pull) or silent (ff merge)
-[pull]
-	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
-	ff = only
-
-[merge]
-	ff = false
 
 [log]
 	decorate = true
