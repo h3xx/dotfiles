@@ -5,6 +5,10 @@
 if [[ "$TERM" = 'dumb' ]]; then
 PS1='\u@\h:\w\$ ' # factory default
 else
+
+# Only show this number of directories in path when expanding \W and \w
+PROMPT_DIRTRIM=4
+
 ## define colors
 declare -A COLORS
 COLORS['BLACK']='\e[30m'
