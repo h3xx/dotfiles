@@ -2,7 +2,6 @@
 
 [alias]
 	b		= branch
-	br		= !read -p \"use git b! [OK]\" && git branch
 	c		= commit
 	ca		= commit --amend
 	co		= checkout
@@ -28,7 +27,6 @@
 	s		= status
 	sf		= submodule foreach
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
-	st		= !read -p \"use git s! [OK]\" && git status
 	sub		= submodule
 	subbr		= submodule foreach git checkout
 	subbranch	= submodule foreach git checkout
