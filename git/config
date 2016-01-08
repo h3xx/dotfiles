@@ -95,4 +95,10 @@
 [log]
 	decorate = true
 
+[advice]
+	# I know how to stage files now, git status
+	statusHints =
+	# I also know all about detatched heads, tyvm
+	detachedHead =
+
 # vi: ft=gitconfig
