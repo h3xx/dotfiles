@@ -293,7 +293,7 @@ let g:sh_fold_enabled = 3
 "set backspace=2
 
 " two-stroke saving instead of four-stroke
-" usefulness: **+ (@h3xx is still training)
+" usefulness: ***
 nnoremap <C-s> :w<cr>
 
 " Alt+s, Alt+p, Alt+f = common fugitive commands
