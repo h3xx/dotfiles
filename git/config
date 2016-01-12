@@ -67,6 +67,9 @@
 	# automatically prune remotely-deleted branches
 	prune = true
 
+[grep]
+	lineNumber	= true
+
 [color]
 	branch		= auto
 	diff		= auto
