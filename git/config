@@ -76,6 +76,9 @@
 [github]
 	user = h3xx
 
+[grep]
+	lineNumber = true
+
 [include]
 	path = ./git-colors-neonwolf-256.gitconfig
 
