@@ -60,6 +60,13 @@
 	ff = false
 	tool = vimdiff
 
+# only report on submodule pointer states, not working tree state
+[diff]
+	ignoreSubmodules = dirty
+
+[status]
+	ignoreSubmodules = dirty
+
 [fetch]
 	# auto-fetch submodules upon git pull only if the superproject has a
 	# commit that updates the submodule pointer
