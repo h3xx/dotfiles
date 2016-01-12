@@ -65,6 +65,10 @@
 	# -R: Handle colors correctly
 	pager = less -R
 
+[diff]
+	# only report on submodule pointer states, not working tree state
+	ignoreSubmodules = dirty
+
 [fetch]
 	# automatically prune remotely-deleted branches
 	prune = true
@@ -96,6 +100,9 @@
 
 [push]
 	default = simple
+
+[status]
+	ignoreSubmodules = dirty
 
 [url "git@github.com:"]
 	# enables shortcuts like `git clone gh:h3xx/dotfiles.git`
