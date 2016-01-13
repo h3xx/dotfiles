@@ -105,10 +105,15 @@
 [log]
 	decorate = true
 
+# turn off n00b mode
 [advice]
-	# I know how to stage files now, git status
-	statusHints =
-	# I also know all about detatched heads, tyvm
-	detachedHead =
+	statusHints = false
+	detachedHead = false
+	pushUpdateRejected = false
+	commitBeforeMerge = false
+	resolveConflict = false
+	#implicitIdentity = false # still useful?
+	#rmHints = false # ?
+	#amWorkDir = false # ?
 
 # vi: ft=gitconfig
