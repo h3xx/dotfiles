@@ -1,0 +1,126 @@
+# MOC control keys:
+quit_client           = q
+quit                  = Q
+
+# Menu and interface control keys:
+go                    = ENTER
+menu_down             = DOWN j
+menu_up               = UP k
+menu_page_down        = PAGE_DOWN ^d
+menu_page_up          = PAGE_UP ^u
+menu_first_item       = HOME
+menu_last_item        = END
+search_menu           = /
+toggle_read_tags      = f
+toggle_show_time      = ^t
+toggle_show_format    = ^f
+toggle_menu           = TAB
+toggle_layout         = l
+toggle_hidden_files   = H
+next_search           = ^n
+show_lyrics           = L
+theme_menu            = T
+help                  = h ?
+refresh               = ^r
+reload                = r
+
+# Audio playing and positioning keys:
+seek_forward          = RIGHT
+seek_backward         = LEFT
+seek_forward_fast     = ]
+seek_backward_fast    = [
+pause                 = p SPACE
+stop                  = s
+next                  = n
+previous              = b
+toggle_shuffle        = S
+toggle_repeat         = R
+toggle_auto_next      = X
+toggle_mixer          = x
+go_url                = o
+
+# Volume control keys:
+volume_down_1         = <
+volume_up_1           = >
+volume_down_5         = ,
+volume_up_5           = .
+volume_10             = M-1
+volume_20             = M-2
+volume_30             = M-3
+volume_40             = M-4
+volume_50             = M-5
+volume_60             = M-6
+volume_70             = M-7
+volume_80             = M-8
+volume_90             = M-9
+
+# Directory navigation keys: defaults are Shift-number
+#                            (i.e., 'shift 1' -> '!' -> 'Fastdir1').
+go_to_a_directory     = i
+go_to_music_directory = m
+go_to_fast_dir1       = !
+go_to_fast_dir2       = @
+go_to_fast_dir3       = #
+go_to_fast_dir4       = $
+go_to_fast_dir5       = %
+go_to_fast_dir6       = ^
+go_to_fast_dir7       = &
+go_to_fast_dir8       = *
+go_to_fast_dir9       = (
+go_to_fast_dir10      = )
+go_to_playing_file    = G
+go_up                 = -
+
+# Playlist specific keys:
+add_file              = a
+add_directory         = A
+plist_add_stream      = O
+delete_from_playlist  = d
+playlist_full_paths   = P
+plist_move_up         = K
+plist_move_down       = J
+save_playlist         = V
+remove_dead_entries   = Y
+clear_playlist        = C
+
+# Queue manipulation keys:
+enqueue_file          = z
+clear_queue           = Z
+
+# User interaction control:
+history_up            = UP
+history_down          = DOWN
+#delete_to_start       = ^u
+#delete_to_end         = ^k
+cancel                = ^x ESCAPE
+hide_message          = M
+
+# Softmixer specific keys:
+toggle_softmixer      = w
+#toggle_make_mono      = J
+
+# Equalizer specific keys:
+toggle_equalizer      = E
+equalizer_refresh     = e
+#equalizer_prev        = K
+#equalizer_next        = k
+
+# External commands:
+mark_start            = '
+mark_end              = "
+exec_command1         = F1
+exec_command2         = F2
+exec_command3         = F3
+exec_command4         = F4
+exec_command5         = F5
+exec_command6         = F6
+exec_command7         = F7
+exec_command8         = F8
+exec_command9         = F9
+exec_command10        = F10
+
+# The following commands are available but not assigned to any keys by
+# default:
+#
+#   toggle_percent	 Switch on/off play progress bar time percentage
+#
