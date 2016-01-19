@@ -11,6 +11,7 @@
 
 [alias]
 	b		= branch
+	bb		= branch --all -vv
 	c		= commit
 	ca		= commit --amend
 	co		= checkout
