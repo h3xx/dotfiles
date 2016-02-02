@@ -292,7 +292,9 @@ histoff() {
 	unset HISTFILE
 	# decolorize prompt, but set to bright white for clear indication that
 	# history is off
-	PS1='\[\e[01;37m\]'"$(sed -e 's,\\\[\\e\[[^]]*\\\],,g' <<<"$PS1")"'\[\e[0m\]'
+	#PS1='\[\e[01;37m\]'"$(sed -e 's,\\\[\\e\[[^]]*\\\],,g' <<<"$PS1")"'\[\e[0m\]'
+	# same decolorization, using __git_ps1
+	PROMPT_COMMAND='printf '\''\e[01;37m'\'"; $(sed -e 's,\(\\\e\[[0-9;]*m\),,g;s,\\\[\\\],,g' <<<"$PROMPT_COMMAND")"
 }
 
 ## source global defs
