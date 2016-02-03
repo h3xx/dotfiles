@@ -8,6 +8,7 @@ Subpull and sync at G2Planet.
 
   -h		Show this help message.
   -m		Reload menus after sync.
+  -M		Run migration scripts.
   -d		Rebuild database after sync.
   --		Terminate options list.
 
@@ -21,14 +22,18 @@ EOF
 
 RELOAD_MENUS=0
 REBUILD_DB=0
+MIGRATION=0
 
-while getopts 'hmd' flag; do
+while getopts 'hmdM' flag; do
 	case "$flag" in
 		'h')
 			HELP_MESSAGE 0
 			;;
 		'm')
 			RELOAD_MENUS=1
+			;;
+		'M')
+			MIGRATION=1
 			;;
 		'd')
 			REBUILD_DB=1
@@ -79,6 +84,13 @@ fi
 
 if [[ $REBUILD_DB -ne 0 ]]; then
 	sudo make "$MODE" reload || exit
+fi
+
+if [[ $MIGRATION -ne 0 ]]; then
+	(cd php/eclib/data && ./migration-2.0.sh "$MODE") || exit
+	if [[ -f data/migration-2.0.sh ]]; then
+		(cd data && ./migration-2.0.sh "$MODE") || exit
+	fi
 fi
 
 sudo make "$MODE" unpause
