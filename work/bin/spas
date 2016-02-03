@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] MODE
+Subpull and sync at G2Planet.
+
+  -h		Show this help message.
+  -m		Reload menus after sync.
+  -d		Rebuild database after sync.
+  --		Terminate options list.
+
+Copyright (C) 2015-2016 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+RELOAD_MENUS=0
+REBUILD_DB=0
+
+while getopts 'hmd' flag; do
+	case "$flag" in
+		'h')
+			HELP_MESSAGE 0
+			;;
+		'm')
+			RELOAD_MENUS=1
+			;;
+		'd')
+			REBUILD_DB=1
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+MODE=''
+if [[ $# -eq 0 ]]; then
+	git_branch=$(git rev-parse --abbrev-ref HEAD)
+	case "$git_branch" in
+		'demo')
+			MODE=demo
+			;;
+		'master')
+			MODE=sales
+			;;
+	esac
+else
+	MODE=$1
+fi
+
+if [[ -z $MODE ]]; then
+	HELP_MESSAGE 1
+fi
+
+echo "*** subpull and sync ***"
+echo "mode: $MODE"
+
+git pull &&
+git subpull &&
+sudo make "$MODE" pause &&
+echo y |sudo make "$MODE" sync
+
+err="$?"
+if [[ $err -ne 0 ]]; then
+	exit "$err"
+fi
+
+if [[ $RELOAD_MENUS -ne 0 ]]; then
+	(cd data && ./reload_menus.sh "$MODE") || exit
+fi
+
+if [[ $REBUILD_DB -ne 0 ]]; then
+	sudo make "$MODE" reload || exit
+fi
+
+sudo make "$MODE" unpause
+err="$?"
+
+exit "$err"
