@@ -3,6 +3,7 @@
 	h		= help
 	s		= status
 	d		= diff
+	a		= add
 	c		= commit
 	ca		= commit --amend
 	f		= fetch
