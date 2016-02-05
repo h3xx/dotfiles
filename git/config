@@ -10,6 +10,7 @@
 	statusHints = false
 
 [alias]
+	a		= add
 	b		= branch
 	bb		= branch --all -vv
 	c		= commit
