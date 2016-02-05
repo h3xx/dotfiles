@@ -13,6 +13,7 @@
 
 [alias]
 	# shortcuts
+	a		= add
 	b		= branch
 	bb		= branch --all -vv
 	c		= commit
