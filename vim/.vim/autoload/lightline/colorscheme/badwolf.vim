@@ -1,85 +1,97 @@
-let s:red      = '#ff2c4b'
-let s:green    = '#aeee00'
-let s:blue     = '#0a9dff'
-let s:orange   = '#ffa724'
-let s:c_red    = '196'
-let s:c_green  = '154'
-let s:c_blue   = '39'
-let s:c_orange = '214'
+let s:N1 = [ '#141413' , '#aeee00' , 232 , 154 ] " blackestgravel & lime
+let s:N2 = [ '#f4cf86' , '#45413b' , 222 , 238 ] " dirtyblonde    & deepgravel
+let s:N3 = [ '#8cffba' , '#242321' , 121 , 235 ] " saltwatertaffy & darkgravel
+let s:N4 = [ '#666462' , 241 ]                   " mediumgravel
 
-let s:white    = '#f8f6f2'
-let s:c_white  = '15'
+let s:I1 = [ '#141413' , '#0a9dff' , 232 , 39  ] " blackestgravel & tardis
+let s:I2 = [ '#f4cf86' , '#005fff' , 222 , 27  ] " dirtyblonde    & facebook
+let s:I3 = [ '#0a9dff' , '#242321' , 39  , 235 ] " tardis         & darkgravel
 
-let s:black1   = '#242321'
-let s:black2   = '#35322d'
-let s:black3   = '#45413b'
-let s:black4   = '#857f78'
-let s:c_black1 = '235'
-let s:c_black2 = '236'
-let s:c_black3 = '233'
-let s:c_black4 = '243'
+let s:V1 = [ '#141413' , '#ffa724' , 232 , 214 ] " blackestgravel & orange
+let s:V2 = [ '#000000' , '#fade3e' , 16  , 221 ] " coal           & dalespale
+let s:V3 = [ '#000000' , '#b88853' , 16  , 137 ] " coal           & toffee
+let s:V4 = [ '#c7915b' , 173 ]                   " coffee
 
-let s:p = { 'normal':{}, 'inactive':{}, 'insert':{}, 'replace':{}, 'visual':{}, 'tabline':{} }
+let s:T1 = [ '#141413' , '#ffa724' , 232 , 214 ] " blackestgravel & darkorange
+let s:T2 = [ '#f4cf86' , 'grey10'  , 222 , 233 ] " dirtyblonde    & almostblack
+let s:TI = [ '#f4cf86' , '#242321' , 222 , 235 ] " dirtyblonde    & darkgravel
+let s:TS = [ '#141413' , '#aeee00' , 232 , 154 ] " blackestgravel & lime
 
-"guifg, guibg, ctermfg, ctermbg
+let s:PA = [ '#f4cf86' , 222 ]                   " dirtyblonde
+let s:RE = [ '#ff9eb8' , 211 ]                   " dress
 
-"normal mode
-let s:p.normal.middle = [
-            \ [s:white, s:black1, s:c_white, s:c_black1]
-            \ ]
+let s:IA = [ s:N3[1] , s:N2[1] , s:N3[3] , s:N2[3] , '' ]
+
+let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
+
+" normal mode
 let s:p.normal.left = [
-            \ [s:black1, s:green, s:c_black1, s:c_green],
-            \ [ s:white, s:black2, s:c_white, s:c_black2 ]
-            \ ]
-let s:p.normal.right = [
-            \ [s:black4, s:white, s:c_black4, s:c_white],
-            \ [ s:white, s:black2, s:c_white, s:c_black2 ]
-            \ ]
+			\ [ s:N1[2], s:N1[3] ],
+			\ [ s:N2[2], s:N2[3] ],
+			\ [ s:N3[2], s:N3[3] ],
+			\ ]
+let s:p.normal.middle = [
+			\ [ s:N3[2], s:N3[3] ],
+			\ ]
+let s:p.normal.right = copy(s:p.normal.left)
 
-"insert mode
+" insert mode
 let s:p.insert.left = [
-            \ [s:white, s:blue, s:c_white, s:c_blue],
-            \ [ s:white, s:black2, s:c_white, s:c_black2 ]
-            \ ]
+			\ [ s:I1[2], s:I1[3] ],
+			\ [ s:I2[2], s:I2[3] ],
+			\ [ s:I3[2], s:I3[3] ],
+			\ ]
+let s:p.insert.middle = [
+			\ [ s:I3[2], s:I3[3] ],
+			\ ]
+let s:p.insert.right = copy(s:p.insert.left)
 
-"visual mode
-let s:p.visual.left = [
-            \ [s:white, s:orange, s:c_white, s:c_orange],
-            \ [ s:white, s:black2, s:c_white, s:c_black2 ]
-            \ ]
-
-"replace mode
+" replace mode
 let s:p.replace.left = [
-            \ [s:white, s:red, s:c_white, s:c_red],
-            \ [ s:white, s:black2, s:c_white, s:c_black2 ]
-            \ ]
+			\ [ s:I1[2], s:RE[1] ],
+			\ [ s:I2[2], s:I2[3] ],
+			\ [ s:I3[2], s:I3[3] ],
+			\ ]
 
-"buffer inactive
-let s:p.inactive.middle = [
-            \ [s:white, s:black2, s:c_white, s:c_black2]
-            \ ]
-let s:p.inactive.right = [
-            \ s:p.inactive.middle[0],
-            \ s:p.inactive.middle[0]
-            \ ]
-let s:p.inactive.left = [
-            \ s:p.inactive.middle[0],
-            \ s:p.inactive.middle[0]
-            \ ]
+" visual mode
+let s:p.visual.left = [
+			\ [ s:V1[2], s:V1[3] ],
+			\ [ s:V2[2], s:V2[3] ],
+			\ [ s:V3[2], s:V3[3] ],
+			\ ]
+let s:p.visual.middle = [
+			\ [ s:V3[2], s:V3[3] ],
+			\ ]
+let s:p.visual.right = copy(s:p.visual.left)
 
-"tabline
-let s:p.tabline.middle = [
-            \ [s:white, s:black2, s:c_white, s:c_black2]
-            \ ]
+" tabline
 let s:p.tabline.right = [
-            \ [s:white, s:black2, s:c_white, s:c_black2]
-            \ ]
+			\ [ s:T1[2], s:T1[3] ],
+			\ [ s:T2[2], s:T2[3] ],
+			\ ]
+let s:p.tabline.middle = [
+			\ [ s:T2[2], s:T2[3] ],
+			\ ]
 let s:p.tabline.left = [
-            \ [s:black4, s:black2, s:c_black4, s:c_black2]
-            \ ]
-"current tab
+			\ [ s:TI[2], s:TI[3] ],
+			\ ]
 let s:p.tabline.tabsel = [
-            \ [s:black1, s:green, s:c_white, s:c_black4]
-            \ ]
+			\ [ s:TS[2], s:TS[3] ],
+			\ ]
 
-let g:lightline#colorscheme#badwolf#palette = s:p
+" inactive window
+let s:p.inactive.left = [
+			\ [ s:IA[2], s:IA[3] ],
+			\ [ s:IA[2], s:IA[3] ],
+			\ [ s:IA[2], s:IA[3] ],
+			\ ]
+let s:p.inactive.middle = copy(s:p.inactive.left)
+let s:p.inactive.right = copy(s:p.inactive.left)
+
+" extra bits
+let s:p.normal.error = [ [ 'gray9', 'brightestred' ] ]
+let s:p.normal.warning = [ [ 'gray1', 'yellow' ] ]
+
+let g:lightline#colorscheme#badwolf#palette = lightline#colorscheme#fill(s:p)
+
+"let g:lightline#colorscheme#badwolf#palette = s:p
