@@ -486,7 +486,8 @@ endfunction
 
 function! LightLineFileencoding()
 	" only show unexpected fileencodings (expected is &enc)
-	return winwidth(0) > 70 && &fenc != &enc ? &fenc : ''
+	return winwidth(0) > 70 && &fenc == &enc ? '' : &fenc .
+				\ (&bomb ? '[bom]' : '')
 endfunction
 
 function! LightLineFugitive()
