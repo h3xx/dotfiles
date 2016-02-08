@@ -439,31 +439,63 @@ aug END
 " ********************************
 
 " *** vim-airline ***
+
+" *** lightline.vim
+
 set laststatus=2 noru
-if has('gui_running')
-	set guifont=Terminess\ Powerline\ 9
-endif " has('gui_running')
-" (hint: uxterm has the same font set)
-if has('gui_running') || &termencoding == 'utf-8'
-	let g:airline_powerline_fonts=1
-else
-	let g:airline_left_sep = '»'
-	let g:airline_right_sep = '«'
-	let g:airline_symbols = {
-				\ 'linenr' : '¶',
-				\ 'branch' : 'µ',
-				\ 'crypt' : '¤',
-				\ }
-endif
-" mixed_indent_algo: the whitespace plugin is broken by default,
-"	&tabstop aren't taken into effect when detecting mixed indent
-let g:airline#extensions#whitespace#mixed_indent_algo=1
-let g:airline_theme='badwolf'
-" use old behavior for short, relative filename
-let g:airline_section_c = airline#section#create(['%<', 'file', ' ', 'readonly'])
-" I prefer tabs
-let g:airline#extensions#tabline#show_buffers=0
-let g:airline_extensions = ['branch', 'tabline', 'whitespace']
+
+let g:lightline = {
+			\ 'colorscheme': 'badwolf',
+			\ 'component': {
+			\   'lineinfo': '¶ %3l:%-2v',
+			\ },
+			\ 'active': {
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
+			\ },
+			\ 'component_function': {
+			\   'readonly': 'LightLineReadonly',
+			\   'fileformat': 'LightLineFileformat',
+			\   'filetype': 'LightLineFiletype',
+			\   'fileencoding': 'LightLineFileencoding',
+			\   'fugitive': 'LightLineFugitive',
+			\ },
+			\ 'separator': { 'left': '»', 'right': '«' },
+			\ 'subseparator': { 'left': '>', 'right': '<' },
+			\ 'tabline_separator': { 'left': '', 'right': '' },
+			\ 'tabline_subseparator': { 'left': '', 'right': '' },
+			\ }
+
+" make mode bold
+hi LightLineLeft_normal_0 term=bold cterm=bold
+hi LightLineLeft_insert_0 term=bold cterm=bold
+hi LightLineLeft_visual_0 term=bold cterm=bold
+hi LightLineLeft_replace_0 term=bold cterm=bold
+
+function! LightLineReadonly()
+	return &readonly ? 'RO' : ''
+endfunction
+
+function! LightLineFileformat()
+	" only show unexpected fileformats
+	return winwidth(0) > 70 && &fileformat != 'unix' ? &fileformat : ''
+endfunction
+
+function! LightLineFiletype()
+	return winwidth(0) > 70 ? &filetype : ''
+endfunction
+
+function! LightLineFileencoding()
+	" only show unexpected fileencodings (expected is &enc)
+	return winwidth(0) > 70 && &fenc != &enc ? &fenc : ''
+endfunction
+
+function! LightLineFugitive()
+	if exists('*fugitive#head')
+		let _ = fugitive#head()
+		return strlen(_) ? 'µ '._ : ''
+	endif
+	return ''
+endfunction
 
 " *** vim-gitgutter ***
 " wait until I save the file to update signs

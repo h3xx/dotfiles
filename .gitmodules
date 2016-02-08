@@ -46,6 +46,10 @@
 	path = vim/.vim/pack/dist/start/gist-vim
 	url = https://github.com/mattn/gist-vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/lightline.vim"]
+	path = vim/.vim/pack/dist/start/lightline.vim
+	url = https://github.com/itchyny/lightline.vim.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-easymotion"]
 	path = vim/.vim/pack/dist/start/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion.git
