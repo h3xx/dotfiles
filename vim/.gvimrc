@@ -23,16 +23,25 @@ if has('gui_running')
 
 	" Fancy Plugin Options
 
-"	if exists(':Airline')
-"		" for airline
-"		"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
-"		"set guifont=Liberation\ Mono\ for\ Powerline
-"
-"		"set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 9
-"		set guifont=Terminess\ Powerline\ 9
-"
-"		let g:airline_powerline_fonts=1
-"	endif " exists(':Airline')
+	set guifont=Terminess\ Powerline\ 9
+
+	let g:lightline.component.lineinfo = ' %3l:%-2v'
+	let g:lightline.separator.left = ''
+	let g:lightline.separator.right = ''
+	let g:lightline.subseparator.left = ''
+	let g:lightline.subseparator.right = ''
+
+	function! LightLineReadonly()
+		return &readonly ? '' : ''
+	endfunction
+
+	function! LightLineFugitive()
+		if exists('*fugitive#head')
+			let _ = fugitive#head()
+			return strlen(_) ? ' '._ : ''
+		endif
+		return ''
+	endfunction
 
 	" Stop the cursor from blinking, ever
 	" addendum: this was to stop a bug where the cursor disappeared when
