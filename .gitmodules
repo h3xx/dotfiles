@@ -94,3 +94,7 @@
 	path = git/git-colors-neonwolf
 	url = git@github.com:h3xx/git-colors-neonwolf.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/lightline.vim"]
+	path = vim/.vim/pack/dist/start/lightline.vim
+	url = https://github.com/itchyny/lightline.vim.git
+	branch = master
