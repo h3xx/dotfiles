@@ -440,7 +440,7 @@ let g:lightline={
 			\   'lineinfo': '¶ %3l:%-2v',
 			\ },
 			\ 'active': {
-			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename' ] ],
 			\ },
 			\ 'component_function': {
 			\   'readonly': 'LightLineReadonly',
