@@ -13,8 +13,8 @@ let s:V3 = [ '#000000' , '#b88853' , 16  , 137 ] " coal           & toffee
 let s:V4 = [ '#c7915b' , 173 ]                   " coffee
 
 let s:T1 = [ '#141413' , '#ffa724' , 232 , 214 ] " blackestgravel & darkorange
-let s:T2 = [ '#f4cf86' , 'grey10'  , 222 , 233 ] " dirtyblonde    & almostblack
-let s:TI = [ '#f4cf86' , '#242321' , 222 , 235 ] " dirtyblonde    & darkgravel
+let s:T2 = [ '#f4cf86' , '#242321' , 222 , 235 ] " dirtyblonde    & almostblack
+let s:TI = [ '#f4cf86' , '#45413b' , 222 , 238 ] " dirtyblonde    & darkgravel
 let s:TS = [ '#141413' , '#aeee00' , 232 , 154 ] " blackestgravel & lime
 
 let s:PA = [ '#f4cf86' , 222 ]                   " dirtyblonde
