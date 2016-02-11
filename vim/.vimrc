@@ -450,10 +450,11 @@ let g:lightline = {
 			\   'lineinfo': '¶ %3l:%-2v',
 			\ },
 			\ 'active': {
-			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename' ] ],
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename_decorated' ] ],
 			\ },
 			\ 'component_function': {
 			\   'readonly': 'LightLineReadonly',
+			\   'filename_decorated': 'LightLineFilenameDecorated',
 			\   'fileformat': 'LightLineFileformat',
 			\   'filetype': 'LightLineFiletype',
 			\   'fileencoding': 'LightLineFileencoding',
@@ -472,7 +473,25 @@ hi LightLineLeft_visual_0 term=bold cterm=bold
 hi LightLineLeft_replace_0 term=bold cterm=bold
 
 function! LightLineReadonly()
-	return &readonly ? 'RO' : ''
+	return &ft != 'help' && &readonly ? '[RO]' : ''
+endfunction
+
+function! LightLineModified()
+	return &modified ? '[+]' : &modifiable ? '' : '[-]'
+endfunction
+
+function! LightLineFilename()
+	let fname = expand('%:t')
+	return '' != fname ? fname : '[No Name]'
+endfunction
+
+function! LightLineFilenameDecorated()
+	let m = LightLineModified()
+	let r = LightLineReadonly()
+	return
+				\ ('' != r ? r . ' ' : '') .
+				\ LightLineFilename() .
+				\ ('' != m ? ' ' . m : '')
 endfunction
 
 function! LightLineFileformat()
