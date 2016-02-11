@@ -32,7 +32,7 @@ if has('gui_running')
 	let g:lightline.subseparator.right = ''
 
 	function! LightLineReadonly()
-		return &readonly ? '' : ''
+		return &ft != 'help' && &readonly ? '' : ''
 	endfunction
 
 	function! LightLineFugitive()
