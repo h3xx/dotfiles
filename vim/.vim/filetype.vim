@@ -189,6 +189,14 @@ aug g2planet
 	au FileType php
 				\ nmap <buffer> <silent> ,W :so ~/.vim/templates/keys/g2planet-php-W.vim<CR> |
 
+	" Smarty
+	" addendum: this template sux
+	au BufNewFile,BufRead	*/templates/*.htm
+				\ setf php |
+				\ setl sts=4 ts=4 sw=4 et fdm=syntax |
+				\ nmap <buffer> <silent> ,c :so ~/.vim/templates/keys/smarty-g2planet-collapsible.vim<CR> |
+				\ nmap <buffer> <silent> ,d :so ~/.vim/templates/keys/smarty-g2planet-date_format.vim<CR>
+
 aug END " g2planet
 
 " vi: ft=vim fdm=syntax
