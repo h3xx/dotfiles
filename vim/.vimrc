@@ -491,7 +491,7 @@ function! LightLineFilenameDecorated()
 	return
 				\ ('' != r ? r . ' ' : '') .
 				\ LightLineFilename() .
-				\ ('' != m ? ' ' . m : '')
+				\ m
 endfunction
 
 function! LightLineFileformat()
