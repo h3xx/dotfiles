@@ -442,7 +442,7 @@ aug END
 
 " *** lightline.vim
 
-set laststatus=2 noru
+set laststatus=2 noru noshowmode
 
 let g:lightline = {
 			\ 'colorscheme': 'badwolf',
