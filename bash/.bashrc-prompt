@@ -109,24 +109,21 @@ __git_ps1_colorize_gitstring ()
 err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]\[%s\]'\'' '\'"$ERR_COLOR"\'' $err '\''\e[0m'\'')'
 
 # first line
-line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l'
+line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
 line1_mid="$BASE_COLOR"'\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
-line1_last='\['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
-
-line1="$line1_frame $line1_mid $line1_last"
+line1_last=' \['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
 
 line2_frame='\['"$FRAME_COLOR"'\016\]mq['
-line2_mid='\[\e[0m\017\]\w'
+line2_mid=' \[\e[0m\017\]\w'
 line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
 
 # second line
 # hint: __git_ps1 PRE POST GITPATTERN
 PROMPT_COMMAND=\
 '__git_ps1 '\
-\'"$line1"\'\""$err"\"\''\n'\
-"$line2_frame $line2_mid"\'' '\
-\'"$line2_last"\'' '\
-\''¦%s'\'
+\'"$line1_frame$line1_mid"\'' '\
+\'"$line1_last"\'\""$err"\"\''\n'"$line2_frame$line2_mid$line2_last"\'' '\
+\'' %s'\'
 
 # alternate setup:
 #GIT_COLOR='\e[01;38;5;208m'
@@ -134,7 +131,7 @@ PROMPT_COMMAND=\
 #PROMPT_COMMAND='(printf '\''\e)0'"$FRAME_COLOR"'\x0elqqu'"$(basename "$(tty)")"' \x0f'"$BASE_COLOR$USER"'\e[0;37m@'"$BASE_COLOR$(uname -n)"' '"$FRAME_COLOR"'\x0etq`%s\n'\'' "'"$err"'")'
 #PS1='\['"$FRAME_COLOR"'\]'$'\x0e''mq['$'\x0f' '\[\e[0m\]\w'"$gps1"' \['"$FRAME_COLOR"'\]]= \[\e[01;37m\]\$\[\e[0m\] '
 # still works:
-#PS1="$line1$err\\n$line2_frame $line2_mid$gps1$line2_last"
+#PS1="$line1_frame$line1_mid$line1_last$err\\n$line2_frame $line2_mid$gps1$line2_last"
 
 # clean up
 unset \
@@ -142,7 +139,7 @@ unset \
 	BASE_COLOR \
 	FRAME_COLOR \
 	ERR_COLOR \
-	line1 line1_frame line1_mid line1_last \
+	line1_frame line1_mid line1_last \
 	line2_frame line2_mid line2_last \
 	err
 
