@@ -78,10 +78,6 @@ if [[ $err -ne 0 ]]; then
 	exit "$err"
 fi
 
-if [[ $RELOAD_MENUS -ne 0 ]]; then
-	(cd data && ./reload_menus.sh "$MODE") || exit
-fi
-
 if [[ $REBUILD_DB -ne 0 ]]; then
 	sudo make "$MODE" reload || exit
 fi
@@ -91,6 +87,10 @@ if [[ $MIGRATION -ne 0 ]]; then
 	if [[ -f data/migration-2.0.sh ]]; then
 		(cd data && ./migration-2.0.sh "$MODE") || exit
 	fi
+fi
+
+if [[ $RELOAD_MENUS -ne 0 ]]; then
+	(cd data && ./reload_menus.sh "$MODE") || exit
 fi
 
 sudo make "$MODE" unpause
