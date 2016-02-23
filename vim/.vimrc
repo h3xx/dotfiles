@@ -471,7 +471,7 @@ function! LightLineModified()
 endfunction
 
 function! LightLineFilename()
-	let fname=expand('%:t')
+	let fname=expand('%')
 	return '' != fname ? fname : '[No Name]'
 endfunction
 
