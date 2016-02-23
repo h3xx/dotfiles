@@ -245,6 +245,7 @@ fi
 test -n "$(
 	for fn in \
 		/usr/doc/git-*.*.*/contrib/completion/git-completion.bash \
+		/usr/share/bash-completion/completions/git \
 		; do
 		if [[ -f $fn ]]; then
 			echo "$fn"

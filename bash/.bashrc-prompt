@@ -81,6 +81,7 @@ GIT_PS1_SHOWCOLORHINTS=1
 test -n "$(
 	for fn in \
 		/usr/doc/git-*.*.*/contrib/completion/git-prompt.sh \
+		/usr/local/share/git-core/contrib/completion/git-prompt.sh \
 		; do
 		if [[ -f $fn ]]; then
 			echo "$fn"
