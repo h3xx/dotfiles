@@ -197,6 +197,10 @@ aug g2planet
 				\ nmap <buffer> <silent> ,c :so ~/.vim/templates/keys/smarty-g2planet-collapsible.vim<CR> |
 				\ nmap <buffer> <silent> ,d :so ~/.vim/templates/keys/smarty-g2planet-date_format.vim<CR>
 
+	"" PHPUnit tests @ g2planet
+	au BufNewFile		*Test.php
+				\ so ~/.vim/templates/headers/phpunit.vim
+
 aug END " g2planet
 
 " vi: ft=vim fdm=syntax
