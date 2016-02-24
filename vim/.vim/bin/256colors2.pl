@@ -3,11 +3,18 @@
 # $XFree86: xc/programs/xterm/vttests/256colors2.pl,v 1.2 2002/03/26 01:46:43 dickey Exp $
 # modified by Dan Church to output the terminal color numbers in order to aid in writing Vim color schemes
 # modified AGAIN by Dan Church to provide better contrast between the colors and the numbers
+# modified AGAIN by Dan Church to show a specific palette by passing the script a list of numbers
 
 sub luminance {
 	my ($red, $green, $blue) = @_;
 	# source: https://en.wikipedia.org/wiki/Relative_luminance
 	0.2126 * $red + 0.7152 * $green + 0.0722 * $blue
+}
+
+my %reverse_colors;
+if (@ARGV) {
+	@reverse_colors{0..255} = (1) x 256;
+	@reverse_colors{@ARGV} = (0) x @ARGV;
 }
 
 # use the resources for colors 0-15 - usually more-or-less a
@@ -41,13 +48,23 @@ for ($gray = 0; $gray < 24; $gray++) {
 # first the system ones:
 print "System colors:\n";
 for ($color = 0; $color < 8; $color++) {
-    printf "\x1b[48;5;%dm%3s ", $color, $color;
+	if ($reverse_colors{$color}) {
+		$fg = '30;07'; # black, reversed
+	} else {
+		$fg = '';
+	}
+	printf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $color;
 }
-print "\x1b[0m\n";
+print "\n";
 for ($color = 8; $color < 16; $color++) {
-    printf "\x1b[48;5;%dm%3s ", $color, $color;
+	if ($reverse_colors{$color}) {
+		$fg = '30;07'; # black, reversed
+	} else {
+		$fg = '';
+	}
+	printf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $color;
 }
-print "\x1b[0m\n\n";
+print "\n\n";
 
 # now the color cube
 print "Color cube, 6x6x6:\n";
@@ -55,12 +72,16 @@ for ($green = 0; $green < 6; $green++) {
     for ($red = 0; $red < 6; $red++) {
 	for ($blue = 0; $blue < 6; $blue++) {
 	    $color = 16 + ($red * 36) + ($green * 6) + $blue;
-	    $fg = (&luminance($red, $green, $blue) < 3) ?
-	    '37' : # white
-	    '30'; # black
-	    printf "\x1b[%d;48;5;%dm%3s ", $fg, $color, $color;
+	    if ($reverse_colors{$color}) {
+		    $fg = '30;07'; # black, reversed
+	    } else {
+		    $fg = (&luminance($red, $green, $blue) < 3) ?
+		    '37' : # white
+		    '30'; # black
+	    }
+	    printf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $color;
 	}
-	print "\x1b[0m ";
+	print " ";
     }
     print "\n";
 }
@@ -69,9 +90,13 @@ for ($green = 0; $green < 6; $green++) {
 # now the grayscale ramp
 print "Grayscale ramp:\n";
 for ($color = 232; $color < 256; $color++) {
-	$fg = ($color < 244) ?
-	'37' : # white
-	'30'; # black
-	printf "\x1b[%d;48;5;%dm%3s ", $fg, $color, $color;
+	if ($reverse_colors{$color}) {
+		$fg = '30;07'; # black, reversed
+	} else {
+		$fg = ($color < 244) ?
+		'37' : # white
+		'30'; # black
+	}
+	printf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $color;
 }
-print "\x1b[0m\n";
+print "\n";
