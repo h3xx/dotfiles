@@ -71,6 +71,8 @@
 	pager = less -R
 
 [diff]
+	# more logical hunk breaks (I hope)
+	algorithm = patience
 	# only report on submodule pointer states, not working tree state
 	ignoreSubmodules = dirty
 
