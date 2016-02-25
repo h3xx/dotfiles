@@ -76,6 +76,8 @@
 [diff]
 	# only report on submodule pointer states, not working tree state
 	ignoreSubmodules = dirty
+	# more logical hunk breaks (I hope)
+	algorithm = patience
 
 [fetch]
 	# automatically prune remotely-deleted branches
