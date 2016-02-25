@@ -62,9 +62,11 @@
 	ff = false
 	tool = vimdiff
 
-# only report on submodule pointer states, not working tree state
 [diff]
+	# only report on submodule pointer states, not working tree state
 	ignoreSubmodules = dirty
+	# more logical hunk breaks (I hope)
+	algorithm = patience
 
 [status]
 	ignoreSubmodules = dirty
