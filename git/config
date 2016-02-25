@@ -99,7 +99,8 @@
 [merge]
 	# merges should only be explicit merges, regardless of whether they're ff merges
 	ff = false
-	tool = vimdiff
+	# let's see how this goes
+	tool = vimdiff2
 
 [diff]
 	# only report on submodule pointer states, not working tree state
@@ -127,6 +128,7 @@
 	diff		= auto
 	interactive	= auto
 	ui		= auto
+	showBranch	= auto
 	pager		= true
 
 # Fix to give method or class name in php diff
@@ -137,6 +139,10 @@
 # Add `*.db diff=sqlite3' to .gitattributes to use
 [diff "sqlite3"]
 	textconv = ~/.config/git/bin/sqlite3-dump.sh
+
+# TODO : how to apply this setting in global gitconfig
+[diff "smarty"]
+	xfuncname = "\\{block.*?\\}"
 
 [include]
 	path = ./git-colors-neonwolf-256.gitconfig
