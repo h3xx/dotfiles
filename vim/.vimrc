@@ -298,10 +298,20 @@ nnoremap <C-s> :w<cr>
 
 " Alt+s, Alt+p, Alt+f = common fugitive commands
 " rhymes with .inputrc mapping
+" usefulness: ****
 nnoremap <A-s> :Gst<cr>
-nnoremap <A-p> :Gpush
+" usefulness: ****
+nnoremap <A-p> :Gpush 
+" usefulness: ***
 nnoremap <A-f> :Gfetch
+" usefulness: ***
 nnoremap <A-u> :Gpull
+" usefulness: TODO
+nnoremap <A-o> :Git co 
+
+" git blame
+" usefulness: TODO
+nnoremap <F2> :Gblame<cr>
 
 " hitting ; in normal mode starts a command
 " (possible conflict: ; repeats last 'f' character jump)
@@ -315,7 +325,7 @@ noremap ` '
 noremap ' `
 
 " remove search highlighting
-" usefulness: ***
+" usefulness: ****
 nnoremap <F1> :noh<CR>
 
 " force opening new tabs when gf-ing
@@ -437,8 +447,6 @@ aug END
 " ********************************
 " ***** fancy plugin options *****
 " ********************************
-
-" *** vim-airline ***
 
 " *** lightline.vim
 
