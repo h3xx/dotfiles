@@ -31,4 +31,5 @@ badwolf_palette_aux=(
 	241
 )
 
-./256colors2.pl "${neonwolf_palette[@]}" "${badwolf_palette_aux[@]}"
+SCRIPTDIR="$(dirname "$0")"
+exec "$SCRIPTDIR"/256colors2.pl "${neonwolf_palette[@]}" "${badwolf_palette_aux[@]}"
