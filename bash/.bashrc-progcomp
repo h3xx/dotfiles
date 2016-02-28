@@ -232,6 +232,19 @@ if [[ -f ~/.pgpass ]]; then
 	}
 fi
 
+# turn on git programmable completion, if installed
+test -n "$(
+	for fn in \
+		/usr/doc/git-?.?.?/contrib/completion/git-completion.bash \
+		; do
+		[[ -f $fn ]] && echo "$fn"
+	done
+)" && {
+	. "$_" &&
+	# also complete git refs for tig
+	__git_complete tig __git_complete_revlist
+}
+
 # XXX : debugging function
 #_listcomp() {
 #	local varname
