@@ -1,0 +1,17 @@
+"Nothing is real."
+  -- Niels Bohr
+
+%
+"Time is an illusion. Lunchtime doubly so."
+  -- Douglas Adams, HHGTG
+
+%
+It takes three commands to install Gentoo.
+
+# cfdisk /dev/hda && mkfs.xfs /dev/hda1 && mount /dev/hda1 /mnt/gentoo/ && chroot /mnt/gentoo/ && env-update && . /etc/profile && emerge sync && cd /usr/portage && scripts/bootsrap.sh && emerge system && emerge vim && vi /etc/fstab && emerge gentoo-dev-sources && cd /usr/src/linux && make menuconfig && make install modules_install && emerge gnome mozilla-firefox openoffice && emerge grub && cp /boot/grub/grub.conf.sample /boot/grub/grub.conf && vi /boot/grub/grub.conf && grub && init 6
+
+That's the first one.
+
+%
+Let's call it an accidental feature.
+	-- Larry Wall
