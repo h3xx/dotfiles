@@ -1,0 +1,52 @@
+#!/usr/bin/python
+#FIXME: update PRODID, delete description, organizer email
+#FIXME: multiple emails
+import vobject
+from argparse import ArgumentParser
+from os.path import isfile
+from sys import stdin, stdout
+
+parser = ArgumentParser(description="Generate a reply to an iCal Invitation.")
+parser.add_argument('-i', '--invite', default='-', 
+                    help='invitation .ics file or - (for stdin)')
+parser.add_argument('-o', '--output', default='-',
+                    help='output file or - (for stdout)')
+
+args = parser.parse_args()
+
+infile = None
+if args.invite == "-":
+    infile = stdin
+elif isfile(args.invite):
+    infile = open(args.invite, 'r')
+else:
+    raise SystemExit("must specify valid invitation file or stdin")
+
+outfile = None
+if args.output == "-":
+    outfile = stdout
+elif isfile(args.output):
+    outfile = open(args.output, 'w')
+else:
+    raise SystemExit("must specify valid output file or stdout")
+
+vevent = (vobject.readOne(infile.read())).vevent
+
+attendee_list = vevent.attendee_list
+
+outfile.write('Summary: ' + vevent.summary.value + '\n')
+outfile.write('Organizer: ' + vevent.organizer.value + '\n')
+outfile.write('Starts: ' + vevent.dtstart.value.isoformat() + ' ')
+outfile.write('Ends: ' + vevent.dtend.value.isoformat() + '\n')
+if vevent.location.value:
+    outfile.write('Location: ' + vevent.location.value + '\n')
+outfile.write('\n')
+outfile.write('Description:\n')
+outfile.write(vevent.description.value + '\n')
+outfile.write('\n')
+
+outfile.write('Attendees: \n')
+for attendee in vevent.attendee_list:
+    outfile.write(attendee.value + '\n')
+outfile.close()
+

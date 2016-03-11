@@ -12,7 +12,8 @@ auto_view \
 	application/pdf \
 	text/rtf application/rtf \
 	text/enriched \
-	application/msword
+	application/msword \
+	text/calendar
 
 # save html part for last
 alternative_order text/plain text/enriched text/html
