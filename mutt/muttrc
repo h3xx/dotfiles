@@ -64,7 +64,7 @@ set sig_on_top
 set index_format="%4C %Z %{%b %d} %-15.15L (%4c) %s" # use chars, not lines
 
 # random signature from ~/.signature.d
-#set signature="fortune $HOME/.signature.d|"
+set signature="fortune $HOME/.mutt/signature.d|"
 
 set charset=latin1
 #set send_charset="utf-8:us-ascii"
