@@ -458,11 +458,13 @@ let g:lightline = {
 			\   'lineinfo': '¶ %3l:%-2v',
 			\ },
 			\ 'active': {
-			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename_decorated' ] ],
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'file_flags' ] ],
 			\ },
 			\ 'component_function': {
 			\   'readonly': 'LightLineReadonly',
-			\   'filename_decorated': 'LightLineFilenameDecorated',
+			\   'modified': 'LightLineModified',
+			\   'file_flags': 'LightLineFileFlags',
+			\   'filename': 'LightLineFilename',
 			\   'fileformat': 'LightLineFileformat',
 			\   'filetype': 'LightLineFiletype',
 			\   'fileencoding': 'LightLineFileencoding',
@@ -493,14 +495,18 @@ function! LightLineFilename()
 	return '' != fname ? fname : '[No Name]'
 endfunction
 
-function! LightLineFilenameDecorated()
-	let m = LightLineModified()
-	let r = LightLineReadonly()
-	return
-				\ ('' != r ? r . ' ' : '') .
-				\ LightLineFilename() .
-				\ m
+function! LightLineFileFlags()
+	return LightLineModified() . LightLineReadonly()
 endfunction
+
+"function! LightLineFilenameDecorated()
+"	let m = LightLineModified()
+"	let r = LightLineReadonly()
+"	return
+"				\ ('' != r ? r . ' ' : '') .
+"				\ LightLineFilename() .
+"				\ m
+"endfunction
 
 function! LightLineFileformat()
 	" only show unexpected fileformats
