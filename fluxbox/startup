@@ -29,11 +29,6 @@ xset dpms 0 0 600
 # syndaemon disables the trackpad while typing
 #syndaemon -i 1 -KR &
 
-# Your own fonts-dir:
-if [[ -d ~/.font ]]; then
-	xset +fp ~/.font
-fi
-
 #
 # Your favourite mouse cursor:
 # xsetroot -cursor_name right_ptr
