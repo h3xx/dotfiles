@@ -237,7 +237,10 @@ test -n "$(
 	for fn in \
 		/usr/doc/git-?.?.?/contrib/completion/git-completion.bash \
 		; do
-		[[ -f $fn ]] && echo "$fn"
+		if [[ -f $fn ]]; then
+			echo "$fn"
+			break
+		fi
 	done
 )" && {
 	. "$_" &&
