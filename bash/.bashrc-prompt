@@ -55,7 +55,18 @@ esac
 #original: PS1='\['"$FRAME_COLOR"'\]=[\l \['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h\[\e[37m\] \w \['"$FRAME_COLOR"'\]]=\[\e[37m\] \$\[\e[0m\] '
 
 GIT_PS1_SHOWCOLORHINTS=1
-test -f /usr/doc/git-2.6.4/contrib/completion/git-prompt.sh && . "$_"
+test -n "$(
+	for fn in \
+		/usr/doc/git-?.?.?/contrib/completion/git-prompt.sh \
+		; do
+		if [[ -f $fn ]]; then
+			echo "$fn"
+			break
+		fi
+	done
+)" && {
+	. "$_"
+}
 
 # ricing: add custom coloring
 # @override
