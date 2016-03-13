@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # script to indicate battery level
 
@@ -33,7 +33,7 @@ NUM_HEARTS=5
 
 main() {
 	BATTERY_STATUS=$(battery_status $1)
-	[ -z "$BATTERY_STATUS" ] && return
+	[[ -z $BATTERY_STATUS ]] && return
 
 	case "$STYLE" in
 		'graphic')
@@ -59,7 +59,7 @@ print_graphic() {
 		printf $HEART_FULL
 	done
 
-	if [ "$remainder" -ne 0 -a "$i" -lt "$NUM_HEARTS" ]; then
+	if [[  $remainder -ne 0 && $i -lt "$NUM_HEARTS" ]]; then
 		printf $HEART_HALF
 		let ++i
 	fi
@@ -82,9 +82,9 @@ print_color_percent() {
 	local bgcolor \
 		color_reset='\e[0m'
 
-	if [ $perc -lt 20 ]; then
+	if [[  $perc -lt 20 ]]; then
 		bgcolor='\e[3;1;31m' # bright red
-	elif [ $perc -lt 50 ]; then
+	elif [[  $perc -lt 50 ]]; then
 		bgcolor='\e[3;1;33m' # bright yellow
 	else
 		bgcolor='\e[3;1;32m' # bright green
@@ -98,7 +98,7 @@ print_color_percent() {
 linux_get_bat() {
 	local bf=$(cat $BAT_FULL)
 	local bn=$(cat $BAT_NOW)
-	echo $(( 100 * $bn / $bf ))
+	echo $(( 100 * bn / bf ))
 }
 
 
@@ -119,12 +119,12 @@ battery_status() {
 		'Linux')
 			BATPATH=${BATPATH:-/sys/class/power_supply/BAT0}
 			STATUS=$BATPATH/status
-			[ "$1" = $(cat $STATUS) ] || [ "$1" = "" ] || return 0
-			if [ -f "$BATPATH/energy_full" ]; then
+			[[ $1 = $(cat $STATUS) || $1 = "" ]] || return 0
+			if [[ -f "$BATPATH/energy_full" ]]; then
 				naming="energy"
-			elif [ -f "$BATPATH/charge_full" ]; then
+			elif [[ -f "$BATPATH/charge_full" ]]; then
 				naming="charge"
-			elif [ -f "$BATPATH/capacity" ]; then
+			elif [[ -f "$BATPATH/capacity" ]]; then
 				cat "$BATPATH/capacity"
 				return 0
 			fi
@@ -136,12 +136,12 @@ battery_status() {
 			STATUS=$(sysctl -n hw.acpi.battery.state)
 			case $1 in
 				"Discharging")
-					if [ $STATUS -eq 1 ]; then
+					if [[ $STATUS -eq 1 ]]; then
 						freebsd_get_bat
 					fi
 					;;
 				"Charging")
-					if [ $STATUS -eq 2 ]; then
+					if [[ $STATUS -eq 2 ]]; then
 						freebsd_get_bat
 					fi
 					;;
@@ -172,18 +172,18 @@ battery_status() {
 						"CurrentCapacity")
 							export curcap=$value;;
 						"ExternalConnected")
-							if [ -n "$ext" ] && [ "$ext" != "$value" ]; then
+							if [[  -n $ext ]] && [ "$ext" != "$value" ]; then
 								exit
 							fi
 							;;
 						"FullyCharged")
-							if [ "$value" = "Yes" ]; then
+							if [[  $value = "Yes" ]]; then
 								exit
 							fi
 							;;
 					esac
 					if [[ -n "$maxcap" && -n $curcap ]]; then
-						echo $(( 100 * $curcap / $maxcap ))
+						echo $(( 100 * curcap / maxcap ))
 						break
 					fi
 				done
