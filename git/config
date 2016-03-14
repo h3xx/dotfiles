@@ -9,6 +9,7 @@
 	f		= fetch
 	m		= merge
 	ma		= merge --abort
+	pu		= pull
 	p		= push
 	b		= branch
 	bb		= branch --all -vv
@@ -24,7 +25,6 @@
 	cpa		= cherry-pick --abort
 	co		= checkout
 	cob		= checkout -b
-	pu		= pull
 	sf		= submodule foreach
 	sub		= submodule
 	subup		= submodule update --init
@@ -36,6 +36,7 @@
 	url		= remote -v	# list checkout urls
 	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
+	g		= grep
 
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
