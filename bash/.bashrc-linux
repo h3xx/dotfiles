@@ -231,8 +231,16 @@ nd() {
 # ~ $ tcd foo-1.2.3.tar.xz
 # ~/foo-1.2.3 $ _
 tcd() {
-	tar xf "$1" &&
-	cd "$(tar tf "$1" |head -1 |cut -f 1 -d /)"
+	local tarball
+	if [[ $1 =~ (https?|ftp):// ]]; then
+		tarball="$(basename -- "$1")"
+		[[ -f "$tarball" ]] || wget -O "$tarball" "$1"
+	else
+		tarball="$1"
+	fi
+
+	tar xf "$tarball" &&
+	cd "$(tar tf "$tarball" |head -1 |cut -f 1 -d /)"
 }
 
 # delete a huge directory in the background so you can do more interesting
