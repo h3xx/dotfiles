@@ -26,7 +26,7 @@ badwolf_palette_aux=(
 	173
 	211
 	214
-	221
+	#221
 	# grays
 	241
 )
