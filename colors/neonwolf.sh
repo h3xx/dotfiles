@@ -27,7 +27,7 @@ BADWOLF_PALETTE_AUX=(
 	173
 	211
 	214
-	221
+	#221
 	# grays
 	241
 )
