@@ -175,6 +175,18 @@ alias \
 	psh='ps -A x c f' \
 	psg='ps -A x -f |grep'
 
+# highlight missing so's from ldd in bold red
+# usefulness: TODO
+_ldd() {
+	if [[ -t 1 ]]; then
+		ldd "$@" |sed -e 's/^.*=> not found$/\x1b[01;31m&\x1b[0m/'
+	else
+		ldd "$@"
+	fi
+}
+
+alias ldd='_ldd'
+
 ## other programs
 # xo = from work, helps greatly
 alias \
