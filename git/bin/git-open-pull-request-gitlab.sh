@@ -88,14 +88,17 @@ if [[ -n $MR_TITLE ]]; then
 fi
 
 if [[ -n $MR_DESC ]]; then
-	http_args+=("merge_request[description]=$MR_DESC")
+	# encode \n => %0a
+	http_args+=("merge_request[description]=${MR_DESC//$'\n'/%0a}")
 fi
 
 # concatenate all args, URL encoding '&' to %26
 http_params="$(IFS='&';echo "${http_args[*]//&/%26}")"
 
 # construct URL
-push_url="$(git remote -v |sed -e 's#^'"$(git remote show)"'\s*\(.*\)\s*(push)$#\1# p;d')"
+push_url="$(git remote -v |sed -e 's#^'"$(git config "branch.$SOURCE_BRANCH.remote")"'\s*\(.*\)\s*(push)$#\1# p;d')"
+# not working:
+#push_url="$(git config "remote.$(git config "branch.$SOURCE_BRANCH.remote").url")"
 
 if [[ -z $push_url ]]; then
 	echo "Unable to determine push URL (are you in a git directory?)"
