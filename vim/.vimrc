@@ -418,19 +418,20 @@ endif
 " (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
 "set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
-" Show trailing whitespace and spaces before a tab
-" (note: must occur BEFORE colorscheme invocation)
+" Show trailing whitespace and spaces before a tab (note: must occur
+" BEFORE colorscheme invocation)
 autocmd ColorScheme *		hi ExtraWhitespace term=reverse ctermbg=red guibg=red
+
+" Show trailing whitespace and spaces before a tab
+"	(match commands only apply to the current buffer)
+autocmd BufEnter,WinEnter *	match ExtraWhitespace /\s\+$\| \+\ze\t/
 
 " Replace blinding gvim color scheme (makes terminal vim brighter)
 colorscheme late_evening
 
-" 1: Show trailing whitespace and spaces before a tab
-" 2: Highlight the 80th column of wide lines
-" (note: match commands only apply to the current buffer)
-autocmd BufEnter,WinEnter *
-			\ match ExtraWhitespace /\s\+$\| \+\ze\t/ |
-			\ match ColorColumn /\%80v/
+" correct some colors
+" (addendum: only affects terminal vim, looks better regular)
+"highlight PreProc ctermfg=Magenta
 
 " highlight the current cursor line
 "set cursorline
