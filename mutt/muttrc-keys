@@ -25,6 +25,10 @@ bind pager G bottom
 macro index \cy "|urlview\n"		"View/browse URLs with urlview"
 macro pager \cy "|urlview\n"		"View/browse URLs with urlview"
 
+# X-Face
+# (See also: https://dev.mutt.org/trac/wiki/MuttGuide/XFace)
+macro pager \ef "|~/.mutt/bin/view-x-face -n<enter>" "display the X-Face included in the mail"
+
 # screen integration
 ## don't stop mutt when ^z is pressed
 unset suspend
