@@ -25,7 +25,7 @@ my_hdr X-Message-Flag: WARNING!! Outlook sucks
 
 # Hacker
 #my_hdr Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAD1BMVEWiiLm7sO0fCQwhHlN9VUsyaMdcAAACfklEQVQ4T02SwRXjOAxDKcoFCFEKkAEXIJEpwLHTf01z8MzbxYEH/gceABqXk+RJfu77JwOSImnqZEQEJdzJE+0VCtIm+QtS6TlschR0SaQ5qcgQyuqpTKAFgzRec65VSikNp8cErisiaCTzbACAluhf4HU8DpLCo45WgM9Q6AFZAADPhBT/ABf+U4lPpGj+PwsANCiqRNtIkh2APcfawZRoK0iKCygFBQ0I+S1aOkml0NAAFJQj6iHaeJHq1IF/IOkHaZ+NPHxFfssDUOXhtLswJNTMN1BQCnImk7YVikLHWWxhAbg2adBs0YOrF6zaAKCc4TFoc/kvqHLCCgoKiufkoDnGnmS8S2/4ogDOyUFr27mL1Nh6e2LM0DVo323sIveuv0k2UsdOO8vYkzwyn/1NcjBp2eYukhxWAPSzMl2VVsu2i6RO+A6MUGQ9FFZWPgFHfr28f7pxMxh27ax/W3ylYlaU1ycYluflJLk3QKx9P9/jiJBxfZ4OE0XhXMX8pSqjBTM44jD0bEcaet6b7LQrqBjButAQfs1+6yX77J6SyLG230Ij+X3tlHFO6dyC+Xqexcnypox1iZ9yffI6+CqApyJTtvmMjJOdTnECkRFZL4sYkeI+ZXwfKqAH1W/zHFccV111bJkFjR5kHeZxuI4xlHd+W65On8Ft2OSI9FFLrrED8HTe2mRZR0R0zu/SAhB5UbnJZs6kZtwtK9CNn2BmpfFcwRH0++4t1DmYMSqNtGSn3kPDWV48JZnSyHfqrseZdTdA2qT0CKP8GmLcLBN4S3dqkWF1p+8KrV+tm3VOZUwq7agfVgXHcXuB6+b9gFnJ35XDOecXnjVCuqU/Pp+MRDFGXIgAAAAASUVORK5CYII=
-my_hdr X-Face: 0@}wy6e6qTMoAk'w7oBNgiIM!Gc0_OZZ,qA>YUnF\\8WRCuR\;)m]Z]Z\\LGf9^bec\`Ov\$PWhaC\\_Dz%BPZA4~<USY<+yB0GKU7r[)cf\`I%m5ZES%]_J3g7"vdzFG&a4-j|W72?0snlOf(NWwxHQ%>0->nl{8J_3,5z&EM{Fw\$d!:^\#W[\\\#"WxI]lOwsL0.j_WrCT&5\$XV{QE\#?jGcQIg"Fk5)?_80]ofQjGp]*z4^<\;w,dd\$3j:?FDCRXL\#&4,17gir(i:&L\#nz3mF%\`F_Wn<PsE:/_,Z@U@~\$fJ
+my_hdr X-Face: \$\$z}0\\E~SK>mTRFPnj>1nxPtPq\;pIwN&@qIV},^<1^sc:^p4[BFd~iJf2vfTb{,\;i|?pz%)\n UgH@Ki\"O&[\`\;M]ZIye20HVn\;\$,Yb@8Q[)r}Qm<+yr_}bqCPKO!S{XO0E,X\;h[\$cMSU*v1nWpu5aI%,\n QrNL\`G!sO[Hg%T9t<o)m\\opGj2^5-E8tI/ee5pH*?xvhLPpxq1\$jl)p(\`RQM&\"?I8-?i-A\$VQ\`/kVV\n omiT|0V40HCWBbLEUh&mA@TwGuB-X042ZiM{Z\$(<a
 
 # header display order
 hdr_order From Date: From: To: Cc: Bcc: Subject:
