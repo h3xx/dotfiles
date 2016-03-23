@@ -19,6 +19,8 @@ u=~/smartco/php/eclib/utility
 menu=~/smartco/php/eclib/data/menu.yaml
 appconfig=~/smartco/php/eclib/configs/AppConfig.yaml
 db=~/smartco/php/emaxlib/eventmax.sql
+www=/usr/local/www/apache22/data
+g2p=/usr/local/g2planet
 export GREP_OPTIONS="${GREP_OPTIONS:+$GREP_OPTIONS }--exclude=*/templates_c/*"
 export PYTHONPATH=~/.usr/lib/python2.7/site-packages
 
