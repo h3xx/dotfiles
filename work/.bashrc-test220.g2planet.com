@@ -28,8 +28,8 @@ export PYTHONPATH=~/.usr/lib/python2.7/site-packages
 shopt -s \
 	cdable_vars
 
-# auto-logout after 30 minutes of being logged in idle
-TMOUT=1800
+# auto-logout after 5 minutes of being logged in idle
+TMOUT=300
 export PAGER='less -R'
 
 alias \
