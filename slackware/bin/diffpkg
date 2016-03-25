@@ -278,8 +278,8 @@ inst_pkgbase=''
 if [ "$AUTOMATIC_PKG" -ne 0 ]; then
 	if grep -qP '^\w+:' 'install/slack-desc' 2>/dev/null; then
 		inst_pkgbase="$(
-			grep -oP '^\w+:' 'install/slack-desc' |
-			grep -oP '\w+' |
+			grep -oP '^[\w-]+:' 'install/slack-desc' |
+			grep -oP '[\w-]+' |
 			head -1
 		)-"
 	elif [ -d usr/doc ]; then
