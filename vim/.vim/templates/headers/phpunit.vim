@@ -24,6 +24,26 @@ append
     public function test SOMEMETHOD() {
         $db = $this->getDatabase();
 
+        $format_data_f = function($rec) {
+            if (empty($rec)) {
+                return 'NORECORD';
+            }
+
+            return implode(' ',
+                array_map(
+                    function ($fld)
+                    use (&$rec) {
+                        return "$fld:{$rec->$fld}";
+                    },
+                    [
+                        'field1',
+                        'field2',
+                    ]
+                )
+            );
+
+        };
+
         $tclass = new SOMECLASS($db, null, null);
 
         $expected_out = [
