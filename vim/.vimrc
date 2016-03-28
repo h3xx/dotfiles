@@ -12,14 +12,6 @@
 " use filetype and indent plugins (default)
 "filetype plugin indent on
 
-if !has('autocmd')
-	" always set autoindenting on (default)
-	"set autoindent
-	" use smart indentation
-	set smartindent
-
-endif " !has("autocmd")
-
 " ****************************************
 " ***** environment, Unicode options *****
 " ****************************************
