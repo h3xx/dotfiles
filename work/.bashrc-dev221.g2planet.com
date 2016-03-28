@@ -39,6 +39,9 @@ happconfig=~/hilti/php/configs/AppConfig.yaml
 
 backups=/mnt1/backups/g2planet
 
+# auto-logout after 5 minutes of being logged in idle
+TMOUT=300
+
 export GREP_OPTIONS="${GREP_OPTIONS:+$GREP_OPTIONS }--exclude=*/templates_c/*"
 
 # /tmp is full - fix it Randy!
