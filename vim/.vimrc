@@ -188,6 +188,9 @@ set formatlistpat=^\\s*[\\d*]\\+\[\\]:.)}\\t\ ]\\s*
 " ***** insert mode *****
 " ***********************
 
+" Make indenting less stupid
+set autoindent smartindent
+
 "" bad options
 " a	Automatic formatting of paragraphs. Every time text is inserted or deleted
 "	the paragraph will be reformatted. See auto-format. When the 'c' flag is
