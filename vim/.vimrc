@@ -183,9 +183,13 @@ set nojoinspaces
 "set formatlistpat=^\\s*\\(\\d\\+[\\]:.)}\\t\ ]\\\|\\(\\*\\\|-\\)\\s\\)\\s*
 set formatlistpat=^\\s*[\\d*]\\+\[\\]:.)}\\t\ ]\\s*
 
-" **************************************
-" ***** insert mode, formatoptions *****
-" **************************************
+" ***********************
+" ***** insert mode *****
+" ***********************
+
+" make indenting less stupid
+set autoindent
+set smartindent
 
 "" bad options
 " a	Automatic formatting of paragraphs.  Every time text is inserted or
