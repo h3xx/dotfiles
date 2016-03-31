@@ -477,6 +477,7 @@ hi LightLineLeft_normal_0 term=bold cterm=bold
 hi LightLineLeft_insert_0 term=bold cterm=bold
 hi LightLineLeft_visual_0 term=bold cterm=bold
 hi LightLineLeft_replace_0 term=bold cterm=bold
+hi LightLineLeft_command_0 term=bold cterm=bold
 
 function! LightLineReadonly()
 	return &ft != 'help' && &readonly ? '[RO]' : ''
