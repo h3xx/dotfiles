@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# ^ did I mention how much I hate BSD?
+NEW='.htaccess_private.new'
+OLD='.htaccess_private'
+REALPWD="$(realpath .)"
+
+MAKETEMPLATES_C=''
+while getopts 'tT' flag; do
+	case "$flag" in
+		't')
+			MAKETEMPLATES_C=1
+			;;
+		'T')
+			MAKETEMPLATES_C=0
+			;;
+		*)
+			echo "Unrecognized option: \`$flag'" >&2
+			exit 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+if [ "_${REALPWD##*/}" != '_php' ]; then
+	cd php || exit
+	read -p "Output to \`php/$NEW'? [Y/n]" ans
+	if [[ "$ans" =~ ^[Nn] ]]; then
+		exit 0
+	fi
+fi
+
+cat <<EOF >"$NEW" || exit
+RewriteEngine on
+RewriteBase /$(realpath . |sed -e 's,^.*/public_html/,~'$USER'/,')/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.php
+Allow From All
+EOF
+
+if diff "$NEW" "$OLD"; then
+	echo 'no change.'
+	rm "$NEW"
+else
+	echo '-----'
+	mv -i "$NEW" "$OLD"
+fi
+
+if [ -z "$MAKETEMPLATES_C" ]; then
+	read -p "mkdir templates_c? [Y/n]" ans
+	if [[ "$ans" =~ ^[Nn] ]]; then
+		exit 0
+	fi
+fi
+
+mkdir -p -v templates_c &&
+chmod 0777 templates_c || exit
+
+# vi: ft=sh
