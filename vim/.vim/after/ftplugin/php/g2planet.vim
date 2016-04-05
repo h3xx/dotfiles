@@ -25,6 +25,8 @@ setl path+=
 
 " open unit test file
 nnoremap <buffer> g<C-f> :tabe ../tests/<C-r>=expand("%:t:r")<CR>Test.php<CR>
+" open mock dataset
+nnoremap <buffer> g<C-d> :silent! Mkdir <C-r>=expand("%:t:r")<CR>Data<CR>:tabe <C-r>=expand("%:t:r")<CR>Data/dataset.yaml<CR>
 
 " hopefully this will be less laggy
 "setl fdm=indent
