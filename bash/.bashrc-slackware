@@ -69,6 +69,10 @@ catpkg() {
 	done)
 }
 
+watpkg() {
+	catpkg "$@" |grep :
+}
+
 pkglook() {
 	local \
 		pkg \
