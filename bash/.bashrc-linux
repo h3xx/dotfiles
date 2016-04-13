@@ -317,6 +317,25 @@ histoff() {
 	PROMPT_COMMAND='printf '\''\e[01;37m'\'"; $(sed -e 's,\(\\\e\[[0-9;]*m\),,g;s,\\\[\\\],,g' <<<"$PROMPT_COMMAND")"
 }
 
+# colorized manpages
+_man() {
+	(
+	# less colors for man pages
+	LESS_TERMCAP_mb=$'\e[05m'		# begin blinking
+	LESS_TERMCAP_md=$'\e[01;38;5;38m'	# begin bold
+	LESS_TERMCAP_me=$'\e[0m'		# end mode
+	LESS_TERMCAP_so=$'\e[07;38;5;154m'	# begin standout-mode - info box
+	LESS_TERMCAP_se=$'\e[0m'		# end standout-mode
+	LESS_TERMCAP_us=$'\e[04;01;38;5;165m'	# begin underline
+	LESS_TERMCAP_ue=$'\e[0m'		# end underline
+
+	export LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_se LESS_TERMCAP_so LESS_TERMCAP_ue LESS_TERMCAP_us
+
+	exec man "$@"
+	)
+}
+alias man=_man
+
 ## source global defs
 #if [[ -f /etc/bashrc ]]; then
 #	. /etc/bashrc
