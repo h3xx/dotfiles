@@ -200,6 +200,9 @@ aug g2planet
 	"" PHPUnit tests @ g2planet
 	au BufNewFile		*Test.php
 				\ so ~/.vim/templates/headers/phpunit.vim
+	"" PHPUnit test data @ g2planet
+	au BufNewFile		*TestData/*.yaml
+				\ so ~/.vim/templates/headers/phpunit-dataset-yaml.vim
 
 aug END " g2planet
 
