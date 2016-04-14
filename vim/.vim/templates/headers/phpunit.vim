@@ -20,6 +20,9 @@ append
 
     /**
      * @covers SOMECLASS::SOMEMETHOD
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
+append
      */
     public function test SOMEMETHOD() {
         $db = $this->getDatabase();
@@ -45,6 +48,9 @@ append
         };
 
         $tclass = new SOMECLASS($db, null, null);
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
+append
 
         $expected_out = [
         ];
@@ -62,7 +68,10 @@ append
 
 }
 
-class SOMECLASS Wrapper extends SOMECLASS {
+class SOMECLASSWrapper extends SOMECLASS {
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
+append
     // wrap expose some methods
 
     public function public_ SOMEMETHOD() {
