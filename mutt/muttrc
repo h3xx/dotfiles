@@ -52,7 +52,8 @@ set pager_index_lines=12
 set sort=threads
 
 # emulate Gmail's "last message in thread is thread date"
-set sort_aux=date
+# with new threads toward the top
+set sort_aux=reverse-date
 
 # more business-like
 set sig_on_top
