@@ -1,0 +1,47 @@
+#!/bin/bash
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] COMMAND [ARGS]
+Open a tmux window in a split with a dynamic width.
+
+  -h		Show this help message.
+  -l		Maximum number of columns for the split (default 81).
+  --		Terminate options list.
+
+Copyright (C) 2016 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+MAX_COLUMNS=81
+
+while getopts 'l:h' flag; do
+	case "$flag" in
+		'l')
+			MAX_COLUMNS="$OPTARG"
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+if [[ -z $COLUMNS ]]; then
+	eval `resize`
+fi
+
+TOO_SMALL=$((MAX_COLUMNS+MAX_COLUMNS/2))
+WIDTH=$((COLUMNS<TOO_SMALL?COLUMNS/2:MAX_COLUMNS))
+
+exec \
+tmux split-window -h -l "$WIDTH" -c '#{pane_current_path}' "$@"
