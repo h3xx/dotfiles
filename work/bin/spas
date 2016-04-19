@@ -83,10 +83,17 @@ if [[ $REBUILD_DB -ne 0 ]]; then
 fi
 
 if [[ $MIGRATION -ne 0 ]]; then
-	(cd php/eclib/data && ./migration-2.0.sh "$MODE") || exit
-	if [[ -f data/migration-2.0.sh ]]; then
-		(cd data && ./migration-2.0.sh "$MODE") || exit
-	fi
+	for mscript in \
+		migration-2.0.sh \
+		migration-2.1.sh \
+	; do
+		if [[ -f php/eclib/data/$mscript ]]; then
+			(set -x ; cd php/eclib/data && ./$mscript "$MODE") || exit
+		fi
+		if [[ -f data/$mscript ]]; then
+			(set -x ; cd data && ./$mscript "$MODE") || exit
+		fi
+	done
 fi
 
 if [[ $RELOAD_MENUS -ne 0 ]]; then
