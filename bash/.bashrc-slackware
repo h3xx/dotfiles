@@ -2,7 +2,7 @@
 
 # Slackware Linux specific definitions
 
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}startx:chkpkg *"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}startx:chkpkg *:checkver*"
 
 ## package-related
 
