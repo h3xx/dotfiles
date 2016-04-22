@@ -89,7 +89,10 @@ fi
 
 if [[ -n $MR_DESC ]]; then
 	# encode \n => %0a
-	http_args+=("merge_request[description]=${MR_DESC//$'\n'/%0a}")
+	MR_DESC="${MR_DESC//$'\n'/%0a}"
+	# encode ; => %3b
+	MR_DESC="${MR_DESC//;/%3b}"
+	http_args+=("merge_request[description]=$MR_DESC")
 fi
 
 # concatenate all args, URL encoding '&' to %26
