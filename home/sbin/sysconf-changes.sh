@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
-# Version 1.1
+# Version 1.2
 
 SYSCONFDIRS=(
     /etc
@@ -26,7 +26,7 @@ done
 shift "$((OPTIND-1))"
 
 # check to see if colordiff(1) is installed
-if [ "$USE_COLORDIFF" -ne 0 ] &&
+if [[ $USE_COLORDIFF -ne 0 ]] &&
     ! type colordiff &>/dev/null; then
     USE_COLORDIFF=0
 fi
@@ -126,7 +126,7 @@ prompt_change() {
         # Show the user what they're accepting
         report_change "$OLD_CONF" "$NEW_CONF"
 
-        if [ "$APPLY_ALL" -ne 0 ]; then
+        if [[ $APPLY_ALL -ne 0 ]]; then
             # User wants to install all of them
             accept_change "$OLD_CONF" "$NEW_CONF"
         else
