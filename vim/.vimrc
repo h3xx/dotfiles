@@ -191,6 +191,9 @@ set formatlistpat=^\\s*[\\d*]\\+\[\\]:.)}\\t\ ]\\s*
 set autoindent
 set smartindent
 
+" less conspicuous tab indentation
+set tabstop=4 shiftwidth=4
+
 "" bad options
 " a	Automatic formatting of paragraphs.  Every time text is inserted or
 "	deleted the paragraph will be reformatted.  See auto-format.
