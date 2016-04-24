@@ -201,3 +201,12 @@ XLock.mailCmd: [ -z "$(find ~/Mail/mbox/new -type d -empty)" ]
 !XLock.blank.ncolors: 64
 !XLock.blank.saturation: 1
 !XLock.blank.bitmap:
+
+! replace AWFUL default fonts in xvkbd
+XVkbd*font:                     -*-terminus-medium-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*generalFont:              -*-terminus-bold-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*letterFont:               -*-terminus-bold-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*specialFont:              -*-terminus-medium-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*keypadFont:               -*-terminus-medium-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*banner.font:              -*-terminus-bold-r-normal-*-12-*-*-*-*-*-*-*
+XVkbd*display_panel*label.font: -*-terminus-bold-r-normal-*-12-*-*-*-*-*-*-*
