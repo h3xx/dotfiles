@@ -321,6 +321,7 @@
 			[exec] (xmag) {xmag} <~/.fluxbox/icons/xmag.xpm>
 			[exec] (wmagnify) {wmagnify}
 #			[exec] (xorgcfg) {xorgcfg}
+			[exec] (xvkbd) {xvkbd}
 			[exec] (xscreensaver-demo) {xscreensaver-demo} <~/.fluxbox/icons/xscreensaver.xpm>
 			[exec] (xlock) {xlock}
 			[exec] (Reload .Xdefaults) {xrdb -load $HOME/.Xdefaults}
