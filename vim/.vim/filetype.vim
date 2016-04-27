@@ -212,6 +212,10 @@ aug sourcecode
 	au BufNewFile		*.sh
 				\ so ~/.vim/templates/headers/sh.vim
 
+	" HTML
+	au BufNewFile		*.html
+				\ so ~/.vim/templates/headers/html5.vim
+
 	" XML
 	au BufNewFile		*.xml
 				\ so ~/.vim/templates/headers/xml.vim
