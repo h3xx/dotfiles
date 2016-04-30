@@ -14,8 +14,8 @@ if has('gui_running')
 
 	" T: no toolbar (useless)
 	" m: no menu (gets in the way of using Meta in key combos)
-	set guioptions-=T guioptions-=m
-
+	" c: no popup dialogs
+	set guioptions-=T guioptions-=m guioptions+=c
 
 	if has('mouse')
 		set mouse=n
