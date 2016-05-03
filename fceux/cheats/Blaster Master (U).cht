@@ -7,8 +7,9 @@ S:0092:ff:Infinite Hover Power (If you have hover device)
 S:06f0:63:Infinite Heat-Seeking Missiles
 S:06f1:63:Infinite Thunderbreaks
 S:06f2:63:Infinite Multi-Warheads
-S:0099:ff:Start With All Powerups (1/2)
-S:03fc:ff:Start With All Powerups (2/2)
+S:0099:ff:Have All Powerups (1/2)
+S:03fc:ff:Have All Powerups (2/2)
+SC:9358:a5:e6:High Jump
 S:037e:09:Infinite Continues
 SC:c302:09:00:Start With 1 Life
 S:037e:01:No Continues

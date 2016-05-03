@@ -14,7 +14,7 @@ SC:dbe2:0a:05:Blue Boxes Give Double Ninja Points
 SC:dbe6:14:0a:Red Boxes Give Double Ninja Points
 SC:dbe2:63:05:Blue Boxes Give 99 Ninja Points
 SC:dbe6:63:0a:Red Boxes Give 99 Ninja Points
-S:0064:63:Infinite Ninja Points (Must turn off at the end of an act)
+S:0064:63:Infinite Ninja Points (Turn off at end of act)
 SC:ef67:01:03:Throwing Star Costs 1
 SC:efae:01:05:Windmill Star Costs 1
 SC:ee0d:01:05:Jump-N-Slash Costs 1 (1/2)

@@ -10,7 +10,7 @@ S:02a2:02:Have Nun-chucks
 S:0204:40:Infinite Time
 S:010a:01:Start With 1 Life and 1 Continue
 S:02be:01:Start With 1 Life, No 1-Ups
-S:02bf:00:No Continues
-S:02a2:00:Can't Use Weapons
 SC:c5d0:06:0a:Fewer Hit Points (1/2)
 SC:c889:06:0a:Fewer Hit Points (2/2)
+S:02a2:00:Can't Use Weapons
+S:02bf:00:No Continues

@@ -1,16 +1,24 @@
 S:0736:63:P1 Infinite Lives
 S:0737:63:P2 Infinite Lives
+S:0553:09:Invincible
 S:00ed:01:Have Super Mushroom
 S:00ed:02:Have Fire Suit
 S:00ed:03:Have Raccoon Suit
 S:00ed:04:Have Frog Suit
 S:00ed:05:Have Tanookie Suit
 S:00ed:06:Have Hammer Suit
-S:0553:09:Invincible
+SC:AE2C:00:2B:Press Select to Change Suit
 S:03dd:7f:P-Meter Always Full
 S:056e:3f:Fly Forever
+SC:ace6:00:08:Every Suit Can Fly
 SC:acb4:01:05:Moon Gravity
 S:00f0:05:Slow Fall Rate (Huge P-Jumps)
 SC:acc5:00:01:No Max Jump Height
+SC:a250:00:17:Every Suit Shoots Fireballs (Except hammer bro)
+SC:a956:a0:0a:Every Suit Can Turn to Stone (1/2) (Graphic glitches)
+SC:a957:0a:a8:Every Suit Can Turn to Stone (2/2)
+SC:AFF5:8D:CE:Infinite Tanooki Statue Time
+SC:A72E:04:0F:Move While Ducking
+SC:A25F:90:D0:Shoot Fireballs While Ducking
 SC:afba:4d:ce:Infinite Time
 S:00ed:00:Always Small

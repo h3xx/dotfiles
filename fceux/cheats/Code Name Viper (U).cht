@@ -1,2 +1,9 @@
+S:06e8:0A:Infinite Lives
 S:06f8:04:Infinite Hit Points
 S:06e2:01:Infinite Machinegun Bullets
+SC:908f:f7:fa:High Jump - Standing
+SC:9093:f7:fa:High Jump - Walking (1/2)
+SC:9097:f7:fa:High Jump - Walking (2/2)
+SC:90af:f4:f9:High Jump - Up
+S:06e6:fe:Infinite Time (Turn off at end of stage)
+S:0756:09:Infinite Continues

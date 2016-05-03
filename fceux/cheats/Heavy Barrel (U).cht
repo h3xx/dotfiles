@@ -1,6 +1,24 @@
-S:00a0:63:P1 Infinite Grenades
-S:00a1:63:P2 Infinite Grenades
-S:00a8:04:P1 Infinite Keys
-S:00a9:04:P2 Infinite Keys
-S:00a2:63:P1 Infinite Bullets
 S:00b4:0a:P1 Infinite Lives
+S:009e:41:P1 Have Laser Gun
+S:009e:42:P1 Have Pellet Gun
+S:009e:43:P1 Have Flame Thrower
+S:00a2:41:P1 Infinite Bullets
+S:00a0:63:P1 Infinite Grenades
+S:009c:3d:P1 Have Super Grenades
+S:009c:3e:P1 Have Mace
+S:00a8:63:P1 Infinite Keys
+S:00b5:0a:P2 Infinite Lives
+S:009f:41:P2 Have Laser Gun
+S:009f:42:P2 Have Pellet Gun
+S:009f:43:P2 Have Flame Thrower
+S:00a3:41:P2 Infinite Bullets
+S:00a1:63:P2 Infinite Grenades
+S:009d:3d:P2 Have Super Grenades
+S:009d:3e:P2 Have Mace
+S:00a9:63:P2 Infinite Keys
+S:009e:40:P1 No Weapon Powerups
+S:009c:3c:P1 No Grenade Powerups
+S:00a0:00:P1 No Grenades
+S:009f:40:P1 No Weapon Powerups
+S:009d:3c:P1 No Grenade Powerups
+S:00a1:00:P1 No Grenades

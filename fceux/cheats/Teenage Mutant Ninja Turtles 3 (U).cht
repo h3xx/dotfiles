@@ -1,9 +1,9 @@
 S:006a:09:P1 Infinite Lives
 S:04f1:7f:P1 Infinite Hit Points
-S:04ff:01:P1 Always Invincible (Must jump out of pits)
+S:04ff:01:P1 Invincible (Must jump out of pits)
 S:006b:09:P2 Infinite Lives
 S:04f2:7f:P2 Infinite Hit Points
-S:0500:01:P2 Always Invincible (Must jump out of pits)
+S:0500:01:P2 Invincible (Must jump out of pits)
 S:0621:01:Enemies Take 1 Hit (1/8) (Must turn off for stone warriors)
 S:0622:01:Enemies Take 1 Hit (2/8)
 S:0623:01:Enemies Take 1 Hit (3/8)

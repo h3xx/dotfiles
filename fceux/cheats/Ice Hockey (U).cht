@@ -1,7 +1,7 @@
 S:042f:63:P1 Has 99 Goals (Updates on first goal)
 S:0430:63:P2 Has 99 Goals (Updates on first goal)
-SC:cec2:0a:13:Timer Runs Twice As Fast
-SC:cec2:05:13:Timer Runs Four Times As Fast
+SC:cec2:0a:13:Timer Twice As Fast
+SC:cec2:05:13:Timer Four Times As Fast
 SC:cec2:00:13:Max Timer Speed
 SC:cec2:3f:13:Game Seconds Are Real Seconds
 SC:9bdc:01:03:Games Last 1 Period

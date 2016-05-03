@@ -5,5 +5,7 @@ S:0085:01:Invulnerable
 S:04e0:01:Invincibility (Turn off to catch eggs)
 S:04c9:3c:Infinite Float During Jump
 S:04ca:3c:Super Jump Charged
+S:0555:01:Max Jump Height
+S:0099:00:Mid-Air Multi Jump
 SC:8ab5:ad:9f:Quick Pick Ups
 S:062b:01:Infinite Coins (Turn off to end)

@@ -22,7 +22,7 @@ S:0709:20:Slow Jumps
 SC:b440:c0:d8:Fast Running (1/2)
 SC:b443:3f:28:Fast Running (2/2)
 S:070c:01:Silly Walking
-SC:9087:01:ff:Start On World 8 (1/3)
+SC:9087:07:ff:Start On World 8 (1/3)
 SC:9089:5f:a0:Start On World 8 (1/3)
 SC:908a:07:03:Start On World 8 (1/3)
 S:07fc:01:Start On 2nd Quest

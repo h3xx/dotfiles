@@ -1,3 +1,6 @@
-S:07F5:09:P1 Starts With 900 Points
-S:07F9:09:P2 Starts With 900 Points
+S:07f5:09:P1 Starts With 900 Points
+S:07f9:09:P2 Starts With 900 Points
 S:0034:04:Start In 4th Quarter
+SC:ce40:01:04:Game Ends After 1st Period
+SC:ce40:02:04:Game Ends At Half
+SC:9440:0f:1f:Timer Twice As Fast

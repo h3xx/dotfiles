@@ -1,9 +1,11 @@
 S:0715:0a:P1 Infinite Lives
 S:0716:0a:P2 Infinite Lives
+SC:e3d6:c5:f0:Always Have Armor
+S:0647:03:Stay Invincible After Hit (Turn off to pickup items/Fall through some platforms)
 S:053a:42:Have Dagger
 S:053a:4f:Have Cross
 S:053a:40:Have Spear
 S:053a:36:Have Axe
 S:053a:44:Have Torch
-S:0647:03:Stay Invincible After Hit (Turn off to pickup items/Fall through some platforms)
+SC:ed3b:10:0a:Cross Shoots Farther
 S:06fc:09:Infinite Time

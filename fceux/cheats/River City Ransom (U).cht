@@ -1,12 +1,12 @@
-SC:f6f5:7f:3f:P1 & P2 Start With Max Stamina
+SC:f6f5:7f:3f:Start With Max Stamina (Both players)
 S:04bf:7f:P1 Infinite Stamina
 S:04c0:7f:P2 Infinite Stamina
 SC:f70d:09:00:P1 Start With $920
-SC:f71c:09:00:P2 Start With $920
 S:04c9:09:P1 Infinite Money
+SC:f71c:09:00:P2 Start With $920
 S:04cc:09:P2 Infinite Money
 SC:f46f:c9:58:Don't Lose Money At Death
-SC:f6d8:3f:0f:P1 & P2 Start With Maxed Stats
+SC:f6d8:3f:0f:Start With Maxed Stats (Both players)
 S:049f:3f:P1 Punch Maxed
 S:04a3:3f:P1 Kick Maxed
 S:04a7:3f:P1 Weapon Maxed

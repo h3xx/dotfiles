@@ -8,7 +8,7 @@ SC:86f9:04:02:Start With 40 Hit Points (2/2)
 SC:86f7:09:02:Start With 90 Hit Points (1/2)
 SC:86f9:09:02:Start With 90 Hit Points (2/2)
 S:005a:09:Infinite Hit Points (Turn off at the end of stage)
-S:03d0:81:Invincible
+S:03d0:81:Invincible (Turn off to interact with environment) 
 S:03e4:01:Have Flash Buster
 S:03e4:02:Have Megasmasher
 S:03e4:03:Have Mega Buster

@@ -1,3 +1,9 @@
+S:0703:09:P1 Infinite Lives
+S:070C:09:P2 Infinite Lives
 S:007d:40:Infinite Hit Points
-S:0471:00:Infinite Time
 S:00ed:ff:Have Power Mode
+S:007E:00:1-Knockdown Kills (1/3)
+S:007F:00:1-Knockdown Kills (2/3)
+S:0080:00:1-Knockdown Kills (3/3)
+S:0039:00:Fewer Enemies
+S:0471:00:Infinite Time

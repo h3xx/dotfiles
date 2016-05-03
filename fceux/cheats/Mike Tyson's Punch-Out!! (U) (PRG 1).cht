@@ -1,8 +1,8 @@
 S:0391:60:Infinite Hit Points
 S:0324:09:Infinite Hearts (Stamina)
 S:0342:09:Infinite Stars (Uppercuts)
-S:0398:00:1 Hit Knockdowns
-S:03ca:03:1 Knockdown TKOs
+S:0398:00:1-Hit Knockdowns
+S:03ca:03:1-Knockdown TKOs
 S:03d8:80:Can Gain Hit Points Every Round
 S:0305:00:Infinite Time
 SC:A185:01:00:Start On Von Kaiser

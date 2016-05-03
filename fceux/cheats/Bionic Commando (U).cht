@@ -2,8 +2,8 @@ SC:ca35:09:02:Start With 9 Lives
 SC:ca35:63:02:Start With 99 Lives
 S:004a:09:Infinite Lives
 S:0779:06:Infinite Hit Points
-S:07E0:03:No Damage From Enemies In Side Game
-SC:AE72:EE:CE:Less Damage From Spikes
+S:07e0:03:No Damage From Enemies In Side Game
+SC:ae72:ee:ce:Less Damage From Spikes
 S:04cc:01:Start With Rocket Launcher
 S:04cd:01:Start With Wide Cannon
 S:04ce:01:Start With Joe's Machinegun
@@ -29,5 +29,5 @@ S:004a:00:Start With 1 Life, No 1-Ups
 S:0779:00:No Bonus Hit Points
 S:04da:00:Can't Obtain Medicine (Item)
 S:04fa:00:No Continues
-SC:BE97:04:06:Only 40 Seconds to Escape
-SC:BE97:03:06:Only 30 Seconds to Escape
+SC:be97:04:06:Only 40 Seconds to Escape
+SC:be97:03:06:Only 30 Seconds to Escape

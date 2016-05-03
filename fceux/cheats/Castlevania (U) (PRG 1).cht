@@ -11,3 +11,7 @@ S:015b:0d:Have Axe
 S:015b:0f:Have Watch
 S:015b:0a:Have Cross (Crashes on certain enemies)
 S:0042:99:Infinite Time (Must turn off at the end of a stage)
+SC:9b90:f0:fb:High Jump
+SC:9b90:e0:fb:Higher Jump
+SC:9b90:a0:fb:Mega Jump (May fall through floor)
+SC:003e:02:01:Run Fast (Turn off at doors)

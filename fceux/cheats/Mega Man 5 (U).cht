@@ -12,4 +12,5 @@ S:00B8:9C:Infinite Charge Kick
 S:00B9:9C:Infinite Star Crash
 S:00BA:9C:Infinite Recoil
 S:00BB:9C:Infinite Rush Jet
-S:0458:01:Kill Bosses In 1 Hit (Turn on after boss's hit points fill)
+S:00Bc:9C:Infinite Beat
+S:0458:01:1-Hit Boss Kills (Turn on after boss's hit points fill)

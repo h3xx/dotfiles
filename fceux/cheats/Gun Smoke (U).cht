@@ -1,13 +1,15 @@
-S:007A:09:Infinite Lives
-S:06F2:58:Infinite Money
+S:007a:09:Infinite Lives
 S:0077:01:Infinite Horse Hit Points
-S:0078:01:Have Boots
+S:007c:01:Invincible
+S:06f2:59:Infinite Money
+S:0078:04:Full Speed
 S:0049:01:Have Wanted Poster
-S:0090:D0:Have Shotgun
-S:0094:D0:Have Machine Gun
-S:0098:D0:Have Mag Num
-S:009C:D0:Have Smart Bomb
-S:0093:D1:Infinite Shotgun Bullets
-S:0097:D1:Infinite Machine Gun Bullets
-S:009B:D1:Infinite Mag Num Bullets
-S:009F:D1:Infinite Smart Bombs
+S:0090:d0:Have Shotgun
+S:0094:d0:Have Machine Gun
+S:0098:d0:Have Mag Num
+S:009c:d0:Have Smart Bomb (Must reequip after use)
+S:0093:d1:Infinite Shotgun Bullets
+S:0097:d1:Infinite Machine Gun Bullets
+S:009b:d1:Infinite Mag Num Bullets
+S:009f:d1:Infinite Smart Bombs
+S:00b2:00:1-Hit Boss Kills
