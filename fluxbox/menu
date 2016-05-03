@@ -33,6 +33,7 @@
 	[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 	[exec] (steam) {startsteam} <~/.fluxbox/icons/steam.xpm>
 	[exec] (mumble) {mumble} <~/.fluxbox/icons/mumble.xpm>
+	[exec] (xvkbd) {xvkbd}
 	[separator]
 	[include] (~/.fluxbox/menus/projects)
 	[submenu] (terminals)
