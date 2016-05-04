@@ -1,5 +1,5 @@
 setl spell
-setl colorcolumn=+0
+setl colorcolumn=52,72
 setl nomodeline
 
 nnoremap <buffer> ,R iReference ticket: 
