@@ -9,7 +9,7 @@ git_rev() {
 	local \
 		dir="${1:-$PWD}"
 
-	if [ -d "$dir" -a -d "$dir/.git" ]; then
+	if [ -d "$dir" -a -e "$dir/.git" ]; then
 		if [ -n "$(type -p git 2>/dev/null)" ]; then
 			git --git-dir="$dir/.git" rev-list HEAD |
 			wc --lines
