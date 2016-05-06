@@ -10,7 +10,7 @@ git_rev() {
     local \
         DIR=${1:-$PWD}
 
-    if [[ -d $DIR/.git ]]; then
+    if [[ -e $DIR/.git ]]; then
         if hash git &>/dev/null; then
             git --git-dir="$DIR/.git" rev-list HEAD |
             wc --lines
