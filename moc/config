@@ -104,7 +104,7 @@ ALSAMixer2		= Master
 # 0 means to only use the equalized sound, 1
 # effectively disabled the mixer.
 # Default is 0.25
-#Equalizer_SaveState = yes
+Equalizer_SaveState = yes
 
 # Show files with dot at the beginning?
 ShowHiddenFiles		= no
