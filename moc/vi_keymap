@@ -17,7 +17,6 @@ toggle_show_format    = ^f
 toggle_menu           = TAB
 toggle_layout         = l
 toggle_hidden_files   = H
-next_search           = ^n
 show_lyrics           = L
 theme_menu            = T
 help                  = h ?
@@ -103,7 +102,7 @@ toggle_softmixer      = w
 toggle_equalizer      = E
 equalizer_refresh     = e
 #equalizer_prev        = K
-#equalizer_next        = k
+equalizer_next        = ^k
 
 # External commands:
 mark_start            = '
