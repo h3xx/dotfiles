@@ -405,6 +405,7 @@
 		[exec] (xaos) {xaos} <~/.fluxbox/icons/xaos.xpm>
 		[exec] (xboard) {xboard} <~/.fluxbox/icons/xboard.xpm>
 		[exec] (xeyes) {xeyes}
+		[exec] (xmahjongg) {xmahjongg}
 		[exec] (xsnow) {xsnow}
 		[exec] (xwelltris) {xwelltris}
 #		[exec] (zsnes) {zsnes} <~/.fluxbox/icons/zsnes.xpm>
