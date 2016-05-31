@@ -11,6 +11,10 @@ bind generic \177 last-entry
 # vi and less
 bind pager G bottom
 
+# by default G is bound to `fetch-mail' which retrieves from POP servers. I
+# haven't used POP since 2002.
+bind index G imap-fetch-mail
+
 # bogofilter integration
 #macro index S "|bogofilter -s\ns=bulk"	"Learn as spam and save to junk"
 #macro pager S "|bogofilter -s\ns=bulk"	"Learn as spam and save to junk"
