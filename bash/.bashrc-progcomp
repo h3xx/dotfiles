@@ -3,6 +3,7 @@
 
 # turn on programmable completion
 shopt -s progcomp
+complete -r
 
 # BEGIN BUILTINS
 # make directory commands see only directories
