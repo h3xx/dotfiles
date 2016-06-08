@@ -1,0 +1,125 @@
+#!/bin/bash
+
+ME="$(basename -- "$0")"
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $ME [OPTIONS] [--] FILE...
+       $ME [OPTIONS] [--] DIR...
+Move files to trash.
+
+  -h		Show this help message.
+  -v		Verbose output.
+  --		Terminate options list.
+
+Copyright (C) 2016 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+TRASH=~/.local/share/Trash
+VERBOSE=0
+
+while getopts 'hv' flag; do
+	case "$flag" in
+		'h')
+			HELP_MESSAGE 0
+			;;
+		'v')
+			VERBOSE=1
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+if [[ $# -eq 0 ]]; then
+	HELP_MESSAGE 1
+fi
+
+# ensure trash directories exist
+
+create_trash_directories() {
+	local dir
+	for dir; do
+		if [[ -e $dir ]]; then
+			if [[ ! -d $dir ]]; then
+				echo "$ME: FATAL: Trash dir $dir exists but is not a directory" >&2
+				exit 2
+			fi
+		else
+			mkdir -p -- "$dir" || {
+				echo "$ME: FATAL: Failed to create directory $dir" >&2
+				exit 2
+			}
+		fi
+	done
+}
+
+pick_destination_filename() {
+	local file="$(basename -- "$1")"
+
+	if [[ ! -e "$TRASH/files/$file" ]]; then
+		echo "$file"
+		return 0
+	fi
+
+	local n=1
+	local test_filename
+	while :; do
+		test_filename="$(
+			printf "%s (%d)" \
+				"$file" \
+				"$n"
+		)"
+		if [[ ! -e "$TRASH/files/$test_filename" ]]; then
+			echo "$test_filename"
+			return 0
+		fi
+		let ++n
+	done
+}
+
+trash_files() {
+	local file exit_code=0
+	for file; do
+		if [[ ! -e $file ]]; then
+			echo "$ME: Cannot trash '$file': No such file or directory" >&2
+			exit_code=1
+			continue
+		fi
+		local dest_base="$(pick_destination_filename "$file")"
+		local dest="$TRASH/files/$dest_base"
+		if [[ $VERBOSE -ne 0 ]]; then
+			mv -v -- "$file" "$dest" || exit
+		else
+			mv -- "$file" "$dest" || exit
+		fi
+		write_info "$file" "$dest_base"
+	done
+	return $exit_code
+}
+
+write_info() {
+	local file="$1" dest_base="$2"
+	local path="$(realpath -- "$file")"
+	local infofile="$TRASH/info/$dest_base.trashinfo"
+	if [[ $VERBOSE -ne 0 ]]; then
+		echo "$ME: Writing info file to '$infofile'" >&2
+	fi
+	cat <<EOINF >"$infofile" || exit
+[Trash Info]
+Path=$path
+DeletionDate=$(date -uIseconds |sed -e 's,[+-]00:00$,,')
+EOINF
+}
+
+create_trash_directories "$TRASH/files" "$TRASH/info"
+trash_files "$@"
