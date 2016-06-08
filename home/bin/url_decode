@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+use URI::Escape qw/ uri_unescape /;
+
+foreach my $url (@ARGV) {
+    print &uri_unescape($url), "\n";
+}
