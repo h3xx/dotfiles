@@ -312,11 +312,6 @@ nnoremap <A-o> :Git co
 " usefulness: TODO
 nnoremap <F2> :Gblame<cr>
 
-" hitting ; in normal mode starts a command
-" (possible conflict: ; repeats last 'f' character jump)
-" usefulness: **
-noremap ; :
-
 " reverse function of ' and `
 " ' => more accurate jumping, ` => less accurate jumping
 " usefulness: ****
