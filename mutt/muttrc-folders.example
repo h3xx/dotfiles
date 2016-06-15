@@ -7,9 +7,11 @@ mailboxes imaps://imap.gmail.com/INBOX
 
 ## d => in order to delete a message from Gmail's server, it must be copied to
 ## /[Gmail]/Trash
-folder-hook imaps://imap\.gmail\.com/.* 'macro index d "simaps://imap.gmail.com/Trash" "Delete from Gmail" ; macro pager d "simaps://imap.gmail.com/Trash" "Delete from Gmail"'
+folder-hook imaps://imap\.gmail\.com/.* \
+	'macro index d "simaps://imap.gmail.com/Trash" "Delete from Gmail" ; macro pager d "simaps://imap.gmail.com/[Gmail]/Trash" "Delete from Gmail"'
 ## A => archive
-folder-hook imaps://imap\.gmail\.com/.* 'bind pager A delete-message ; bind index A delete-message'
+folder-hook imaps://imap\.gmail\.com/.* \
+	'bind pager A delete-message ; bind index A delete-message'
 
 # gmx integration
 mailboxes imaps://imap.gmx.com/INBOX
