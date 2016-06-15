@@ -1,0 +1,144 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# intelligently installs a crontab based on the contents of run-parts' targets
+
+RANDOM_TIMES=1
+PREFER_NIGHT=1
+PREFER_FIRST_WEEK=1
+
+DEBUG=1
+RUN_PARTS='/usr/bin/run-parts'
+DIR_BASE="$HOME/.cron/cron."
+
+has_exec() {
+    local DIR=$1
+    if [[ $DEBUG -gt 1 || (
+        -d $DIR
+        && -n $(find "$DIR" ! -type d -perm /0111)
+        )
+    ]]; then
+        return 0
+    fi
+    return 1
+}
+
+# chooses a random number between 0 and N, inclusive
+rand_num() {
+    local N
+    for N; do
+        # hours (0-23)
+        if [[ $N -eq 23 && ${PREFER_NIGHT:-1} -ne 0 ]]; then
+            # use midnight through 5 A.M.
+            N=4
+        fi
+
+        # day of the month (0-27)+1
+        if [[ $N -eq 27 && ${PREFER_FIRST_WEEK:-1} -ne 0 ]]; then
+            # use first through seventh of the month
+            N=6
+        fi
+
+        echo "$((RANDOM%(N+1)))"
+    done
+}
+
+# translates 0-indexed values to "first", "second", "third", etc.
+nth() {
+    local N
+
+    # use an external Perl script
+    if [[ -x ~/bin/nth.pl ]]; then
+        ~/bin/nth.pl "$@"
+    else
+        for N; do
+            # cop-out
+            echo "#$N"
+        done
+    fi
+}
+
+# set up temporary files
+CRONTAB_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+TEMP_FILES=("$CRONTAB_TEMP")
+cleanup() {
+    rm -f -- "${TEMP_FILES[@]}"
+}
+trap 'cleanup' EXIT
+
+# set up crontab
+
+if has_exec 'cron.01m'; then
+    cat <<EOF >>"$CRONTAB_TEMP"
+# Run frequent jobs every minute:
+* * * * * $RUN_PARTS ~/.cron/cron.01m
+
+EOF
+fi
+
+if has_exec 'cron.05m'; then
+    cat <<EOF >>"$CRONTAB_TEMP"
+# Run rapid jobs every 5 minutes:
+*/5 * * * * $RUN_PARTS ~/.cron/cron.05m
+
+EOF
+fi
+
+if has_exec 'cron.15m'; then
+    # use up to 14 minutes, to keep the fourth one under 60
+    if [[ $RANDOM_TIMES -ne 0 ]]; then
+        OFFSET=$(rand_num 14)
+    else
+        OFFSET=4
+    fi
+
+    OFFSET_DESC=$(printf %02d "$OFFSET")
+    # Fifteen-minute intervals
+    MINS=$OFFSET,$((OFFSET+15)),$((OFFSET+30)),$((OFFSET+45))
+    DESC=":$OFFSET_DESC, :$((OFFSET+15)), :$((OFFSET+30)) and :$((OFFSET+45))"
+    cat <<EOF >>"$CRONTAB_TEMP"
+# Run rapid habitual cron jobs four times an hour at $DESC:
+$MINS * * * * $RUN_PARTS ~/.cron/cron.15m
+
+EOF
+    unset OFFSET OFFSET_DESC MINS DESC
+fi
+
+if has_exec 'cron.30m'; then
+    if [[ $RANDOM_TIMES -ne 0 ]]; then
+        OFFSET=$(rand_num 29)
+    else
+        OFFSET=17
+    fi
+
+    OFFSET_DESC=$(printf %02d "$OFFSET")
+    MINS=$OFFSET,$((OFFSET+30))
+    DESC=":$OFFSET_DESC and :$((OFFSET+30))"
+    cat <<EOF >>"$CRONTAB_TEMP"
+# Run habitual cron jobs twice an hour at $DESC:
+$MINS * * * * $RUN_PARTS ~/.cron/cron.30m
+
+EOF
+    unset OFFSET OFFSET_DESC MINS DESC
+fi
+
+# Add the simple intervals
+# These are controlled by cron, with @daily, @monthly, etc. in place of the
+# "cron stars"
+for INTERVAL in hourly daily weekly monthly yearly reboot; do
+    # for pretty printing
+    S_INT=$(printf %-8s "$INTERVAL")
+    #S_INT=$INTERVAL$'\t'
+    if has_exec "cron.$INTERVAL"; then
+        cat <<EOF >>"$CRONTAB_TEMP"
+@${S_INT}ID=$S_INT$RUN_PARTS ~/.cron/cron.$INTERVAL
+
+EOF
+    fi
+done
+
+if [[ $DEBUG -eq 0 ]]; then
+    crontab "$CRONTAB_TEMP"
+else
+    cat "$CRONTAB_TEMP"
+fi
