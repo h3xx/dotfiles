@@ -7,7 +7,7 @@ PREFER_NIGHT=1
 PREFER_FIRST_WEEK=1
 
 DEBUG=1
-RUN_PARTS='/usr/bin/run-parts'
+RUN_PARTS="$HOME/bin/run-parts" # becuase there are too many rules in the debian/redhat one
 CRON_LOG='~/.log/cron.log' # (sic)
 DIR_BASE="$HOME/.cron/cron."
 
