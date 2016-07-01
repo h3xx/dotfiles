@@ -204,6 +204,17 @@ aug g2planet
 	au BufNewFile		*TestData/*.yaml
 				\ so ~/.vim/templates/headers/phpunit-dataset-yaml.vim
 
+	" G2Planet DBTable database fields definition -> YAML record
+	" 'thingy' => 'char',
+	" 'event_id' => 'fkey',
+	"
+	" becomes:
+	"
+	" thingy: 
+	" event_id: 
+	au FileType		php,yaml
+				\ vnoremap <buffer> <silent> ,y :s/\([ \t]*\)["']/\1/\|'<,'>s/['"] =>.*/: /<CR>
+
 aug END " g2planet
 
 " vi: ft=vim fdm=syntax
