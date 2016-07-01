@@ -2,7 +2,6 @@
 # edit this file
 alias rch='vi ~/.bashrc-$HOSTNAME'
 
-export MANPATH="$HOME/.usr/man:$HOME/.usr/share/man:${MANPATH:-$(manpath)}"
 FIGNORE='templates_c'
 GLOBIGNORE='*~'
 
@@ -17,6 +16,7 @@ da=~/future/php/eclib/data
 u=~/future/php/eclib/utility
 menu=~/future/php/eclib/data/menu.yaml
 appconfig=~/future/php/eclib/configs/AppConfig.yaml
+tweaks=~/future/php/eclib/data/tweaks.sql
 db=~/future/php/emaxlib/eventmax.sql
 pj=~pjarosch/public_html/code/smartco/ec/php/eclib
 
