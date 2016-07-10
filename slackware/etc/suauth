@@ -1,0 +1,6 @@
+# /etc/suauth - configuration for su(1)
+
+# Anyone else may not su to root unless in
+# group wheel. This is how BSD does things.
+#
+root:ALL EXCEPT GROUP wheel:DENY
