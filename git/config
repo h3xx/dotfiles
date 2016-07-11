@@ -89,6 +89,10 @@
 	ui		= auto
 	pager		= true
 
+# Fix to give method or class name in php diff
+[diff "php"]
+	xfuncname = "^[\t ]*(((((public|protected|private|static)[\t ]+)*function)|class).*)$"
+
 [include]
 	path = ./git-colors-neonwolf-256.gitconfig
 
