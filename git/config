@@ -77,6 +77,10 @@
 	# only report on submodule pointer states, not working tree state
 	ignoreSubmodules = dirty
 
+[diff "php"]
+	# Fix to give method or class name in php diff
+	xfuncname = "^[\t ]*(((((public|protected|private|static)[\t ]+)*function)|class).*)$"
+
 [fetch]
 	# automatically prune remotely-deleted branches
 	prune = true
