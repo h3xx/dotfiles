@@ -1,0 +1,2 @@
+# Fix to give method or class name in php diff
+*.php diff=php
