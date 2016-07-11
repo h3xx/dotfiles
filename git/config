@@ -80,6 +80,10 @@
 	# more logical hunk breaks (I hope)
 	algorithm = patience
 
+[diff "php"]
+	# Fix to give method or class name in php diff
+	xfuncname = "^[\t ]*(((((public|protected|private|static)[\t ]+)*function)|class).*)$"
+
 [fetch]
 	# automatically prune remotely-deleted branches
 	prune = true
