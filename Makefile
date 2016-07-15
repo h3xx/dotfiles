@@ -1,4 +1,14 @@
+SUBDIRS = \
+		  ack
+
 all: dootfiles
+
+check:
+	@err=0 ;\
+	for dir in $(SUBDIRS); do \
+		make -C $$dir check || err=1 ;\
+	done ;\
+	exit $$err
 
 fix:
 	(for bashrc in ~/.bashrc* ~/.bash_profile; do \
