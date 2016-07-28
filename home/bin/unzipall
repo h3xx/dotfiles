@@ -1,0 +1,73 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [--] FILE...
+Quickly unzip a lot of files.
+
+  -h        Show this help message.
+  -d        Delete the zip files afterwards.
+  --        Terminate options list.
+
+Copyright (C) 2016 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+DELETE_AFTER=0
+
+while getopts 'hd' flag; do
+    case "$flag" in
+        'd')
+            DELETE_AFTER=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+FAILURES=0
+
+for FN; do
+    ABSFN=$(realpath -- "$FN")
+
+    if [[ ! -f $FN ]]; then
+        FAILURES=1
+        printf '%s is not a file (skipped)\n' "$FN" >&2
+        continue
+    fi
+
+    DIRBASE=$(basename -- "$FN" .zip)
+    if [[ $DIRBASE = $FN ]]; then
+        FAILURES=1
+        printf 'Unable to determine target directory for %s (skipped)\n' "$FN" >&2
+        continue
+    fi
+
+    if ! (
+        mkdir -p -- "$DIRBASE" &&
+        cd "$DIRBASE" &&
+        7z x "$ABSFN"
+    ); then
+        FAILURES=1
+        continue
+    fi
+
+    if [[ $DELETE_AFTER -ne 0 ]]; then
+        rm -f -- "$FN"
+    fi
+
+done
+
+exit $FAILURES
