@@ -172,7 +172,6 @@ alias \
 	psa='ps -A x -f f' \
 	psac='ps -A xwf -eo pid,user,cgroup,bsdtime,args' \
 	psx='ps x -f f' \
-	psh='ps -A x c f' \
 	psg='ps -A x -f |grep'
 
 # highlight missing so's from ldd in bold red
