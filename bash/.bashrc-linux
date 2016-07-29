@@ -171,7 +171,7 @@ alias \
 	ps='_ps' \
 	psa='ps -A x -f f' \
 	psac='ps -A xwf -eo pid,user,cgroup,bsdtime,args' \
-	psx='ps x -f f' \
+	psx='ps x f -o user,pid,ppid,c,stime,tty,stat,nice,bsdtime,cmd' \
 	psg='ps -A x -f |grep'
 
 # highlight missing so's from ldd in bold red
