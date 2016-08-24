@@ -189,7 +189,7 @@ _pkg_config() {
 		pkg_files+=("${pkg_path}/${2}"*.pc)
 
 		# no star globs
-		[ -f "${pkg_files[$((${#pkg_files[*]}-1))]}" ] ||
+		[[ -f ${pkg_files[$((${#pkg_files[*]}-1))]} ]] ||
 		unset pkg_files[$((${#pkg_files[*]}-1))]
 	done
 
