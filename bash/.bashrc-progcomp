@@ -106,7 +106,7 @@ complete -g			groupmod groupdel newgrp
 _jobspecs() {
 	read -a COMPREPLY < <(
 		readarray joblines < <(
-			[ "$1" == 'bg' ] && jobs -s || jobs
+			[[ $1 == 'bg' ]] && jobs -s || jobs
 		)
 
 		for jobspec in "${joblines[@]/]*}" ; do
@@ -116,7 +116,7 @@ _jobspecs() {
 			# 1	| 0	| 0
 			# 1	| 1	| 1
 			# ret = !srch || match
-			([ -z "${2:1}" ] || [[ "${jobspec:1}" == ${2:1}* ]]) &&
+			([[ -z ${2:1} ]] || [[ "${jobspec:1}" == ${2:1}* ]]) &&
 			echo -n "${jobspec:1} "
 		done
 
