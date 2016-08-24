@@ -156,22 +156,17 @@ _kmods() {
 complete -o default -F _manpages man
 _manpages() {
 	local \
-		mans=() \
+		mans \
 		sect='[0-9]'
 
-	COMP_WORDBREAKS="${COMP_WORDBREAKS//:}"
+	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+	[[ ${COMP_WORDS[1]} = */* ]] && return
+	[[ $COMP_CWORD > 1 ]] && sect="${COMP_WORDS[1]}"
 
-	[[ "${COMP_WORDS[1]}" == */* ]] && return
-
-	[ "$COMP_CWORD" -gt 1 ] && sect="${COMP_WORDS[1]}"
-
-	mans+=('/usr/man/man'${sect}"/${2}"*)
-
-	[ -f "${mans[0]}" ] || return
-
+	mans=('/usr/man/man'${sect}"/${2}"*)
+	[[ -f ${mans[0]} ]] || return
 	mans=("${mans[@]#/usr/man/man[0-9]/}")
 	COMPREPLY=("${mans[@]%.[0-9]*}")
-
 	COMP_WORDBREAKS+=':'
 }
 
