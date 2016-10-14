@@ -219,6 +219,7 @@ if [[ $UID -eq 0 && -d /var/log/packages ]]; then
 	_slackpacks() {
 		COMPREPLY=(
 			$(
+				shopt -s nullglob
 				cd /var/log/packages
 				m=("$2"*)
 				echo "${m[@]%-+([^-])-+([^-])-+([^-])}"
