@@ -210,6 +210,20 @@ _swaps() {
 	)
 }
 
+# slackware packages
+if [[ $UID -eq 0 ]]; then
+	complete -o default -F _slackpacks removepkg
+	_slackpacks() {
+		COMPREPLY=(
+			$(
+				cd /var/log/packages
+				m=("$2"*)
+				echo "${m[@]%-+([^-])-+([^-])-+([^-])}"
+			)
+		)
+	}
+fi
+
 # psql sees users after -U
 if [[ -f ~/.pgpass ]]; then
 	complete -o default -F _psqlcomp                psql
