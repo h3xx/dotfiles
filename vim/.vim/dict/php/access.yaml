@@ -1,0 +1,72 @@
+- add_events: Add events
+- add_groups: Add groups
+- add_personnel: Add personnel
+- add_portfolios: Add portfolios
+- add_users: Add users
+- assign_admin_role: Assign Administrator Role
+- assign_platform_role: Assign Platform Role
+- delete_admin_objects: Delete objects from admin pages
+- delete_attachments: Delete attachments
+- delete_events: Delete events
+- delete_groups: Delete groups
+- delete_leads: Delete leads
+- delete_portfolios: Delete portfolios
+- edit_app_resources: Edit application resources
+- edit_attachments: Edit attachments
+- edit_attendees: Edit attendees
+- edit_budget_accounts: Edit Budget Accounts
+- edit_budget_reports: Create saved Budget Ad Hoc reports
+- edit_cert_accounts: Edit Certification Accounts
+- edit_cert_reports: Edit saved Certification Ad Hoc reports
+- edit_companies: Edit companies
+- edit_courses: Edit courses
+- edit_event_pmans: Edit Program Management modules for an event
+- edit_event_requests: Edit Event Requests
+- edit_events: Edit events
+- edit_groups: Edit groups
+- edit_menus: Edit menus
+- edit_personnel: Edit personnel
+- edit_portfolios: Edit portfolios
+- edit_snp_reports: Edit Reports
+- edit_users: Edit users
+- edit_venues: Edit venues
+- export_events: Export event data
+- export_portfolios: Export portfolio data
+- hide_events: Hide Events
+- import_data: Import data
+- production: Event Production
+- program_management: Program Management
+- publish_data: Publish Data
+- view_admin_menus: View admin menus
+- view_admin_site: View admin site
+- view_attachments: View attachments
+- view_attendees_module: View Attendees Module
+- view_budget_accounts: View Budget Accounts
+- view_budget_admin_menus: View Administration menus in Budgeting Module
+- view_budget_reports: View saved Budget Ad Hoc reports
+- view_budgeting_module: View Budgeting Module
+- view_bulletin_board: View bulletin board
+- view_cert_accounts: View Certification Accounts
+- view_cert_admin_menus: View Administration menus in Certification Module
+- view_cert_reports: View saved Certification Ad Hoc reports
+- view_certifications_module: View Certification Module
+- view_company_module: View Company Module
+- view_courses: View courses
+- view_emax_module: View Emax Module
+- view_event_requests: View Event Requests
+- view_events: View events
+- view_events_module: View Events Module
+- view_green_events_module: View Green Events Module
+- view_groups: View groups
+- view_lead_capture_module: View Lead Capture Module
+- view_personnel: View personnel
+- view_planning_module: View Planning Module
+- view_portfolios: View portfolios
+- view_requestevent_module: View RequestEVENT Module
+- view_snp_reports: View Reports
+- view_tools_attachments: View Tools Attachments
+- view_tools_help: View Tools Help
+- view_tools_look_up: View Tools Look-up
+- view_tools_message_center: View Tools Message Center
+---
+...

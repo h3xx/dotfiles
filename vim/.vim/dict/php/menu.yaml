@@ -1,0 +1,775 @@
+#
+#       - 'emax' -> EventMAX
+#       - 'pman' -> Program Management
+#       - 'snp' -> Strategy & Planning
+#   Categories affect the styles applied to the menu as well as the left panel
+#   Current categories are:
+#   JavaScript [clickOnOnly()]. They should be unique.
+#   Logical names affect how modules are referred to in order to switch via
+#   and the body inside the iframe#content. For instance, having a menu_value
+#   enviro".
+#   menu, in EC at least. The format is CATEGORY;LNAME.
+#   of `snp;enviro' will set the class names of affected elements to "snp
+# * menu_value is a compound value used for the "logical name" of the root
+# DEMOWARE
+# REMOVED BY MARK FOR 222 ON 12.7
+# URL encoded value for report_type for 'New Ad Hoc Report' button https://ac.g2planet.com/projects/87/tickets/181
+# XXX : DISABLED
+# [3/25/2014]
+# notes:
+# vi: fdm=marker
+# {{{Accounts
+# {{{Administration
+# {{{Attendees
+# {{{Budgeting
+# {{{Calendar
+# {{{Call for Papers
+# {{{Certification
+# {{{Company
+# {{{Content / Collateral
+# {{{Email Blaster
+# {{{Event Connects
+# {{{EventGREEN
+# {{{EventMAX
+# {{{EventMOBILE
+# {{{EventREWARDS
+# {{{Events
+# {{{Lead Capture
+# {{{MyEvent 365
+# {{{Opportunities
+# {{{Planning
+# {{{Presentations
+# {{{Procurement
+# {{{Reports
+# {{{Site Selection
+# {{{Social Media
+# {{{Speaker Bureau
+# {{{Speakers
+# {{{Sponsor ERM
+# {{{Surveys
+# {{{Travel
+# {{{{Accounts
+# {{{{Administration
+# {{{{Application
+# {{{{Attendees
+# {{{{Attendees & Badges
+# {{{{Auctions
+# {{{{Badging
+# {{{{Budgets
+# {{{{Calendar
+# {{{{Call for Papers
+# {{{{Campaigns
+# {{{{Content
+# {{{{Courses
+# {{{{Discussions
+# {{{{Documents
+# {{{{Email
+# {{{{Email Campaigns
+# {{{{Equipment
+# {{{{Event Plans
+# {{{{EventREQUEST
+# {{{{Events
+# {{{{Exhibitors
+# {{{{Expenses
+# {{{{Fun Facts
+# {{{{Green REWARDS
+# {{{{Groups
+# {{{{Home
+# {{{{Individuals
+# {{{{Initiatives
+# {{{{Instructors
+# {{{{Lead Retrieval
+# {{{{Leads
+# {{{{Marketing
+# {{{{Message Center
+# {{{{Personnel
+# {{{{Plan
+# {{{{Portfolios
+# {{{{Production
+# {{{{Reports
+# {{{{Resource Allocation
+# {{{{Resources
+# {{{{Roadmaps
+# {{{{Sessions
+# {{{{Speakers
+# {{{{Sponsors
+# {{{{Surveys
+# {{{{System
+# {{{{Vendors
+# {{{{Venues
+# }}}
+# }}}}
+#TODO: Change access
+- !include "menu_pman_att.yaml"
+- !include "menu_pman_certs.yaml"
+- !include "menu_pman_cfp.yaml"
+- !include "menu_pman_collateral.yaml"
+- !include "menu_pman_event365.yaml"
+- !include "menu_pman_finance.yaml"
+- !include "menu_pman_grn.yaml"
+- !include "menu_pman_leads.yaml"
+- !include "menu_pman_mobile.yaml"
+- !include "menu_pman_procurement.yaml"
+- !include "menu_pman_rewards.yaml"
+- !include "menu_pman_siteselection.yaml"
+- !include "menu_pman_social.yaml"
+- !include "menu_pman_speakerm.yaml"
+- !include "menu_pman_sponsor.yaml"
+- !include "menu_pman_surveys.yaml"
+- !include "menu_pman_travel.yaml"
+- !include "menu_snp_ecal.yaml"
+- !include "menu_snp_emax.yaml"
+- !include "menu_snp_enviro.yaml"
+- !include "menu_snp_pplan.yaml"
+- edit_budget_reports
+- edit_cert_reports
+- edit_event_requests
+- edit_events
+- edit_snp_reports
+- hide_events
+- import_data
+- menu_name: Abstract Report
+- menu_name: Account
+- menu_name: Accounts
+- menu_name: Accounts Import
+- menu_name: Ad Hoc Report Builder
+- menu_name: Add
+- menu_name: Add Auction Item
+- menu_name: Add Auction Points
+- menu_name: Add Badge Printer
+- menu_name: Add Device
+- menu_name: Add New Attachment
+- menu_name: Add New Attendee
+- menu_name: Add New Auction
+- menu_name: Add New Booth
+- menu_name: Add New Campaign
+- menu_name: Add New Company
+- menu_name: Add New Event
+- menu_name: Add New Events
+- menu_name: Add New Exhibitor
+- menu_name: Add New List
+- menu_name: Add New Presenter
+- menu_name: Add New Prize
+- menu_name: Add New Question
+- menu_name: Add New Resource
+- menu_name: Add New Room
+- menu_name: Add New Session
+- menu_name: Add New Survey
+- menu_name: Add New Topic
+- menu_name: Add New User
+- menu_name: Add New Venue
+- menu_name: Administration
+- menu_name: Agenda
+- menu_name: And Beyond
+- menu_name: Application
+- menu_name: Applications
+- menu_name: Attachment Report
+- menu_name: Attendee
+- menu_name: Attendee List
+- menu_name: Attendee Record Layout
+- menu_name: Attendees
+- menu_name: Attendees & Badges
+- menu_name: Auction Item List
+- menu_name: Auction List
+- menu_name: Auction Points List
+- menu_name: Auctions
+- menu_name: Audience Types
+- menu_name: Badge Encoding
+- menu_name: Badge Print Queues
+- menu_name: Badge Printers
+- menu_name: Badge Reader Rooms
+- menu_name: Badge Types
+- menu_name: Badge Vendors
+- menu_name: Badging
+- menu_name: Best Practices Tips
+- menu_name: Booths
+- menu_name: Breakout Sessions
+- menu_name: Breakout Sessions Visits
+- menu_name: Budget
+- menu_name: Budget Performance Report
+- menu_name: Budget Status
+- menu_name: Budgets
+- menu_name: Business Unit Report
+- menu_name: Business Units
+- menu_name: By Account
+- menu_name: By Business Unit
+- menu_name: By Person
+- menu_name: By Speaker
+- menu_name: By Topic
+- menu_name: CRM Integration
+- menu_name: Calendar
+- menu_name: Call for Papers
+- menu_name: Campaigns
+- menu_name: Carbon Calculator
+- menu_name: Certification Organizations
+- menu_name: Certification Template
+- menu_name: Checklists
+- menu_name: Companies of Interest
+- menu_name: Company Profile
+- menu_name: Content
+- menu_name: Content Delivery
+- menu_name: Course
+- menu_name: Courses
+- menu_name: Create New Email
+- menu_name: Create New Roadmap
+- menu_name: Dashboard
+- menu_name: Data Collection
+- menu_name: Databases
+- menu_name: De-dupe Speakers
+- menu_name: Default Settings
+- menu_name: Delete Events
+- menu_name: Discussions
+- menu_name: Display Manager
+- menu_name: Document Library
+- menu_name: Documents
+- menu_name: Documents List
+- menu_name: Double Infinity
+- menu_name: Download Resources
+- menu_name: Drawings
+- menu_name: Edit Access Rights
+- menu_name: Edit Agenda
+- menu_name: Edit Menus
+- menu_name: Edit Session Documents
+- menu_name: Email
+- menu_name: Email Campaigns
+- menu_name: Email Follow-up
+- menu_name: Email History
+- menu_name: Email Replies
+- menu_name: Email Template
+- menu_name: Equipment
+- menu_name: Equipment Report
+- menu_name: Equipment Types
+- menu_name: Event
+- menu_name: Event Agenda
+- menu_name: Event Calendar
+- menu_name: Event Categories
+- menu_name: Event Codes Systems
+- menu_name: Event Compare Reports
+- menu_name: Event Comparison
+- menu_name: Event Marketing
+- menu_name: Event Participation Status
+- menu_name: Event Plan
+- menu_name: Event Plans
+- menu_name: Event Producers
+- menu_name: Event Report
+- menu_name: Event Tiers
+- menu_name: Event Types
+- menu_name: EventREQUEST
+- menu_name: Events
+- menu_name: Exhibitor
+- menu_name: Exhibitor Leads
+- menu_name: Exhibitor List
+- menu_name: Exhibitor Visits
+- menu_name: Exhibitors
+- menu_name: Expense Categories
+- menu_name: Expense Forecast Report
+- menu_name: Expenses
+- menu_name: Export
+- menu_name: External Calendars
+- menu_name: Facebook
+- menu_name: Files List
+- menu_name: Find
+- menu_name: Find Agenda Session
+- menu_name: Find Attendee Type
+- menu_name: Find Attendees
+- menu_name: Find Badge Printer
+- menu_name: Find Booths
+- menu_name: Find Company
+- menu_name: Find Devices
+- menu_name: Find Event
+- menu_name: Find Exhibitors
+- menu_name: Find Prizes
+- menu_name: Find Resources
+- menu_name: Find Room
+- menu_name: Find Sessions
+- menu_name: Find Speakers
+- menu_name: Find Surveys
+- menu_name: Fiscal Calendar
+- menu_name: Flickr
+- menu_name: Fun Facts
+- menu_name: G2Planet Support
+- menu_name: General
+- menu_name: General Settings
+- menu_name: Geographies & Regions
+- menu_name: Green REWARDS
+- menu_name: Hardware
+- menu_name: Holiday Calendars
+- menu_name: Home
+- menu_name: How to Earn Points
+- menu_name: Import
+- menu_name: Import Agenda
+- menu_name: Import Attendees
+- menu_name: Import Authors
+- menu_name: Import Devices
+- menu_name: Import Events
+- menu_name: Import Exhibitor Visits
+- menu_name: Import Exhibitors
+- menu_name: Import Session Registrations
+- menu_name: Import Session Visits
+- menu_name: Import Speakers
+- menu_name: Import Webusers
+- menu_name: Import Zip Codes
+- menu_name: Imports
+- menu_name: Inbox
+- menu_name: Individuals
+- menu_name: Industries
+- menu_name: Information
+- menu_name: Initiatives
+- menu_name: Instructors
+- menu_name: Instructors Import
+- menu_name: Job Categories
+- menu_name: Lead Capture Calendar
+- menu_name: Lead Retrieval
+- menu_name: Leaderboard
+- menu_name: Leads
+- menu_name: LinkedIn
+- menu_name: List Accounts
+- menu_name: List All
+- menu_name: List Attachments
+- menu_name: List Attendees
+- menu_name: List Budgets
+- menu_name: List Business Units
+- menu_name: List Campaign
+- menu_name: List Campaigns
+- menu_name: List Courses
+- menu_name: List E-collateral
+- menu_name: List Emails
+- menu_name: List Equipment
+- menu_name: List Event Plans
+- menu_name: List Events
+- menu_name: List Expense Accounts
+- menu_name: List Fun Facts
+- menu_name: List Individuals
+- menu_name: List Instructors
+- menu_name: List Leads
+- menu_name: List Lists
+- menu_name: List Opportunities
+- menu_name: List Personnel
+- menu_name: List Portfolio Roadmaps
+- menu_name: List Portfolios
+- menu_name: List Presentations
+- menu_name: List Priorities
+- menu_name: List Programs
+- menu_name: List Promotions
+- menu_name: List Questions
+- menu_name: List Speakers
+- menu_name: List Submissions
+- menu_name: List Surveys
+- menu_name: List Themes
+- menu_name: List Users
+- menu_name: List Vendors
+- menu_name: List Venues
+- menu_name: Manage
+- menu_name: Manage Badge Print Queues
+- menu_name: Manage Badge Printers
+- menu_name: Manage Display Manager
+- menu_name: Manage Email
+- menu_name: Manage Users
+- menu_name: Marketing
+- menu_name: Menu One
+- menu_name: Menu To Infinity
+- menu_name: Menus
+- menu_name: Message Center
+- menu_name: Module Settings
+- menu_name: More Auction Points
+- menu_name: My Ad Hoc Reports
+- menu_name: My Roadmaps
+- menu_name: My Submissions to Review
+- menu_name: New Attendee Type
+- menu_name: New Auction
+- menu_name: New Auction Item
+- menu_name: New Booth
+- menu_name: New Exhibitor
+- menu_name: New Prize
+- menu_name: New Room
+- menu_name: New Session
+- menu_name: New Survey
+- menu_name: Open New Message
+- menu_name: Opportunities
+- menu_name: Opportunity
+- menu_name: Opportunity Status
+- menu_name: Opportunity Type
+- menu_name: Overview
+- menu_name: Participation Activities
+- menu_name: Performance Measures
+- menu_name: Personnel
+- menu_name: Personnel Calendar
+- menu_name: Personnel Report
+- menu_name: Personnel Roles
+- menu_name: Photo/GIF
+- menu_name: Plan
+- menu_name: Planning Templates
+- menu_name: Portfolio Report
+- menu_name: Portfolios
+- menu_name: Prepare Email
+- menu_name: Presentation Type
+- menu_name: Presentations
+- menu_name: Presenter Report
+- menu_name: Preview
+- menu_name: Prizes
+- menu_name: Production
+- menu_name: Products & Services
+- menu_name: Program Reports
+- menu_name: Published Events
+- menu_name: Push Notifications
+- menu_name: Quarterly Spend
+- menu_name: Raw
+- menu_name: Raw Exhibitor Lead Answers
+- menu_name: Raw Exhibitor Visits
+- menu_name: Raw Session Visits
+- menu_name: Raw Survey Answers
+- menu_name: Registered Sessions
+- menu_name: Registration
+- menu_name: Reports
+- menu_name: Resource Allocation
+- menu_name: Resources
+- menu_name: Review Committee Report
+- menu_name: Roadmaps
+- menu_name: Room
+- menu_name: Schedule
+- menu_name: Search by Account
+- menu_name: Search by Attendee
+- menu_name: Search by Course
+- menu_name: Search by Instructor
+- menu_name: Search for File
+- menu_name: Search for Topic
+- menu_name: Segments
+- menu_name: Session List
+- menu_name: Session Registrations
+- menu_name: Session Report
+- menu_name: Session Speakers
+- menu_name: Session Speakers List
+- menu_name: Session Visits
+- menu_name: Sessions
+- menu_name: Show Database Tables
+- menu_name: Show Database Views
+- menu_name: Source Accounts
+- menu_name: Speaker
+- menu_name: Speaker Report
+- menu_name: Speaker Type
+- menu_name: Speakers
+- menu_name: Speaking Calendar
+- menu_name: Speaking Status
+- menu_name: Sponsor
+- menu_name: Sponsors
+- menu_name: Submission Report
+- menu_name: Submission Website
+- menu_name: Survey
+- menu_name: Survey Charts
+- menu_name: Survey Report
+- menu_name: Survey Results Download
+- menu_name: Survey Type
+- menu_name: Surveys
+- menu_name: System
+- menu_name: System Settings
+- menu_name: Target Accounts
+- menu_name: Templates
+- menu_name: Topic Report
+- menu_name: Topic Type
+- menu_name: Topics
+- menu_name: Trade
+- menu_name: Triple Infinity
+- menu_name: Twitter
+- menu_name: Types
+- menu_name: Upload New File
+- menu_name: Usage Metrics
+- menu_name: Usage Reports
+- menu_name: User Companies
+- menu_name: User Report
+- menu_name: User Types
+- menu_name: Users
+- menu_name: Vendor Report
+- menu_name: Vendor Spend
+- menu_name: Vendor Types
+- menu_name: Vendors
+- menu_name: Venues
+- menu_name: Verticals
+- menu_name: View Attendee Survey Page
+- menu_name: Website
+- menu_name: Welcome Email
+- menu_name: Welcome Interstitial
+- menu_name: Wireless
+- menu_name: Year-over-Year Reports
+- menu_name: by Business Unit
+- menu_name: by Event
+- menu_name: by Geography
+- menu_name: by Personnel
+- menu_name: by Portfolio
+- menu_name: view twitter page
+- program_management
+- publish_data
+- view_admin_menus
+- view_attendees_module
+- view_budget_accounts
+- view_budget_admin_menus
+- view_budget_reports
+- view_budgeting_module
+- view_cert_accounts
+- view_cert_admin_menus
+- view_cert_reports
+- view_certifications_module
+- view_company_module
+- view_courses
+- view_emax_module
+- view_event_requests
+- view_events
+- view_events_module
+- view_green_events_module
+- view_lead_capture_module
+- view_planning_module
+- view_portfolios
+- view_snp_reports
+---
+...
+accesses:
+icon: icon facebook
+icon: icon flickr
+icon: icon linkedin
+icon: icon twitter
+is_hidden: t
+items:
+menu_name: Budgeting
+menu_name: Calendar
+menu_name: Call for Papers
+menu_name: Certification
+menu_name: Company
+menu_name: Content / Collateral
+menu_name: Email Blaster
+menu_name: Event Connects
+menu_name: EventGREEN
+menu_name: EventMAX
+menu_name: EventMOBILE
+menu_name: EventREWARDS
+menu_name: Lead Capture
+menu_name: MyEvent 365
+menu_name: Planning
+menu_name: Procurement
+menu_name: Site Selection
+menu_name: Social Media
+menu_name: Speaker Bureau
+menu_name: Sponsor ERM
+menu_name: Surveys
+menu_name: Travel
+menu_value: emax;emax
+menu_value: pman;att
+menu_value: pman;certs
+menu_value: pman;cfp
+menu_value: pman;collateral
+menu_value: pman;email
+menu_value: pman;event365
+menu_value: pman;finance
+menu_value: pman;grn
+menu_value: pman;leads
+menu_value: pman;mobile
+menu_value: pman;procurement
+menu_value: pman;rewards
+menu_value: pman;siteselection
+menu_value: pman;social
+menu_value: pman;speakerm
+menu_value: pman;sponsor
+menu_value: pman;surveys
+menu_value: pman;travel
+menu_value: snp;ecal
+menu_value: snp;enviro
+menu_value: snp;pplan
+spacer_after: true
+spacer_before: true
+target: _self
+target: email_window
+url: '#hl_administration'
+url: '#hl_courses'
+url: '#hl_event_list'
+url: '#hl_expenses'
+url: '#hl_groups'
+url: '#hl_initiatives'
+url: '#hl_personnel'
+url: '#hl_portfolios'
+url: '#hl_reports'
+url: '#hl_roadmaps'
+url: '#hl_venues'
+url: abstract_report
+url: activity_list
+url: agenda_edit
+url: agenda_import
+url: agenda_session_report
+url: agenda_session_search
+url: app_resource_download
+url: app_resource_edit
+url: app_resource_search
+url: attachment_folders
+url: attendee_edit
+url: attendee_import
+url: attendee_report
+url: attendee_search
+url: attendee_session_report
+url: attendee_survey_form
+url: attendee_type_edit
+url: attendee_type_search
+url: attendees_home
+url: auction_edit
+url: auction_item_edit
+url: auction_item_report
+url: auction_points_edit
+url: auction_points_report
+url: auction_report
+url: audience_type_list
+url: badge_printer_report
+url: badge_queue_report
+url: booth_edit
+url: booth_search
+url: breakout_session_visit_report
+url: budget_category_report
+url: budget_overview_wizard
+url: budget_report_wizard
+url: budget_status_report
+url: budgeting_information
+url: campaign_list
+url: cert_attendee_report
+url: cert_company_report?company_type=account
+url: cert_org_company_report?company_type=cert_organization
+url: cert_trade_list
+url: coming_soon
+url: company_edit
+url: company_homepage
+url: company_report?company_type=participating
+url: company_search
+url: complex_budget_report
+url: coning_soon
+url: course_report
+url: courses_homepage
+url: database_table_search
+url: database_table_search?table_type=view
+url: device_edit
+url: device_import
+url: device_search
+url: document_library
+url: email_history
+url: email_homepage
+url: email_list
+url: emax_home
+url: event_ad_hoc_report_preamble
+url: event_budget_group_report?event_budget_group_type=expense
+url: event_budget_group_report?event_budget_group_type=source
+url: event_calendar
+url: event_category_list
+url: event_code_systems_list
+url: event_display_manager_edit
+url: event_edit
+url: event_import
+url: event_participation_level_list
+url: event_producer_company_report?company_type=event_producer
+url: event_report
+url: event_report?has_mods=pman_att&column_headers=event_name,start_date,end_date,city,state,country,event_category,event_type
+url: event_report?has_mods=pman_certs
+url: event_report?has_mods=pman_finance
+url: event_report?has_mods=pman_finance&column_headers[]=event_name&column_headers[]=start_date&column_headers[]=end_date&column_headers[]=budget_net&link_append=active_tab=pman_finance
+url: event_report?has_mods=pman_leads
+url: event_report?link_append=active_tab=event_plan
+url: event_report?mode=delete
+url: event_request_report
+url: event_search
+url: event_stats
+url: event_tier_list
+url: event_type_list
+url: exhibitor_edit
+url: exhibitor_import
+url: exhibitor_lead_report
+url: exhibitor_report
+url: exhibitor_search
+url: exhibitor_survey_raw_report
+url: exhibitor_visit_import
+url: exhibitor_visit_report
+url: finance_home
+url: fiscal_date_list
+url: flex_report_report?report_type=event_ad_hoc_report_preamble
+url: flex_report_report?report_type=lead_ad_hoc_report_preamble
+url: flex_report_report?report_type=roadmap_builder&add_page=roadmap_wizard
+url: flex_report_report?report_type[]=budget_overview_builder&report_type[]=budget_report_builder
+url: geography_list
+url: green_event_calendar
+url: green_landingpage
+url: group_list
+url: holiday_admin
+url: http://mail.g2planet.com
+url: http://www.twitter.com
+url: industry_report
+url: instructor_list?is_instructor=t
+url: job_title_list
+url: lead_ad_hoc_report_preamble
+url: leads_homepage
+url: link_calendar
+url: link_request_wizard
+url: menu_edit?mode=&edit_menu_type=left_nav&root_menu_id=1163&tab_id=&submitButton=Edit+Tabs
+url: menu_export
+url: menu_import
+url: menu_preview
+url: metrics_report
+url: my_reviews_report
+url: paper_attachment_report
+url: paper_report
+url: paper_speaker_report
+url: performance_measure_report
+url: person_intersect_report
+url: personnel_list
+url: personnel_role_list
+url: planning_homepage
+url: portfolio_list
+url: portfolio_list?name_column=roadmap_link
+url: printer_edit
+url: printer_search
+url: priority_list
+url: prize_edit
+url: prize_search
+url: product_list
+url: published_event_report
+url: resource_allocation_calendar
+url: reviewer_report
+url: roadmap_wizard
+url: role_edit
+url: room_device_report
+url: room_edit
+url: room_search
+url: segment_report
+url: session_attachment_report
+url: session_edit
+url: session_list_report
+url: session_paper_report
+url: session_register_import
+url: session_search
+url: session_speaker_report
+url: session_visit_import
+url: session_visit_report
+url: speaker_dedupe
+url: speaker_email_search
+url: speaker_import
+url: speaker_search
+url: speaker_webuser_edit
+url: survey_answer_export
+url: survey_answer_raw_report
+url: survey_charts
+url: survey_edit
+url: survey_search
+url: surveys_home
+url: system_information
+url: system_settings_defaults
+url: system_settings_general
+url: system_settings_welcome_email
+url: system_settings_welcome_interstitial
+url: theme_list
+url: user_import
+url: user_roles
+url: vendor_report
+url: vendor_type_report
+url: venue_list
+url: venue_report
+url: venue_wizard
+url: vertical_list
+url: webuser_access_report
+url: webuser_access_report?module=pman_certs
+url: webuser_access_report?module=pman_finance
+url: webuser_access_report?module=snp
+url: webuser_company_report
+url: webuser_import
+url: webuser_report
+url: webuser_wizard
+url: zipcode_import
