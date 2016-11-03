@@ -56,7 +56,7 @@ for FN; do
         continue
     fi
 
-    DIRBASE=$(basename -- "$FN" .zip)
+    DIRBASE=$(basename -- "${FN%.*}")
     if [[ $DIRBASE = "$FN" ]]; then
         FAILURES=1
         printf 'Unable to determine target directory for %s (skipped)\n' "$FN" >&2
