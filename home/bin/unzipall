@@ -47,7 +47,7 @@ for fn; do
 		continue
 	fi
 
-	dirbase="$(basename -- "$fn" .zip)"
+	dirbase="$(basename -- "${fn%.*}")"
 	if [[ $dirbase = $fn ]]; then
 		failures=1
 		echo "Unable to determine target directory for $fn (skipped)" >&2
