@@ -212,6 +212,7 @@
 - menu_name: Courses
 - menu_name: Create New Email
 - menu_name: Create New Roadmap
+- menu_name: Custom Table Settings
 - menu_name: Dashboard
 - menu_name: Data Collection
 - menu_name: Databases
@@ -666,6 +667,7 @@ url: event_report?has_mods=pman_finance&column_headers[]=event_name&column_heade
 url: event_report?has_mods=pman_leads
 url: event_report?link_append=active_tab=event_plan
 url: event_report?mode=delete
+url: event_report?user_defaults=true
 url: event_request_report
 url: event_search
 url: event_stats
@@ -685,6 +687,7 @@ url: flex_report_report?report_type=event_ad_hoc_report_preamble
 url: flex_report_report?report_type=lead_ad_hoc_report_preamble
 url: flex_report_report?report_type=roadmap_builder&add_page=roadmap_wizard
 url: flex_report_report?report_type[]=budget_overview_builder&report_type[]=budget_report_builder
+url: generic_use_meta_list
 url: geography_list
 url: green_event_calendar
 url: green_landingpage

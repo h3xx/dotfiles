@@ -182,6 +182,7 @@ EcEventEditAddEventAudienceType
 EcEventEditAddEventCampaign
 EcEventEditAddEventCode
 EcEventEditAddEventCompany
+EcEventEditAddEventGenericUse
 EcEventEditAddEventMessage
 EcEventEditAddEventPriority
 EcEventEditAddEventProducer
@@ -222,6 +223,7 @@ EcEventEditDeleteEventAudienceType
 EcEventEditDeleteEventCampaign
 EcEventEditDeleteEventCode
 EcEventEditDeleteEventCompany
+EcEventEditDeleteEventGenericUse
 EcEventEditDeleteEventPriority
 EcEventEditDeleteEventProducer
 EcEventEditDeleteEventProduct
@@ -269,6 +271,7 @@ EcEventEditUpdateContact
 EcEventEditUpdateEventAudienceType
 EcEventEditUpdateEventCampaign
 EcEventEditUpdateEventCompany
+EcEventEditUpdateEventGenericUse
 EcEventEditUpdateEventPriority
 EcEventEditUpdateEventProducer
 EcEventEditUpdateEventProduct
@@ -317,6 +320,7 @@ EcEventEditViewDemographics
 EcEventEditViewEibDupe
 EcEventEditViewEventCampaigns
 EcEventEditViewEventCodes
+EcEventEditViewEventGenericUse
 EcEventEditViewEventPriorities
 EcEventEditViewEventProducts
 EcEventEditViewEventSegments
@@ -445,6 +449,18 @@ EcGenericActionHandler
 EcGenericHistoryView
 EcGenericTabbedList
 EcGenericTabbedListAjax
+EcGenericUseList
+EcGenericUseListActionHandler
+EcGenericUseListAddItem
+EcGenericUseListAjax
+EcGenericUseListDeleteItem
+EcGenericUseListEditItem
+EcGenericUseMetaList
+EcGenericUseMetaListActionHandler
+EcGenericUseMetaListAddCustomTable
+EcGenericUseMetaListAjax
+EcGenericUseMetaListDeleteCustomTable
+EcGenericUseMetaListEditCustomTable
 EcGenericView
 EcGenericWizard
 EcGeographyEdit
@@ -796,6 +812,7 @@ EventCompetitor
 EventContact
 EventDemographic
 EventExhibitCategory
+EventGenericUse
 EventGroupCompany
 EventHistory
 EventHyperlink
@@ -839,6 +856,8 @@ FlexReport
 FlexReportField
 FlexReportRule
 FlexReportSharable
+GenericUse
+GenericUseMeta
 GenericYamlCompanyImport
 Geography
 Group
