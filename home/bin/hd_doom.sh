@@ -13,6 +13,8 @@ LOADS=(
 	#spriteHDpublic6/spriteHDpublic6.pk3
 	# music
 	'DoomMetalVol4/DoomMetalVol4.wad'
+	# sound
+	'sound/pk_doom_sfx/pk_doom_sfx_20120224.wad'
 	# textures
 	#REPLACED:'textures/Brutal_Doom_141_edition_2.0/BD141 DHTP HDtextures.pk3'
 	'textures/dhtp/zandronum-dhtp-20161017.pk3'
