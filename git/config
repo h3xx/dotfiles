@@ -142,8 +142,8 @@
 
 [user]
 	name = Dan Church
-	email = amphetamachine@gmail.com
-	signingKey = CD2CDBD0
+	email = dchurch@g2planet.com
+	signingKey = 3B10E871
 
 [github]
 	user = h3xx
