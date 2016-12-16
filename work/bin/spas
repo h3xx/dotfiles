@@ -70,8 +70,8 @@ echo "mode: $MODE"
 
 git pull &&
 git subpull &&
-sudo make "$MODE" pause &&
-echo y |sudo make "$MODE" sync
+sudo bmake "$MODE" pause &&
+echo y |sudo bmake "$MODE" sync
 
 err="$?"
 if [[ $err -ne 0 ]]; then
@@ -79,7 +79,7 @@ if [[ $err -ne 0 ]]; then
 fi
 
 if [[ $REBUILD_DB -ne 0 ]]; then
-	sudo make "$MODE" reload || exit
+	sudo bmake "$MODE" reload || exit
 fi
 
 if [[ $MIGRATION -ne 0 ]]; then
@@ -93,7 +93,7 @@ if [[ $RELOAD_MENUS -ne 0 ]]; then
 	(cd data && ./reload_menus.sh "$MODE") || exit
 fi
 
-sudo make "$MODE" unpause
+sudo bmake "$MODE" unpause
 err="$?"
 
 exit "$err"
