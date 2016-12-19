@@ -57,7 +57,7 @@ esac
 GIT_PS1_SHOWCOLORHINTS=1
 test -n "$(
 	for fn in \
-		/usr/doc/git-?.?.?/contrib/completion/git-prompt.sh \
+		/usr/doc/git-*.*.*/contrib/completion/git-prompt.sh \
 		; do
 		if [[ -f $fn ]]; then
 			echo "$fn"
