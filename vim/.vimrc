@@ -292,16 +292,16 @@ let g:sh_fold_enabled = 3
 "set backspace=2
 
 " two-stroke saving instead of four-stroke
-" usefulness: ***
+" usefulness: *****
 nnoremap <C-s> :w<cr>
 
 " Alt+s, Alt+p, Alt+f = common fugitive commands
 " rhymes with .inputrc mapping
-" usefulness: ****
+" usefulness: *****
 nnoremap <A-s> :Gst<cr>
 " usefulness: ****
 nnoremap <A-p> :Gpush 
-" usefulness: ***
+" usefulness: **
 nnoremap <A-f> :Gfetch
 " usefulness: ***
 nnoremap <A-u> :Gpull
@@ -309,7 +309,7 @@ nnoremap <A-u> :Gpull
 nnoremap <A-o> :Git co 
 
 " git blame
-" usefulness: TODO
+" usefulness: ****
 nnoremap <F2> :Gblame<cr>
 
 " reverse function of ' and `
