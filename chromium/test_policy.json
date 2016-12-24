@@ -27,6 +27,8 @@
 	// Prevent app promotions from appearing on the new tab page (double yuk)
 	// (deprecated because Google supposedly learned their lesson)
 	"HideWebStorePromo": true,
+	// Third-party cookies are never needed
+	"BlockThirdPartyCookies": true,
 
 	// *** security-related policies *** //
 
