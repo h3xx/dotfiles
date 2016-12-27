@@ -30,6 +30,9 @@ LOADS=(
 	# brightmaps
 	'resources/Sbrightmaps/SBrightmaps.pk3'
 
+	# weapon animations
+	'resources/animations/pk_anim1.wad'
+
 )
 
 while getopts 'Hh' flag; do
