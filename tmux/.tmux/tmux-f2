@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SERVERS=(
+    test223.g2planet.com
+    test220.g2planet.com
+    prod223a.g2planet.com
+)
+
+for sv in "${SERVERS[@]}"; do
+    echo "*** $sv ***" >&2
+    ssh "$sv" 'if [[ -x ~/.gitrepos/update.sh ]]; then cd ~/.gitrepos && ./update.sh; fi'
+done
