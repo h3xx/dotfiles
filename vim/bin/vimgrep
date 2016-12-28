@@ -1,0 +1,5 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# open vim with `:grep' results
+exec vim "+grep $* |cw"
