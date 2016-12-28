@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# open vim with `:grep' results
+exec vim "+grep $* |cw"
