@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [[ -x ~/.gitrepos/update.sh ]]; then
+    cd ~/.gitrepos && ./update.sh
+fi
