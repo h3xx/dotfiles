@@ -32,7 +32,7 @@
 	ma		= merge --abort
 	mt		= mergetool
 	p		= push
-	pu		= pull
+	pu		= "!echo use git u;exit 1"
 	r		= reset
 	rb		= rebase
 	rba		= rebase --abort
@@ -48,6 +48,7 @@
 	submaster	= submodule foreach git checkout master
 	subpull		= !~/.config/git/bin/git-subpull.sh
 	subup		= submodule update --init
+	u		= pull
 	url		= remote -v # list checkout urls
 	w		= whatchanged
 
