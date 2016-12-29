@@ -31,7 +31,7 @@ $if bash
 "\M-d":		"git d "
 "\M-c":		"git c "
 "\M-s":		"git s "
-"\M-u":		"git pu"
+"\M-u":		"git u"
 "\M-p":		"git p "
 "\M-f":		"git f "
 "\M-m":		"git m "
