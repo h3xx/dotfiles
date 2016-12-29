@@ -46,6 +46,8 @@
 	cpa		= cherry-pick --abort
 	co		= checkout
 	cob		= checkout -b
+	Omm		= "!sh -c 'git checkout \"$0\" && git pull && git merge -'"
+	Om		= "!sh -c 'git checkout \"$0\" && git merge -'"
 	sf		= submodule foreach
 	sub		= submodule
 	subup		= submodule update --init

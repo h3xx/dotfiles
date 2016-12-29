@@ -36,6 +36,7 @@ $if bash
 "\M-f":		"git f "
 "\M-m":		"git m "
 "\M-o":		"git co "
+"\M-O":		"git Omm "
 
 # limit history garbage
 # escape + arrow key (both xterm and rxvt)
