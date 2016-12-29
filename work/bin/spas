@@ -70,7 +70,14 @@ echo "mode: $MODE"
 
 git pull &&
 git subpull &&
-sudo bmake "$MODE" pause &&
+sudo bmake "$MODE" pause || exit
+
+# if schemacheck fails, we have to rebuild the database BEFORE syncing
+if [[ $REBUILD_DB -ne 0 ]] && ! sudo bmake "$MODE" schemacheck; then
+    sudo bmake "$MODE" reload || exit
+    REBUILD_DB=0
+fi
+
 echo y |sudo bmake "$MODE" sync
 
 err="$?"
