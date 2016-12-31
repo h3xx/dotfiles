@@ -31,6 +31,20 @@
 	// Third-party cookies are never needed
 	"BlockThirdPartyCookies": true,
 
+	"CookiesBlockedForUrls": [
+		// clickbait sites
+		"[*.]distractify.com",
+		"[*.]yummly.com",
+		"[*.]the-daily.buzz",
+
+		// other sites that have no business setting cookies
+		"[*.]emuparadise.me",
+		"[*.]mediafire.com",
+		"[*.]zippyshare.com",
+		"adf.ly",
+		"bit.ly",
+	],
+
 	// *** security-related policies *** //
 
 	// "If you set this setting to enabled the automatic search and
