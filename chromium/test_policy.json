@@ -1,6 +1,7 @@
 /**
  * /etc/opt/chrome/policies/managed/test_policy.json
  * @see http://www.chromium.org/administrators/policy-list-3
+ * @see chrome://policy/
  */
 {
 	// *** privacy-related policies *** //
