@@ -77,6 +77,8 @@
 	algorithm = patience
 	# only report on submodule pointer states, not working tree state
 	ignoreSubmodules = dirty
+	# show differences in submodules in terms of log entries
+	submodule = log
 
 [diff "php"]
 	# Fix to give method or class name in php diff
