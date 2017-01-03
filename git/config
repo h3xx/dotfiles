@@ -69,6 +69,8 @@
 	ignoreSubmodules = dirty
 	# more logical hunk breaks (I hope)
 	algorithm = patience
+	# show differences in submodules in terms of log entries
+	submodule = log
 
 [status]
 	ignoreSubmodules = dirty
