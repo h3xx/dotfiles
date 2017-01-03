@@ -80,6 +80,8 @@
 	ignoreSubmodules = dirty
 	# more logical hunk breaks (I hope)
 	algorithm = patience
+	# show differences in submodules in terms of log entries
+	submodule = log
 
 [diff "php"]
 	# Fix to give method or class name in php diff
