@@ -10,3 +10,9 @@ for sv in "${SERVERS[@]}"; do
     echo "*** $sv ***" >&2
     ssh "$sv" 'if [[ -x ~/.gitrepos/update.sh ]]; then cd ~/.gitrepos && ./update.sh; fi'
 done
+
+# update locally
+if [[ -x ~/.gitrepos/update.sh ]]; then
+    cd ~/.gitrepos &&
+        ./update.sh
+fi
