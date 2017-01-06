@@ -1,5 +1,6 @@
 TARGETS = \
-	jargon.dat
+	jargon.dat \
+	koans.dat
 
 all: $(TARGETS)
 
