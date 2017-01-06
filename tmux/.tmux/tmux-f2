@@ -7,12 +7,13 @@ SERVERS=(
 )
 
 for sv in "${SERVERS[@]}"; do
-    echo "*** $sv ***" >&2
-    ssh "$sv" 'if [[ -x ~/.gitrepos/update.sh ]]; then cd ~/.gitrepos && ./update.sh; fi'
+    ssh "$sv" 'if [[ -x ~/.gitrepos/update.sh ]]; then cd ~/.gitrepos && ./update.sh; fi' 2>&1 |sed -e "s,^,$sv: ," &
 done
 
 # update locally
 if [[ -x ~/.gitrepos/update.sh ]]; then
     cd ~/.gitrepos &&
-        ./update.sh
+        ./update.sh 2>&1 |sed -e 's,^,localhost: ,' &
 fi
+
+wait
