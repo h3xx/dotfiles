@@ -101,6 +101,8 @@ $section = $params['section'];
 $section = null;
 $sessionTimeout = null;
 $sessionTimeout = self::getConfigParam(self::SESSION_TIMEOUT_PARAM);
+$session_handler = new DatabaseSessionHandler;
+$session_handler->setDatabase($this->database);
 $smarty->config_load($params['file'], $section);
 $smarty->config_overwrite = $overwrite;
 $smarty->force_compile = false;
@@ -156,12 +158,12 @@ $this->redirect($loginPage . '?' . $prefix . 'page=' . urlencode($uri));
 $this->redirect($loginPage);
 $this->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 $this->saveURL();
-$this->session = new UserSession();
-$this->session->setSessionHandler($this->database);
 $this->session->setWebUserID($this->user->webuser_id);
 $this->session->setWebUserID($user->webuser_id);
+$this->session_handler = $session_handler;
 $this->setCSRFToken();
 $this->setSessionCookieParams();
+$this->setSessionHandler($session_handler);
 $this->setSessionName();
 $this->smarty = new Smarty();
 $this->smarty->addTemplateDir('./autolib/templates/', 'autolib/templates');
@@ -222,11 +224,16 @@ $user=isset($config[self::DB_USER_PARAM]) ? $config[self::DB_USER_PARAM] : null;
 *          session was found
 *      same name or false to add them to an array
 *   Whether to wait for the lock to disappear.
+*  DatabaseSessionHandler, FileSessionHandler
+*  automatically call `session_write_close` when PHP exists.
+*  that implements SessionHandlerInterface Possible classes include
 * @deprecated - replace with `EnvUtil::getInstallType() === 'demo'`
 * @deprecated - replace with `EnvUtil::getServerType() === 'dev'`
 * @deprecated - replace with `EnvUtil::getServerType() === 'prod' && EnvUtil::getInstallType() === 'prod'`
+* @param SessionHandlerInterface $session_handler An object of a class
 * @param Webuser $user
 * @param array $config the configuration parameters
+* @param bool $register_shutdown Whether to register a shutdown handler to
 * @param bool $wait
 * @return PDO the PDO Database object
 * @return Webuser : the user information from the session or null if no
@@ -314,7 +321,6 @@ $user=isset($config[self::DB_USER_PARAM]) ? $config[self::DB_USER_PARAM] : null;
 /** @var  ConfigUtil $config */
 /** @var  PDO $database */
 /** @var  Smarty $smarty */
-/** @var  UserSession $session */
 /** @var  Webuser $user */
 /** @var HTMLPurifier_Config $config */
 /** @var Webuser $user */
@@ -324,7 +330,7 @@ $user=isset($config[self::DB_USER_PARAM]) ? $config[self::DB_USER_PARAM] : null;
 // Call the "handleRequest" function in the sub-class to
 // Catch and ignore if page visit insert fails
 // Close database before going to new page
-// Close session information
+// Close session information (automatically done by session_handler)
 // Close the database
 // Configure email handler
 // Destroy the session information
@@ -413,7 +419,6 @@ const AJAX_PARAM = 'ajax';
 const COMPILE_DIR = './templates_c';
 const DB_DSN_PARAM = 'database_dsn';
 const DB_PASSWORD_PARAM = 'database_password';
-const DB_SESSION_PARAM = 'store_session_in_db';
 const DB_USER_PARAM = 'database_user';
 const DEFAULT_CONFIG_FILE = TEMPLATE_REQUEST_DEFAULT_CONFIG_FILE;
 const DEFAULT_CONFIG_PATH = TEMPLATE_REQUEST_DEFAULT_CONFIG_PATH;
@@ -483,6 +488,8 @@ if (!isset($_COOKIE['edit_mode']) || (isset($_COOKIE['edit_mode']) && $_COOKIE['
 if (!isset($_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_PW'] != $passwd) {
 if (!isset($_SESSION[self::SESSION_INITIATED]))
 if (!isset($config[self::DB_DSN_PARAM]))
+if (!isset($this->session_handler) && session_id() != "")
+if (!isset($this->session_handler))
 if ($directory[strlen($directory)-1] != '/')
 if ($e->getCode() == self::ACCESS_DENIED && self::getConfigParam(self::ERROR_TEMPLATE))
 if ($envImage)
@@ -548,11 +555,9 @@ if (self::getConfigParam('log_get'))
 if (self::getConfigParam('log_post'))
 if (self::getConfigParam('log_remote_addr'))
 if (self::getConfigParam('log_user_agent'))
-if (self::getConfigParam(self::DB_SESSION_PARAM) || (!empty($this->USE_DB_SESSIONS) && $this->USE_DB_SESSIONS))
 if (self::getConfigParam(self::ENABLE_CONFIG_PARAM))
 if (self::getConfigParam(self::FORCE_COMPILE_PARAM) == true)
 if (self::getConfigParam(self::PAGE_VISIT_LOGGING) && !$this->pageVisitLogged && isset($this->database)) {
-if (session_id() != "")
 if (session_id() !== "")
 if (strcasecmp($key, $source) == 0) {
 if (stripos($class, 'ApnsPHP') === 0)
@@ -578,7 +583,7 @@ protected $force_ssl = false;
 protected $pageAccesses = false;
 protected $pageVisitLogged = false;
 protected $save_url = true;
-protected $session;
+protected $session_handler;
 protected $smarty;
 protected $user;
 protected function assign($name, $value=null)
@@ -609,6 +614,7 @@ protected function redirect($location)
 protected function saveURL()
 protected function setCSRFToken()
 protected function setSessionCookieParams()
+protected function setSessionHandler(SessionHandlerInterface $session_handler, $register_shutdown = true) {
 protected function setSessionName()
 protected function unassign($name)
 protected function validateCSRFToken()
@@ -665,6 +671,7 @@ session_destroy();
 session_name($name);
 session_name(self::DEFAULT_SESSION_NAME);
 session_name(self::getConfigParam(self::SESSION_NAME_PARAM) . self::$sessionNameSuffix);
+session_set_save_handler($this->session_handler, $register_shutdown);
 session_start();
 session_write_close();
 set_error_handler(array($this, 'handleDisplayError'), E_ALL|~E_STRICT);

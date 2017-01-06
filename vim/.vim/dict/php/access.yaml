@@ -20,7 +20,9 @@
 - edit_cert_reports: Edit saved Certification Ad Hoc reports
 - edit_companies: Edit companies
 - edit_courses: Edit courses
-- edit_event_pmans: Edit Program Management modules for an event
+- edit_event_pmans: Assign All Program Management modules to an event
+- edit_event_pmans_certs: Assign Program Management Certification Module to an event
+- edit_event_pmans_finance: Assign Program Management Budgeting Module to an event
 - edit_event_requests: Edit Event Requests
 - edit_events: Edit events
 - edit_groups: Edit groups
@@ -53,14 +55,18 @@
 - view_company_module: View Company Module
 - view_courses: View courses
 - view_emax_module: View Emax Module
+- view_event_history: View event history
+- view_event_pmans: View Program Management Module overview
 - view_event_requests: View Event Requests
 - view_events: View events
 - view_events_module: View Events Module
 - view_green_events_module: View Green Events Module
+- view_group_history: View group history
 - view_groups: View groups
 - view_lead_capture_module: View Lead Capture Module
 - view_personnel: View personnel
 - view_planning_module: View Planning Module
+- view_portfolio_history: View portfolio history
 - view_portfolios: View portfolios
 - view_requestevent_module: View RequestEVENT Module
 - view_snp_reports: View Reports
@@ -68,5 +74,6 @@
 - view_tools_help: View Tools Help
 - view_tools_look_up: View Tools Look-up
 - view_tools_message_center: View Tools Message Center
+- view_unlicensed_modules: View all modules whether or not they are licensed
 ---
 ...

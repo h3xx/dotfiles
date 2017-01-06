@@ -110,6 +110,8 @@ EcCertTradeListAddTrade
 EcCertTradeListAjax
 EcCertTradeListDeleteTrade
 EcCertTradeListUpdateTrade
+EcCertWebuserReport
+EcCertWebuserReportAjax
 EcComingSoon
 EcCommonUtil
 EcCompanyEdit
@@ -199,7 +201,6 @@ EcEventEditAddIndustry
 EcEventEditAddJobTitle
 EcEventEditAddKeyDate
 EcEventEditAddLead
-EcEventEditAddObjective
 EcEventEditAddOwnerGroup
 EcEventEditAddPerformanceMeasure
 EcEventEditAddPersonnelOnsite
@@ -239,7 +240,6 @@ EcEventEditDeleteIndustry
 EcEventEditDeleteJobTitle
 EcEventEditDeleteKeyDate
 EcEventEditDeleteLead
-EcEventEditDeleteObjective
 EcEventEditDeleteOwnerGroup
 EcEventEditDeletePerformanceMeasure
 EcEventEditDeletePersonnelOnsite
@@ -286,7 +286,6 @@ EcEventEditUpdateIndustry
 EcEventEditUpdateJobTitle
 EcEventEditUpdateKeyDate
 EcEventEditUpdateLead
-EcEventEditUpdateObjective
 EcEventEditUpdateOwnerGroup
 EcEventEditUpdatePerformanceMeasure
 EcEventEditUpdatePersonnelOnsite
@@ -337,7 +336,6 @@ EcEventEditViewIndustries
 EcEventEditViewJobTitles
 EcEventEditViewKeyDates
 EcEventEditViewLeads
-EcEventEditViewObjectives
 EcEventEditViewOwnerContact
 EcEventEditViewOwnerGroups
 EcEventEditViewPerformanceMeasures
@@ -565,6 +563,7 @@ EcMessageSend
 EcMessageView
 EcMetricsReport
 EcMigrateJobTitles
+EcModuleAgent
 EcPCTEdit
 EcPCTEditAjax
 EcPCTGroupIndexUtil
@@ -760,7 +759,6 @@ EcVerticalListAddVertical
 EcVerticalListAjax
 EcVerticalListDeleteVertical
 EcVerticalListEditVertical
-EcVideoHolder
 EcViewAttachmentSearch
 EcWebuserAccessReport
 EcWebuserCompanyReport
@@ -821,7 +819,6 @@ EventIndustry
 EventJobTitle
 EventKeyDate
 EventMessage
-EventObjective
 EventOwnerGroup
 EventParticipationLevel
 EventPartner
@@ -899,7 +896,6 @@ PersonnelRole
 PersonnelVacation
 Portfolio
 PortfolioAttachment
-PortfolioComment
 PortfolioContact
 PortfolioGroup
 PortfolioHistory
@@ -917,6 +913,7 @@ Speaker
 SponsorshipLevel
 Theme
 Trade
+USKHandler
 UserWelcomeEmail
 Vendor
 VendorAuthVendorType

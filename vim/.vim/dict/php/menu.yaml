@@ -100,6 +100,7 @@
 # }}}
 # }}}}
 #TODO: Change access
+- !include "menu_emax_emax.yaml"
 - !include "menu_pman_att.yaml"
 - !include "menu_pman_certs.yaml"
 - !include "menu_pman_cfp.yaml"
@@ -118,7 +119,6 @@
 - !include "menu_pman_surveys.yaml"
 - !include "menu_pman_travel.yaml"
 - !include "menu_snp_ecal.yaml"
-- !include "menu_snp_emax.yaml"
 - !include "menu_snp_enviro.yaml"
 - !include "menu_snp_pplan.yaml"
 - edit_budget_reports
@@ -157,7 +157,6 @@
 - menu_name: Add New Survey
 - menu_name: Add New Topic
 - menu_name: Add New User
-- menu_name: Add New Venue
 - menu_name: Administration
 - menu_name: Agenda
 - menu_name: And Beyond
@@ -577,16 +576,25 @@ spacer_after: true
 spacer_before: true
 target: _self
 target: email_window
+url: '#hl_accounts'
 url: '#hl_administration'
+url: '#hl_budgets'
+url: '#hl_calendar'
+url: '#hl_cert_attendees'
 url: '#hl_courses'
 url: '#hl_event_list'
+url: '#hl_event_plans'
+url: '#hl_eventrequest'
 url: '#hl_expenses'
 url: '#hl_groups'
+url: '#hl_individuals'
 url: '#hl_initiatives'
 url: '#hl_personnel'
 url: '#hl_portfolios'
 url: '#hl_reports'
+url: '#hl_resource_allocation'
 url: '#hl_roadmaps'
+url: '#hl_vendors'
 url: '#hl_venues'
 url: abstract_report
 url: activity_list
@@ -628,7 +636,9 @@ url: campaign_list
 url: cert_attendee_report
 url: cert_company_report?company_type=account
 url: cert_org_company_report?company_type=cert_organization
+url: cert_personnel_list?is_instructor=t
 url: cert_trade_list
+url: cert_webuser_report
 url: coming_soon
 url: company_edit
 url: company_homepage
@@ -652,6 +662,7 @@ url: event_ad_hoc_report_preamble
 url: event_budget_group_report?event_budget_group_type=expense
 url: event_budget_group_report?event_budget_group_type=source
 url: event_calendar
+url: event_calendar?has_mods=pman_certs
 url: event_category_list
 url: event_code_systems_list
 url: event_display_manager_edit
@@ -696,7 +707,6 @@ url: holiday_admin
 url: http://mail.g2planet.com
 url: http://www.twitter.com
 url: industry_report
-url: instructor_list?is_instructor=t
 url: job_title_list
 url: lead_ad_hoc_report_preamble
 url: leads_homepage
@@ -764,8 +774,6 @@ url: user_roles
 url: vendor_report
 url: vendor_type_report
 url: venue_list
-url: venue_report
-url: venue_wizard
 url: vertical_list
 url: webuser_access_report
 url: webuser_access_report?module=pman_certs
