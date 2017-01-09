@@ -1,0 +1,92 @@
+#!/bin/bash
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] FILE...
+Run coverage testing.
+
+  -h		Show this help message.
+  -p		Permissive coverage.
+  -R		Stop on risky.
+  -t		Show tap tracing instead.
+
+Copyright (C) 2016 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+MODE='html'
+STOP_ON_RISKY=0
+PERMISSIVE=0
+
+while getopts 'hpRt' flag; do
+	case "$flag" in
+		'p')
+			PERMISSIVE=1
+			;;
+		'R')
+			STOP_ON_RISKY=1
+			;;
+		't')
+			MODE='tap'
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+HTML_OUT_DIR='cov'
+
+# find phpunit.xml
+while [[ ! -f phpunit.xml && $PWD != / ]]; do
+	cd ..
+done
+
+if [[ ! -f phpunit.xml && $PWD = / ]]; then
+	echo "Failed to find phpunit.xml" >&2
+	exit 3
+fi
+
+PHPUNIT_ARGS=(
+	--report-useless-tests
+)
+
+if [[ $PERMISSIVE -eq 0 ]]; then
+	PHPUNIT_ARGS+=(--strict-coverage)
+fi
+
+if [[ $STOP_ON_RISKY -ne 0 ]]; then
+	PHPUNIT_ARGS+=(--stop-on-risky)
+fi
+
+if [[ $MODE = 'html' ]]; then
+	PHPUNIT_ARGS+=(
+		--coverage-html "$HTML_OUT_DIR"
+	)
+elif [[ $MODE = 'tap' ]]; then
+	PHPUNIT_ARGS+=(
+		--coverage-text
+		--tap
+	)
+fi
+
+set -x
+phpunit "${PHPUNIT_ARGS[@]}" "$@"
+set +x
+
+if [[ $MODE = 'html' && -f "$HTML_OUT_DIR/index.html" ]]; then
+	read -p 'Open HTML coverage report? [y/N]' open_cov
+	if [[ $open_cov =~ ^[Yy] ]]; then
+		google-chrome "$HTML_OUT_DIR/index.html" &
+	fi
+fi
