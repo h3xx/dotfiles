@@ -84,9 +84,57 @@ set -x
 phpunit "${PHPUNIT_ARGS[@]}" "$@"
 set +x
 
-if [[ $MODE = 'html' && -f "$HTML_OUT_DIR/index.html" ]]; then
-	read -p 'Open HTML coverage report? [y/N]' open_cov
-	if [[ $open_cov =~ ^[Yy] ]]; then
-		google-chrome "$HTML_OUT_DIR/index.html" &
-	fi
+
+if [[ $MODE = 'html' ]]; then
+    HTML_TO_OPEN=(
+    )
+
+    if [[ -f "$HTML_OUT_DIR/index.html" ]]; then
+        HTML_TO_OPEN+=(
+            "$HTML_OUT_DIR/index.html"
+        )
+    fi
+
+    if [[ $# -gt 0 ]]; then
+        # single test was run
+        test_run="$(
+            for fn in \
+                "$1" \
+                "$1.php" \
+                ; do
+                if [[ -f $fn ]]; then
+                    echo "$fn"
+                    break
+                fi
+            done
+        )"
+        if [[ -n $test_run ]]; then
+            covers_classes=(
+                $(
+                    grep -o -- @covers.*:: "$test_run" |
+                    grep -Po '\b[\w\\]+:' |
+                    tr -d : |
+                    sort -u
+                )
+            )
+            echo "Classes covered: ${covers_classes[*]}" >&2
+            HTML_TO_OPEN=()
+            for class in "${covers_classes[@]}"; do
+                HTML_TO_OPEN+=(
+                    "$HTML_OUT_DIR"/*/"$class.php.html"
+                )
+            done
+        fi
+    fi
+
+    if [[ ${#HTML_TO_OPEN[@]} -gt 0 ]]; then
+        read -p 'Open HTML coverage report? [y/N]' open_cov
+        if [[ $open_cov =~ ^[Yy] ]]; then
+            for html in "${HTML_TO_OPEN[@]}"; do
+                if [[ -f $html ]]; then
+                    google-chrome "$html" &
+                fi
+            done
+        fi
+    fi
 fi
