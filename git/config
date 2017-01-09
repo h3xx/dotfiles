@@ -68,7 +68,6 @@
 	gpgSign = yes
 
 [core]
-	excludesfile = ~/.gitignore_global
 	# -R: Handle colors correctly
 	pager = less -R
 
