@@ -52,7 +52,6 @@
 
 [core]
 	pager		= less -R	# handle colors correctly
-	excludesfile	= ~/.gitignore_global
 
 [pull]
 	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
