@@ -1,0 +1,9 @@
+# .bashrc-gpg-agent
+
+# start gpg-agent
+
+# (from gpg-agent man page)
+if [ -f ~/.gpg-agent-info ]; then
+	. ~/.gpg-agent-info
+	export GPG_AGENT_INFO SSH_AUTH_SOCK
+fi

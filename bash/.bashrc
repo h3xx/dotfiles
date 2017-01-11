@@ -28,6 +28,7 @@ if [[ $- = *i* ]]; then
 	for rc_name in \
 		prompt \
 		screen \
+		gpg-agent \
 		tty \
 		linux \
 		slackware{,"-${USER}"} \
