@@ -12,13 +12,13 @@ if [[ $- = *i* ]]; then
 	for rc_name in \
 		prompt \
 		screen \
+		gpg-agent \
 		tty \
 		linux \
 		slackware{,"-$USER"} \
 		progcomp \
 		"$HOSTNAME"{,"-$USER"} \
 		xterm \
-		gpg-agent \
 		; do
 
 		if [[ -f ~/.bashrc-$rc_name ]]; then
