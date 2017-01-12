@@ -424,7 +424,7 @@ SetScreenTitle		= no
 #
 # Example:
 #
-OnSongChange = "/home/h3xx/bin/lastfm-submit -a %a -b %r -t %t -n %n -d %d"
+OnSongChange = "/home/h3xx/.moc/bin/do-lastfm-submit.sh -a %a -b %r -t %t -n %n -d %d"
 
 # OnStop.
 # Run the following command (full path, no arguments) when MOC changes state
