@@ -1,10 +1,13 @@
 Activity
 Attachment
+Attendee
 AudienceType
 BudgetCategory
 BudgetStatus
 CalendarAccess
 Campaign
+ClientIndustry
+ClientIndustryProxy
 Company
 Course
 CronLongTask
@@ -112,6 +115,12 @@ EcCertTradeListDeleteTrade
 EcCertTradeListUpdateTrade
 EcCertWebuserReport
 EcCertWebuserReportAjax
+EcClientIndustryEdit
+EcClientIndustryEditActionHandler
+EcClientIndustryEditAddIndustry
+EcClientIndustryEditAjax
+EcClientIndustryEditDeleteIndustry
+EcClientIndustryEditViewIndustries
 EcComingSoon
 EcCommonUtil
 EcCompanyEdit
@@ -179,6 +188,7 @@ EcEventEditAddActivity
 EcEventEditAddAdmissionType
 EcEventEditAddAttachment
 EcEventEditAddBudget
+EcEventEditAddClientIndustry
 EcEventEditAddContact
 EcEventEditAddEventAudienceType
 EcEventEditAddEventCampaign
@@ -197,7 +207,6 @@ EcEventEditAddEventVertical
 EcEventEditAddExhibitCategory
 EcEventEditAddExhibitor
 EcEventEditAddHyperlink
-EcEventEditAddIndustry
 EcEventEditAddJobTitle
 EcEventEditAddKeyDate
 EcEventEditAddLead
@@ -219,6 +228,7 @@ EcEventEditAjax
 EcEventEditDeleteActivity
 EcEventEditDeleteAdmissionType
 EcEventEditDeleteBudget
+EcEventEditDeleteClientIndustry
 EcEventEditDeleteContact
 EcEventEditDeleteEventAudienceType
 EcEventEditDeleteEventCampaign
@@ -236,7 +246,6 @@ EcEventEditDeleteEventVertical
 EcEventEditDeleteExhibitCategory
 EcEventEditDeleteExhibitor
 EcEventEditDeleteHyperlink
-EcEventEditDeleteIndustry
 EcEventEditDeleteJobTitle
 EcEventEditDeleteKeyDate
 EcEventEditDeleteLead
@@ -254,7 +263,6 @@ EcEventEditDeleteSpeakingOpportunity
 EcEventEditDeleteSponsorshipLevel
 EcEventEditDeleteTask
 EcEventEditDeleteTopic
-EcEventEditDemographicAjax
 EcEventEditDeployEib
 EcEventEditDetachAttachment
 EcEventEditEventVendorAction
@@ -262,11 +270,13 @@ EcEventEditModifyBudgetCategory
 EcEventEditSendLeadEmail
 EcEventEditSendSummaryEmail
 EcEventEditStructure
+EcEventEditStructureAgent
 EcEventEditToggleEventSubscription
 EcEventEditUpdateActivity
 EcEventEditUpdateActivityMix
 EcEventEditUpdateAdmissionType
 EcEventEditUpdateAttachment
+EcEventEditUpdateClientIndustry
 EcEventEditUpdateContact
 EcEventEditUpdateEventAudienceType
 EcEventEditUpdateEventCampaign
@@ -282,7 +292,6 @@ EcEventEditUpdateEventVenue
 EcEventEditUpdateEventVertical
 EcEventEditUpdateExhibitCategory
 EcEventEditUpdateHyperlink
-EcEventEditUpdateIndustry
 EcEventEditUpdateJobTitle
 EcEventEditUpdateKeyDate
 EcEventEditUpdateLead
@@ -312,6 +321,8 @@ EcEventEditViewBudgetExpenses
 EcEventEditViewBudgetSources
 EcEventEditViewBudgetSum
 EcEventEditViewBudgetVariance
+EcEventEditViewCertCompanies
+EcEventEditViewClientIndustries
 EcEventEditViewCompanies
 EcEventEditViewContacts
 EcEventEditViewDemographicRelatedEventSearch
@@ -319,6 +330,7 @@ EcEventEditViewDemographics
 EcEventEditViewEibDupe
 EcEventEditViewEventCampaigns
 EcEventEditViewEventCodes
+EcEventEditViewEventConnects
 EcEventEditViewEventGenericUse
 EcEventEditViewEventPriorities
 EcEventEditViewEventProducts
@@ -332,7 +344,6 @@ EcEventEditViewGroupAlignment
 EcEventEditViewGroupPartnersCompetitors
 EcEventEditViewHistory
 EcEventEditViewHyperlinks
-EcEventEditViewIndustries
 EcEventEditViewJobTitles
 EcEventEditViewKeyDates
 EcEventEditViewLeads
@@ -388,6 +399,7 @@ EcEventRequestEdit
 EcEventRequestEditAjax
 EcEventRequestReport
 EcEventRequestReportAjax
+EcEventSlideStructureAgent
 EcEventStats
 EcEventStatsData
 EcEventTierList
@@ -439,12 +451,14 @@ EcFlexReportReportAction
 EcFlexReportReportActionHandler
 EcFlexReportReportAjax
 EcFlexReportReportDeleteFlexReport
+EcFlexReportReportEditFlexReportArchive
 EcFlexReportTrait
 EcFlexReportUtils
 EcG2PlanetSupport
 EcGenericAction
 EcGenericActionHandler
 EcGenericHistoryView
+EcGenericPageStructure
 EcGenericTabbedList
 EcGenericTabbedListAjax
 EcGenericUseList
@@ -461,8 +475,6 @@ EcGenericUseMetaListDeleteCustomTable
 EcGenericUseMetaListEditCustomTable
 EcGenericView
 EcGenericWizard
-EcGeographyEdit
-EcGeographyEditAjax
 EcGeographyList
 EcGeographyListAction
 EcGeographyListActionHandler
@@ -478,14 +490,14 @@ EcGreenLandingPageActionHandler
 EcGroupEdit
 EcGroupEditActionHandler
 EcGroupEditAddAttachment
+EcGroupEditAddClientIndustry
 EcGroupEditAddContact
 EcGroupEditAddGroupCompany
-EcGroupEditAddIndustry
 EcGroupEditAddPortfolio
 EcGroupEditAjax
+EcGroupEditDeleteClientIndustry
 EcGroupEditDeleteContact
 EcGroupEditDeleteGroupCompany
-EcGroupEditDeleteIndustry
 EcGroupEditDeletePortfolio
 EcGroupEditDetachAttachment
 EcGroupEditDetachPortfolio
@@ -562,12 +574,12 @@ EcMessageList
 EcMessageSend
 EcMessageView
 EcMetricsReport
+EcMigrateIndustries
 EcMigrateJobTitles
 EcModuleAgent
 EcPCTEdit
 EcPCTEditAjax
 EcPCTGroupIndexUtil
-EcPaginationUtil
 EcPasswordReset
 EcPasswordResetConfirmationEmail
 EcPasswordResetEmail
@@ -581,7 +593,6 @@ EcPerformanceMeasureReportDeletePerformanceMeasure
 EcPerformanceMeasureReportEditPerformanceMeasure
 EcPersonIntersectEdit
 EcPersonIntersectEditViewConnects
-EcPersonIntersectEditViewEvents
 EcPersonIntersectReport
 EcPersonIntersectReportAjax
 EcPersonnelList
@@ -629,7 +640,6 @@ EcPortfolioListAddPortfolio
 EcPortfolioListAjax
 EcPortfolioListDeletePortfolio
 EcPortfolioListEditPortfolio
-EcPortfolioPlanner
 EcPriorityList
 EcPriorityListAction
 EcPriorityListActionHandler
@@ -637,7 +647,6 @@ EcPriorityListAddPriority
 EcPriorityListAjax
 EcPriorityListDeletePriority
 EcPriorityListEditPriority
-EcProcessLeads
 EcProductList
 EcProductListAction
 EcProductListActionHandler
@@ -692,8 +701,6 @@ EcSegmentReportEditSegment
 EcSendWelcomeEmails
 EcShareFlexReportAjax
 EcSharedDocumentManage
-EcSimpleBudgetReport
-EcSimpleBudgetReportData
 EcSystemInformation
 EcSystemSettingsAddCalendarAccess
 EcSystemSettingsDefaults
@@ -793,7 +800,6 @@ Event
 EventActivity
 EventActivityMix
 EventAdmissionType
-EventArchitecture
 EventAttachment
 EventAttribute
 EventAudienceType
@@ -802,16 +808,15 @@ EventBudgetCategory
 EventBudgetGroup
 EventCampaign
 EventCategory
+EventClientIndustry
 EventCode
 EventCodeSystem
-EventComment
 EventCompany
 EventCompetitor
 EventContact
 EventDemographic
 EventExhibitCategory
 EventGenericUse
-EventGroupCompany
 EventHistory
 EventHyperlink
 EventImage
@@ -823,7 +828,6 @@ EventOwnerGroup
 EventParticipationLevel
 EventPartner
 EventPerformanceMeasure
-EventPersonnel
 EventPersonnelEmail
 EventPortfolio
 EventPriority
@@ -839,7 +843,6 @@ EventSummaryEmailTemplate
 EventTask
 EventTheme
 EventTier
-EventTimeline
 EventTopic
 EventType
 EventTypeAttribute
@@ -850,6 +853,7 @@ EventVisit
 Exhibitor
 FiscalDate
 FlexReport
+FlexReportArchive
 FlexReportField
 FlexReportRule
 FlexReportSharable
@@ -860,13 +864,12 @@ Geography
 Group
 GroupAttachment
 GroupAttribute
+GroupClientIndustry
 GroupComment
 GroupCompany
-GroupCompetitor
 GroupContact
 GroupHistory
 GroupIndustry
-GroupPartner
 GroupPortfolio
 GroupSubscriber
 HistoryNotificationEmail
@@ -881,8 +884,8 @@ Lead
 LeadEmail
 LeadEmailTemplate
 LeadImportException
-LeverageMatrixImage
 Menu
+MenuAccess
 Message
 PartnerCompetitorUtil
 PerformanceMeasure
