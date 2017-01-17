@@ -35,7 +35,6 @@ shopt -s \
 	cdable_vars
 
 alias \
-	diff='diff -x CVS -x template_c' \
 	cdf='colordiff |less -R' \
 	ddd='sudo make prod pause backup deletedb createdb restore unpause' \
 	dddd='sudo make demo pause backup deletedb createdb restore unpause' \
