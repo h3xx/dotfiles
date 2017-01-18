@@ -10,9 +10,10 @@ Subpull and sync at G2Planet.
   -m		Reload menus after sync.
   -M		Run migration scripts.
   -d		Rebuild database after sync.
+  -D		Rebuild database before sync IF NEEDED.
   --		Terminate options list.
 
-Copyright (C) 2015-2016 Dan Church.
+Copyright (C) 2015-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -22,9 +23,10 @@ EOF
 
 RELOAD_MENUS=0
 REBUILD_DB=0
+REBUILD_DB_SOFT=0
 MIGRATION=0
 
-while getopts 'hmdM' flag; do
+while getopts 'hmdDM' flag; do
 	case "$flag" in
 		'h')
 			HELP_MESSAGE 0
@@ -37,6 +39,9 @@ while getopts 'hmdM' flag; do
 			;;
 		'd')
 			REBUILD_DB=1
+			;;
+		'D')
+			REBUILD_DB_SOFT=1
 			;;
 		*)
 			HELP_MESSAGE 1
@@ -73,7 +78,7 @@ git subpull &&
 sudo bmake "$MODE" pause || exit
 
 # if schemacheck fails, we have to rebuild the database BEFORE syncing
-if [[ $REBUILD_DB -ne 0 ]] && ! sudo bmake "$MODE" schemacheck; then
+if [[ $REBUILD_DB -ne 0 || $REBUILD_DB_SOFT -ne 0 ]] && ! sudo bmake "$MODE" schemacheck; then
     sudo bmake "$MODE" reload || exit
     REBUILD_DB=0
 fi
