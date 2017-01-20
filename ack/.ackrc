@@ -1,4 +1,7 @@
 --color-filename=bold yellow
 --color-match=bold red
 --color-lineno=bold blue
+
+# ignore SCSS cache files
+--ignore-file=match:/\.scssc$/
 # vi: ft=conf
