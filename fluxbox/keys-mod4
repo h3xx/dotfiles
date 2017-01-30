@@ -141,18 +141,9 @@ Mod4 F12 :Workspace 12
 # (Next|Prev)(Window|Group)
 
 # send the current window and change to a specific workspace
-Control F1 :TakeToWorkspace 1
-Control F2 :TakeToWorkspace 2
-Control F3 :TakeToWorkspace 3
-Control F4 :TakeToWorkspace 4
-Control F5 :TakeToWorkspace 5
-Control F6 :TakeToWorkspace 6
-Control F7 :TakeToWorkspace 7
-Control F8 :TakeToWorkspace 8
-Control F9 :TakeToWorkspace 9
-Control F10 :TakeToWorkspace 10
-Control F11 :TakeToWorkspace 11
-Control F12 :TakeToWorkspace 12
+#Control F1 :TakeToWorkspace 1
+#...
+#Control F12 :TakeToWorkspace 12
 
 # window movement commands
 #Mod4 Up :MoveUp 10
