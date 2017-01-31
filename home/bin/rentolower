@@ -1,12 +1,37 @@
 #!/usr/bin/perl -w
 
+our $VERSION = '1.0.1';
+
 # renames a file to its lower-case equivalent
 
 use File::Basename	qw/ basename dirname /;
 
 use Getopt::Std		qw/ getopts /;
+use Cwd				qw/ abs_path /;
 
-&getopts('v', \ my %opts);
+sub HELP_MESSAGE {
+	my $fh = shift;
+	my $script = &basename($0);
+	print $fh <<EOF
+Usage: $script [FILES]
+Rename files and directories to upper/lower case.
+
+  -i			Interactive mode (ask before overwriting files).
+  -r			Operate recursively on directories and files.
+  -v			Verbose output.
+
+Copyright (C) 2010-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+;
+
+	exit 0;
+}
+
+
+&getopts('vri', \ my %opts);
 
 my %renamers = (
 	'rentolower'	=> sub {
@@ -20,35 +45,84 @@ my %renamers = (
 );
 
 sub transform_filename {
-	my ($callback, $filename, $verbose) =
-		@{{@_}}{qw/ callback filename verbose /};
+	my %args = @_;
 
-	if ($callback and ref $callback eq 'CODE') {
-		my $dest = &{$callback}(
-			'base'	=> &basename($filename),
-			'dir'	=> &dirname($filename),
-			'path'	=> $filename,
+	if ($args{callback} and ref $args{callback} eq 'CODE') {
+
+		my $dest = &{$args{callback}}(
+			base	=> &basename($args{filename}),
+			dir		=> &dirname($args{filename}),
+			path	=> $args{filename},
 		);
 
-		print STDERR "`$filename' -> `$dest'\n"
-			if $verbose;
+		if (&abs_path($args{filename}) eq &abs_path($dest)) {
+			return;
+		}
 
-		my $result = rename $filename, $dest;
+		print STDERR "`$args{filename}' -> `$dest'\n"
+			if $args{verbose};
 
-		print STDERR "Failed to move `$filename' to `$dest': $!"
-			if $verbose and ! $result
+		if ($args{interactive} && -e $dest) {
+			print STDERR "Overwrite '$dest'? ";
+			my $ans = <STDIN>;
+			unless ($ans =~ /^y/) {
+				return;
+			}
+		}
+
+		my $result = rename $args{filename}, $dest;
+
+		print STDERR "Failed to move `$args{filename}' to `$dest': $!\n"
+			unless $result;
 	}
+}
+
+sub transform_filename_recursive {
+	my %args = @_;
+
+	if (-f $args{filename}) {
+		return &transform_filename(%args);
+	}
+
+	use File::Find qw/ finddepth /;
+
+	my $process = sub {
+		&transform_filename(
+			%args,
+			filename => $_,
+		);
+	};
+
+	&finddepth(
+		{
+			wanted => $process,
+			follow => 0,
+			no_chdir => 1,
+		},
+		$args{filename}
+	);
+
 }
 
 my $rename_op = $renamers{&basename($0)};
 
-die "cannot determine operation for program name `$0'"
+die "Cannot determine operation for program name `$0'"
 	unless $rename_op;
 
+die "Missing file or directory operand"
+	unless @ARGV;
+
 foreach my $filename (@ARGV) {
-	&transform_filename(
-		'callback'	=> $rename_op,
-		'filename'	=> $filename,
-		'verbose'	=> $opts{'v'},
+	my %args = (
+		callback		=> $rename_op,
+		filename		=> $filename,
+		interactive		=> $opts{'i'},
+		verbose			=> $opts{'v'},
 	);
+	if ($opts{'r'}) {
+		&transform_filename_recursive(%args);
+	}
+	else {
+		&transform_filename(%args);
+	}
 }
