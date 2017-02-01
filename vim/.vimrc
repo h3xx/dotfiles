@@ -363,6 +363,11 @@ set pastetoggle=<F11>
 " ***** display *****
 " *******************
 
+" Disable preview window when completing
+set completeopt-=preview
+" Make it obvious I'm completing
+set completeopt+=menuone
+
 " Do not redraw screen until macros, etc. are done drawing to the screen
 " (better responsiveness over SSH and slow terminals)
 set lazyredraw
