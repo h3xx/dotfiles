@@ -392,6 +392,11 @@ set ttyfast
 " (better responsiveness over SSH and slow terminals)
 set lazyredraw
 
+" disable preview window when completing
+set completeopt-=preview
+" make it obvious I'm completing
+set completeopt+=menuone
+
 " I: disable startup message
 " c: don't give useless ins-completion-menu messages in the statusbar
 set shortmess+=I
