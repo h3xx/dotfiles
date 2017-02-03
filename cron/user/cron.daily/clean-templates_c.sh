@@ -14,7 +14,14 @@ for dir in "${SEARCH_DIRS[@]}"; do
 		find "$dir/" \
             -type d \
             -name templates_c \
-            -exec chmod 0777 {} + \
+            ! -user $USER \
+            -exec sudo chown $USER {} + \
+            >/dev/null 2>&1
+
+		find "$dir/" \
+            -type d \
+            -name templates_c \
+            -exec chmod 1777 {} + \
             >/dev/null 2>&1
 
         # clear old files
