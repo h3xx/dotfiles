@@ -73,17 +73,23 @@ fi
 echo "*** subpull and sync ***"
 echo "mode: $MODE"
 
+if [[ -f GNUmakefile ]]; then
+    MAKE="make CONF=$MODE"
+else
+    MAKE="bmake $MODE"
+fi
+
 git pull &&
 git subpull &&
-sudo bmake "$MODE" pause || exit
+sudo $MAKE pause || exit
 
 # if schemacheck fails, we have to rebuild the database BEFORE syncing
-if [[ $REBUILD_DB -ne 0 || $REBUILD_DB_SOFT -ne 0 ]] && ! sudo bmake "$MODE" schemacheck; then
-    sudo bmake "$MODE" reload || exit
+if [[ $REBUILD_DB -ne 0 || $REBUILD_DB_SOFT -ne 0 ]] && ! sudo $MAKE schemacheck; then
+    sudo $MAKE reload || exit
     REBUILD_DB=0
 fi
 
-echo y |sudo bmake "$MODE" sync
+echo y |sudo $MAKE sync
 
 err="$?"
 if [[ $err -ne 0 ]]; then
@@ -91,7 +97,7 @@ if [[ $err -ne 0 ]]; then
 fi
 
 if [[ $REBUILD_DB -ne 0 ]]; then
-	sudo bmake "$MODE" reload || exit
+	sudo $MAKE reload || exit
 fi
 
 if [[ $MIGRATION -ne 0 ]]; then
@@ -113,7 +119,7 @@ if [[ $RELOAD_MENUS -ne 0 ]]; then
 	(cd data && ./reload_menus.sh "$MODE") || exit
 fi
 
-sudo bmake "$MODE" unpause
+    sudo $MAKE unpause
 err="$?"
 
 exit "$err"
