@@ -90,6 +90,5 @@ alias \
 
 # --- Linux server annoyances ---
 alias ls='ls --color=auto'
-alias make='bmake'
 eval `dircolors -b $HOME/.dir_colors`
 export LANG=en_US LC_COLLATE=C
