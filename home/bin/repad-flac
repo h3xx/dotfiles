@@ -1,0 +1,84 @@
+#!/bin/bash
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] FILE...
+
+Makes sure all the flac files given on the command line have 8192 bytes of
+padding total (used in part by the VORBIS_COMMENT block), and in one block at
+the end.
+
+  -h            Show this help message.
+  -p NUM        Pad to NUM bytes (default is 8192).
+  --            Terminate options list.
+
+Copyright (C) 2011-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+PADDING='8192'
+while getopts 'p:' flag; do
+	case "$flag" in
+		'p')
+			PADDING="$OPTARG"
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+	rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup'	EXIT
+
+tag_temp="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+TEMP_FILES+=("$tag_temp")
+
+err=0
+for flac_file; do
+	# preserve tag info in our special temp file (should entirely rewrite
+	# the temp file)
+	metaflac \
+		--export-tags-to="$tag_temp" \
+		-- \
+		"$flac_file" &&
+
+	# remove the tag (VORBIS_COMMENT) and all padding (PADDING) blocks
+	metaflac \
+		--dont-use-padding \
+		--remove \
+		--block-type=VORBIS_COMMENT,PADDING \
+		-- \
+		 "$flac_file" &&
+
+	# add a padding block of our length
+	metaflac \
+		--add-padding="$PADDING" \
+		-- \
+		"$flac_file" &&
+
+	# restore the file's saved tagging information
+	metaflac \
+		--import-tags-from="$tag_temp" \
+		-- \
+		"$flac_file" ||
+
+	err=$?
+done
+
+exit $err
