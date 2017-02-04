@@ -1,0 +1,2 @@
+#!/bin/sh
+exec svn cleanup --remove-unversioned --remove-ignored "$@"
