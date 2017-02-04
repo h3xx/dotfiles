@@ -1,0 +1,94 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# Script first conceived 2008-04-14
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] FILE...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Makes sure all the flac files given on the command line have 8192 bytes of
+padding total (used in part by the VORBIS_COMMENT block), and in one block at
+the end.
+
+  -h            Show this help message.
+  -p NUM        Pad to NUM bytes (default is 8192).
+  --            Terminate options list.
+
+Copyright (C) 2008-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+PADDING='8192'
+while getopts 'hp:' FLAG; do
+    case "$FLAG" in
+        'p')
+            PADDING=$OPTARG
+            ;;
+        'h')
+            HELP_MESSAGE
+            exit 0
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+    rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup' EXIT
+
+TAG_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+TEMP_FILES+=("$TAG_TEMP")
+
+ERR=0
+for FLAC_FILE; do
+    # preserve tag info in our special temp file (should entirely rewrite
+    # the temp file)
+    metaflac \
+        --export-tags-to="$TAG_TEMP" \
+        -- \
+        "$FLAC_FILE" &&
+
+    # remove the tag (VORBIS_COMMENT) and all padding (PADDING) blocks
+    metaflac \
+        --dont-use-padding \
+        --remove \
+        --block-type=VORBIS_COMMENT,PADDING \
+        -- \
+        "$FLAC_FILE" &&
+
+    # add a padding block of our length
+    metaflac \
+        --add-padding="$PADDING" \
+        -- \
+        "$FLAC_FILE" &&
+
+    # restore the file's saved tagging information
+    metaflac \
+        --import-tags-from="$TAG_TEMP" \
+        -- \
+        "$FLAC_FILE" ||
+
+    ERR=$?
+done
+
+exit "$ERR"
