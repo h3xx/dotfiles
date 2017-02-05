@@ -1,0 +1,78 @@
+# .bashrc-prompt_lite
+
+## prompt
+
+if [[ "$TERM" = 'dumb' ]]; then
+PS1='\u@\h:\w\$ ' # factory default
+else
+
+# Only show this number of directories in path when expanding \W and \w
+PROMPT_DIRTRIM=4
+
+## define colors
+declare -A COLORS
+COLORS['BLACK']='\e[30m'
+COLORS['RED']='\e[31m'
+COLORS['GREEN']='\e[32m'
+COLORS['YELLOW']='\e[33m'
+COLORS['BLUE']='\e[34m'
+COLORS['MAGENTA']='\e[35m'
+COLORS['CYAN']='\e[36m'
+COLORS['WHITE']='\e[37m'
+#COLORS['BRIGHT']='\e[01m'
+#COLORS['NORMAL']='\e[0m'
+#COLORS['BLINK']='\e[05m'
+#COLORS['REVERSE']='\e[07m'
+
+FRAME_COLOR='\e[01;30m'
+ERR_COLOR='\e[01;38;5;222;48;5;235m'
+
+# BASE_COLOR=(user root)
+case "$HOSTNAME" in
+	'necronomicon.slackware')
+		BASE_COLOR=('RED'	'BLUE')
+		;;
+	'delicious.slackware')
+		BASE_COLOR=('GREEN'	'CYAN')
+		;;
+	'shell.sf.net')
+		BASE_COLOR=('GREEN'	'YELLOW')
+		;;
+
+	# default
+	*)
+		BASE_COLOR=('MAGENTA'	'CYAN')
+		;;
+esac
+
+# select appropriate index for color (user=0; root=1)
+[[ "$UID" -ne 0 ]] ; BASE_COLOR="${COLORS[${BASE_COLOR[$?]}]}"
+
+# hint: \e)0 sets G1 to special characters,
+#	\x0e (\016) puts terminal into G1 mode,
+#	\x0f (\017) puts terminal into normal mode
+
+err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]\[%s\]'\'' '\'"$ERR_COLOR"\'' $err '\''\e[0m'\'')'
+
+# first line
+line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
+line1_mid="$BASE_COLOR"'\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
+line1_last=' \['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
+
+line2_frame='\['"$FRAME_COLOR"'\016\]mq['
+line2_mid=' \[\e[0m\017\]\w'
+line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
+
+# alternate setup:
+PS1="$line1_frame$line1_mid$line1_last$err\\n$line2_frame $line2_mid$gps1$line2_last"
+
+# clean up
+unset \
+	COLORS \
+	BASE_COLOR \
+	FRAME_COLOR \
+	ERR_COLOR \
+	line1_frame line1_mid line1_last \
+	line2_frame line2_mid line2_last \
+	err
+fi
