@@ -7,8 +7,8 @@
 	// *** privacy-related policies *** //
 	// Disable phoning home to Google, both for spying and convenience
 
-	// Disable "Sign in to Chrome" bullshit (deprecated; use SyncDisabled)
-	//"SigninAllowed": false,
+	// Disable "Sign in to Chrome" bullshit
+	"SigninAllowed": false,
 	// Disable synchronization of data with Google
 	"SyncDisabled": true,
 	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
