@@ -57,4 +57,7 @@
 	// Disable DHCP-server based proxy setting, malicious DHCP servers
 	// could use this to capture traffic
 	"WPADQuickCheckEnabled": false,
+	// Disable video capture; Not useful enough to allow potentially
+	// exploitable feature
+	"VideoCaptureAllowed": false,
 }
