@@ -4,4 +4,6 @@
 
 # ignore SCSS cache files
 --ignore-file=match:/\.scssc$/
+# ignore SCSS map files
+--ignore-file=match:/\.css\.map$/
 # vi: ft=conf
