@@ -5,7 +5,7 @@
 HISTTIMEFORMAT='%s'		# the beloved Second of Our Linux
 HISTFILESIZE=65535
 HISTSIZE=65535
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:esu:rma:fol:pfol"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:rma:fol:pfol"
 HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
 [[ -e ~/.hosts ]] && HOSTFILE="$HOME/.hosts"	# for @-completion
 
