@@ -83,7 +83,6 @@ alias rc='$EDITOR ~/.bashrc-linux'
 alias \
 	la='ls -la' \
 	lah='la -h' \
-	lar='la -R' \
 	las='la -S' \
 	lat='la -t' \
 	ll='ls -l'
