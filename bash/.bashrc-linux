@@ -220,6 +220,8 @@ alias \
 	ka='killall -v' \
 	stopall='ka -s STOP' \
 	startall='ka -s CONT' \
+	stf='strace -etrace=file' \
+	stfg='stf -o$g' \
 	j='jobs' \
 	rmr='rm -rf' \
 	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*|.*_(BACKUP|BASE|LOCAL|REMOTE)_.*|.*\.orig)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
