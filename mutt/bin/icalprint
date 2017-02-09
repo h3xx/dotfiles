@@ -5,9 +5,13 @@ import vobject
 from argparse import ArgumentParser
 from os.path import isfile
 from sys import stdin, stdout
+from dateutil import tz
+
+def datetime_to_local_timezone(dt):
+    return dt.replace(tzinfo=tz.tzlocal())
 
 parser = ArgumentParser(description="Generate a reply to an iCal Invitation.")
-parser.add_argument('-i', '--invite', default='-', 
+parser.add_argument('-i', '--invite', default='-',
                     help='invitation .ics file or - (for stdin)')
 parser.add_argument('-o', '--output', default='-',
                     help='output file or - (for stdout)')
@@ -36,8 +40,8 @@ attendee_list = vevent.attendee_list
 
 outfile.write('Summary: ' + vevent.summary.value + '\n')
 outfile.write('Organizer: ' + vevent.organizer.value + '\n')
-outfile.write('Starts: ' + vevent.dtstart.value.isoformat() + ' ')
-outfile.write('Ends: ' + vevent.dtend.value.isoformat() + '\n')
+outfile.write('Starts: ' + datetime_to_local_timezone(vevent.dtstart.value).isoformat() + ' ')
+outfile.write('Ends: ' + datetime_to_local_timezone(vevent.dtend.value).isoformat() + '\n')
 if vevent.location.value:
     outfile.write('Location: ' + vevent.location.value + '\n')
 outfile.write('\n')
