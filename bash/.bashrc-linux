@@ -85,8 +85,7 @@ alias \
 	lah='la -h' \
 	ll='ls -l' \
 	lat='la -t' \
-	las='la -S' \
-	lar='la -R'
+	las='la -S'
 
 # handy function to list all files and dirs in a single ls(1)
 # usefulness: ***
