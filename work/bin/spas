@@ -51,6 +51,27 @@ done
 
 shift "$((OPTIND-1))"
 
+run_migrations() {
+	for mscript in \
+		migration-2.{1..9}.sh \
+	; do
+		if [[ -f php/eclib/data/$mscript ]]; then
+			(set -x ; cd php/eclib/data && ./$mscript "$MODE") || exit
+		fi
+		if [[ -f data/$mscript ]]; then
+			(set -x ; cd data && ./$mscript "$MODE") || exit
+		fi
+	done
+}
+
+reload_menus() {
+	(cd data && ./reload_menus.sh "$MODE") || exit
+}
+
+reload_db() {
+	sudo $MAKE reload || exit
+}
+
 MODE=''
 if [[ $# -eq 0 ]]; then
 	git_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -83,9 +104,19 @@ git pull &&
 git subpull &&
 sudo $MAKE pause || exit
 
+# if ecscheckdata fails, we have to run migrations the database BEFORE syncing
+if [[ $MIGRATION -ne 0 ]] && ! sudo $MAKE eccheckdata >/dev/null; then
+    run_migrations
+    MIGRATION=0
+fi
+if [[ $RELOAD_MENUS -ne 0 ]] && ! sudo $MAKE eccheckdata >/dev/null; then
+    reload_menus
+    RELOAD_MENUS=0
+fi
+
 # if schemacheck fails, we have to rebuild the database BEFORE syncing
 if [[ $REBUILD_DB -ne 0 || $REBUILD_DB_SOFT -ne 0 ]] && ! sudo $MAKE schemacheck; then
-    sudo $MAKE reload || exit
+    reload_db
     REBUILD_DB=0
 fi
 
@@ -97,24 +128,15 @@ if [[ $err -ne 0 ]]; then
 fi
 
 if [[ $REBUILD_DB -ne 0 ]]; then
-	sudo $MAKE reload || exit
+    reload_db
 fi
 
 if [[ $MIGRATION -ne 0 ]]; then
-	for mscript in \
-		migration-2.[1-9].sh \
-	; do
-		if [[ -f php/eclib/data/$mscript ]]; then
-			(set -x ; cd php/eclib/data && ./$mscript "$MODE") || exit
-		fi
-		if [[ -f data/$mscript ]]; then
-			(set -x ; cd data && ./$mscript "$MODE") || exit
-		fi
-	done
+    run_migrations
 fi
 
 if [[ $RELOAD_MENUS -ne 0 ]]; then
-	(cd data && ./reload_menus.sh "$MODE") || exit
+    reload_menus
 fi
 
     sudo $MAKE unpause
