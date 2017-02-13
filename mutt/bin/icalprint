@@ -8,7 +8,7 @@ from sys import stdin, stdout
 from dateutil import tz
 
 def datetime_to_local_timezone(dt):
-    return dt.replace(tzinfo=tz.tzlocal())
+    return dt.astimezone(tz.tzlocal())
 
 parser = ArgumentParser(description="Generate a reply to an iCal Invitation.")
 parser.add_argument('-i', '--invite', default='-',
