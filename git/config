@@ -61,6 +61,7 @@
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
 	g		= grep --cached
 	gr		= grep --cached --recurse-submodules
+	prep		= !~/.config/git/bin/git-prep.sh
 
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
