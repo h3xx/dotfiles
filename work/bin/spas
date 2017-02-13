@@ -102,9 +102,7 @@ fi
 
 if [[ $MIGRATION -ne 0 ]]; then
 	for mscript in \
-		migration-2.0.sh \
-		migration-2.1.sh \
-		migration-2.2.sh \
+		migration-2.[1-9].sh \
 	; do
 		if [[ -f php/eclib/data/$mscript ]]; then
 			(set -x ; cd php/eclib/data && ./$mscript "$MODE") || exit
