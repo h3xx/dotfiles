@@ -176,6 +176,9 @@ fi
 for image_out in "${OUTPUTS[@]}"; do
 	sleep "$DELAY"
 	import "${import_opts[@]}" "$image_out"
+	if type -p recently_used.py >/dev/null; then
+		recently_used.py "$image_out"
+	fi
 done
 
 # finisher: optimize images for size
