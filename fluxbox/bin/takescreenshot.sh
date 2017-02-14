@@ -10,17 +10,17 @@ HELP_MESSAGE() {
 Usage: $(basename -- "$0") [OPTIONS] [FILE]...
 Take a quick screenshot and save it to a file.
 
-  -h		Show this help message.
-  -d SECONDS	Wait this long before taking a screenshot.
-  -a		Take a screenshot of the entire desktop.
-  -w		Take a screenshot of a single window including frame (default).
-  -v		Verbose output.
-  -O		Optimize the output file using pngcrush(1) or optipng(1).
+  -h            Show this help message.
+  -d SECONDS    Wait this long before taking a screenshot.
+  -a            Take a screenshot of the entire desktop.
+  -w            Take a screenshot of a single window including frame (default).
+  -v            Verbose output.
+  -O            Optimize the output file using pngcrush(1) or optipng(1).
 
 By default, the screenshot is output to ./screenshot-YYYY-MMDD-HHMM[-?].png,
 otherwise it/they will be output to FILE.
 
-Copyright (C) 2010 Dan Church.
+Copyright (C) 2010-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -188,3 +188,5 @@ if [ "$OPTIMIZE" -ne 0 ]; then
 		fi
 	done
 fi
+
+# vi: ts=4 sts=4 sw=4 noet
