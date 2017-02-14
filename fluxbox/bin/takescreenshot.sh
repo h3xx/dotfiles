@@ -66,14 +66,12 @@ choose_output() {
 		image_suffix='.png' \
 		image_base="screenshot-$(date '+%Y-%m%d-%H%M')" \
 		image_out \
-		dup_ct
+		dup_ct=0
 
 	image_out="$image_base$image_suffix"
 
 	# find a non-existant place to put the image
 	while [[ -e "$image_out" ]]; do
-		# this creates or increments the variable, starting with 1
-		#dup_ct="$((${dup_ct:-0}+1))"
 		let dup_ct+=1
 		image_out="${image_base}-${dup_ct}$image_suffix"
 	done
