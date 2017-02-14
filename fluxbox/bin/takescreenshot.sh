@@ -20,7 +20,7 @@ Take a quick screenshot and save it to a file.
 By default, the screenshot is output to ./screenshot-YYYY-MMDD-HHMM[-?].png,
 otherwise it/they will be output to FILE.
 
-Copyright (C) 2010 Dan Church.
+Copyright (C) 2010-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -176,6 +176,9 @@ fi
 for IMAGE_OUT in "${OUTPUTS[@]}"; do
     sleep "$DELAY"
     import "${IMPORT_OPTS[@]}" "$IMAGE_OUT"
+    if hash recently_used.py &>/dev/null; then
+        recently_used.py "$image_out"
+    fi
 done
 
 # finisher: optimize images for size
