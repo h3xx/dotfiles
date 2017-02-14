@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # uses imagemagick's import(1) utility to take a screenshot of the current
 # window
@@ -71,7 +71,7 @@ choose_output() {
 	image_out="$image_base$image_suffix"
 
 	# find a non-existant place to put the image
-	while [ -e "$image_out" ]; do
+	while [[ -e "$image_out" ]]; do
 		# this creates or increments the variable, starting with 1
 		#dup_ct="$((${dup_ct:-0}+1))"
 		let dup_ct+=1
@@ -98,7 +98,7 @@ optimize_image() {
 
 		case "$mimetype" in
 			'image/png')
-				if [ -n "$(type -Pt 'optipng')" ]; then
+				if [[ -n "$(type -Pt 'optipng')" ]]; then
 					# optipng refuses to overwrite files
 					rm -f -- "$temp_out"
 					optipng \
@@ -108,7 +108,7 @@ optimize_image() {
 						-out "$temp_out" \
 						-- \
 						"$image"
-				elif [ -n "$(type -Pt 'pngcrush')" ]; then
+				elif [[ -n "$(type -Pt 'pngcrush')" ]]; then
 					# note: pngcrush can't handle input
 					# files starting with `-'
 					pngcrush \
@@ -136,10 +136,10 @@ optimize_image() {
 				;;
 		esac
 		newsize="$(($(stat -c %s -- "$temp_out" 2>/dev/null)+0))"
-		if [ "$newsize" -gt 0 -a "$newsize" -lt "$origsize" ]; then
+		if [[ "$newsize" -gt 0 && "$newsize" -lt "$origsize" ]]; then
 			touch --reference="$image" -- "$temp_out"
 			chmod --reference="$image" -- "$temp_out"
-			if [ "$UID" -eq 0 ]; then
+			if [[ "$UID" -eq 0 ]]; then
 				# we're root
 				chown --reference="$image" -- "$temp_out"
 			fi
@@ -154,7 +154,7 @@ optimize_image() {
 
 OUTPUTS=("$@")
 
-if [ "${#OUTPUTS[@]}" -eq 0 ]; then
+if [[ "${#OUTPUTS[@]}" -eq 0 ]]; then
 	OUTPUTS+=("$(choose_output)")
 fi
 
@@ -162,13 +162,13 @@ import_opts=(
 	'-quality' '9'	# JPEG/MIFF/PNG compression level
 )
 
-if [ "$ROOT_WINDOW" -ne 0 ]; then
+if [[ "$ROOT_WINDOW" -ne 0 ]]; then
 	import_opts+=(
 		'-screen' # select image from root window
 	)
 fi
 
-if [ "$VERBOSE" -ne 0 ]; then
+if [[ "$VERBOSE" -ne 0 ]]; then
 	import_opts+=(
 		'-verbose' # print detailed information about the image
 		'-monitor' # monitor progress
@@ -181,9 +181,9 @@ for image_out in "${OUTPUTS[@]}"; do
 done
 
 # finisher: optimize images for size
-if [ "$OPTIMIZE" -ne 0 ]; then
+if [[ "$OPTIMIZE" -ne 0 ]]; then
 	for image_out in "${OUTPUTS[@]}"; do
-		if [ -f "$image_out" ]; then
+		if [[ -f "$image_out" ]]; then
 			optimize_image "$image_out"
 		fi
 	done
