@@ -161,6 +161,11 @@ aug keycommands
 				\ nnoremap <buffer> <silent> ,<C-d> :so ~/.vim/templates/keys/php-c-D.vim<CR> |
 				\ nmap <buffer> <silent> Q ysil'A,<Esc>
 
+	" PHPUnit tests
+	au BufNewFile,BufRead	*Test.php
+				\ nnoremap <buffer> <silent> ,M :so ~/.vim/templates/keys/phpunit-M.vim<CR> |
+				\ nnoremap <buffer> <silent> ,P :so ~/.vim/templates/keys/phpunit-P.vim<CR>
+
 	" build script build files
 	" ,h - insert header file from /tmp/svn/_configure/__header
 	" ,s - insert command for writing slack-desc
