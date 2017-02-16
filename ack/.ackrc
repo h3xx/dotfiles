@@ -2,6 +2,10 @@
 --color-match=bold red
 --color-lineno=bold blue
 
+# ignore git merge temps
+--ignore-file=match:/\.orig$/
+--ignore-file=match:/_(BACKUP|BASE|LOCAL|REMOTE)_.*$/
+
 # ignore SCSS cache files
 --ignore-file=match:/\.scssc$/
 # ignore SCSS map files
