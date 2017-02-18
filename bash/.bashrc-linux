@@ -230,6 +230,16 @@ alias \
 	rmdirempty1='findd1 -empty -print -delete' \
 	brokensymlinks='find -L . -type l'
 
+# the "I forgot to use `CMD && ALSO`" aliases.
+# E.g.:
+# $ rsync ... <Enter>
+# [as it's excuting]
+# and rm -rf ...
+# usefulness: TODO
+alias \
+	and='[[ $? -eq 0 ]] &&' \
+	or='[[ $? -eq 0 ]] ||'
+
 # create and switch to a new directory
 # usefulness: ****
 nd() {
