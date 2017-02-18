@@ -236,6 +236,21 @@ nd() {
 	[[ -n $1 && $1 != - ]] && mkdir -p -- "$1" && cd "$1"
 }
 
+# clone and switch to a new directory
+# usefulness: TODO
+gcd() {
+	git clone "$@" || return
+
+	local TARGETDIR=$_
+	if [[ -d $TARGETDIR ]]; then
+		cd "$TARGETDIR"
+		return
+	fi
+
+	TARGETDIR=$(basename -- "$TARGETDIR" .git)
+	cd "$TARGETDIR"
+}
+
 # untar and cd to the tarball's directory
 # usefulness: *****
 # example:
