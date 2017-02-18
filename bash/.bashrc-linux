@@ -236,6 +236,22 @@ nd() {
 	[[ -n "$1" && "$1" != '-' ]] && mkdir --parents -- "$1" && cd "$1"
 }
 
+# clone and switch to a new directory
+# usefulness: TODO
+gcd() {
+	local url="$1"
+	git clone "$@" || return
+
+	local targetdir="$_"
+	if [[ -d "$targetdir" ]]; then
+		cd "$targetdir"
+		return
+	fi
+
+	targetdir="$(basename "$targetdir" .git)"
+	cd "$targetdir"
+}
+
 # untar and cd to the tarball's directory
 # usefulness: *****
 # example:
