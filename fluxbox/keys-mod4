@@ -70,6 +70,11 @@ None XF86AudioMute :Exec ~/.fluxbox/bin/toggle-mute
 # open mixer
 Mod4 a :Exec xterm -name alsamixer -e alsamixer
 
+# MOC integration
+None XF86AudioNext :Exec mocp -f
+None XF86AudioPrev :Exec mocp -r
+None XF86AudioPlay :Exec mocp -G
+
 # current window commands
 ## (interferes with traditional wm behavior of alt-FX => workspace X)
 #Mod1 F4 :Close
