@@ -134,6 +134,8 @@ set wildignore+=.git,.svn,CVS
 set wildignore+=*.o,*.obj,*.class,*.gem
 " disable temp and backup files
 set wildignore+=*.swp,*~
+" git merge poop files
+set wildignore+=*_BACKUP_*,*_BASE_*,*_LOCAL_,*_REMOTE_*,*.orig
 
 " ******************************
 " ***** command mode, grep *****
