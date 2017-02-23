@@ -18,7 +18,7 @@ menu=~/future/php/eclib/data/menu.yaml
 appconfig=~/future/php/eclib/configs/AppConfig.yaml
 tweaks=~/future/php/eclib/data/tweaks.sql
 db=~/future/php/emaxlib/eventmax.sql
-pj=~pjarosch/public_html/code/future_ec/php/eclib/
+pj=~pjarosch/public_html/code/future-ec/php/eclib/
 
 # system locations
 backups=/mnt1/backups/g2planet
