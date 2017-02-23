@@ -1,6 +1,14 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+ARTIST=
+ALBUM=
+FILENAME=
+TITLE=
+TRACK_NUM=
+DUR_HR=
+DUR_SECONDS=
+
 while getopts 'a:r:f:t:n:d:D:h' flag; do
     case "$flag" in
         a)
@@ -35,10 +43,22 @@ shift "$((OPTIND-1))"
 
 # step 1: Pop up toaster notification
 
-notify-send \
-    --app-name=mocp \
-    --urgency=low \
-    "$ARTIST - $TITLE"
+NOTIFY_DISP=
+for notify_piece in \
+    "$ARTIST" \
+    "$TITLE" \
+    ; do
+    if [[ -n "$notify_piece" ]]; then
+        NOTIFY_DISP="${NOTIFY_DISP:+ - }$notify_piece"
+    fi
+done
+
+if [[ -n $NOTIFY_DISP ]]; then
+    notify-send \
+        --app-name=mocp \
+        --urgency=low \
+        "$ARTIST - $TITLE"
+fi
 
 # step 2: Submit scrobble to Last.FM
 
