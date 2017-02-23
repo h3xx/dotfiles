@@ -57,9 +57,13 @@ if [[ ! -f phpunit.xml && $PWD = / ]]; then
 	exit 3
 fi
 
-PHPUNIT_ARGS=(
-	--report-useless-tests
-)
+if [[ -x ./vendor/phpunit/phpunit/phpunit ]]; then
+    PHPUNIT=./vendor/phpunit/phpunit/phpunit
+else
+    PHPUNIT=phpunit
+fi
+
+PHPUNIT_ARGS=()
 
 if [[ $PERMISSIVE -eq 0 ]]; then
 	PHPUNIT_ARGS+=(--strict-coverage)
@@ -81,7 +85,7 @@ elif [[ $MODE = 'tap' ]]; then
 fi
 
 set -x
-phpunit "${PHPUNIT_ARGS[@]}" "$@"
+"$PHPUNIT" "${PHPUNIT_ARGS[@]}" "$@"
 set +x
 
 
