@@ -45,10 +45,22 @@ shift "$((OPTIND-1))"
 
 # step 1: Pop up toaster notification
 
-notify-send \
-    --app-name=mocp \
-    --urgency=low \
-    "$ARTIST - $TITLE"
+NOTIFY_DISP=
+for NOTIFY_PIECE in \
+    "$ARTIST" \
+    "$TITLE" \
+    ; do
+    if [[ -n $NOTIFY_PIECE ]]; then
+        NOTIFY_DISP="${NOTIFY_DISP:+ - }$NOTIFY_PIECE"
+    fi
+done
+
+if [[ -n $NOTIFY_DISP ]]; then
+    notify-send \
+        --app-name=mocp \
+        --urgency=low \
+        "$NOTIFY_DISP"
+fi
 
 # step 2: Submit scrobble to Last.FM
 
