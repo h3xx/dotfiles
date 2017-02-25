@@ -7,4 +7,4 @@
 # REGEXP  (((https?|ftp|gopher)://|(mailto|file|news):)[^' \t<>"]+|(www|web|w3)\.[-a-z0-9.]+)[^' \t.,;<>"\):]
 # COMMAND url_handler.sh '%s'
 #
-COMMAND elinks %s
+COMMAND xdg-open %s
