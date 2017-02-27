@@ -22,7 +22,7 @@ pj=~pjarosch/public_html/code/future-ec/php/eclib/
 
 # system locations
 backups=/mnt1/backups/g2planet
-www=/usr/local/www/apache22/data
+www=/usr/local/www/data
 g2p=/usr/local/g2planet
 
 # auto-logout after 5 minutes of being logged in idle
