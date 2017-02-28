@@ -10,8 +10,8 @@ COOKIE='SingletonCookie'
 for tmpdir in \
 	"$TMP"/.com.google.[Cc]hrome.?????? \
 	"$TMP"/.org.chromium.[Cc]hromium.?????? ; do
-	if [[ -d $tmpdir ]]; then
-		if [[ -e "$tmpdir/$SOCKET" ]] &&
+	if [[ -d $tmpdir && -w $tmpdir ]]; then
+		if [[ ! -e "$tmpdir/$SOCKET" ]] ||
 		   ! fuser --silent "$tmpdir/$SOCKET" 2>/dev/null; then
 
 			# not in use -- okay to delete
