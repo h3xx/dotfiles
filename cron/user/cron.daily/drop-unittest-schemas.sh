@@ -5,3 +5,10 @@ for schema in $(
 	psql -U unittest -c "drop schema $schema cascade" >/dev/null
 done
 
+# also clear out old temporary files
+rm -f \
+    /tmp/eventcentral_and_tweaks.sql* \
+    /tmp/EcSystemInformationTest* \
+    /tmp/EcAttachmentEditUpdateFileTest* \
+    /tmp/EcAttachmentFoldersCloudifyAttachmentTest* \
+    /tmp/Code128BarcodeTest*
