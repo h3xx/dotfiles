@@ -1,0 +1,82 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] FILE...
+Add certificate description text to the header of certificate files.
+
+  -h        Show this help message.
+  -i        Update files in-place.
+  --        Terminate options list.
+
+Copyright (C) 2010-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+INPLACE=0
+while getopts 'hi' flag; do
+    case "$flag" in
+        'i')
+            INPLACE=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+    rm -f "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup' EXIT
+
+update_certfile() {
+    local \
+        IN_FILE=$1 \
+        OUT_FILE=$2
+
+    openssl x509 -in "$IN_FILE" -text >"$OUT_FILE"
+}
+
+if [[ $# -eq 0 ]]; then
+    FILES=(-)
+else
+    FILES=("$@")
+fi
+
+for CERTFILE in "${FILES[@]}"; do
+    if [[ $CERTFILE = '-' ]]; then
+        NOTAFILE=1
+        CERTFILE=/dev/stdin
+    else
+        NOTAFILE=0
+    fi
+
+    if [[ $INPLACE -ne 0 && $NOTAFILE -ne 1 ]]; then
+        CERT_TEMP=$(mktemp -t "$(basename "$0").XXXXXX")
+        TEMP_FILES+=("$CERT_TEMP")
+        OUT_FILE=$CERT_TEMP
+    else
+        OUT_FILE=/dev/stdout
+    fi
+
+    update_certfile "$CERTFILE" "$OUT_FILE"
+
+    if [[ $INPLACE -ne 0 && $NOTAFILE -ne 1 ]]; then
+        cp -- "$CERT_TEMP" "$CERTFILE"
+    fi
+done
