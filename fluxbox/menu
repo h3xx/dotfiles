@@ -25,7 +25,8 @@
 #	[exec] (gentoo) {gentoo} <~/.fluxbox/icons/gentoo.xpm>
 #	[exec] (eclipse) {/opt/eclipse/eclipse} <~/.fluxbox/icons/eclipse.xpm>
 #	[exec] (azureus) {azureus} <~/.fluxbox/icons/azureus.xpm>
-	[exec] (pidgin) {pidgin} <~/.fluxbox/icons/pidgin.xpm>
+#	[exec] (pidgin) {pidgin} <~/.fluxbox/icons/pidgin.xpm>
+	[exec] (arduino) {startarduino} <~/.fluxbox/icons/arduino.xpm>
 #	[exec] (audacious) {audacious} <~/.fluxbox/icons/audacious2.xpm>
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
 #	[exec] (grip) {grip} <~/.fluxbox/icons/grip.xpm>
@@ -111,6 +112,7 @@
 		[end]
 	[end]
 	[submenu] (development)
+		[exec] (arduino) {startarduino} <~/.fluxbox/icons/arduino.xpm>
 		[exec] (eclipse) {/opt/eclipse/eclipse} <~/.fluxbox/icons/eclipse.xpm>
 		[exec] (xclips) {xclips}
 		[exec] (distcc monitor) {distccmon-gnome}
