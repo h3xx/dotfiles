@@ -49,3 +49,4 @@ psql -U pgsql postgres -c "drop database $project;"
 psql -U pgsql postgres -c "drop user $project;"
 
 sudo rm -rf /usr/local/{www/data,g2planet}/$project
+sudo rm -f /etc/cron.d/$project
