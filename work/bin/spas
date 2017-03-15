@@ -104,6 +104,10 @@ git pull &&
 git subpull &&
 sudo $MAKE pause || exit
 
+if ! sudo $MAKE eccheckcrontab >/dev/null; then
+    sudo $MAKE ecinstallcrontab
+fi
+
 # if ecscheckdata fails, we have to run migrations the database BEFORE syncing
 if [[ $MIGRATION -ne 0 ]] && ! sudo $MAKE eccheckdata >/dev/null; then
     run_migrations
