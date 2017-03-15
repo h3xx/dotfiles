@@ -131,4 +131,4 @@
 	#rmHints = false # ?
 	#amWorkDir = false # ?
 
-# vi: ft=gitconfig
+# vi: ft=gitconfig ts=8 sts=8 sw=8 noet
