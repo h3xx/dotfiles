@@ -61,4 +61,6 @@
 	// Disable video capture; Not useful enough to allow potentially
 	// exploitable feature
 	"VideoCaptureAllowed": false,
+	// Disable "Cast" feature
+	"EnableMediaRouter": false,
 }
