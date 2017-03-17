@@ -1,8 +1,46 @@
 #!/usr/bin/perl -w
 use strict;
 
-use URI::Escape		qw/ uri_unescape /;
+our $VERSION = '1.0.1';
+
+use Getopt::Std		qw/ getopts /;
+use File::Basename	qw/ basename dirname /;
+
+sub HELP_MESSAGE {
+	my $fh = shift;
+	my $script = &basename($0);
+	print $fh <<EOF
+Usage: $script STRING...
+Encode/decode URL strings
+
+Copyright (C) 2016-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+;
+
+	exit 0;
+}
+
+&getopts('', \ my %opts);
+
+my %transforms = (
+	'url_decode'	=> sub {
+		use URI::Escape		qw/ uri_unescape /;
+		&uri_unescape(shift);
+	},
+	'url_encode'	=> sub {
+		use URI::Escape		qw/ uri_escape /;
+		&uri_escape(shift);
+	},
+);
+
+my $transform_op = $transforms{&basename($0)};
+
+die "Cannot determine operation for program name `$0'"
+	unless $transform_op;
 
 foreach my $url (@ARGV) {
-	print &uri_unescape($url), "\n";
+	print &$transform_op($url), "\n";
 }
