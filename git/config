@@ -70,6 +70,7 @@
 	nuke		= !git clean -x -d -f && git co --force
 	fsck-fix	= !~/.config/git/bin/git-fsck-fix.sh
 	mreq		= !~/.config/git/bin/git-open-pull-request-gitlab.sh
+	ub		= !~/.config/git/bin/gitlab-unprotect-branch.sh
 
 [commit]
 	# automatically gpg-sign all commits
