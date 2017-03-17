@@ -25,7 +25,7 @@
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
-	// Disable opting-in to sending data to Google's Safe Browsing program
+	// Disable opting-in to sending data to Google's Safe Browsing program (DOES NOT WORK)
 	"SafeBrowsingExtendedReportingOptInAllowed": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
 	// (deprecated because Google supposedly learned their lesson)
