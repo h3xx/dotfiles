@@ -53,7 +53,7 @@ set sort=threads
 
 # emulate Gmail's "last message in thread is thread date"
 # with new threads toward the top
-set sort_aux=reverse-date
+set sort_aux=reverse-last-date-received
 
 # more business-like
 set sig_on_top
