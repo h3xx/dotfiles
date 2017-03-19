@@ -25,6 +25,10 @@
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
+	// "With Safe Browsing, information about suspicious websites is sent and
+	// received between the browser you are using and Google's servers."
+	// @see https://www.google.com/chrome/browser/privacy/#safe-browsing-policies
+	"SafeBrowsingEnabled": false,
 	// Disable opting-in to sending data to Google's Safe Browsing program (DOES NOT WORK)
 	"SafeBrowsingExtendedReportingOptInAllowed": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
