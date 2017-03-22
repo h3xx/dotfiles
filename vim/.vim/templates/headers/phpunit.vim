@@ -51,10 +51,13 @@ append
 .
 s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
 append
+        $reflector = new ReflectionClass($tclass);
+        $meth = $reflector->getMethod('SOMEMETHOD');
+        $meth->setAccessible(true);
+        $actual_out = $meth->invokeArgs($tclass, [$MYARG]);
 
         $expected_out = [
         ];
-        $actual_out = $tclass->public_ SOMEMETHOD();
 
         $message = "U wot m8?";
         $this->assertEquals($expected_out, $actual_out, $message);
@@ -72,11 +75,7 @@ class SOMECLASSWrapper extends SOMECLASS {
 .
 s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
 append
-    // wrap expose some methods
-
-    public function public_ SOMEMETHOD() {
-        return static::SOMEMETHOD();
-    }
+    use TestOutputCapture;
 
     // same thing except without classes
     public function __construct(PDO &$db, $smarty, $user) {
