@@ -1,19 +1,15 @@
 #!/bin/bash
 
-SERVERS=(
-    test223.g2planet.com
-    test220.g2planet.com
-    prod223a.g2planet.com
-)
-
-for sv in "${SERVERS[@]}"; do
-    ssh "$sv" 'if [[ -x ~/.gitrepos/update.sh ]]; then cd ~/.gitrepos && ./update.sh; fi' 2>&1 |sed -e "s,^,$sv: ," &
-done
-
 # update locally
 if [[ -x ~/.gitrepos/update.sh ]]; then
     cd ~/.gitrepos &&
         ./update.sh 2>&1 |sed -e 's,^,localhost: ,' &
 fi
+
+pssh \
+    -P \
+    -h "$0.hosts" \
+    --par 6 \
+    'cd ~/.gitrepos && ./update.sh'
 
 wait
