@@ -152,22 +152,25 @@ alias \
 	findd1='find1 -type d' \
 	findd1i='findd1 -iname'
 
-## ps
-
 # if piping output somewhere (like grep) write header to stderr and the rest of
 # the lines to stdout
 # this makes the header show up in grepped results
 # usefulness: TODO
-_ps() {
+_header_shunt() {
 	if [[ ! -t 1 ]]; then
-		ps "$@" |sed -e '1w /dev/stderr' -e '1d'
+		"$@" |sed -e '1w /dev/stderr' -e '1d'
 	else
-		ps "$@"
+		"$@"
 	fi
 }
 
 alias \
-	ps='_ps' \
+	lsof='_header_shunt lsof'
+
+## ps
+
+alias \
+	ps='_header_shunt ps' \
 	psa='ps -A x -f f' \
 	psac='ps -A xwf -eo pid,user,cgroup,bsdtime,args' \
 	psx='ps x f -o user,pid,ppid,c,stime,tty,stat,nice,bsdtime,cmd' \
