@@ -337,7 +337,7 @@ qrmr() {
 # prefix each line piped in
 # usefulness: TODO
 pfx() {
-	sed -e 's,^,'"${1//,/\\,}"':,'
+	sed -e 's,^,'"${1//,/\\,}"','
 }
 
 # turn off history (incognito mode)
