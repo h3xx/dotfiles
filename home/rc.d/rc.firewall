@@ -1,0 +1,422 @@
+#!/bin/bash
+# /etc/rc.d/rc.firewall
+
+if test -f /etc/init.d/functions; then
+	. /etc/init.d/functions
+	ECHO=echo
+	ECHO_OK='echo_success'
+	ECHO_ERROR='echo_failure'
+else
+	ECHO=echo
+	ECHO_OK=:
+	ECHO_ERROR=:
+fi
+
+IPT='/usr/sbin/iptables'
+
+# apply defaults
+LOCAL_NETMASK='192.168.0.0/16'
+LO_IFACE='lo'
+LO_IP='127.0.0.1'
+LOGGING='no'
+
+if [[ -f "$0.conf" ]]; then
+	. "$0.conf"
+elif [[ -f /etc/rc.d/rc.firewall.conf ]]; then
+	. /etc/rc.d/rc.firewall.conf
+fi
+
+iptables_stop() {
+	(
+	set -e
+
+	# Reset default policies
+	$IPT -P INPUT ACCEPT
+	$IPT -P FORWARD ACCEPT
+	$IPT -P OUTPUT ACCEPT
+	$IPT -t nat -P PREROUTING ACCEPT
+	$IPT -t nat -P POSTROUTING ACCEPT
+	$IPT -t nat -P OUTPUT ACCEPT
+	$IPT -t mangle -P PREROUTING ACCEPT
+	$IPT -t mangle -P OUTPUT ACCEPT
+
+	# Flush all rules
+	$IPT -F
+	$IPT -t nat -F
+	$IPT -t mangle -F
+
+	# Erase all non-default chains
+	$IPT -X
+	$IPT -t nat -X
+	$IPT -t mangle -X
+
+	)
+}
+
+iptables_start() {
+	(
+	set -e
+
+	##########################
+	## Set default policies ##
+	##########################
+
+	# Drop all packets not handled by a rule
+	$IPT -P INPUT DROP
+	$IPT -P OUTPUT DROP
+	$IPT -P FORWARD DROP
+
+	# for a honeypot running in port 2222
+	# (addendum: not running atm)
+	#$IPT -t nat -P INPUT ACCEPT
+	#$IPT -t nat -P OUTPUT ACCEPT
+	#$IPT -t nat -P PREROUTING ACCEPT
+	#$IPT -t nat -P POSTROUTING ACCEPT
+
+	#$IPT -t nat -A PREROUTING ${INET_IFACE:+-i $INET_IFACE} -p tcp --dport 22 -j REDIRECT --to-port 2222
+	#$IPT -t nat -A PREROUTING -p tcp ${INET_IFACE:+-i $INET_IFACE} --dport 22 -j DNAT --to 127.0.0.1:2222
+
+	###################
+	## Create chains ##
+	###################
+
+	# Create a chain to filter INVALID packets
+	$IPT -N bad_packets
+
+	# Create another chain to filter bad tcp packets
+	$IPT -N bad_tcp_packets
+
+	# Used to filter packets from malicious hosts
+	$IPT -N malicious_hosts
+
+	# Create separate chains for icmp, tcp (incoming and outgoing),
+	# and incoming udp packets.
+	$IPT -N icmp_packets
+
+	# Used to tweak TOS flags for QoS
+	$IPT -t mangle -N qos
+
+	# Used to prioritize ACK packets
+	$IPT -t mangle -N qos_ack
+
+	# Used to correct TOS flags for larger packets
+	$IPT -t mangle -N fix_tos
+
+	# Used for UDP packets inbound from the Internet
+	$IPT -N udp_inbound
+
+	# Used to block outbound UDP services from internal network
+	# Default to allow all
+	$IPT -N udp_outbound
+
+	# Used to allow inbound services if desired
+	# Default fail except for established sessions
+	$IPT -N tcp_inbound
+
+	# Used to block outbound services from internal network
+	# Default to allow all
+	$IPT -N tcp_outbound
+
+	#####################
+	## Populate chains ##
+	#####################
+
+	###--- bad_packets ---###
+
+	# Log then drop all bad packets
+	if [[ "$LOGGING" = 'yes' ]]; then
+		$IPT -A bad_packets -p ALL -m conntrack --ctstate INVALID -j LOG --log-prefix 'Invalid packet: '
+	fi
+	$IPT -A bad_packets -p ALL -m conntrack --ctstate INVALID -j DROP
+
+	# Then check the tcp packets for additional problems
+	$IPT -A bad_packets -p TCP -j bad_tcp_packets
+
+	# If bad_tcp packets didn't drop it, return it for further processing
+	$IPT -A bad_packets -p ALL -j RETURN
+
+	###--- bad_tcp_packets ---###
+
+	# Log then drop all bad TCP packets
+	if [[ "$LOGGING" = 'yes' ]]; then
+		$IPT -A bad_tcp_packets -p TCP ! --syn -m conntrack --ctstate NEW -j LOG --log-prefix 'New not syn: '
+	fi
+	$IPT -A bad_tcp_packets -p TCP ! --syn -m conntrack --ctstate NEW -j DROP
+
+	# If that didn't catch it, then return for further processing
+	$IPT -A bad_tcp_packets -p TCP -j RETURN
+
+	###--- malicious_hosts ---###
+
+	# Retrieve list of malicious hosts from text files
+	for blocklist in /root/{offenders,bluetack} ; do
+		if [[ -f "$blocklist" ]]; then
+			for ip in $(sed -e 's/#.*$//' "$blocklist") ; do
+				if [[ $ip = *-* ]]; then
+					# entry is a range of IP addresses
+					## incoming packets
+					$IPT -A malicious_hosts -p ALL -m iprange --src-range $ip -j DROP
+					## outgoing packets (this seems redundant)
+					#$IPT -A malicious_hosts -p ALL -m iprange --dst-range $ip -j DROP
+				else
+					# entry is a single IP address
+					## incoming packets)
+					$IPT -A malicious_hosts -p ALL -s $ip -j DROP
+					## outgoing packets (this seems redundant)
+					#$IPT -A malicious_hosts -p ALL -d $ip -j DROP
+				fi
+			done
+		fi
+	done
+
+	# Return all other packets for further processing
+	$IPT -A malicious_hosts -p ALL -j RETURN
+
+	###--- icmp_packets ---###
+
+	# Log then drop all ICMP fragments
+	if [[ "$LOGGING" = 'yes' ]]; then
+		$IPT -A icmp_packets --fragment -p ICMP -j LOG --log-prefix 'ICMP fragment: '
+	fi
+	$IPT -A icmp_packets --fragment -p ICMP -j DROP
+
+	# Accept all ICMP PINGs (uncomment to allow system to be pinged)
+	#$IPT -A icmp_packets -p ICMP -s 0/0 --icmp-type 8 -j ACCEPT
+
+	# Log all PING attempts
+	# (addendum: why?)
+	#if [[ "$LOGGING" = 'yes' ]]; then
+	#	$IPT -A icmp_packets -p ICMP -s 0/0 --icmp-type 8 -j LOG --log-prefix 'Ping detected: '
+	#fi
+
+	# Drop all ICMP PINGs
+	$IPT -A icmp_packets -p ICMP -s 0/0 --icmp-type 8 -j DROP
+	# Time Exceeded
+	$IPT -A icmp_packets -p ICMP -s 0/0 --icmp-type 11 -j ACCEPT
+	# Not matched, so return so it will be logged
+	$IPT -A icmp_packets -p ICMP -j RETURN
+
+	###--- (tcp|udp)_inbound ---###
+
+	# Drop Windows NetBIOS spamming
+	$IPT -A udp_inbound -p UDP -s 0/0 --dport 137 -j DROP
+	$IPT -A udp_inbound -p UDP -s 0/0 --dport 138 -j DROP
+
+	# Reject Ident requests to cut down on long delays while connecting
+	$IPT -A tcp_inbound -p TCP -s 0/0 --dport 113 -j REJECT
+	$IPT -A udp_inbound -p UDP -s 0/0 --dport 113 -j REJECT
+
+	# Accept DHCP ports
+	$IPT -A udp_inbound -p UDP -s 0/0 --source-port 67 --dport 68 -j ACCEPT
+
+	# Open some ports (see /etc/rc.d/rc.firewall.conf)
+
+	for tcp_svc in "${TCP_SERVICES[@]}"; do
+		for tcp_port in ${PORT[$tcp_svc]}; do
+			$IPT -A tcp_inbound -p TCP -s 0/0 --dport "$tcp_port" -j ACCEPT
+		done
+	done
+
+	for udp_svc in "${UDP_SERVICES[@]}"; do
+		for udp_port in ${PORT[$udp_svc]}; do
+			$IPT -A udp_inbound -p UDP -s 0/0 --dport "$udp_port" -j ACCEPT
+		done
+	done
+
+	for local_tcp_svc in "${LOCAL_TCP_SERVICES[@]}"; do
+		for local_tcp_port in ${PORT[$local_tcp_svc]}; do
+			$IPT -A tcp_inbound -p TCP -s "$LOCAL_NETMASK" --dport "$local_tcp_port" -j ACCEPT
+		done
+	done
+
+	for local_udp_svc in "${LOCAL_UDP_SERVICES[@]}"; do
+		for local_udp_port in ${PORT[$local_udp_svc]}; do
+			$IPT -A udp_inbound -p UDP -s "$LOCAL_NETMASK" --dport "$local_udp_port" -j ACCEPT
+		done
+	done
+
+	# Return all other packets for further processing
+	$IPT -A udp_inbound -p UDP -j RETURN
+
+	###--- (tcp|udp)_outbound ---###
+
+	# Default rule: accept everything
+	$IPT -A tcp_outbound -p TCP -s 0/0 -j ACCEPT
+	$IPT -A udp_outbound -p UDP -s 0/0 -j ACCEPT
+
+	###--- fix_tos ---###
+
+	# (only receives TCP packets)
+	# Set TOS flags 'Maximize-Throughput' on large (<512 bytes) packets,
+	# two per second
+
+	# Skip packets smaller than 512 bytes
+	$IPT -t mangle -A fix_tos -m length --length 0:512 -j RETURN
+
+	# Limit to two large packets per second and
+	$IPT -t mangle -A fix_tos -m limit --limit 2/s --limit-burst 10 -j RETURN
+
+	# Set 'Maximize-Throughput' TOS flag
+	$IPT -t mangle -A fix_tos -j TOS --set-tos Maximize-Throughput
+
+	# Return all other packets for further processing
+	$IPT -t mangle -A fix_tos -j RETURN
+
+	###--- qos_ack ---###
+
+	# (only receives TCP packets)
+	# Set TOS flags 'Minimize-Delay' and 'Maximize-Throughput' on all ACK
+	# packets
+
+	# Skip special packets
+	$IPT -t mangle -A qos_ack -m tos ! --tos Normal-Service -j RETURN
+
+	# Minimize-Delay on small (probably HTTP) ACK packets
+	$IPT -t mangle -A qos_ack -m length --length 0:128 -j TOS --set-tos Minimize-Delay
+
+	# Maximize-Throughput on large (probably SYN/ACK) ACK packets
+	$IPT -t mangle -A qos_ack -m length --length 128: -j TOS --set-tos Maximize-Throughput
+
+	# Return all other packets for further processing
+	$IPT -t mangle -A qos_ack -j RETURN
+
+	###--- qos ---###
+
+	# Just filter through TOS-tweaking chains and return
+	$IPT -t mangle -A qos -p TCP -m tos --tos Minimize-Delay -j fix_tos
+	$IPT -t mangle -A qos -p TCP --tcp-flags SYN,RST,ACK ACK -j qos_ack
+	$IPT -t mangle -A qos -j RETURN
+
+	#################
+	## Link chains ##
+	#################
+
+	###--- INPUT ---###
+
+	# Allow all incoming packets from localhost
+	$IPT -A INPUT -p ALL -i $LO_IFACE -j ACCEPT
+
+	# Filter bad packets
+	$IPT -A INPUT -p ALL -j bad_packets
+
+	# Drop IGMP spamming from "DOCSYS" compliant modems
+	$IPT -A INPUT -p ALL -d 224.0.0.1 -j DROP
+
+	# Filter packets from malicious hosts
+	$IPT -A INPUT -p ALL -j malicious_hosts
+
+	# Accept packets from established connections
+	$IPT -A INPUT -p ALL ${INET_IFACE:+-i $INET_IFACE} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+	# Route the rest to the appropriate user chain
+	$IPT -A INPUT -p TCP ${INET_IFACE:+-i $INET_IFACE} -j tcp_inbound
+	$IPT -A INPUT -p UDP ${INET_IFACE:+-i $INET_IFACE} -j udp_inbound
+	$IPT -A INPUT -p ICMP ${INET_IFACE:+-i $INET_IFACE} -j icmp_packets
+
+	# Drop without logging broadcasts that get this far (cuts down on log
+	# clutter)
+	$IPT -A INPUT -p ALL -d 255.255.255.255 -j DROP
+
+	# Log packets that still don't match
+	if [[ "$LOGGING" = 'yes' ]]; then
+		$IPT -A INPUT -m limit --limit 3/minute --limit-burst 3 -j LOG --log-prefix 'INPUT packet died: '
+	fi
+
+	###--- OUTPUT ---###
+
+	# Drop invalid ICMP to prevent a possible exploit (bad_packets does
+	# this already with a broader protocol scope)
+	#$IPT -A OUTPUT -m conntrack -p icmp --ctstate INVALID -j DROP
+
+	# Accept all packets from the lo interface
+	$IPT -A OUTPUT -p ALL -s $LO_IP -j ACCEPT
+	$IPT -A OUTPUT -p ALL -o $LO_IFACE -j ACCEPT
+
+	# To internet
+	$IPT -A OUTPUT -p ALL ${INET_IFACE:+-o $INET_IFACE} -j ACCEPT
+
+	# Log packets that still don't match
+	if [[ "$LOGGING" = 'yes' ]]; then
+		$IPT -A OUTPUT -m limit --limit 3/minute --limit-burst 3 -j LOG --log-prefix 'OUTPUT packet died: '
+	fi
+
+	###--- POSTROUTING ---###
+
+	# QoS filtering for TCP packets
+	$IPT -t mangle -A POSTROUTING -p TCP -j qos
+
+	#########################
+	#### Packet Mangling ####
+	#########################
+
+	# prioritize HTTP traffic
+	#$IPT -t mangle -A OUTPUT -p TCP --dport 80 -j TOS --set-tos Minimize-Delay
+	#$IPT -t mangle -A OUTPUT -p TCP --dport 80 -j TOS --set-tos Maximize-Throughput
+	#$IPT -t mangle -A OUTPUT -p TCP --dport 80 -j TOS --set-tos Maximize-Reliability
+
+	)
+}
+
+iptables_restart() {
+	(
+	set -e
+
+	iptables_stop
+	iptables_start
+
+	)
+}
+
+case "$1" in
+	'start')
+		echo -n 'Adding iptables'
+		iptables_start &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+
+	'stop')
+		echo -n 'Flushing iptables'
+		iptables_stop &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+
+	'restart')
+		echo -n 'Re-adding iptables'
+		iptables_restart &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+
+	*_start)
+		# Example: "eth1_start" will start the firewall on interface 'eth1'
+		INET_IFACE="$(echo $1 | /bin/cut -d '_' -f 1)"
+		echo -n 'Adding iptables'
+		iptables_start &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+	*_stop)
+		# Example: "eth0_stop" will stop the firewall on interface 'eth0'
+		INET_IFACE="$(echo $1 | /bin/cut -d '_' -f 1)"
+		echo -n 'Flushing iptables'
+		iptables_stop &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+	*_restart)
+		# Example: "wlan0_restart" will take 'wlan0' down and up again
+		INET_IFACE="$(echo $1 | /bin/cut -d '_' -f 1)"
+		iptables_restart &&
+			$ECHO_OK || $ECHO_ERROR
+		echo
+		;;
+
+	*)
+		echo "Usage: $0 [INTERFACE_](start|stop|restart)"
+		exit 1
+	;;
+esac
+
+# vi: ft=sh ts=4 sw=4

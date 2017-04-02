@@ -1,0 +1,91 @@
+# /etc/rc.d/rc.firewall.conf
+# example firewall configuration
+
+LOCAL_NETMASK='192.168.0.0/16'
+INET_IFACE='wlan+'
+LO_IFACE='lo'
+LO_IP='127.0.0.1'
+
+## open port configuration
+unset PORT
+declare -A PORT
+
+# UNIX services
+PORT[systat]='11'
+PORT[daytime]='13'
+PORT[time]='37'
+PORT[finger]='79'
+PORT[rpcbind]='111'
+PORT[auth]='113'
+PORT[talk]='517'
+PORT[ntalk]='518'
+
+# Web servers
+PORT[ftp]='21'
+PORT[fsp]='21'
+PORT[smtp]='25'
+PORT[submission]='587'	# (smtp alt)
+PORT[http]='80'
+PORT[https]='443'
+PORT[gopher]='70'
+PORT[ipp]='631'
+PORT[mysql]='3306'
+PORT[samba]='139 445'
+PORT[nfs]='2049'
+
+#PORT[tor_control]=9051	# unused since tor 0.1.2.16
+PORT[tor_relay]=9001
+PORT[tor_directory]=9030
+PORT[tor_socks]=9050
+
+# Communication services
+PORT[squid_http]='3128'
+PORT[squid_icp]='3130'
+PORT[xmpp]='5222 5269'	# 22=>client 99=>server
+
+# Remote access services
+PORT[ssh]='22'
+
+# Filesharing services
+PORT[bittorrent]='6881:6889'
+
+# Gaming
+PORT[prboom]='5030'
+PORT[bloodfrontier]='28797'
+PORT[bzflag]='5154'
+PORT[snes9x]='6096'
+
+# Custom ports
+PORT[ssh]='5387'
+
+TCP_SERVICES=(
+	http
+	https
+	ssh
+
+	bittorrent
+
+	tor_relay
+	tor_directory
+)
+
+UDP_SERVICES=(
+	# hosting your own game server
+	prboom
+)
+
+LOCAL_TCP_SERVICES=(
+	squid_http
+	# allow local games over the local network
+	snes9x
+	# allow print server over the local network
+	ipp
+)
+
+LOCAL_UDP_SERVICES=(
+	squid_icp
+	# let samba shares work
+	samba
+)
+
+# vi: ft=sh
