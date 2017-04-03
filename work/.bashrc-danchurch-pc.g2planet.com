@@ -23,7 +23,7 @@ menu=~/future/php/eclib/data/menu.yaml
 tweaks=~/future/php/eclib/data/tweaks.sql
 
 # so can be reached from vim
-export appconfig d da db menu p struct t te tweaks u
+export appconfig d da db js menu p struct t te tweaks u
 
 ec=~/documents/work/EC2
 
@@ -55,10 +55,6 @@ _ghex() {
 	ghex "$@" >/dev/null 2>&1 &
 }
 alias ghex=_ghex
-
-find_nogit() {
-	find "${@:-.}" ! \( -regextype posix-egrep -regex '.*/(\.(svn|git|hg|bzr)|CVS)(/.*)?' \)
-}
 
 # laaaazy
 shopt -s \
