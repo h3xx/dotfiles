@@ -64,11 +64,6 @@ append
 
     }
 
-    public function getDataSet() {
-        $yaml = __DIR__.'/'.static::DATADIR.'/dataset.yaml';
-        return new PHPUnit_Extensions_Database_DataSet_YamlDataSet($yaml);
-    }
-
 }
 
 class SOMECLASSWrapper extends SOMECLASS {
