@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# open vim on the realpath
+
+VIM_ARGS=()
+DONE=0
+for arg; do
+    if [[ $DONE -eq 0 ]]; then
+        if [[ $arg == -- ]]; then
+            DONE=1
+        elif [[ $arg != -* ]]; then
+            arg="$(realpath -- "$arg")"
+        fi
+    fi
+    VIM_ARGS+=("$arg")
+done
+exec vim "${VIM_ARGS[@]}"
