@@ -1,0 +1,18 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# Open vim with the real path for each non-option argument
+
+VIM_ARGS=()
+DONE=0
+for ARG; do
+    if [[ $DONE -eq 0 ]]; then
+        if [[ $ARG = -- ]]; then
+            DONE=1
+        elif [[ $ARG != -* ]]; then
+            ARG=$(realpath -- "$ARG")
+        fi
+    fi
+    VIM_ARGS+=("$ARG")
+done
+exec vim "${VIM_ARGS[@]}"
