@@ -1,0 +1,92 @@
+#!/bin/bash
+
+HELP_MESSAGE() {
+	local EXIT_CODE="${1:-0}"
+	cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [SIGNATURE_FILES]...
+Verify GnuPG signatures, retrieving the necessary public keys from the key
+server when absent.
+
+  -h        Show this help message.
+  -d        Use the default primary-keyring behavior. Default is to use a
+              temporary keyring unless \`-k' is specified.
+  -k FILE   Import downloaded keys to keyring FILE.
+
+Copyright (C) 2010-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+	exit "$EXIT_CODE"
+}
+
+KEYRING=''
+TEMP_KEYRING=1
+
+while getopts 'hdk:' flag; do
+	case "$flag" in
+		'd')
+			TEMP_KEYRING=0
+			;;
+		'k')
+			KEYRING="$OPTARG"
+			;;
+		'h')
+			HELP_MESSAGE 0
+			;;
+		*)
+			HELP_MESSAGE 1
+			;;
+	esac
+done
+
+shift "$((OPTIND-1))"
+
+if [ "$#" -lt 1 ]; then
+	HELP_MESSAGE 2
+fi
+
+TEMP_FILES=()
+
+cleanup() {
+	rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup'	EXIT
+
+GPG_OPTS=(
+	'--keyserver-options'	'auto-key-retrieve'
+	'--verify-files'
+)
+
+# set up a temporary keyring for importing into
+if [[ -z "$KEYRING" && "$TEMP_KEYRING" -ne 0 ]]; then
+	KEYRING="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+	TEMP_FILES+=(
+		"$KEYRING"
+		"${KEYRING}~" # GPG tends to make vi-style backups
+	)
+fi
+
+if [[ -n "$KEYRING" ]]; then
+	# caveat: if the keyring specified does not exist, it will import to
+	# the default keyring, which is unexpected behavior
+	if [[ ! -e "$KEYRING" ]]; then
+		if ! touch -- "$KEYRING"; then
+			printf 'Failed to create keyring file `%s'\''\n' "$KEYRING" >&2
+			exit 2
+		fi
+	fi
+
+	GPG_OPTS+=(
+		# caveat: if the keyring is not an absolute path, gpg will
+		# attempt to import to ~/.gnupg/[keyring]
+		'--primary-keyring'	"$KEYRING"
+	)
+fi
+
+# XXX : can't `exec' here; it causes `cleanup' to be run before it's useful
+gpg \
+	"${GPG_OPTS[@]}" \
+	-- \
+	"$@"
