@@ -40,9 +40,11 @@
 	"CookiesBlockedForUrls": [
 		// clickbait sites
 		"[*.]distractify.com",
+		"[*.]buzzfeed.com",
 		"[*.]yummly.com",
 		"[*.]the-daily.buzz",
 		"[*.]vice.com",
+		"[*.]mashable.com", "on.mash.to",
 
 		// other sites that have no business setting cookies
 		"[*.]emuparadise.me",
