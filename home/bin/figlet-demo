@@ -6,14 +6,15 @@ FIGLET_DIR='/usr/share/figlet'
 HELP_MESSAGE() {
     local EXIT_CODE=${1:-0}
     cat <<EOF
-Usage: ${0##*/} [OPTIONS] [--] FILE...
+Usage: ${0##*/} [OPTIONS] [--] [FIGLET_OPTION]...
 Demo figlet fonts.
 
   -h        Show this help message.
   -t TEXT   Show TEXT as the demo text. Defaults to font name.
-  --        Terminate options list.
+  --        Terminate options list. Everything after this is passed as an
+              argument to figlet.
 
-Copyright (C) 2014 Dan Church.
+Copyright (C) 2014-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -30,6 +31,9 @@ while getopts 'ht:' flag; do
         'h')
             HELP_MESSAGE 0
             ;;
+        '-')
+            break
+            ;;
         *)
             HELP_MESSAGE 1
             ;;
@@ -43,6 +47,6 @@ for FONT in "$FIGLET_DIR"/*.[ft]lf; do
     FONT=${FONT%.*}  # suffix elim
     echo "$FONT"
     echo "${TEXT:-$FONT}" |
-    figlet -f "$FONT"
+    figlet -f "$FONT" "$@"
     echo
 done
