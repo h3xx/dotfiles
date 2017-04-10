@@ -1,47 +1,53 @@
-#!/bin/sh
+#!/bin/bash
 
 FIGLET_DIR='/usr/share/figlet'
 
 HELP_MESSAGE() {
-	local EXIT_CODE="${1:-0}"
-	cat <<EOF
-Usage: $(basename -- "$0") [OPTIONS] [--] FILE...
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] [FIGLET_OPTION]...
 Demo figlet fonts.
 
-  -h		Show this help message.
-  -t TEXT	Show TEXT as the demo text. Defaults to font name.
-  --		Terminate options list.
+  -h        Show this help message.
+  -t TEXT   Show TEXT as the demo text. Defaults to font name.
+  --        Terminate options list. Everything after this is passed as an
+              argument to figlet.
 
-Copyright (C) 2014 Dan Church.
+Copyright (C) 2014-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
 EOF
-	exit "$EXIT_CODE"
+    exit "$EXIT_CODE"
 }
 
 TEXT=''
 while getopts 'ht:' flag; do
-	case "$flag" in
-		't')
-			TEXT="$OPTARG"
-			;;
-		'h')
-			HELP_MESSAGE 0
-			;;
-		*)
-			HELP_MESSAGE 1
-			;;
-	esac
+    case "$flag" in
+        't')
+            TEXT="$OPTARG"
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        '-')
+            break
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
 done
 
 shift "$((OPTIND-1))"
 
 for font in "$FIGLET_DIR"/*.[ft]lf; do
-	font="${font##*/}" # basename
-	font="${font%.*}"  # suffix elim
-	echo "$font"
-	echo "${TEXT:-$font}" |
-	figlet -f "$font"
-	echo
+    font="${font##*/}" # basename
+    font="${font%.*}"  # suffix elim
+    echo "$font"
+    echo "${TEXT:-$font}" |
+    figlet -f "$font" "$@"
+    echo
 done
+
+# vi: sw=4 sts=4 ts=4 et
