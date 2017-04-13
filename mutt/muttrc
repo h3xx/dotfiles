@@ -72,9 +72,7 @@ set index_format="$HOME/.mutt/bin/reldate-index.sh %[%s] \"%4C %Z \" \" %-15.15L
 set pager_format="-%Z- %C/%m: %[!%H:%M] %-20.20n   %s%*  -- (%P)"
 
 # random signature from ~/.signature.d
-#set signature="fortune ~/.mutt/signature.d;echo|"
-# company-mandated signature. Sigh.
-set signature="~/.signature"
+set signature="fortune ~/.mutt/signature.d.work;echo|"
 
 set charset=latin1
 #set send_charset="utf-8:us-ascii"
