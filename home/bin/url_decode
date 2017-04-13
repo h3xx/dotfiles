@@ -1,17 +1,20 @@
 #!/usr/bin/perl -w
 use strict;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
-use Getopt::Std		qw/ getopts /;
-use File::Basename	qw/ basename dirname /;
+use Getopt::Std     qw/ getopts /;
+use File::Basename  qw/ basename dirname /;
+use URI::Escape     qw/ uri_escape uri_unescape /;
 
 sub HELP_MESSAGE {
-	my $fh = shift;
-	my $script = &basename($0);
-	print $fh <<EOF
-Usage: $script STRING...
-Encode/decode URL strings
+    my $fh = shift;
+    my $script = &basename($0);
+    print $fh <<EOF
+Usage: $script [OPTIONS]... [URL]...
+Encode/decode URL strings.
+
+  -i FILE   Take input from FILE.
 
 Copyright (C) 2016-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
@@ -20,27 +23,40 @@ There is NO WARRANTY, to the extent permitted by law.
 EOF
 ;
 
-	exit 0;
+    exit 0;
 }
 
-&getopts('', \ my %opts);
+&getopts('i:', \ my %opts);
 
 my %transforms = (
-	'url_decode'	=> sub {
-		use URI::Escape		qw/ uri_unescape /;
-		&uri_unescape(shift);
-	},
-	'url_encode'	=> sub {
-		use URI::Escape		qw/ uri_escape /;
-		&uri_escape(shift);
-	},
+    'url_decode'    => \&uri_unescape,
+    'url_encode'    => \&uri_escape,
 );
 
 my $transform_op = $transforms{&basename($0)};
 
 die "Cannot determine operation for program name `$0'"
-	unless $transform_op;
+    unless $transform_op;
+
+if ($opts{i}) {
+    my $fh;
+    if ($opts{i} eq '-') {
+        $fh = *STDIN;
+    }
+    else {
+        open $fh, '<', $opts{i}
+            or die "Failed to open file `$opts{i}' for reading: $!";
+    }
+
+    foreach my $url (<$fh>) {
+        chomp $url;
+        print &$transform_op($url), "\n";
+    }
+    close $fh;
+}
 
 foreach my $url (@ARGV) {
-	print &$transform_op($url), "\n";
+    print &$transform_op($url), "\n";
 }
+
+# vi: sw=4 sts=4 ts=4 et
