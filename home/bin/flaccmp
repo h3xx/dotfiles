@@ -1,0 +1,59 @@
+#!/bin/bash
+
+HELP_MESSAGE() {
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] FILE1 FILE2
+Compare two FLAC files
+
+  -h        Show this help message.
+
+Copyright (C) 2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+
+while getopts 'h' flag; do
+    case "$flag" in
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+	rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup'	EXIT
+
+compare_md5_in_streaminfo() {
+    local file_a="$1" file_b="$2"
+    [[ "$(metaflac --show-md5sum "$file_a")" = "$(metaflac --show-md5sum "$file_b")" ]]
+}
+
+compare_wav_contents() {
+    local file_a="$1" file_b="$2"
+    local wav_temp_a="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+    local wav_temp_b="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+    TEMP_FILES+=("$wav_temp_a" "$wav_temp_b")
+    flac -d -f -o "$wav_temp_a" "$file_a" 2>/dev/null &&
+    flac -d -f -o "$wav_temp_b" "$file_b" 2>/dev/null &&
+    cmp "$wav_temp_a" "$wav_temp_b"
+}
+
+compare_md5_in_streaminfo "$1" "$2" &&
+compare_wav_contents "$1" "$2"
+
+# vi: sw=4 ts=4 sts=4 et
