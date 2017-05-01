@@ -35,15 +35,15 @@ case "$HOSTNAME" in
         ;;
 
 	# work servers
-	dev*'.g2planet.com')
+	dev*)
 		# green (32)/yellow (33)
 		BASE_COLOR=('\e[0;32m' '\e[1;32m' '\e[0;33m' '\e[1;33m')
 		;;
-	test*'.g2planet.com')
+	test*)
 		# yellow (33)
 		BASE_COLOR=('\e[0;33m' '\e[1;33m' '\e[0;33m' '\e[1;33m')
 		;;
-	prod*'.g2planet.com')
+	prod*)
 		# red (31)/yellow (33)
 		BASE_COLOR=('\e[0;31m' '\e[1;31m' '\e[0;33m' '\e[1;33m')
 		;;
