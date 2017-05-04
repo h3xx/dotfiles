@@ -25,6 +25,7 @@ declare -A SERVER_COLORS
 SERVER_COLORS['223_1']='\e[30;48;5;118m' # lime
 SERVER_COLORS['223']='\e[30;48;5;106m' # dark lime
 SERVER_COLORS['220']='\e[37;48;5;124m' # maroon
+SERVER_COLORS['ERROR']='\e[37;48;5;160m' # bright red
 
 report_server() {
     local sub_dns=$1 project=$2
@@ -32,6 +33,10 @@ report_server() {
         "$(printf '%s@%s' "$project" "$sub_dns")"
     local server_name="$(curl -s "https://${sub_dns}.g2planet.com/$project/server_info?simple"|head -1)"
     local server_pat server_color
+
+    if [[ $server_name =~ (^$|^\<) ]]; then
+        server_name='ERROR!'
+    fi
 
     for server_pat in "${!SERVER_COLORS[@]}"; do
         if [[ $server_name =~ $server_pat ]]; then
