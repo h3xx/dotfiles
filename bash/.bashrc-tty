@@ -11,6 +11,29 @@ if [[ "_$TERM" == '_linux' ]]; then
 
 	# stop the tty blanker
 	setterm -powersave off -blank 0
+
+	# change the color scheme (based on Terminology default color scheme)
+
+	color() {
+		printf '\e]P%s%s'"$1" "$2"
+	}
+	color 0		'000000'
+	color 1		'CC3333'
+	color 2		'33CC33'
+	color 3		'CC8833'
+	color 4		'3333CC'
+	color 5		'CC33CC'
+	color 6		'33CCCC'
+	color 7		'CCCCCC'
+	color 8		'666666'
+	color 9		'FF6666'
+	color A		'66FF66'
+	color B		'FFFF66'
+	color C		'6666FF'
+	color D		'FF66FF'
+	color E		'66FFFF'
+	color F		'FFFFFF'
+	unset color
 fi
 
 #unset UNICODE_FONT
