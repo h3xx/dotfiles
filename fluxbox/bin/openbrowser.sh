@@ -7,6 +7,7 @@ CHROME_OPTIONS=(
     --ignore-gpu-blocklist
     --purge-memory-button
     --process-per-site
+    --wm-window-animations-disabled
 )
 
 if [[ $SQUID -ne 0 ]]; then
