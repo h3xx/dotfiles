@@ -108,7 +108,13 @@ set history=512
 " *********************************
 
 " Change directory to match current buffer
-set autochdir
+"set autochdir
+" (slightly better; don't chdir when buffer is on, e.g. a fugitive commit
+" buffer, or a :Gblame buffer)
+aug AutoChdir
+	autocmd!
+	autocmd BufEnter *	if expand("%:p:h") !~ '\(^/tmp\|/\.git$\)' | silent! lcd %:p:h | endif
+aug END
 
 " Automatically read a file if changed outside of vim (thanks vim-sensible)
 set autoread
