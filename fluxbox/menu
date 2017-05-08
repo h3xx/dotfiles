@@ -20,7 +20,7 @@
 	# TERM is set here because xterm refuses to set it via *termName
 	[exec] (xterm) {xterm -e 'tmux new -A -s main'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
-	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/google-chrome.xpm>
+	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/google-chrome.xpm>
 #	[exec] (chromium) {chromium --ignore-gpu-blocklist --process-per-site --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/chromium.xpm>
 #	[exec] (gentoo) {gentoo} <~/.fluxbox/icons/gentoo.xpm>
 #	[exec] (eclipse) {/opt/eclipse/eclipse} <~/.fluxbox/icons/eclipse.xpm>
