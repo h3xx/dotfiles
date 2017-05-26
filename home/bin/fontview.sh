@@ -1,0 +1,72 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] FILE...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Display an image of a font file.
+
+  -h        Show this help message.
+  -t TEXT   Show TEXT instead of default.
+  --        Terminate options list.
+
+Copyright (C) 2015-2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+TEXT=
+
+while getopts 't:h' FLAG; do
+    case "$FLAG" in
+        't')
+            TEXT=$OPTARG
+            ;;
+        'h')
+            HELP_MESSAGE
+            exit 0
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+TEMP_FILES=()
+
+cleanup() {
+    rm -rf -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup' EXIT
+
+FONTIMAGE_ARGS=()
+
+if [[ -n $TEXT ]]; then
+    FONTIMAGE_ARGS+=(--text "$TEXT")
+fi
+
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
+# XXX : fontimage requires .png extension
+TEMP=$TEMP_DIR/fontimage.png
+TEMP_FILES+=("$TEMP_DIR")
+
+for FN; do
+
+    echo "$FN"
+    fontimage "${FONTIMAGE_ARGS[@]}" -o "$TEMP" "$FN" &&
+    xv "$TEMP"
+done
