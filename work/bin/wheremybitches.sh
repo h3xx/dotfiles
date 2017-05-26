@@ -51,9 +51,13 @@ report_server() {
         $'\e[0m'
 }
 
-for ((i=0; i<${#PROJECTS[@]}; i+=2)); do
-    sub_dns=${PROJECTS[i]}
-    project=${PROJECTS[i+1]}
+if [[ $# -eq 0 ]]; then
+    for ((i=0; i<${#PROJECTS[@]}; i+=2)); do
+        sub_dns=${PROJECTS[i]}
+        project=${PROJECTS[i+1]}
 
-    report_server "$sub_dns" "$project";
-done
+        report_server "$sub_dns" "$project";
+    done
+else
+    report_server "$1" "${2:-$1}"
+fi
