@@ -11,7 +11,7 @@ Display an image of a font file.
   -t TEXT   Show TEXT instead of default.
   --        Terminate options list.
 
-Copyright (C) 2015-2017 Dan Church.
+Copyright (C) 2015-2019 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -37,10 +37,12 @@ done
 
 shift "$((OPTIND-1))"
 
-TEMP_FILES=()
+if [[ $# -eq 0 ]]; then
+    HELP_MESSAGE 2
+fi
 
 cleanup() {
-    rm -rf -- "${TEMP_FILES[@]}"
+    rm -rf -- "$TEMP_DIR"
 }
 
 trap 'cleanup' EXIT
@@ -52,13 +54,11 @@ if [[ -n $TEXT ]]; then
 fi
 
 TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
-# XXX : fontimage requires .png extension
-TEMP=$TEMP_DIR/fontimage.png
-TEMP_FILES+=("$TEMP_DIR")
 
 for FN; do
-
-    echo "$FN"
-    fontimage "${FONTIMAGE_ARGS[@]}" -o "$TEMP" "$FN" &&
-    xv "$TEMP"
+    # XXX : fontimage requires .png extension
+    TEMP=$TEMP_DIR/fontimage-${FN##*/}.png
+    fontimage "${FONTIMAGE_ARGS[@]}" -o "$TEMP" "$FN" || exit
 done
+
+xv "$TEMP_DIR"/*.png
