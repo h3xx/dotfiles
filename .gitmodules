@@ -1,3 +1,7 @@
+[submodule "fluxbox/styles/solaris"]
+	path = fluxbox/styles/solaris
+	url = https://github.com/h3xx/fluxbox-style-solaris.git
+	branch = master
 [submodule "font/ohsnapmod"]
 	path = font/ohsnapmod
 	url = https://github.com/h3xx/ohsnapmod.git
