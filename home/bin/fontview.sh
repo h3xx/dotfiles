@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 HELP_MESSAGE() {
 	local EXIT_CODE="${1:-0}"
@@ -10,7 +10,7 @@ Display an image of a font file.
   -t TEXT	Show TEXT instead of default.
   --		Terminate options list.
 
-Copyright (C) 2015 Dan Church.
+Copyright (C) 2015-2017 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -46,7 +46,7 @@ trap 'cleanup'	EXIT
 
 fontimage_args=()
 
-if [ -n "$TEXT" ]; then
+if [[ -n "$TEXT" ]]; then
 	fontimage_args+=(--text "$TEXT")
 fi
 
