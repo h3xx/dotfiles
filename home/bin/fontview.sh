@@ -36,6 +36,10 @@ done
 
 shift "$((OPTIND-1))"
 
+if [[ $# -eq 0 ]]; then
+	HELP_MESSAGE 2
+fi
+
 TEMP_FILES=()
 
 cleanup() {
@@ -51,13 +55,12 @@ if [[ -n "$TEXT" ]]; then
 fi
 
 temp_dir="$(mktemp -d -t "$(basename -- "$0").XXXXXX")"
-# XXX : fontimage requires .png extension
-temp="$temp_dir/fontimage.png"
 TEMP_FILES+=("$temp_dir")
 
 for fn; do
-
-	echo "$fn"
-	fontimage "${fontimage_args[@]}" -o "$temp" "$fn" &&
-	xv "$temp"
+	# XXX : fontimage requires .png extension
+	temp="$temp_dir/fontimage-$(basename -- "$fn").png"
+	fontimage "${fontimage_args[@]}" -o "$temp" "$fn" || exit
 done
+
+xv "$temp_dir"/*.png
