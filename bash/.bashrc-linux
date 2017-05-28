@@ -167,6 +167,14 @@ _header_shunt() {
 alias \
 	lsof='_header_shunt lsof'
 
+## suppress output and background select GUI programs
+_noout_bg() {
+	"$@" &>/dev/null &
+}
+
+hash meld 2>/dev/null && alias meld='_noout_bg meld'
+hash geeqie 2>/dev/null && alias geeqie='_noout_bg geeqie'
+
 ## ps
 
 alias \
