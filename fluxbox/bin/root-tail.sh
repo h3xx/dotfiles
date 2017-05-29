@@ -1,67 +1,41 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+CONF=$0.conf
+
 RT_PID=$(/sbin/pidof 'root-tail' 2>/dev/null)
 if [[ -n $RT_PID ]]; then
     printf 'root-tail is already running on pid %d\n' "$RT_PID" >&2
     exit 2
 fi
 
-rt_opts=(
-    --geometry 800x600+20+20
-    --noinitial
+set -e
 
-    --font 6x10
-    --outline
+if [[ ! -f $CONF ]]; then
+    printf 'Failed to find config file "%s"\n' "$CONF" >&2
+    exit 2
+fi
 
-    # Split line handling
-    --cont '> '
-    --cont-color gray50
+# Default config
+LOGS=()
 
-    # Immediately fork to the background
-    #--fork
+. "$CONF"
 
-    # Reduce flicker (double buffer?)
-    #--noflicker
-)
+ROOT_TAIL_ARGS=("${EXTRA_ARGS[@]}")
 
-logs=(
-    # File                          Color           Label
-    # ---------------------------------------------------
-    /var/log/messages               brown           messages
-    /var/log/debug                  brown           debug
-    /var/log/secure                 red             secure
-    /var/log/acpid                  red             acpid
-    /var/log/Xorg.0.log             brown           X
+for (( I = 0; I < ${#LOGS[@]}; I += 3 )); do
+    FILE=${LOGS[$I]}
+    COLOR=${LOGS[$I+1]}
+    LABEL=${LOGS[$I+2]}
 
-    /var/log/httpd/access_log       orange          apache
-    /var/log/httpd/error_log        brown           apache-errors
-
-    /var/lib/mysql/necronomicon.err orange          mysql
-    /var/lib/pgsql/serverlog        orange          pgsql
-
-#   /var/log/cups/access_log        brown           cups
-    /var/log/cups/error_log         orange          cups
-
-    ~/.log/procmail.log             yellow          mail
-#   ~/.log/chatsound.log            yellow          chat
-#   ~/.log/fluxbox.log              orange          fluxbox
-    ~/.log/kippo.log                red             kippo
-)
-
-for ((l_idx=0;l_idx<${#logs[@]};l_idx+=3)); do
-    log_file="${logs[l_idx]}"
-    log_color="${logs[l_idx+1]}"
-    log_label="${logs[l_idx+2]}"
-
-    if [[ -r $log_file && ! -d $log_file ]]; then
+    if [[ -r $FILE && -f $FILE ]]; then
         # can tail it
-        rt_opts+=(
-"${log_file}${log_color:+,${log_color}}${log_label:+,${log_label}}"
+        ROOT_TAIL_ARGS+=(
+            "${FILE}${COLOR:+,${COLOR}}${LABEL:+,${LABEL}}"
         )
     else
-        echo "cannot read log file \`${log_file}'" >&2
+        printf 'Warning: Cannot read log file "%s"\n' "$FILE" >&2
     fi
 done
 
-exec root-tail "${rt_opts[@]}"
+exec root-tail "${ROOT_TAIL_ARGS[@]}"
