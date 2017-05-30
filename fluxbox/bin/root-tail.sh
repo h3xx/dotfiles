@@ -53,7 +53,7 @@ for ((l_idx=0;l_idx<${#logs[@]};l_idx+=3)); do
     log_color="${logs[l_idx+1]}"
     log_label="${logs[l_idx+2]}"
 
-    if [[ -r "$log_file" -a ! -d "$log_file" ]]; then
+    if [[ -r "$log_file" && ! -d "$log_file" ]]; then
         # can tail it
         rt_opts+=(
 "${log_file}${log_color:+,${log_color}}${log_label:+,${log_label}}"
