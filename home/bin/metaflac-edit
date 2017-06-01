@@ -1,0 +1,57 @@
+#!/bin/bash
+
+
+TEMP_FILES=()
+
+cleanup() {
+	rm -f -- "${TEMP_FILES[@]}"
+}
+
+trap 'cleanup'	EXIT
+
+edit_flac() {
+    tags_temp="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+    TEMP_FILES+=("$tags_temp")
+    metaflac --export-tags-to="$tags_temp" "$fn" &&
+    ${EDITOR:-vi} "$tags_temp" &&
+    metaflac --remove-all-tags --import-tags-from="$tags_temp" "$fn"
+}
+
+edit_ogg() {
+    tags_temp="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+    TEMP_FILES+=("$tags_temp")
+    vorbiscomment --list "$fn" >"$tags_temp" &&
+    ${EDITOR:-vi} "$tags_temp" &&
+    vorbiscomment --write --commentfile "$tags_temp" "$fn"
+}
+
+# prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
+get_mimetype() {
+	file \
+		--preserve-date \
+		--dereference \
+		--brief \
+		--mime-type \
+		-- \
+		"$@" 2>/dev/null
+}
+
+failed=0
+
+for fn; do
+    mimetype="$(get_mimetype "$fn")"
+    case "$mimetype" in
+        'audio/x-flac')
+            edit_flac "$fn" || failed=2
+            ;;
+        'audio/ogg')
+            edit_ogg "$fn" || failed=2
+            ;;
+        *)
+            echo "$fn: Unrecognized file format \`$mimetype'" >&2
+            failed=2
+            ;;
+    esac
+done
+
+exit $failed
