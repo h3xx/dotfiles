@@ -130,8 +130,9 @@ UXTerm*faceSize:                10
 
 !! XLock
 
-XLock.mode: blank
-XLock.erasedelay: 0
+XLock.mode: deco
+XLock.erasedelay: 1000000
+XLock.erasemode: venetian
 !XLock.erasetime: 2
 !XLock.allowaccess: off
 !XLock.debug: off
@@ -192,8 +193,8 @@ XLock.startCmd: xset +dpms
 !XLock.endCmd:
 !XLock.pipepassCmd:
 !XLock.logoutCmd:
-XLock.dpmsstandby: 0
-XLock.dpmssuspend: 0
+XLock.dpmsstandby: 600
+XLock.dpmssuspend: 600
 XLock.dpmsoff: 1
 XLock.mailCmd: [ -z "$(find ~/Mail/mbox/new -type d -empty)" ]
 !XLock.mailIcon:
@@ -205,6 +206,9 @@ XLock.mailCmd: [ -z "$(find ~/Mail/mbox/new -type d -empty)" ]
 !XLock.blank.ncolors: 64
 !XLock.blank.saturation: 1
 !XLock.blank.bitmap:
+XLock.deco.count: 8
+XLock.deco.cycles: 10
+XLock.deco.saturation: 0.4
 
 ! replace AWFUL default fonts in xvkbd
 XVkbd*font:                     -*-terminus-medium-r-normal-*-12-*-*-*-*-*-*-*
