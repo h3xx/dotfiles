@@ -1,0 +1,59 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+TEMP_FILES=()
+cleanup() {
+    rm -f -- "${TEMP_FILES[@]}"
+}
+trap 'cleanup' EXIT
+
+edit_flac() {
+    TAGS_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+    TEMP_FILES+=("$TAGS_TEMP")
+    metaflac --export-tags-to="$TAGS_TEMP" "$1" &&
+    ${EDITOR:-vi} "$TAGS_TEMP" &&
+    metaflac --remove-all-tags --import-tags-from="$TAGS_TEMP" "$1"
+}
+
+edit_ogg() {
+    TAGS_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+    TEMP_FILES+=("$TAGS_TEMP")
+    vorbiscomment --list "$1" >"$TAGS_TEMP" &&
+    ${EDITOR:-vi} "$TAGS_TEMP" &&
+    vorbiscomment --write --commentfile "$TAGS_TEMP" "$1"
+}
+
+# prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
+get_mimetype() {
+    file \
+        --preserve-date \
+        --dereference \
+        --brief \
+        --mime-type \
+        -- \
+        "$@" \
+        2>/dev/null
+}
+
+FAILED=0
+
+for FN; do
+    MIMETYPE=$(get_mimetype "$FN")
+    case "$MIMETYPE" in
+        'audio/x-flac')
+            edit_flac "$FN" || FAILED=2
+            ;;
+        'audio/ogg')
+            edit_ogg "$FN" || FAILED=2
+            ;;
+        *)
+            printf '%s: Unrecognized file format "%s"\n' \
+                "$FN" \
+                "$MIMETYPE" \
+                >&2
+            FAILED=2
+            ;;
+    esac
+done
+
+exit "$FAILED"
