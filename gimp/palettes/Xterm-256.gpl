@@ -2,6 +2,22 @@ GIMP Palette
 Name: Xterm-256
 Columns: 0
 #
+  0   0   0	color0
+205   0   0	color1
+  0 205   0	color2
+205 205   0	color3
+  0   0 238	color4
+205   0 205	color5
+  0 205 205	color6
+229 229 229	color7
+127 127 127	color8
+255   0   0	color9
+  0 255   0	color10
+255 255   0	color11
+ 92  92 255	color12
+255   0 255	color13
+  0 255 255	color14
+255 255 255	color15
   0   0   0	color16
   0   0  95	color17
   0   0 135	color18
