@@ -71,4 +71,9 @@
 	"VideoCaptureAllowed": false,
 	// Disable "Cast" feature
 	"EnableMediaRouter": false,
+	// Prevent Chrome from talking to native messaging hosts that weren't
+	// installed by the administrator, which might prevent malicious extensions
+	// from gaining application-level access to the system
+	// See https://developer.chrome.com/extensions/nativeMessaging
+	"NativeMessagingUserLevelHosts": false,
 }
