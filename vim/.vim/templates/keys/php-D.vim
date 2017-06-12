@@ -5,4 +5,4 @@
 "	' on line ' . $trace[0]['line'],
 "	E_USER_NOTICE);
 
-exe "norm otrigger_error('Deprecated function: '.__CLASS__.'::'.__FUNCTION__);\<Esc>"
+exe "norm otrigger_error('Deprecated function: '.__CLASS__.'::'.__FUNCTION__, E_USER_NOTICE);\<Esc>"
