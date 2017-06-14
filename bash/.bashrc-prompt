@@ -121,7 +121,7 @@ err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]\[%s\]'\'' '\'"$ERR
 
 # first line
 line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
-line1_mid="$BASE_COLOR"'\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
+line1_mid='\['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
 line1_last=' \['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
 
 line2_frame='\['"$FRAME_COLOR"'\016\]mq['
