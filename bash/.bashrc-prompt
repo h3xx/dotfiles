@@ -117,14 +117,14 @@ __git_ps1_colorize_gitstring ()
 #	\x0e (\016) puts terminal into G1 mode,
 #	\x0f (\017) puts terminal into normal mode
 
-err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]\[%s\]'\'' '\'"$ERR_COLOR"\'' $err '\''\e[0m'\'')'
+err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]'\'' '\'"$ERR_COLOR"\'' $err)'
 
 # first line
 line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
 line1_mid='\['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
 line1_last=' \['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
 
-line2_frame='\['"$FRAME_COLOR"'\016\]mq['
+line2_frame='\[\e[0m'"$FRAME_COLOR"'\016\]mq['
 line2_mid=' \[\e[0m\017\]\w'
 line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
 
