@@ -25,6 +25,7 @@ COLORS['WHITE']='\e[37m'
 #COLORS['REVERSE']='\e[07m'
 
 FRAME_COLOR='\e[01;30m'
+BG_COLOR=''
 ERR_COLOR='\e[01;38;5;222;48;5;235m'
 
 # BASE_COLOR=(user root)
@@ -52,19 +53,19 @@ esac
 #	\x0e (\016) puts terminal into G1 mode,
 #	\x0f (\017) puts terminal into normal mode
 
-err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]\[%s\]'\'' '\'"$ERR_COLOR"\'' $err '\''\e[0m'\'')'
+err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]'\'' '\'"$ERR_COLOR"\'' $err)'
 
 # first line
-line1_frame='\[\e)0'"$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
-line1_mid='\['"$BASE_COLOR"'\]\u\[\e[0;37m\]@\['"$BASE_COLOR"'\]\h'
-line1_last=' \['"$FRAME_COLOR"'\016\]tq\`\[\017\]'
+line1_frame='\[\e)0'"$BG_COLOR$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
+line1_mid='\['"$BASE_COLOR"'\]\u\[\e[0;37m'"$BG_COLOR"'\]@\['"$BASE_COLOR"'\]\h'
+line1_last='\['"$BG_COLOR$FRAME_COLOR"'\016\] tq\`\[\017\]'
 
-line2_frame='\['"$FRAME_COLOR"'\016\]mq['
-line2_mid=' \[\e[0m\017\]\w'
+line2_frame='\[\e[0m'"$BG_COLOR$FRAME_COLOR"'\016\]mq['
+line2_mid=' \[\e[0m'"$BG_COLOR"'\017\]\w'
 line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
 
 # alternate setup:
-PS1="$line1_frame$line1_mid$line1_last$err\\n$line2_frame $line2_mid$gps1$line2_last"
+PS1="$line1_frame$line1_mid$line1_last$err\\n$line2_frame$line2_mid$gps1$line2_last"
 
 # clean up
 unset \
