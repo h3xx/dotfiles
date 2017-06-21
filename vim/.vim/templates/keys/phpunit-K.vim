@@ -3,7 +3,7 @@
 append
         $mock = $this->getMockBuilder('CLASS')
 .
-s/CLASS/\=expand("%:t:r")/
+s/CLASS/\=expand("%:t:r:s?Test$??")/
 append
             ->setMethods([
                 'MYSTUB',
