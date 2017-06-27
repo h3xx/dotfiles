@@ -64,7 +64,9 @@ set sig_on_top
 #set index_format="%4C %Z %{%b %d} %-15.15L (%4l) %s" # default
 # use chars (%4c), not lines
 # ! = convert to local time; without it, it uses the header time
-set index_format="%4C %Z %[!%b %d] %-15.15L (%4c) %s"
+#set index_format="%4C %Z %[!%b %d] %-15.15L (%4c) %s"
+# format relative date
+set index_format="$HOME/.mutt/bin/reldate-index.sh %[%s] \"%4C %Z \" \" %-15.15L (%4c) %s\"|"
 #set pager_format="-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" # default
 # display local time in page underbar
 set pager_format="-%Z- %C/%m: %[!%H:%M] %-20.20n   %s%*  -- (%P)"
