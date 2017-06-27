@@ -62,7 +62,12 @@ set sig_on_top
 
 # layout
 #set index_format="%4C %Z %{%b %d} %-15.15L (%4l) %s" # default
-set index_format="%4C %Z %{%b %d} %-15.15L (%4c) %s" # use chars, not lines
+# use chars (%4c), not lines
+# ! = convert to local time; without it, it uses the header time
+set index_format="%4C %Z %[!%b %d] %-15.15L (%4c) %s"
+#set pager_format="-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" # default
+# display local time in page underbar
+set pager_format="-%Z- %C/%m: %[!%H:%M] %-20.20n   %s%*  -- (%P)"
 
 # random signature from ~/.signature.d
 set signature="fortune ~/.mutt/signature.d;echo|"
