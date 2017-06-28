@@ -46,6 +46,34 @@ export GOPATH=~/.go
 export PATH="${PATH:+$PATH:}${JAVA_HOME}/bin:$GOPATH/bin"
 #export GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitrepos/__objects__
 
+# quicker cloning
+# `gcd eclib` => much quicker
+gcd() {
+	local \
+        url="$1" \
+        targetdir="$_"
+
+    if [[ -d ~/.gitrepos/"$url".git/objects ]]; then
+        # shortcut clone
+        GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitrepos/"$url".git/objects \
+        git clone g2:g2planet/"$url".git &&
+        targetdir="$_"
+        (cd "$url" && git-alts.sh && (git remote rename origin o ; true)) ||
+            return
+    else
+        git clone "$@" || return
+        targetdir="$_"
+    fi
+
+    if [[ -d "$targetdir" ]]; then
+        cd "$targetdir"
+        return
+    fi
+
+    targetdir="$(basename "$targetdir" .git)"
+    cd "$targetdir"
+}
+
 # annoying
 _meld() {
 	meld "$@" >/dev/null 2>&1 &
