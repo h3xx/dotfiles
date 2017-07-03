@@ -6,6 +6,11 @@ if [[ -x ~/.gitrepos/update.sh ]]; then
         ./update.sh 2>&1 |sed -e 's,^,localhost: ,' &
 fi
 
+if [[ -x /media/expand-dong/git/update.sh ]]; then
+    cd /media/expand-dong/git/ &&
+        ./update.sh 2>&1 |sed -e 's,^,ed: ,' &
+fi
+
 pssh \
     -P \
     -h "$0.hosts" \
