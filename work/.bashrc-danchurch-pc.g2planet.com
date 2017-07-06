@@ -74,6 +74,10 @@ if [[ -d ~/.gitrepos ]]; then
             targetdir="$_"
             (cd "$url" && (git remote rename origin o ; true)) ||
                 return
+        elif [[ ! $url =~ : ]]; then
+            # I used a shorthand
+            git clone "g2:g2planet/$*.git" || return
+            targetdir="$_"
         else
             git clone "$@" || return
             targetdir="$_"
