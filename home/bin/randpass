@@ -1,0 +1,66 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [LENGTH] [--]\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Generate a random password.
+
+  -h        Show this help message.
+  -w        Generate a wordy password of size LENGTH words.
+  --        Terminate options list.
+
+Copyright (C) 2017 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+WORD=0
+
+while getopts 'hw' FLAG; do
+    case "$FLAG" in
+        'w')
+            WORD=1
+            ;;
+        'h')
+            HELP_MESSAGE
+            exit 0
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+rand_words() {
+    local LENGTH=$1
+    shuf -n "$LENGTH" /usr/share/dict/words |tr -d '\n'
+    echo
+}
+
+rand_alnum() {
+    local LENGTH=$1
+    # 6 bits input => 1 byte base64
+    openssl rand -base64 "$LENGTH" |tr -d '\n=' |cut -c -"$LENGTH"
+}
+
+for PW_LENGTH; do
+    if [[ $WORD -eq 0 ]]; then
+        rand_alnum "$PW_LENGTH"
+    else
+        rand_words "$PW_LENGTH"
+    fi
+done
