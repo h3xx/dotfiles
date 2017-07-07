@@ -31,7 +31,6 @@ append
             if (empty($rec)) {
                 return 'NORECORD';
             }
-
             return implode(' ',
                 array_map(
                     function ($fld)
@@ -44,24 +43,58 @@ append
                     ]
                 )
             );
-
         };
 
-        $tclass = new SOMECLASS($db, null, null);
+        $mock = $this->getMockBuilder(SOMECLASS::class)
 .
-s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
 append
-        $reflector = new ReflectionClass($tclass);
+            ->setMethods([
+                'dieString',
+            ])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $reflector = new ReflectionClass($mock);
         $meth = $reflector->getMethod('SOMEMETHOD');
         $meth->setAccessible(true);
-        $actual_out = $meth->invokeArgs($tclass, [$MYARG]);
+        $actual = $meth->invokeArgs($mock, [$MYARG]);
 
-        $expected_out = [
+        $expected = [
         ];
 
         $message = "U wot m8?";
-        $this->assertEquals($expected_out, $actual_out, $message);
+        $this->assertEquals($expected, $actual, $message);
+    }
 
+    /**
+     * @covers SOMECLASS::getSmartyVersion
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
+append
+     */
+    public function testgetSmartyVersion() {
+
+        $mock = $this->getMockBuilder('SOMECLASS')
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
+append
+            ->setMethods([
+                'dieString',
+            ])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $reflector = new ReflectionClass($mock);
+
+        $expected = 3;
+
+        $meth = $reflector->getMethod('getSmartyVersion');
+        $meth->setAccessible(true);
+        $actual = $meth->invoke($mock);
+
+        $message = "Bad Smarty version given by page";
+        $this->assertEquals($expected, $actual, $message);
     }
 
 }
@@ -71,13 +104,5 @@ class SOMECLASSWrapper extends SOMECLASS {
 s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
 append
     use TestOutputCapture;
-
-    // same thing except without classes
-    public function __construct(PDO &$db, $smarty, $user) {
-        $this->database = $db;
-        $this->smarty = $smarty;
-        $this->user = $user;
-    }
-
 }
 .
