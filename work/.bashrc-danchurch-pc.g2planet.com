@@ -136,6 +136,8 @@ alias \
 
 MERGE_TARGET=origin/master
 
+export PERL5LIB=~/perl5/lib/perl5
+
 # trial z
 export _Z_NO_RESOLVE_SYMLINKS=1
 
