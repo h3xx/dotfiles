@@ -4,11 +4,18 @@
 import vobject
 from argparse import ArgumentParser
 from os.path import isfile
-from sys import stdin, stdout
+import sys
 from dateutil import tz
+import locale
+
+if (locale.getlocale(locale.LC_CTYPE) is None):
+    locale.setlocale(locale.LC_CTYPE, 'C')
 
 def datetime_to_local_timezone(dt):
     return dt.astimezone(tz.tzlocal())
+
+def encoded(st):
+    return st.decode("utf-8").encode(encoding=locale.getpreferredencoding(False), errors='replace')
 
 parser = ArgumentParser(description="Generate a reply to an iCal Invitation.")
 parser.add_argument('-i', '--invite', default='-',
@@ -20,7 +27,7 @@ args = parser.parse_args()
 
 infile = None
 if args.invite == "-":
-    infile = stdin
+    infile = sys.stdin
 elif isfile(args.invite):
     infile = open(args.invite, 'r')
 else:
@@ -28,7 +35,7 @@ else:
 
 outfile = None
 if args.output == "-":
-    outfile = stdout
+    outfile = sys.stdout
 elif isfile(args.output):
     outfile = open(args.output, 'w')
 else:
@@ -38,19 +45,19 @@ vevent = (vobject.readOne(infile.read())).vevent
 
 attendee_list = vevent.attendee_list
 
-outfile.write('Summary: ' + vevent.summary.value + '\n')
-outfile.write('Organizer: ' + vevent.organizer.value + '\n')
-outfile.write('Starts: ' + datetime_to_local_timezone(vevent.dtstart.value).isoformat() + ' ')
-outfile.write('Ends: ' + datetime_to_local_timezone(vevent.dtend.value).isoformat() + '\n')
+outfile.write(encoded('Summary: ' + vevent.summary.value + '\n'))
+outfile.write(encoded('Organizer: ' + vevent.organizer.value + '\n'))
+outfile.write(encoded('Starts: ' + datetime_to_local_timezone(vevent.dtstart.value).isoformat() + ' '))
+outfile.write(encoded('Ends: ' + datetime_to_local_timezone(vevent.dtend.value).isoformat() + '\n'))
 if vevent.location.value:
-    outfile.write('Location: ' + vevent.location.value + '\n')
-outfile.write('\n')
-outfile.write('Description:\n')
-outfile.write(vevent.description.value + '\n')
-outfile.write('\n')
+    outfile.write(encoded('Location: ' + vevent.location.value + '\n'))
+outfile.write(encoded('\n'))
+outfile.write(encoded('Description:\n'))
+outfile.write(encoded(vevent.description.value + '\n'))
+outfile.write(encoded('\n'))
 
-outfile.write('Attendees: \n')
+outfile.write(encoded('Attendees: \n'))
 for attendee in vevent.attendee_list:
-    outfile.write(attendee.value + '\n')
+    outfile.write(encoded(attendee.value + '\n'))
 outfile.close()
 
