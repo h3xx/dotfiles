@@ -113,7 +113,7 @@ set history=512
 " buffer, or a :Gblame buffer)
 aug AutoChdir
 	autocmd!
-	autocmd BufEnter *	if expand("%:p:h") !~ '\(^/tmp\|/\.git$\)' | silent! lcd %:p:h | endif
+	autocmd BufEnter *	if expand("%:p:h") !~ '/\.git$' | silent! lcd %:p:h | endif
 aug END
 
 " Automatically read a file if changed outside of vim (thanks vim-sensible)
