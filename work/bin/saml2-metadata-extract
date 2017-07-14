@@ -1,0 +1,67 @@
+#!/usr/bin/env php
+<?php
+
+$xml = file_get_contents($argv[1]);
+
+$dom = new DOMDocument;
+$dom->loadXml($xml);
+
+function print_certs(DOMDocument $dom) {
+    $elems = $dom->getElementsByTagNameNS(
+        'http://www.w3.org/2000/09/xmldsig#',
+        'X509Certificate'
+    );
+
+    if ($elems->length < 1) {
+        die("X509Certificate tag not found\n");
+    }
+
+    $certs = [];
+
+    foreach ($elems as $elem) {
+        $cert_b64 = $elem->textContent;
+        $cert_der = base64_decode($cert_b64);
+
+        $descriptors = [
+            0 => ["pipe", "r"],  // stdin is a pipe that the child will read from
+            1 => ["pipe", "w"],  // stdout is a pipe that the child will write to
+            2 => ["pipe", "w"],
+        ];
+        $ph = proc_open('openssl x509 -inform DER', $descriptors, $pipes);
+        $cert = '';
+        fwrite($pipes[0], $cert_der);
+        while (!feof($pipes[1])) {
+            $cert .= fread($pipes[1], 1024);
+        }
+        $certs[] = $cert;
+    }
+
+    print join("\n", array_unique($certs));
+}
+
+function print_urls(DOMDocument $dom) {
+    $elems = $dom->getElementsByTagNameNS(
+        'urn:oasis:names:tc:SAML:2.0:metadata',
+        'SingleSignOnService'
+    );
+
+    if ($elems->length < 1) {
+        die("SingleSignOnService tag not found\n");
+    }
+
+    foreach ($elems as $elem) {
+        $Binding = $elem->getAttribute('Binding');
+        switch ($Binding) {
+            case 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST':
+                print "POST: " . $elem->getAttribute('Location') . "\n";
+                break;
+            case 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect':
+                print "REDIRECT: " . $elem->getAttribute('Location') . "\n";
+                break;
+        }
+    }
+}
+
+
+print_urls($dom);
+print_certs($dom);
