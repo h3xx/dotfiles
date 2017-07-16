@@ -10,12 +10,8 @@ LOADS_HUD=(
     'HUD/UDV_v1.71/UDV_v1.71_A_BASE.pk3'
 )
 
-LOADS=(
+LOADS_GRAPHICS=(
     #spriteHDpublic6/spriteHDpublic6.pk3
-    # music
-    'DoomMetalVol4/DoomMetalVol4.wad'
-    # sound
-    'sound/pk_doom_sfx/pk_doom_sfx_20120224.wad'
     # textures
     #REPLACED:'textures/Brutal_Doom_141_edition_2.0/BD141 DHTP HDtextures.pk3'
     'textures/dhtp/zandronum-dhtp-20161017.pk3'
@@ -33,10 +29,17 @@ LOADS=(
 
     # weapon animations
     'resources/animations/pk_anim1.wad'
+)
+
+LOADS=(
+    # music
+    'DoomMetalVol4/DoomMetalVol4.wad'
+    # sound
+    'sound/pk_doom_sfx/pk_doom_sfx_20120224.wad'
 
 )
 
-while getopts 'Hh' flag; do
+while getopts 'HGh' flag; do
     case "$flag" in
         'h')
             # use Taggart's HUD
@@ -49,6 +52,10 @@ while getopts 'Hh' flag; do
             # disable HUD
             LOADS_HUD=()
             ;;
+        'G')
+            # disable graphics
+            LOADS_GRAPHICS=()
+            ;;
         *)
             HELP_MESSAGE 1
             ;;
@@ -57,6 +64,9 @@ done
 
 shift "$((OPTIND-1))"
 
-LOADS+=("${LOADS_HUD[@]}")
+LOADS+=(
+    "${LOADS_HUD[@]}"
+    "${LOADS_GRAPHICS[@]}"
+)
 
 exec zandronum "${LOADS[@]}" "$@"
