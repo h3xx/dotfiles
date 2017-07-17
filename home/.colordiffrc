@@ -1,4 +1,7 @@
 # change some colors around
-cvsstuff=yellow
-newtext=green
+cvsstuff=39
+diffstuff=165
+newtext=154
+newtext=154
+oldtext=196
 # vi: ft=conf
