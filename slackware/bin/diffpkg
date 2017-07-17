@@ -37,7 +37,7 @@ EOF
 
 PACKAGES='/var/log/packages'
 
-USE_COLORDIFF=$([ "$(type -t colordiff)" != 'file' ] ; echo "$?")
+USE_COLORDIFF=$(! hash colordiff &>/dev/null; echo "$?")
 PLAIN_DIFF=0
 FIX_DOCS=1
 FIX_SLACKWARE_CRUFT=1
