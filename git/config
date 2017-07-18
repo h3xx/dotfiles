@@ -13,6 +13,8 @@
 	a		= add
 	b		= branch
 	bb		= branch --all -vv
+	bbc		= branch --all -vv --contains
+	bc		= branch --contains
 	c		= commit
 	ca		= commit --amend
 	co		= checkout
