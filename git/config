@@ -14,6 +14,8 @@
 	p		= push
 	b		= branch
 	bb		= branch --all -vv
+	bc		= branch --contains
+	bbc		= branch --all -vv --contains
 	i		= bisect
 	is		= bisect start # b[i]sect
 	ig		= bisect good
