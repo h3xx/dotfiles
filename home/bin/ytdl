@@ -1,0 +1,13 @@
+#!/bin/bash
+# vi: sts=4 sw=4 ts=4 et
+
+YTDL_ARGS=(
+    # use squid proxy
+    --proxy http://localhost:3128
+    -w
+    -o "%(title)s-%(id)s.%(ext)s"
+)
+
+exec youtube-dl \
+    "${YTDL_ARGS[@]}" \
+    "$@"
