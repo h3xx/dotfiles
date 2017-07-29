@@ -177,7 +177,7 @@ Mod4 Insert :Exec xcalc
 None XF86Calculator :Exec xcalc
 Mod4 l :Exec xlock
 
-Mod4 f :Exec firefox
+Mod4 f :Exec GTK_THEME=Adwaita:light firefox
 
 Mod4 w :Exec ~/.fluxbox/bin/openbrowser.sh
 
