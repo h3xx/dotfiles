@@ -9,6 +9,7 @@
 	f		= fetch
 	m		= merge
 	ma		= merge --abort
+	mff		= merge --ff
 	u		= pull
 	pu		= "!echo use git u;exit 1"
 	p		= push
