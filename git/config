@@ -33,6 +33,7 @@
 	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
 	m		= merge
 	ma		= merge --abort
+	mff		= merge --ff
 	mt		= mergetool
 	p		= push
 	pu		= "!echo use git u;exit 1"
