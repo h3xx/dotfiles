@@ -3,15 +3,8 @@
 # aliases and functions
 # test for interactive shell
 if [[ $- = *i* ]]; then
-	# note: .bashrc-screen is near first because it makes SSH connections
-	# connect to screen by way of `exec' -- it cuts down on redundant
-	# things happening in that case.
-
-	# also: -prompt must be before -screen because -screen modifies $PS1
-
 	for RC_NAME in \
 		prompt \
-		screen \
 		gpg-agent \
 		tty \
 		linux \
