@@ -41,8 +41,6 @@ HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
 # : : : : -, :^'''''''''''^ : : _,,-~`' : : : : : : : : : : : : : :| : : : : :
 # : : : : :^''~~~~~~~~~~~~~''' : : : : : : : : : : : : : : : : : : | : : : : :
 
-# save history when signalled by cron(1) with USR1
-#trap 'history -a && history -r'	USR1
 # TERM or QUIT probably means the system is shutting down; make sure history is
 # saved
 trap 'logout'			TERM QUIT
@@ -71,13 +69,6 @@ stty stop ''
 
 ## edit this file
 alias rc='$EDITOR ~/.bashrc-linux'
-
-## login counter
-#if [[ -f ~/.login_count ]]; then
-#	expr $(cat ~/.login_count) + 1 >~/.login_count
-#else
-#	echo "1" >~/.login_count
-#fi
 
 ## ls
 alias \
@@ -258,7 +249,7 @@ nd() {
 }
 
 # clone and switch to a new directory
-# usefulness: TODO
+# usefulness: ***
 gcd() {
 	local url="$1"
 	git clone "$@" || return
@@ -342,12 +333,6 @@ qrmr() {
 	return 1
 }
 
-# prefix each line piped in
-# usefulness: TODO
-pfx() {
-	sed -e 's,^,'"${1//,/\\,}"','
-}
-
 # turn off history (incognito mode)
 # usefulness: ?
 histoff() {
@@ -368,8 +353,3 @@ alias man='LESS_TERMCAP_mb=$'\''\e[05m'\'' \
 	LESS_TERMCAP_us=$'\''\e[04;01;38;5;165m'\'' \
 	LESS_TERMCAP_ue=$'\''\e[0m'\'' \
 	man'
-
-## source global defs
-#if [[ -f /etc/bashrc ]]; then
-#	. /etc/bashrc
-#fi
