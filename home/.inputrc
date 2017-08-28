@@ -57,7 +57,6 @@ $endif
 
 $if term=xterm
 "\M-l":		"la\r"
-"\M-h":		" history -a\r"
 $endif
 
 $if term=screen
