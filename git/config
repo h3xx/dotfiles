@@ -85,6 +85,9 @@
 	ignoreSubmodules = dirty
 
 [fetch]
+	# Bad design on git's part: recurse-on-fetch can cause a fetch to fail if
+	# the submodules is in a detatched HEAD state.
+	recurseSubmodules = false
 	# automatically prune remotely-deleted branches
 	prune = true
 
