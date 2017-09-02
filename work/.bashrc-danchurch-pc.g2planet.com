@@ -94,15 +94,8 @@ if [[ -d ~/.gitrepos ]]; then
 fi
 
 # annoying
-_meld() {
-	meld "$@" >/dev/null 2>&1 &
-}
-alias meld=_meld
-
-_ghex() {
-	ghex "$@" >/dev/null 2>&1 &
-}
-alias ghex=_ghex
+hash ghex && alias ghex='_noout_bg ghex'
+hash libreoffice && alias libreoffice='_noout_bg libreoffice'
 
 # laaaazy
 shopt -s \
