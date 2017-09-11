@@ -326,6 +326,10 @@ nnoremap <F2> :Gblame<cr>
 noremap ` '
 noremap ' `
 
+" search for v-highlighted string
+" usefulness: TODO
+vnoremap // y/\V<C-R>"<CR>
+
 " remove search highlighting
 " usefulness: ****
 nnoremap <F1> :noh<CR>
