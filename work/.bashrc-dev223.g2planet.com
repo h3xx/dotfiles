@@ -78,6 +78,52 @@ xclip() {
 	\ssh -p 22 "$ssh_from" DISPLAY=:0 xclip -selection clipboard &
 }
 
+if [[ -d ~/.gitrepos ]]; then
+	complete -o default -F _gcdcomp gcd
+	_gcdcomp() {
+        # is it on?
+        local nullglob_off="$(shopt -q nullglob || echo 1)"
+        shopt -s nullglob
+        local repos=(~/.gitrepos/"$2"*.git)
+        if [[ -n $nullglob_off ]]; then
+            # turn it back off
+            shopt -u nullglob
+        fi
+        repos=("${repos[@]%.git}")
+        COMPREPLY=("${repos[@]##*/}")
+	}
+
+    gcd() {
+        local \
+            url="$1" \
+            targetdir="$_"
+
+        if [[ -d ~/.gitrepos/"$url".git/objects ]]; then
+            # shortcut clone
+            GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitrepos/"$url".git/objects \
+            git clone g2:g2planet/"$url".git &&
+            targetdir="$_"
+            (cd "$url" && git-alts.sh && (git remote rename origin o ; true)) ||
+                return
+        elif [[ ! $url =~ : ]]; then
+            # I used a shorthand
+            git clone "g2:g2planet/$*.git" || return
+            targetdir="$_"
+        else
+            git clone "$@" || return
+            targetdir="$_"
+        fi
+
+        if [[ -d "$targetdir" ]]; then
+            cd "$targetdir"
+            return
+        fi
+
+        targetdir="$(basename "$targetdir" .git)"
+        cd "$targetdir"
+    }
+fi
+
 complete -A hostname host nmap ping traceroute ssh ftp telnet
 
 ## chmod
