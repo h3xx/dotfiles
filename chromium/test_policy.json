@@ -76,4 +76,11 @@
 	// from gaining application-level access to the system
 	// See https://developer.chrome.com/extensions/nativeMessaging
 	"NativeMessagingUserLevelHosts": false,
+	// Allows you to set whether websites are allowed to get access to nearby
+	// Bluetooth devices. Access can be completely blocked, or the user can be
+	// asked every time a website wants to get access to nearby Bluetooth
+	// devices.
+	// 2 = Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API
+	// 3 = Allow sites to ask the user to grant access to a nearby Bluetooth device
+	"DefaultWebBluetoothGuardSetting": 2,
 }
