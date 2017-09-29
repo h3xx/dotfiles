@@ -53,10 +53,10 @@ function print_urls(DOMDocument $dom) {
         $Binding = $elem->getAttribute('Binding');
         switch ($Binding) {
             case 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST':
-                print "POST: " . $elem->getAttribute('Location') . "\n";
+                printf("%-10s%s\n", "POST:", $elem->getAttribute('Location'));
                 break;
             case 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect':
-                print "REDIRECT: " . $elem->getAttribute('Location') . "\n";
+                printf("%-10s%s\n", "REDIRECT:", $elem->getAttribute('Location'));
                 break;
         }
     }
