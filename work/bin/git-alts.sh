@@ -71,6 +71,11 @@ case "$REMOTE_URL" in
 	*/google-api-php-client.git)
 		ALT=~/.gitrepos/google-api-php-client.git/objects
 		;;
+    */*.git)
+        if [[ -d ~/.gitrepos/"$(basename "$REMOTE_URL")" ]]; then
+            ALT=~/.gitrepos/"$(basename "$REMOTE_URL")"/objects
+        fi
+        ;;
 esac
 
 if [[ ! -d $ALT ]]; then
