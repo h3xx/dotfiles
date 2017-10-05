@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+$raw = false;
+if ($argv[1] === '-r') {
+    $raw = true;
+    array_shift($argv);
+}
+
 $xml = file_get_contents($argv[1]);
 
 $dom = new DOMDocument;
@@ -62,6 +68,13 @@ function print_urls(DOMDocument $dom) {
     }
 }
 
-
-print_urls($dom);
-print_certs($dom);
+if ($raw) {
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+    echo $dom->saveXML();
+    echo "\n";
+}
+else {
+    print_urls($dom);
+    print_certs($dom);
+}
