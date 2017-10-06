@@ -74,7 +74,7 @@ sub taghash {
 		} elsif ($opts{'F'}) {
 			$mime_short = 'audio/x-flac';
 		} elsif ($opts{'O'}) {
-			$mime_short = 'application/ogg';
+			$mime_short = 'audio/ogg';
 		} else {
 			# checktype_* will return the `charset=' attribute as well
 			#
@@ -87,7 +87,7 @@ sub taghash {
 			%tags = &mp3_taghash($filename);
 		} elsif ($mime_short eq 'audio/x-flac') {
 			%tags = &flac_taghash($filename);
-		} elsif ($mime_short eq 'application/ogg') {
+		} elsif ($mime_short =~ m#(application|audio)/ogg#) {
 			%tags = &ogg_taghash($filename);
 		} else {
 			print STDERR "unknown mimetype for file `$filename': $mime_short";
