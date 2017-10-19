@@ -27,23 +27,7 @@ append
     public function test SOMEMETHOD() {
         $db = $this->getDatabase();
 
-        $format_data_f = function($rec) {
-            if (empty($rec)) {
-                return 'NORECORD';
-            }
-            return implode(' ',
-                array_map(
-                    function ($fld)
-                    use (&$rec) {
-                        return "$fld:{$rec->$fld}";
-                    },
-                    [
-                        'field1',
-                        'field2',
-                    ]
-                )
-            );
-        };
+        $config = new ConfigUtilTestWrapper;
 
         $mock = $this->getMockBuilder(SOMECLASS::class)
 .
@@ -56,6 +40,15 @@ append
             ->getMock();
 
         $reflector = new ReflectionClass($mock);
+
+        $prop = $reflector->getProperty('database');
+        $prop->setAccessible(true);
+        $prop->setValue($mock, $db);
+
+        $prop = $reflector->getProperty('config');
+        $prop->setAccessible(true);
+        $prop->setValue($mock, $config);
+
         $meth = $reflector->getMethod('SOMEMETHOD');
         $meth->setAccessible(true);
         $actual = $meth->invokeArgs($mock, [$MYARG]);
