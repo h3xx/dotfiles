@@ -15,8 +15,10 @@ auto_view \
 	application/msword \
 	text/calendar
 
-# save html part for last
-alternative_order text/plain text/enriched text/html
+# save text part for last
+# rationale: elinks does a better job than outlook at formatting HTML mail
+# messages
+alternative_order text/enriched text/html text/plain
 
 # perform content-based MIME type detection on attachments with the following
 # MIME types
