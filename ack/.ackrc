@@ -1,6 +1,6 @@
---color-filename=bold yellow
---color-match=bold red
---color-lineno=bold blue
+--color-filename=bold ansi39 on_ansi235
+--color-match=bold ansi154 on_ansi235
+--color-lineno=bold ansi165 on_ansi235
 
 # ignore git merge temps
 --ignore-file=match:/\.orig$/
