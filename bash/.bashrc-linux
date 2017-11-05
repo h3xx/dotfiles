@@ -219,10 +219,13 @@ fol() {
 		lastarg="$_" \
 		cd_op='cd'
 
-	while getopts 'p' flag; do
+	while getopts 'pr' flag; do
 		case "$flag" in
 			'p')
 				cd_op='pushd'
+				;;
+			'r')
+				lastarg="$(realpath -- "$lastarg")"
 				;;
 		esac
 	done
