@@ -192,8 +192,6 @@ alias \
 	j='jobs' \
 	rmr='rm -rf' \
 	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*|.*_(BACKUP|BASE|LOCAL|REMOTE)_.*|.*\.orig)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
-	fol='test -d "$_" && cd "$_" || cd "$(dirname -- "$_")"' \
-	pfol='test -d "$_" && pushd "$_" || pushd "$(dirname -- "$_")"' \
 	rmdirempty='findd -empty -print -delete' \
 	rmdirempty1='findd1 -empty -print -delete' \
 	brokensymlinks='find -L . -type l'
@@ -213,6 +211,27 @@ alias \
 nd() {
 	[[ -n $1 && $1 != - ]] && mkdir --parents -- "$1" && cd "$1"
 }
+
+# "follow" last argument
+# usefulness: ***
+fol() {
+	local \
+		LASTARG=$_ \
+		CD_OP='cd'
+
+	while getopts 'p' FLAG; do
+		case "$FLAG" in
+			'p')
+				CD_OP='pushd'
+				;;
+		esac
+	done
+
+	test -d "$LASTARG" && $CD_OP "$LASTARG" || $CD_OP "$(dirname -- "$LASTARG")"
+}
+
+alias \
+	pfol='fol -p;echo "use fol -p"'
 
 # clone and switch to a new directory
 # usefulness: ***
