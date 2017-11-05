@@ -27,6 +27,7 @@
 	cpc		= cherry-pick --continue
 	d		= diff
 	f		= fetch
+	fa		= fetch --all
 	g		= grep
 	gr		= grep --recurse-submodules
 	h		= help
