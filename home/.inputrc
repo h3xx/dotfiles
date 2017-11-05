@@ -61,12 +61,10 @@ $endif
 
 $if term=screen
 "\M-l":		"la\r"
-"\M-h":		" history -a\r"
 $endif
 
 $if term=rxvt
 "\el":		"la\r"
-"\eh":		" history -a\r"
 $endif
 
 #$if term=putty
