@@ -219,10 +219,13 @@ fol() {
 		LASTARG=$_ \
 		CD_OP='cd'
 
-	while getopts 'p' FLAG; do
+	while getopts 'pr' FLAG; do
 		case "$FLAG" in
 			'p')
 				CD_OP='pushd'
+				;;
+			'r')
+				LASTARG=$(realpath -- "$LASTARG")
 				;;
 		esac
 	done
