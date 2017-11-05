@@ -7,6 +7,7 @@
 	c		= commit
 	ca		= commit --amend
 	f		= fetch
+	fa		= fetch --all
 	m		= merge
 	ma		= merge --abort
 	mff		= merge --ff
