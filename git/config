@@ -22,6 +22,8 @@
 	is		= bisect start # b[i]sect
 	ig		= bisect good
 	ib		= bisect bad
+	ra		= remote add
+	rr		= remote remove
 	r		= reset
 	rh		= reset --hard
 	rs		= reset --soft
