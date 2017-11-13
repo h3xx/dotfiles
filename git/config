@@ -20,6 +20,7 @@
 	bbc		= branch --all -vv --contains
 	i		= bisect
 	is		= bisect start # b[i]sect
+	ir		= bisect reset
 	ig		= bisect good
 	ib		= bisect bad
 	ra		= remote add
