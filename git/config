@@ -34,6 +34,7 @@
 	i		= bisect
 	ib		= bisect bad
 	ig		= bisect good
+	ir		= bisect reset
 	is		= bisect start # b[i]sect
 	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
 	m		= merge
