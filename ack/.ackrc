@@ -2,6 +2,9 @@
 --color-match=bold ansi154 on_ansi235
 --color-lineno=bold ansi165 on_ansi235
 
+# ignore G2Planet standard Smarty compile dir
+--ignore-dir=match:/templates_c/
+
 # ignore git merge temps
 --ignore-file=ext:orig
 --ignore-file=match:/_(BACKUP|BASE|LOCAL|REMOTE)_.*$/
