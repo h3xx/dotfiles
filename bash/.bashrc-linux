@@ -239,10 +239,20 @@ alias \
 # clone and switch to a new directory
 # usefulness: ***
 gcd() {
-	local url="$1"
-	git clone "$@" || return
+	git clone "$@"
+	# XXX Must be "local" and immediately after "git" call otherwise won't be
+	# able to capture $? and $_ in the same line
+	local url="$1" targetdir="$_" err=$?
+	if [[ $err -ne 0 ]]; then
+		local gitprefix='git@github.com:' yn
+		read -p "Failed to clone. Try $gitprefix$url? [yN] " yn
+		if [[ ! $yn =~ ^[Yy] ]]; then
+			return $err
+		fi
+		gcd "$gitprefix$url"
+		return $?
+	fi
 
-	local targetdir="$_"
 	if [[ -d "$targetdir" ]]; then
 		cd "$targetdir"
 		return
