@@ -47,17 +47,30 @@ alias \
 # chkpkg PACKAGE
 # Usefulness: *****
 chkpkg() {
-	# there's really no more efficient way to do this
-	#ls -A1 /var/log/packages |
-	#grep -Ei -- "($(IFS='|'; echo "$*"))"
-	# addendum: yes there is
-	# this doesn't do any stat(2) calls
-	local REGEX="($(IFS='|'; echo "$*"))"
-	find /var/log/packages/ \
-		-maxdepth 1 \
-		-regextype 'posix-egrep' \
-		-printf '%f\n' |
-	grep -Ei -- "$REGEX"
+	local ERR
+	cpk() {
+		local REGEX="($(IFS='|'; echo "$*"))"
+		find /var/log/packages/ \
+			-maxdepth 1 \
+			-regextype 'posix-egrep' \
+			-printf '%f\n' |
+		grep -Ei -- "$REGEX"
+	}
+	if [[ $# -gt 0 ]]; then
+		cpk "$@"
+		ERR=$?
+	else
+		# read in package patterns one line at a time
+		# Usefulness: ?
+		local LINE
+		while read LINE; do
+			# (sic) split on whitespace
+			cpk $LINE
+			ERR=$?
+		done
+	fi
+	unset cpk
+	return $ERR
 }
 
 catpkg() {
