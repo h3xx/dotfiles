@@ -74,14 +74,12 @@ chkpkg() {
 }
 
 catpkg() {
-	local NAME PKG
-	for NAME; do
-		for PKG in $(chkpkg "$NAME") ; do
-			if [[ -f /var/log/scripts/$PKG ]]; then
-				cat "/var/log/scripts/$PKG"
-			fi
-			cat "/var/log/packages/$PKG"
-		done
+	local PKG
+	for PKG in $(chkpkg "$@") ; do
+		if [[ -f /var/log/scripts/$PKG ]]; then
+			cat "/var/log/scripts/$PKG"
+		fi
+		cat "/var/log/packages/$PKG"
 	done
 }
 
