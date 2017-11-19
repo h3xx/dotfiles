@@ -43,7 +43,9 @@ alias \
 
 # querying
 
-#alias chkpkg='ls -A1 /var/log/packages |grep -i'
+# Find amongst installed package names
+# chkpkg PACKAGE
+# Usefulness: *****
 chkpkg() {
 	# there's really no more efficient way to do this
 	#ls -A1 /var/log/packages |
