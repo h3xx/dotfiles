@@ -37,9 +37,11 @@ chkpkg() {
 		# Usefulness: ?
 		local line
 		while read line; do
-			# (sic) split on whitespace
-			cpk $line
-			err=$?
+			if [[ -n $line ]]; then
+				# (sic) split on whitespace
+				cpk $line
+				err=$?
+			fi
 		done
 	fi
 	unset cpk
