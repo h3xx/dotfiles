@@ -20,15 +20,11 @@ shopt -s \
 	histappend \
 	histreedit \
 	extglob \
-	globstar
+	globstar \
+	histverify
 
 shopt -u \
 	sourcepath
-
-# only verify ! event substitutions if we're root
-if [[ "$UID" -eq 0 ]]; then
-	shopt -s histverify
-fi
 
 # use C-s to search forward through history (do not block output)
 stty stop ''
