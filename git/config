@@ -51,6 +51,9 @@
 	rh		= reset --hard
 	rr		= remote remove
 	rs		= reset --soft
+	rv		= revert
+	rva		= revert --abort
+	rvc		= revert --continue
 	s		= status
 	sf		= submodule foreach
 	show-unmerged	= show-branch --topo-order --topics --sha1-name
