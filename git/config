@@ -31,6 +31,9 @@
 	rb		= rebase
 	rbc		= rebase --continue
 	rba		= rebase --abort
+	rv		= revert
+	rvc		= revert --continue
+	rva		= revert --abort
 	mt		= mergetool
 	cp		= cherry-pick
 	cpc		= cherry-pick --continue
