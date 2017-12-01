@@ -1,4 +1,5 @@
 # .bashrc-linux
+# vi: noet
 # universal defs
 
 ## bash builtin variables
@@ -31,6 +32,11 @@ stty stop ''
 
 ## edit this file
 alias rc='$EDITOR ~/.bashrc-linux'
+
+## make
+# utilize all cores
+alias \
+	make='make -j$(nproc)'
 
 ## ls
 alias \
