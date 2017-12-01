@@ -32,6 +32,11 @@ stty stop ''
 ## edit this file
 alias rc='$EDITOR ~/.bashrc-linux'
 
+## make
+# utilize all cores
+alias \
+	make='make -j$(nproc)'
+
 ## ls
 alias \
 	la='ls -la' \
