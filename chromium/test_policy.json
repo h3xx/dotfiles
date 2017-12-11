@@ -66,9 +66,10 @@
 	// Disable DHCP-server based proxy setting, malicious DHCP servers
 	// could use this to capture traffic
 	"WPADQuickCheckEnabled": false,
-	// Disable video capture; Not useful enough to allow potentially
+	// Disable audio/video capture; Not useful enough to allow potentially
 	// exploitable feature
 	"VideoCaptureAllowed": false,
+	"AudioCaptureAllowed": false,
 	// Disable "Cast" feature
 	"EnableMediaRouter": false,
 	// Prevent Chrome from talking to native messaging hosts that weren't
