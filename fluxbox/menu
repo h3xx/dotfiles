@@ -141,6 +141,7 @@
 			[exec] (xpaint) {xpaint} <~/.fluxbox/icons/xpaint.xpm>
 			[exec] (mtpaint) {mtpaint}
 			[exec] (gthumb) {gthumb} <~/.fluxbox/icons/gthumb.xpm>
+			[exec] (mcomix) {mcomix} <~/.fluxbox/icons/mcomix.xpm>
 #			[exec] (gtkam) {gtkam} <~/.fluxbox/icons/gtkam.xpm>
 		[end]
 		[submenu] (audio)
