@@ -179,7 +179,8 @@ aug keycommands
 	au BufNewFile,BufRead	*/_configure/*,*/build/scripts/*
 				\ nnoremap <buffer> <silent> ,p :so ~/.vim/templates/keys/_configure-p.vim<CR> |
 				\ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/_configure-l.vim<CR> |
-				\ nnoremap <buffer> <silent> ,d :so ~/.vim/templates/keys/_configure-d.vim<CR>
+				\ nnoremap <buffer> <silent> ,d :so ~/.vim/templates/keys/_configure-d.vim<CR> |
+				\ nnoremap <buffer> <silent> ,c :so ~/.vim/templates/keys/_configure-c.vim<CR>
 
 aug END " keycommands
 
