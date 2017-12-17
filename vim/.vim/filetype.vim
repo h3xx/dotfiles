@@ -146,14 +146,14 @@ aug keycommands
 				\ nnoremap <buffer> <silent> ,K :so ~/.vim/templates/keys/phpunit-K.vim<CR>
 
 	" build script build files
-	" ,h - insert header file from /tmp/svn/_configure/__header
+	" ,h - insert header text
 	" ,s - insert command for writing slack-desc
-	" ,f - insert finisher file from /tmp/svn/_configure/__finisher
+	" ,f - insert finisher text
 	au BufNewFile,BufRead	*/_configure/*-build,*/build/scripts/*-build
 				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/_configure-h.vim<CR> |
 				\ nnoremap <buffer> <silent> ,H :so ~/.vim/templates/keys/_configure-H.vim<CR> |
 				\ nnoremap <buffer> <silent> ,s :so ~/.vim/templates/keys/_configure-s.vim<CR> |
-				\ nnoremap <buffer> <silent> ,f :r /tmp/svn/_configure/__finisher<CR>
+				\ nnoremap <buffer> <silent> ,f :so ~/.vim/templates/keys/_configure-f.vim<CR>
 	au BufNewFile,BufRead	*/_configure/*,*/build/scripts/*
 				\ nnoremap <buffer> <silent> ,p :so ~/.vim/templates/keys/_configure-p.vim<CR> |
 				\ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/_configure-l.vim<CR> |
