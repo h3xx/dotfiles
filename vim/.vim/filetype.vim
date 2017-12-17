@@ -257,10 +257,6 @@ aug sourcecode
 	au BufNewFile		*.xsd
 				\ so ~/.vim/templates/headers/xsd.vim
 
-	" scilab (not really applicable anymore)
-	"au BufNewFile		*.sci
-	"			\ exe 'norm afunction '.expand('%:t:r').'()\nendfunction\<esc>O// FIXME: description stub\n\n// Arguments:\n//\tFIXME: arguments stub\n//\n// Returns FIXME: return stub\n//!\n\<esc>'
-
 aug END " sourcecode
 
 " Use vim as a hex editor
