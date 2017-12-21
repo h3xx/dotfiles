@@ -84,22 +84,27 @@ callGitlabAPI() {
 report_pr_state() {
     local \
         project="$1" \
-        pr_num="$2"
+        pr_num="$2" \
+        status \
+        source_branch
 
     local api_url="projects/$(url_encode "$project")/merge_requests/$(url_encode "$pr_num")"
 
     #echo "Calling API: $api_url" >&2
     local json="$(callGitlabAPI 'GET' "$api_url" '')"
+    source_branch=$(jq -r .source_branch <<<"$json")
 
     if [[ "$(jq -r .state <<<"$json")" = 'merged' ]]; then
-        print_colored 'merged' 'bright_green'
+        status=$(print_colored 'merged' 'bright_green')
     elif [[ "$(jq -r .work_in_progress <<<"$json")" = 'true' ]]; then
-        print_colored 'work_in_progress' 'bright_yellow'
+        status=$(print_colored 'work_in_progress' 'bright_yellow')
     elif [[ "$(jq -r .merge_status <<<"$json")" = 'cannot_be_merged' ]]; then
-        print_colored 'cannot_be_merged' 'bright_red'
+        status=$(print_colored 'cannot_be_merged' 'bright_red')
     else
-        print_colored 'unmerged' 'bright_blue'
+        status=$(print_colored 'unmerged' 'bright_blue')
     fi
+
+    printf '%s (%s)' "$status" "$source_branch"
 }
 
 for inf in "${IN_FILES[@]}"; do
