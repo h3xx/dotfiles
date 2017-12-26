@@ -300,7 +300,7 @@ find . \
 
 find "$PACKAGES" \
     -type f \
-    -iname "$inst_pkgname-*-*-*" |
+    -iname "$inst_pkgname*" |
         sort |
         head -1 |
         xargs cat |
