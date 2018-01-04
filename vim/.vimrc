@@ -627,14 +627,6 @@ nmap <silent> - :26Vexplore<CR>
 let g:netrw_bufsettings='noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings.=' buftype=nofile bufhidden=wipe'
 
-" ****************************
-" ***** load local vimrc *****
-" ****************************
-
-if filereadable(expand('~/.vimrc-local'))
-	source \~/.vimrc-local
-endif
-
 " Ensure every file opened from the command line gets opened in its own tab
 " (except when running vimdiff)
 " The same effect can be accomplished by running 'vim -p FILES'
