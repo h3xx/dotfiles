@@ -58,7 +58,7 @@ fontname() {
 	mimetype="$(get_mimetype "$font")"
 	case "$mimetype" in
 
-		'application/x-font-ttf')
+		'application/font-sfnt'|'application/x-font-ttf')
 			# XXX : for some reason, ttf2afm requires a .ttf file
 			#	extension, so the creation of a temporary
 			#	symlink is necessary
@@ -127,7 +127,7 @@ fontext() {
 	mimetype="$(get_mimetype "$font")"
 	case "$mimetype" in
 
-		'application/x-font-ttf')
+		'application/font-sfnt'|'application/x-font-ttf')
 			echo '.ttf'
 			;;
 
