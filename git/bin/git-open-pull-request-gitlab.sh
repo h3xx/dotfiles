@@ -25,6 +25,10 @@ EOF
 
 }
 
+url_encode() {
+    perl -MURI::Escape -e 'print &uri_escape($_), "\n" foreach @ARGV' "$@"
+}
+
 TARGET_BRANCH='master'
 SOURCE_BRANCH=''
 MR_TITLE=''
@@ -75,6 +79,8 @@ fi
 if [[ -n $MR_DESC_FROM_REF ]]; then
 	# %b: only commit message (no title [%s])
 	MR_DESC="$(git log --pretty=format:'%b' --no-notes "$MR_DESC_FROM_REF")"
+    # TODO : gitlab doesn't use this
+	#MR_TITLE="$(git log --pretty=format:'%s' --no-notes "$MR_DESC_FROM_REF")"
 fi
 
 # construct http args
@@ -84,15 +90,11 @@ http_args=(
 )
 
 if [[ -n $MR_TITLE ]]; then
-	http_args+=("merge_request[title]=$MR_TITLE")
+    http_args+=("merge_request[title]=$(url_encode "$MR_TITLE")")
 fi
 
 if [[ -n $MR_DESC ]]; then
-	# encode \n => %0a
-	MR_DESC="${MR_DESC//$'\n'/%0a}"
-	# encode ; => %3b
-	MR_DESC="${MR_DESC//;/%3b}"
-	http_args+=("merge_request[description]=$MR_DESC")
+    http_args+=("merge_request[description]=$(url_encode "$MR_DESC")")
 fi
 
 # concatenate all args, URL encoding '&' to %26
