@@ -61,6 +61,8 @@ if [[ $LONG -ne 0 ]]; then
                 'postgres'
             )
             and datistemplate = 'f'
+        order by
+            datname
     "
 else
     LIST_CMD="
@@ -73,6 +75,8 @@ else
                 'postgres'
             )
             and datistemplate = 'f'
+        order by
+            datname
     "
 fi
 
