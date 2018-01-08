@@ -221,6 +221,10 @@ fol() {
 		LASTARG=$_ \
 		CD_OP='cd'
 
+	if [[ $LASTARG = - ]]; then
+		LASTARG=$OLDPWD
+	fi
+
 	while getopts 'pr' FLAG; do
 		case "$FLAG" in
 			'p')
