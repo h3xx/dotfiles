@@ -220,6 +220,10 @@ fol() {
 		lastarg="$_" \
 		cd_op='cd'
 
+	if [[ $lastarg = - ]]; then
+		lastarg="$OLDPWD"
+	fi
+
 	while getopts 'pr' flag; do
 		case "$flag" in
 			'p')
