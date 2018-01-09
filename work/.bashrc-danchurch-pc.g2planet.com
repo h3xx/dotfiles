@@ -133,6 +133,24 @@ MERGE_TARGET=origin/master
 
 export PERL5LIB=~/perl5/lib/perl5
 
+# progcomp for myopic programs
+
+complete -o default -F _cross_project_grep cross-project-grep
+_cross_project_grep() {
+    local opts=(
+        --no-tests
+    ) \
+        opt
+    for opt in "${opts[@]}"; do
+        # wacky but fast syntax that tests if opt begins with the input
+        if [[ ${opt:0:${#2}} = $2 ]]; then
+            COMPREPLY+=(
+                "$opt"
+            )
+        fi
+    done
+}
+
 # trial z
 export _Z_NO_RESOLVE_SYMLINKS=1
 
