@@ -8,6 +8,7 @@
 	ca		= commit --amend
 	f		= fetch
 	fa		= fetch --all
+	fp		= format-patch
 	m		= merge
 	ma		= merge --abort
 	mff		= merge --ff
