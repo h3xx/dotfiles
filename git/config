@@ -28,6 +28,7 @@
 	d		= diff
 	f		= fetch
 	fa		= fetch --all
+	fp		= format-patch
 	g		= grep
 	gr		= grep --recurse-submodules
 	h		= help
