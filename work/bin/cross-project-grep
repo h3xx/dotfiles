@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ARGS=()
+EXTRA_ARGS=()
+for arg in "$@"; do
+    if [[ $arg = --no-tests ]]; then
+        # because this is a fuckin pain to type
+        EXTRA_ARGS+=(':(exclude)**/tests/*')
+    else
+        ARGS+=("$arg")
+    fi
+done
+
+cd ~/g2git/__all_projects__ &&
+exec ionice -c 3 -t git grep --heading --cached --recurse-submodules "${ARGS[@]}" "${EXTRA_ARGS[@]}"
