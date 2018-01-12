@@ -6,22 +6,9 @@ if exists("did_load_my_filetypes")
 endif
 let did_load_my_filetypes=1
 
-" This keeps getting set wrong for some reason
-"au BufNew			*	setl fo-=ot
-
 " automatic saving and loading of fold views, buffers, etc.
 aug views
 	au!
-
-	" * do not save/load views for empty files
-	" * do not save views for diffs as this sets a whole bunch of options
-	"   that make it hard to work with when it's opened as a non-diff
-"	au BufWinLeave	*	if expand("%") != "" && ! &diff |
-"				\ mkview |
-"				\ endif
-"	au BufWinEnter	*	if expand("%") != "" |
-"				\ silent loadview |
-"				\ endif
 
 	" addendum: too bloated a solution; just save the line number as a jump
 	" position in ~/.viminfo:
@@ -45,19 +32,6 @@ aug fugitive_gitgutter
 				\ GitGutterAll
 
 aug END " fugitive_gitgutter
-
-" XXX : this is now handled via ~/.vim/ftdetect/*.vim
-"aug filetypedetect
-"	au!
-"
-"	" warning: detects vim help files as 'text'
-"	" addendum: this is more trouble than it's worth
-"	au BufNewFile,BufRead	*.txt
-"				\ if &ft == "" |
-"				\	setf text |
-"				\ endif
-"
-"aug END " filetypedetect
 
 aug keycommands
 	au!
@@ -175,31 +149,6 @@ aug sourcecode
 				\ so ~/.vim/templates/headers/xsd.vim
 
 aug END " sourcecode
-
-" Use vim as a hex editor
-" (this gets really annoying when trying to edit files with a .dat extension;
-" should look into setting it up as a filetype)
-"aug binary
-"	au!
-"
-"	" Switch to binary mode to read the file
-"	au BufReadPre,FileReadPre	*.dat
-"				\ setl bin
-"
-"	" Perform a hex dump when opening OR refresh hex dump with new
-"	" file contents after writing
-"	au BufReadPost,FileReadPost,BufWritePost,FileWritePost	*.dat
-"				\ '[,']!xxd
-"
-"	" Switch to normal mode for editing
-"	au BufReadPost,FileReadPost	*.dat
-"				\ setl ft=xxd nobin
-"
-"	" Revert hex dump to binary data before writing
-"	au BufWritePre,FileWritePre	*.dat
-"				\ '[,']!xxd -r
-"
-"aug END " binary
 
 " append compressors/decompressors to file pre-processing
 aug gzipext
