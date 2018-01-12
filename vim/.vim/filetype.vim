@@ -122,11 +122,6 @@ aug keycommands
 				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/html5-h.vim<CR> |
 				\ nnoremap <buffer> <silent> ,j :so ~/.vim/templates/keys/html5-j.vim<CR>
 
-	" ,h - insert XML header in XML files (though it's already inserted
-	"      upon BufNewFile)
-	au FileType		xml
-				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/xml-h.vim<CR>
-
 	" Perl debugging functions
 	" ,d - insert Data::Dumper call
 	" ,g - insert Getopt::Std option processing
