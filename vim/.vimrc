@@ -246,48 +246,8 @@ endif
 
 " (addendum: as I become more experienced, folding means less to me than quick
 " navigation, i.e. if you depend on folds, you're doing it wrong)
-"" indent : similarly-indented lines can fold
-"" syntax : syntax highlighting definitions specify folds
-"" manual : manually define folds (default)
-""        : (fold paragraphs with `zfap')
-set foldmethod=syntax
-
 " all folds open upon opening a file (close with `zc')
 set foldlevelstart=99
-
-" *** syntax-specific folding options ***
-" (note: /ftplugin/* executes after these options are interpreted, so they must
-" be defined here)
-
-"" perl
-let perl_fold = 1
-"let perl_fold_blocks = 1 " (screws up auto-indenting for some reason)
-let perl_nofold_packages = 1
-
-"" vim
-"  0 or doesn't exist: no syntax-based folding
-"  'a' : augroups
-"  'f' : fold functions
-"  'm' : fold mzscheme script
-"  'p' : fold perl     script
-"  'P' : fold python   script
-"  'r' : fold ruby     script
-"  't' : fold tcl      script
-let g:vimsyn_folding = 'af'
-
-"" php
-"let g:php_folding = 1
-" indent according to PEAR standards
-let g:PHP_vintage_case_default_indent = 1
-
-" g:sh_fold_enabled - enable folding in sh files
-" possible values:
-"   0 : no syntax folding (default)
-"   1 : enable function folding
-"   2 : enable heredoc folding
-"   4 : enable if/do/for folding
-"   3 : enables function and heredoc folding
-let g:sh_fold_enabled = 3
 
 " ************************
 " ***** key bindings *****
