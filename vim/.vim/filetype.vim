@@ -94,66 +94,9 @@ aug keycommands
 	au FileType		asm,dosini
 				\ noremap <buffer> <silent> <leader>\| :s+^+;+\|nohls<CR>
 
-	" web functions
-	" ,h - insert HTML header in HTML files
-	au FileType		html
-				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/html5-h.vim<CR> |
-				\ nnoremap <buffer> <silent> ,j :so ~/.vim/templates/keys/html5-j.vim<CR>
-
-	" Perl debugging functions
-	" ,d - insert Data::Dumper call
-	" ,g - insert Getopt::Std option processing
-	au FileType		perl
-				\ nnoremap <buffer> <silent> ,d :so ~/.vim/templates/keys/perl-d.vim<CR> |
-				\ nnoremap <buffer> <silent> ,g :so ~/.vim/templates/keys/perl-g.vim<CR>
-
-	" Shell functions
-	" ,g - insert getopts processing block
-	" ,t - insert call to mktemp(1)
-	" ,T - insert shell-script cleanup code that uses trap
-	au FileType		sh
-				\ nnoremap <buffer> <silent> ,g :so ~/.vim/templates/keys/sh-getopts.vim<CR> |
-				\ nnoremap <buffer> <silent> ,t :so ~/.vim/templates/keys/sh-mktemp.vim<CR> |
-				\ nnoremap <buffer> <silent> ,T :so ~/.vim/templates/keys/sh-trap-cleanup.vim<CR> |
-				\ nnoremap <buffer> <silent> ,Z :so ~/.vim/templates/keys/sh-help_message.vim<CR>
-
 	" ,v - insertion of vim filetype specification
 	au FileType		sh,perl,html,xml,c,cpp,conf,mplayerconf,vim
 				\ nnoremap <buffer> <silent> ,v :so ~/.vim/templates/keys/hintline-filetype.vim<CR>
-
-	" ,h - insert <?php header in php files
-	" ,E - throw new Exception
-	" ,c - insert filename (without .php), useful for class files
-	au FileType		php
-				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/php-h.vim<CR> |
-				\ nnoremap <buffer> <silent> ,E :so ~/.vim/templates/keys/php-E.vim<CR> |
-				\ nnoremap <buffer> <silent> ,c :so ~/.vim/templates/keys/php-c.vim<CR> |
-				\ nnoremap <buffer> <silent> ,D :so ~/.vim/templates/keys/php-D.vim<CR> |
-				\ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/php-l.vim<CR> |
-				\ nnoremap <buffer> <silent> ,<C-d> :so ~/.vim/templates/keys/php-c-D.vim<CR> |
-				\ nmap <buffer> <silent> Q ysil'A,<Esc>
-
-	" PHPUnit tests
-	au BufNewFile,BufRead	*Test.php
-				\ nnoremap <buffer> <silent> ,M :so ~/.vim/templates/keys/phpunit-M.vim<CR> |
-				\ nnoremap <buffer> <silent> ,P :so ~/.vim/templates/keys/phpunit-P.vim<CR> |
-				\ nnoremap <buffer> <silent> ,K :so ~/.vim/templates/keys/phpunit-K.vim<CR> |
-				\ nnoremap <buffer> <silent> ,d :so ~/.vim/templates/keys/phpunit-d.vim<CR>
-
-	" build script build files
-	" ,h - insert header text
-	" ,s - insert command for writing slack-desc
-	" ,f - insert finisher text
-	au BufNewFile,BufRead	*/_configure/*-build,*/build/scripts/*-build
-				\ nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/_configure-h.vim<CR> |
-				\ nnoremap <buffer> <silent> ,H :so ~/.vim/templates/keys/_configure-H.vim<CR> |
-				\ nnoremap <buffer> <silent> ,s :so ~/.vim/templates/keys/_configure-s.vim<CR> |
-				\ nnoremap <buffer> <silent> ,f :so ~/.vim/templates/keys/_configure-f.vim<CR>
-	au BufNewFile,BufRead	*/_configure/*,*/build/scripts/*
-				\ nnoremap <buffer> <silent> ,p :so ~/.vim/templates/keys/_configure-p.vim<CR> |
-				\ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/_configure-l.vim<CR> |
-				\ nnoremap <buffer> <silent> ,d :so ~/.vim/templates/keys/_configure-d.vim<CR> |
-				\ nnoremap <buffer> <silent> ,c :so ~/.vim/templates/keys/_configure-c.vim<CR>
 
 aug END " keycommands
 
