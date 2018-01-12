@@ -10,8 +10,6 @@ CACHEDIRS=(
 ~/.thumbnails
 # Steam crash dumps - whenever a game crashes Steam adds a file here
 /tmp/dumps
-# temporary files ccache might leave behind (ccache manages the cache directory size)
-~/.ccache/tmp
 ~/.cache/youtube-dl
 ~/.cache/fontconfig
 ~/.cache/winetricks
