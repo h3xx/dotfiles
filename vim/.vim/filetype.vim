@@ -156,7 +156,6 @@ aug keycommands
 				\ nnoremap <buffer> <silent> ,E :so ~/.vim/templates/keys/php-E.vim<CR> |
 				\ nnoremap <buffer> <silent> ,c :so ~/.vim/templates/keys/php-c.vim<CR> |
 				\ nnoremap <buffer> <silent> ,D :so ~/.vim/templates/keys/php-D.vim<CR> |
-				\ nnoremap <buffer> <silent> ,i :so ~/.vim/templates/keys/php-i.vim<CR> |
 				\ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/php-l.vim<CR> |
 				\ nnoremap <buffer> <silent> ,<C-d> :so ~/.vim/templates/keys/php-c-D.vim<CR> |
 				\ nmap <buffer> <silent> Q ysil'A,<Esc>
