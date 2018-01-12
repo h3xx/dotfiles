@@ -182,4 +182,10 @@ aug gzipext
 
 aug END " gzipext
 
+aug g2planet
+	" g2planet-specific autocmds
+	au!
+
+aug END " g2planet
+
 " vi: ft=vim fdm=syntax
