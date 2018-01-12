@@ -7,17 +7,18 @@ endif
 let did_load_my_filetypes=1
 
 " automatic saving and loading of fold views, buffers, etc.
-aug views
-	au!
-
-	" addendum: too bloated a solution; just save the line number as a jump
-	" position in ~/.viminfo:
-	au BufReadPost	*
-				\ if line("'\"") > 0 && line("'\"") <= line("$") |
-				\	exe "normal! g`\"" |
-				\ endif
-
-aug END " views
+" addendum: evidently vim does this automatically?
+"aug views
+"	au!
+"
+"	" addendum: too bloated a solution; just save the line number as a jump
+"	" position in ~/.viminfo:
+"	au BufReadPost	*
+"				\ if line("'\"") > 0 && line("'\"") <= line("$") |
+"				\	exe "normal! g`\"" |
+"				\ endif
+"
+"aug END " views
 
 " slightly better fugitive + gitgutter integration
 " (only makes life easier if g:gitgutter_realtime=0 and g:gitgutter_eager=0)
