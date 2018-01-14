@@ -161,7 +161,7 @@ alias \
 	g='gvim' \
 	xo='xdg-open'
 
-type -t xclip >/dev/null && alias xclip='xclip -selection clipboard'
+hash xclip 2>/dev/null && alias xclip='xclip -selection clipboard'
 
 ## directories
 # NOTE: `autocd' shell option may be a better option than the ..* aliases
