@@ -1,0 +1,31 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# eliminate certain undesirable files
+
+PATTERNS=(
+    # vim temp/backup files
+    '.*~'
+    '\.(.*\.)?sw[op]'
+    # emacs temp/backup files
+    '#.*#'
+    '\.#.*'
+    # git conflict files
+    '.*_(BACKUP|BASE|LOCAL|REMOTE)_.*'
+    # git pre-patch backup files
+    '.*\.orig'
+)
+
+FIND_ARGS=(
+    .
+    -maxdepth 1
+    -type f
+    -regextype posix-egrep
+    -regex ".*/($(IFS='|'; echo "${PATTERNS[*]}"))"
+    \! -exec fuser -s {} \;
+    -print
+    -delete
+)
+
+
+exec find "${FIND_ARGS[@]}"

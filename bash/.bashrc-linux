@@ -193,7 +193,6 @@ alias \
 	stfg='stf -o$g' \
 	j='jobs' \
 	rmr='rm -rf' \
-	rma='findf1 -regextype posix-egrep \( -regex '\''.*/(.*~|#.*#|\.#.*|.*_(BACKUP|BASE|LOCAL|REMOTE)_.*|.*\.orig)'\'' -o \( -regex '\''.*/\.(.*\.)?sw[op]'\'' ! -exec fuser -s {} \; \) \) -print -delete' \
 	rmdirempty='findd -empty -print -delete' \
 	rmdirempty1='findd1 -empty -print -delete' \
 	brokensymlinks='find -L . -type l'
