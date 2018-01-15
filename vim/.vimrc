@@ -539,6 +539,8 @@ let perl_want_scope_in_variables=1
 let perl_include_pod=1
 
 "" PHP-Indenting-for-VIm
+" No stupid arrow indenting esp. during mock object creation
+let g:PHP_noArrowMatching=1
 " Indent case statements according to PEAR standards
 let g:PHP_vintage_case_default_indent=1
 
