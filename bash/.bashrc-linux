@@ -234,7 +234,7 @@ fol() {
 		esac
 	done
 
-	test -d "$lastarg" && cd "$lastarg" || cd "$(dirname -- "$lastarg")"
+	test -d "$lastarg" && $cd_op "$lastarg" || $cd_op "$(dirname -- "$lastarg")"
 }
 
 alias \
