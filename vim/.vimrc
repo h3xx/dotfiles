@@ -543,6 +543,7 @@ let perl_include_pod = 1
 "" PHP-Indenting-for-VIm
 " No stupid arrow indenting esp. during mock object creation
 let g:PHP_noArrowMatching = 1
+let g:PHP_vintage_case_default_indent = 1
 
 "" sh
 " g:is_sh         : Borne shell (default)
