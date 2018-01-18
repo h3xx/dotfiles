@@ -111,9 +111,7 @@ if [[ $MODE = 'html' ]]; then
         if [[ -n $test_run ]]; then
             covers_classes=(
                 $(
-                    grep -o -- @covers.*:: "$test_run" |
-                    grep -Po '\b[\w\\]+:' |
-                    tr -d : |
+                    sed -ne 's,^.*@covers \\\?\([^:]*\).*$,\1,p' "$test_run" |
                     sort -u
                 )
             )
