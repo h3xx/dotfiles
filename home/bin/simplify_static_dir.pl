@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-our $VERSION = '1.2.3';
+our $VERSION = '2.0.0';
 
 =pod
 
@@ -60,14 +60,6 @@ Only match file paths matching I<REGEX>.
 
 Exclude file paths matching I<REGEX>.
 
-=item B<-s>
-
-Generate symlinks only.
-
-=item B<-S>
-
-Do not generate ANY symlinks.
-
 =item B<-z>
 
 Include zero-length files in search. Normally they are ignored (you don't save
@@ -107,27 +99,22 @@ require Digest::SHA;
 use Getopt::Std qw/ getopts /;
 
 sub HELP_MESSAGE {
-#   my $fh = shift;
-#   print $fh <<EOF
-#Usage: $0 [DIRS]
-#Simplify a directory by hard-linking identical files.
-#
-#  -v           Verbose output.
-#  -f           Print a sum of the number of freed bytes.
-#  -m REGEX     Only match file paths matching REGEX.
-#  -M REGEX     Exclude file paths matching REGEX.
-#  -s           Generate symlinks only.
-#  -S           Do not generate ANY symlinks.
-#  -z           Include zero-length files in search.
-#
-#By default, scans the current directory. Files not able to be hard-linked are
-#symlinked by default.
-#EOF
-#;
-    require Pod::Text;
-    my ($fh, $pod) = (shift, Pod::Text->new);
-    $pod->parse_from_file($0, $fh);
+    my $fh = shift;
+    print $fh <<EOF
+Usage: $0 [DIRS]
+Simplify a directory by hard-linking identical files.
 
+  -v            Verbose output.
+  -f            Print a sum of the number of freed bytes.
+  -m REGEX      Only match file paths matching REGEX.
+  -M REGEX      Exclude file paths matching REGEX.
+  -z            Include zero-length files in search.
+
+By default, scans the current directory.
+
+See also `perldoc $0'
+EOF
+;
     exit 0;
 }
 
@@ -136,14 +123,16 @@ my %opts = (
     f => 0,
     m => '',
     M => '',
-    s => 0,
-    S => 0,
     z => 0,
 );
 
-&getopts('vfm:M:sSz', \%opts);
+&getopts('vfm:M:z', \%opts);
 
-my %files;
+my $filehash = new Util::FileHash;
+
+# include zero-length files if wanted (`-z')
+$filehash->min_linkable_size(0)
+    if $opts{z};
 
 # correct relative paths
 # OR if no directories given, search the current directory
@@ -152,6 +141,10 @@ push @ARGV, $ENV{PWD} unless map { s#^([^/])#$ENV{PWD}/$1# } @ARGV;
 my $freed_bytes = 0;
 
 &find(\&findexec, @ARGV);
+
+printf STDERR "freed %d bytes (%0.4G %s)\n",
+    $freed_bytes, &hr_size($freed_bytes)
+        if $opts{f} or $opts{v};
 
 sub findexec {
     # outright skip directories (don't report skip)
@@ -180,164 +173,86 @@ sub findexec {
         return;
     }
 
-    #my $ctx = Digest::MD5->new;
-    my $ctx = Digest::SHA->new;
-    $ctx->addfile($File::Find::name);
+    my $entry = $filehash->make_entry($File::Find::name);
 
-    # save the hex digest because reading the value from
-    # Digest::* destroys it
-    my $digest = $ctx->hexdigest;
-
-    # organize results from lstat into hash
-    my $entry = {};
-    (@{$entry}{qw/ name dev ino mode nlink uid gid rdev size
-            atime mtime ctime blksize blocks /})
-        = ($File::Find::name, lstat $File::Find::name);
-
-    # skip zero-length files if wanted (`-z')
-    return unless $opts{z} or $entry->{size};
-
-    # check to see if we've come across a file with the same checksum
-    unless (exists $files{$digest}) {
-        # the file is unique (as far as we know)
-        # create a new entry in the hash table
-        $files{$digest} = $entry;
-        return;
+    my @linkable = $filehash->find_hardlinkable($entry);
+    if (@linkable) {
+        &hardlink_entries($entry, @linkable);
     }
+    $filehash->add_entry($entry);
+}
 
-    my $curr_entry = $files{$digest};
+sub hardlink_entries {
+    my ($entry, @linkable) = @_;
 
-    # don't waste my time
-    return if $curr_entry->{name} eq $entry->{name} or
-        $curr_entry->{ino} == $entry->{ino};
+    # only one of the linkable entries should suffice
+    my $linking_with = $linkable[0];
 
-    # identical files should be the same size (I'm paranoid
-    # of checksumming procedures); if it's not, there's a
-    # problem with the checksumming procedure or this
-    # script is processing WAY too many files
-    # (addendum: perhaps I should congratulate the user on
-    # finding a collision in SHA-1)
-    if ($curr_entry->{size} != $entry->{size}) {
-        die "ERROR: checksums identical for two non-identical files!!!:\n".
-        "files:\t`$curr_entry->{name}'\n".
-        "\t`$entry->{name}'\n".
-        "SHA1: ($digest)\n".
-        '(this is probably a limit of SHA1; try processing fewer files)';
-    }
-
-    # find the oldest time stamp
-    my ($atime, $mtime) = @{(sort
-        {$a->{mtime} <=> $b->{mtime}}
-        ($entry, $curr_entry)
+    # calculate the timestamp of the resulting file
+    my ($atime, $mtime) = @{(
+        $filehash->oldest_mtime($entry, $linking_with)
     )[0]}{qw/ atime mtime /};
 
     # find the file less embedded in the file system
-    my ($less_linked, $more_linked) = sort
-        {$a->{nlink} <=> $b->{nlink}}
-        ($entry, $curr_entry);
+    my ($less_linked, $more_linked) = $filehash->less_linked($entry, $linking_with);
 
-    # hard-linkable files must exist on the same device and
-    # must not already be hard-linked
-    if ($curr_entry->{dev} == $entry->{dev} &&
-        ! $opts{s}) {
-        # attempt to unlink the file
-        printf STDERR "removing file `%s'\n",
-            $less_linked->{name} if $opts{v};
-        unless (unlink $less_linked->{name}) {
-
-            # couldn't do it; try more-linked file
-
-            printf STDERR "Failed to remove file `%s': %s\n(using `%s')\n",
-                $less_linked->{name},
-                $!,
-                $more_linked->{name}
-            if $opts{v};
-
-            # if we can't do this, there's no point
-            # in continuing
-            unless (unlink $more_linked->{name}) {
-                printf STDERR "Failed to remove file `%s' (second failure on match): %s\nSkipping...\n",
-                    $more_linked->{name},
-                    $!
-                    if $opts{v};
-
-                return;
-            }
-
-            # the ol' switcheroo
-            ($more_linked, $less_linked) =
-            ($less_linked, $more_linked);
-
-        }
-
-        # we unlinked it or failed out
-        $freed_bytes += $less_linked->{size}
-            unless $less_linked->{nlink} > 1;
-
-        printf STDERR "hard linking `%s' => `%s'\n",
-            $less_linked->{name}, $more_linked->{name}
+    printf STDERR "removing file `%s'\n", $less_linked->{name}
         if $opts{v};
 
-        # hard link the files
-        link $more_linked->{name},
-        $less_linked->{name};
-
-        # update link count in our hash to reflect the
-        # file system (referenced)
-        ++$more_linked->{nlink};
-
-        # preserve older time stamp
-        utime $atime, $mtime, $less_linked->{name};
-    } elsif (! $opts{S}) {
-        # files are on different drives;
-        # most that can be done is to soft-link them
-
-        unless (unlink $less_linked->{name}) {
-
-            # couldn't do it; try more-linked file
-
-            printf STDERR "couldn't remove file `%s' (using `%s')\n",
+    unless (unlink $less_linked->{name}) {
+        printf STDERR "Failed to remove file `%s': %s\n(using `%s')\n",
             $less_linked->{name},
-            $more_linked->{name} if $opts{v};
+            $!,
+            $more_linked->{name};
 
-            # if we can't do this, there's no point
-            # in continuing
-            unlink $more_linked->{name}
-                or return;
+        # if we can't do this, there's no point in continuing
+        unless (unlink $more_linked->{name}) {
+            printf STDERR "Failed to remove file `%s' (second failure on match): %s\nSkipping...\n",
+                $more_linked->{name},
+                $!;
 
-            # the ol' switcheroo
-            ($more_linked, $less_linked) =
-            ($less_linked, $more_linked);
-
+            return;
         }
 
-        # we unlinked it or failed out
-        $freed_bytes += $less_linked->{size};
-
-        printf STDERR "soft-linking %s => %s\n",
-            $less_linked->{name}, $more_linked->{name}
-        if $opts{v};
-
-        # create a soft link (TODO: relative links)
-        symlink $more_linked->{name},
-        $less_linked->{name};
-
-        # preserve older time stamp
-        utime $atime, $mtime, $less_linked->{name};
+        # the ol' switcheroo
+        ($more_linked, $less_linked) =
+        ($less_linked, $more_linked);
     }
-    #} elsif (-l $File::Find::name) {
-    #   # do something to simplify symlinks
-    #   printf STDERR "FIXME: simplifying symlink `%s'\n",
-    #   $File::Find::name
-    #   if $opts{v};
 
-    #   printf STDERR "symlink `%s' points to `%s'\n",
-    #   $File::Find::name, readlink $File::Find::name;
+    # we unlinked it or failed out
+    $freed_bytes += $less_linked->{size}
+        unless $less_linked->{nlink} > 1;
+
+    printf STDERR "hard linking `%s' => `%s'\n",
+        $less_linked->{name}, $more_linked->{name}
+    if $opts{v};
+
+    # hard link the files
+    link $more_linked->{name},
+    $less_linked->{name};
+
+    # preserve older time stamp
+    utime $atime, $mtime, $more_linked->{name};
+    $more_linked->{atime} = $atime;
+    $more_linked->{mtime} = $mtime;
+
+    # update link count in our hash to reflect the file system (referenced)
+    ++$more_linked->{nlink};
+
+    # update old entry with the info from the new one
+    foreach my $copy_attr (qw/
+        ino
+        nlink
+        mode
+        uid
+        gid
+        atime
+        mtime
+        ctime
+    /) {
+        $less_linked->{$copy_attr} = $more_linked->{$copy_attr};
+    }
 }
-
-printf STDERR "freed %d bytes (%0.4G %s)\n",
-    $freed_bytes, &hr_size($freed_bytes)
-        if $opts{f} or $opts{v};
 
 sub hr_size {
     my $sz = shift;
@@ -357,3 +272,223 @@ sub hr_size {
 
     wantarray ? @ret : "@ret"
 }
+
+package Util::FileHash;
+
+use strict;
+use warnings;
+
+=head1 DESCRIPTION
+
+Object for abstracting management of a hashed filesystem
+
+=head1 COPYRIGHT
+
+Copyright (C) 2010-2018 Dan Church.
+
+License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
+
+This is free software: you are free to change and redistribute it.
+
+There is NO WARRANTY, to the extent permitted by law.
+
+=head1 AUTHOR
+
+Written by Dan Church S<E<lt>amphetamachine@gmail.comE<gt>>
+
+=cut
+
+sub new {
+    my ($class, $self) = (shift, {});
+
+    $self->{_files} = {};
+
+    require Digest::SHA;
+    $self->{_ctx} = Digest::SHA->new;
+
+    # default options
+    $self->{_min_linkable_size} = 1;
+
+    bless $self, $class
+}
+
+=head2 min_linkable_size($bytes)
+
+Set or get the minimum size of files to be considered hard-linkable. Default is 1.
+
+=cut
+
+sub min_linkable_size {
+    my $self = shift;
+    my $in = shift;
+    if (defined $in) {
+        $self->{_min_linkable_size} = $in;
+    }
+    $self->{_min_linkable_size}
+}
+
+=head2 make_entry($filename)
+
+=cut
+
+sub make_entry {
+    my $self = shift;
+    my ($filename) = @_;
+    # organize results from lstat into hash
+    my $entry = {};
+    (@{$entry}{qw/ name dev ino mode nlink uid gid rdev size
+            atime mtime ctime blksize blocks /})
+        = ($filename, lstat $filename);
+
+    $entry->{hash} = $self->_hash($filename);
+
+    $entry
+}
+
+=head2 add_entry($entry)
+
+=cut
+
+sub add_entry {
+    my $self = shift;
+    my ($entry) = @_;
+
+    my $hash = $entry->{hash};
+
+    unless (defined $self->{_files}->{$hash}) {
+        $self->{_files}->{$hash} = [];
+    }
+    push @{$self->{_files}->{$hash}}, $entry;
+}
+
+sub find_hardlinkable {
+    my $self = shift;
+    my ($entry) = @_;
+
+    my $hash = $entry->{hash};
+
+    # no matching entries
+    unless (defined $self->{_files}->{$hash}) {
+        return ();
+    }
+
+    my @matches;
+    foreach my $ent (@{$self->{_files}->{$hash}}) {
+        if ($self->_entries_are_hard_linkable($entry, $ent)) {
+            push @matches, $ent;
+        }
+    }
+
+    return @matches;
+
+}
+
+=head2 oldest($entry_a, $entry_b, ...)
+
+Find the file less embedded in the file system.
+
+=cut
+
+sub less_linked {
+    my $self = shift;
+    return sort
+        {$a->{nlink} <=> $b->{nlink}}
+        @_;
+}
+
+=head2 oldest($entry_a, $entry_b, ...)
+
+Find the entry with the oldest time stamp.
+
+=cut
+
+sub oldest_mtime {
+    my $self = shift;
+
+    return sort
+        {$a->{mtime} <=> $b->{mtime}}
+        @_;
+}
+
+sub _hash {
+    my $self = shift;
+    my ($filename) = @_;
+    $self->{_ctx}->addfile($filename);
+    return $self->{_ctx}->hexdigest;
+}
+
+sub _entries_are_hard_linkable {
+    my $self = shift;
+    my ($entry_a, $entry_b) = @_;
+
+    # obviously, if the sizes aren't the same, they're not the same file
+    unless (&_entries_sizes_match($entry_a, $entry_b)) {
+        return 0;
+    }
+
+    # too small to be hard-linked
+    if ($entry_a->{size} < $self->min_linkable_size) {
+        return 0;
+    }
+
+    # they're the same file, don't try it
+    if (&_entries_are_same_filename($entry_a, $entry_b)) {
+        return 0;
+    }
+    if (&_entries_are_already_hard_linked($entry_a, $entry_b)) {
+        return 0;
+    }
+
+    if (&_entries_contents_match($entry_a, $entry_b)) {
+        return 1;
+    }
+    return 0;
+}
+
+sub _entries_are_same_filename {
+    my ($entry_a, $entry_b) = @_;
+
+    if ($entry_a->{name} eq $entry_b->{name}) {
+        return 1;
+    }
+    return 0;
+}
+
+sub _entries_are_already_hard_linked {
+    my ($entry_a, $entry_b) = @_;
+
+    if ($entry_a->{ino} == $entry_b->{ino} and
+        $entry_a->{dev} == $entry_b->{dev}) {
+        return 1;
+    }
+
+    return 0;
+}
+
+sub _entries_sizes_match {
+    my ($entry_a, $entry_b) = @_;
+    if ($entry_a->{size} != $entry_b->{size}) {
+        return 0;
+    }
+    return 1;
+}
+
+sub _entries_contents_match {
+    my ($entry_a, $entry_b) = @_;
+
+    # also, if the hashes aren't the same, they cannot be the same file
+    if ($entry_a->{hash} ne $entry_b->{hash}) {
+        return 0;
+    }
+
+    use File::Compare   qw/ compare /;
+    my $contents_same = (0 == &compare($entry_a->{name}, $entry_b->{name}));
+
+    # warn about hash collision
+    unless ($contents_same) {
+        warn "Hash collision between files:\n* $entry_a->{name}\n* $entry_b->{name}\n  (don't panic)\n";
+    }
+    return $contents_same;
+}
+
+1;
