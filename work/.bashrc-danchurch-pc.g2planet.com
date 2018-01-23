@@ -137,6 +137,7 @@ complete -o default -F _cross_project_grep cross-project-grep
 _cross_project_grep() {
     local opts=(
         --no-tests
+        --srsly
     ) \
         opt
     for opt in "${opts[@]}"; do

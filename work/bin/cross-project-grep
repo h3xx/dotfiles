@@ -2,13 +2,35 @@
 
 ARGS=()
 EXTRA_ARGS=()
+EXCLUDE_PROJECTS=()
 for arg in "$@"; do
     if [[ $arg = --no-tests ]]; then
         # because this is a fuckin pain to type
         EXTRA_ARGS+=(':(exclude)**/tests/*')
+    elif [[ $arg = --srsly ]]; then
+        # ignore garbage projects
+        EXCLUDE_PROJECTS+=(
+            activecollab
+            unit-testing-workshop
+            submodule-merger
+            make_sync
+            log-uploader
+            linux_server_setup
+            kserve
+            ci-awscli
+            ci-jshint
+            ci-php-git
+            ci-phpcs
+            ci-phpunit
+            ci-syncdns
+        )
     else
         ARGS+=("$arg")
     fi
+done
+
+for ex_proj in "${EXCLUDE_PROJECTS[@]}"; do
+    EXTRA_ARGS+=(":(exclude)$ex_proj")
 done
 
 cd ~/g2git/__all_projects__ &&
