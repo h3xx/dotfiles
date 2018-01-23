@@ -26,8 +26,6 @@ scumm=/usr/share/games/scummvm
 # so can be reached from vim
 export appconfig d da db js menu p struct t te tweaks u
 
-ec=~/documents/work/EC2
-
 www=/srv/www/htdocs
 steamapps_local=~/.local/share/Steam/steamapps/common
 
