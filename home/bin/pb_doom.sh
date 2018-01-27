@@ -16,6 +16,9 @@ LOADS=(
     # TC
     'Project_Brutality_2.03a/Project Brutality 2.03.pk3'
     'Project_Brutality_2.03a/External Files/Cheats/PB_Allow_SV_Cheats.pk3'
+
+    # Addons
+    'Project_Brutality_Mutators1.4.5/1-Weapons/(3)[wep]Unmaker.pk3'
 )
 
 while getopts 'Hh' flag; do
