@@ -74,6 +74,10 @@
 	attributesfile	= ~/.config/git/gitattributes_global
 	pager		= less -R	# handle colors correctly
 
+[pager]
+	# disable paged branch listings
+	branch		= no
+
 [pull]
 	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
 	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
