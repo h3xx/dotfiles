@@ -22,3 +22,6 @@ nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/php-l.vim<CR>
 
 " Q - surround current line with ' for insertion into array
 nmap <buffer> <silent> Q ysil'A,<Esc>
+
+" ,t - temporary file creation
+nnoremap <buffer> <silent> ,t :so ~/.vim/templates/keys/php-t.vim<CR>
