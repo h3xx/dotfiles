@@ -38,8 +38,9 @@ alias \
 type -t youtube-dl >/dev/null && alias youtube-dl='youtube-dl --audio-quality 6'
 
 # TODO : put these in .bash_profile
+export JAVA_HOME=/usr/lib64/jvm/openjdk
+export PATH="$JAVA_HOME/bin:$PATH"
 export BROWSER=google-chrome
-export JAVA_HOME=/usr/lib64/jvm/openjdk-1.8.0_102
 if [[ -d ~/.go ]]; then
     export GOPATH=~/.go
     export PATH="${PATH:+$PATH:}$GOPATH/bin"
