@@ -3,7 +3,7 @@
 
 # eliminate certain undesirable files
 
-PATTERNS=(
+FILE_PATTERNS=(
     # vim temp/backup files
     '.*~'
     '\.(.*\.)?sw[op]'
@@ -14,18 +14,42 @@ PATTERNS=(
     '.*_(BACKUP|BASE|LOCAL|REMOTE)_.*'
     # git pre-patch backup files
     '.*\.orig'
+    # mac OS garbage files
+    '\.DS_Store'
 )
 
-FIND_ARGS=(
-    .
-    -maxdepth 1
+FILE_ARGS=(
     -type f
     -regextype posix-egrep
-    -regex ".*/($(IFS='|'; echo "${PATTERNS[*]}"))"
+    -regex ".*/($(IFS='|'; echo "${FILE_PATTERNS[*]}"))"
     \! -exec fuser -s {} \;
     -print
     -delete
 )
 
+DIR_PATTERNS=(
+    # mac OS garbage files
+    '__MACOSX'
+)
+
+DIR_ARGS=(
+    -type d
+    -regextype posix-egrep
+    -regex ".*/($(IFS='|'; echo "${DIR_PATTERNS[*]}"))"
+    -print
+    -exec rm -rf -- {} \;
+)
+
+FIND_ARGS=(
+    .
+    -maxdepth 1
+    '('
+        "${FILE_ARGS[@]}"
+    ')'
+    -o
+    '('
+        "${DIR_ARGS[@]}"
+    ')'
+)
 
 exec find "${FIND_ARGS[@]}"
