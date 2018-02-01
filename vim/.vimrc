@@ -397,6 +397,16 @@ autocmd ColorScheme *		hi ExtraWhitespace term=reverse ctermbg=red guibg=red
 "	(match commands only apply to the current buffer)
 autocmd BufEnter,WinEnter *	match ExtraWhitespace /\s\+$\| \+\ze\t/
 
+" *** lightline.vim
+" make mode bold
+autocmd ColorScheme *
+			\ hi LightLineLeft_normal_0 term=bold cterm=bold |
+			\ hi LightLineLeft_insert_0 term=bold cterm=bold |
+			\ hi LightLineLeft_visual_0 term=bold cterm=bold |
+			\ hi LightLineLeft_replace_0 term=bold cterm=bold |
+			\ hi LightLineLeft_command_0 term=bold cterm=bold
+
+
 " Replace blinding gvim color scheme (makes terminal vim brighter)
 colorscheme late_evening
 
@@ -446,13 +456,6 @@ let g:lightline = {
 			\ 'tabline_separator': { 'left': '', 'right': '' },
 			\ 'tabline_subseparator': { 'left': '', 'right': '' },
 			\ }
-
-" make mode bold
-hi LightLineLeft_normal_0 term=bold cterm=bold
-hi LightLineLeft_insert_0 term=bold cterm=bold
-hi LightLineLeft_visual_0 term=bold cterm=bold
-hi LightLineLeft_replace_0 term=bold cterm=bold
-hi LightLineLeft_command_0 term=bold cterm=bold
 
 function! LightLineReadonly()
 	return &ft != 'help' && &readonly ? '[RO]' : ''
