@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Term::ANSIColor qw/ colored /;
+
+my $color = shift @ARGV;
+
+while (<>) {
+    print &colored("$_", $color);
+}
