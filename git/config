@@ -148,6 +148,7 @@
 	pushUpdateRejected = false
 	commitBeforeMerge = false
 	resolveConflict = false
+	waitingForEditor = false
 	#implicitIdentity = false # still useful?
 	#rmHints = false # ?
 	#amWorkDir = false # ?
