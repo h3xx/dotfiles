@@ -61,27 +61,3 @@ catpkg() {
 watpkg() {
 	catpkg "$@" |grep :
 }
-
-pkglook() {
-	local \
-		pkg \
-		slack_meta \
-		install_list
-
-	for pkg; do
-		if [[ -f $pkg ]]; then
-			if tar tf "$pkg" 'install' >/dev/null 2>&1; then
-				mapfile -t install_list < <(
-					tar tf "$pkg" 'install' |
-					grep -v '/$'
-				)
-				for slack_meta in "${install_list[@]}"; do
-					echo "==== $slack_meta ===="
-					tar xOf "$pkg" "$slack_meta"
-				done
-			fi
-
-			tar tvvf "$pkg"
-		fi
-	done |less
-}
