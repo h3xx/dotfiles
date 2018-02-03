@@ -61,27 +61,3 @@ catpkg() {
 watpkg() {
 	catpkg "$@" |grep :
 }
-
-pkglook() {
-	local \
-		PKG_FILE \
-		SLACK_META \
-		INSTALL_LIST
-
-	for PKG_FILE; do
-		if [[ -f $PKG_FILE ]]; then
-			if tar tf "$PKG_FILE" 'install' >/dev/null 2>&1; then
-				mapfile -t INSTALL_LIST < <(
-					tar tf "$PKG_FILE" 'install' |
-					grep -v '/$'
-				)
-				for SLACK_META in "${INSTALL_LIST[@]}"; do
-					echo "==== $SLACK_META ===="
-					tar xOf "$PKG_FILE" "$SLACK_META"
-				done
-			fi
-
-			tar tvvf "$PKG_FILE"
-		fi
-	done |less
-}
