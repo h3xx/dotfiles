@@ -1,0 +1,57 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS] [--] FILE...
+Preview the contents of Slackware packages.
+
+  -h        Show this help message.
+  --        Terminate options list.
+
+Uses \$PAGER to page results.
+
+Copyright (C) 2007-2018 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+while getopts 'h' flag; do
+    case "$flag" in
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+print_meta_files() {
+    local \
+        PKG_FILE="$1" \
+        INSTALL_LIST \
+        SLACK_META
+
+    mapfile -t INSTALL_LIST < <(
+        tar tf "$PKG_FILE" 'install' 2>/dev/null |
+        grep -v '/$'
+    )
+    for SLACK_META in "${INSTALL_LIST[@]}"; do
+        echo "==== $SLACK_META ===="
+        tar xOf "$PKG_FILE" "$SLACK_META"
+    done
+}
+
+for pkg_file; do
+    if [[ -f "$pkg_file" ]]; then
+        print_meta_files "$pkg_file" &&
+        tar tvvf "$pkg_file"
+    fi
+done | ${PAGER:-less}
