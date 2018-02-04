@@ -340,9 +340,9 @@
 		[exec] (netwalk) {netwalk}
 		[exec] (openttd) {openttd} <~/.fluxbox/icons/openttd.xpm>
 		[exec] (pioneers) {pioneers} <~/.fluxbox/icons/pioneers.xpm>
-		[exec] (quake) {nq-sdl -winsize 1680 1050} <~/.fluxbox/icons/quake.xpm>
-		[exec] (quake: scourge of armagon) {nq-sdl -winsize 1680 1050 -game hipnotic} <~/.fluxbox/icons/quake.xpm>
-		[exec] (quake: dissolution of eternity) {nq-sdl -winsize 1680 1050 -game rogue} <~/.fluxbox/icons/quake.xpm>
+		[exec] (quake) {quakespasm} <~/.fluxbox/icons/quake.xpm>
+		[exec] (quake: scourge of armagon) {quakespasm -game hipnotic} <~/.fluxbox/icons/quake.xpm>
+		[exec] (quake: dissolution of eternity) {quakespasm -game rogue} <~/.fluxbox/icons/quake.xpm>
 		[exec] (quake2) {quake2} <~/.fluxbox/icons/quake2.xpm>
 		[exec] (quake2: the reckoning) {quake2 +set game xatrix} <~/.fluxbox/icons/quake2.xpm>
 		[exec] (quake2: ground zero) {quake2 +set game rogue} <~/.fluxbox/icons/quake2.xpm>
