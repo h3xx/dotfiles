@@ -16,21 +16,12 @@
 #     session.menuFile: ~/.fluxbox/my-menu
 [begin] (fluxbox)
 [encoding] {UTF-8}
-#	[exec] (mrxvt) {mrxvt} <~/.fluxbox/icons/mrxvt.xpm>
 	# TERM is set here because xterm refuses to set it via *termName
 	[exec] (xterm) {xterm -e 'tmux new -A -s main'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
 	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/google-chrome.xpm>
-#	[exec] (chromium) {chromium --ignore-gpu-blocklist --process-per-site --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/chromium.xpm>
-#	[exec] (gentoo) {gentoo} <~/.fluxbox/icons/gentoo.xpm>
-#	[exec] (eclipse) {/opt/eclipse/eclipse} <~/.fluxbox/icons/eclipse.xpm>
-#	[exec] (azureus) {azureus} <~/.fluxbox/icons/azureus.xpm>
-#	[exec] (pidgin) {pidgin} <~/.fluxbox/icons/pidgin.xpm>
 	[exec] (arduino) {startarduino} <~/.fluxbox/icons/arduino.xpm>
-#	[exec] (audacious) {audacious} <~/.fluxbox/icons/audacious2.xpm>
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
-#	[exec] (grip) {grip} <~/.fluxbox/icons/grip.xpm>
-#	[exec] (easytag) {easytag} <~/.fluxbox/icons/easytag.xpm>
 	[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 	[exec] (steam) {startsteam} <~/.fluxbox/icons/steam.xpm>
 	[exec] (mumble) {mumble} <~/.fluxbox/icons/mumble.xpm>
@@ -38,22 +29,17 @@
 	[separator]
 	[include] (~/.fluxbox/menus/projects)
 	[submenu] (terminals)
-		[exec] (mrxvt) {mrxvt} <~/.fluxbox/icons/mrxvt.xpm>
-#		[exec] (konsole) {konsole} <~/.fluxbox/icons/konsole.xpm>
 		[exec] (xterm) {xterm} <~/.fluxbox/icons/xterm.xpm>
-#		[exec] (gnome-terminal) {gnome-terminal}
 		[exec] (rxvt) {rxvt}
 	[end]
 	[submenu] (net)
 		[submenu] (browsers)
 			[exec] (chromium) {chromium --extensions-update-frequency=604800 --purge-memory-button} <~/.fluxbox/icons/chromium.xpm>
 			[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
-#			[exec] (mozilla) {mozilla} <~/.fluxbox/icons/mozilla.xpm>
 			[exec] (seamonkey) {seamonkey} <~/.fluxbox/icons/seamonkey.xpm>
 			[exec] (google-chrome) {google-chrome} <~/.fluxbox/icons/google-chrome.xpm>
 			[exec] (google-chrome [tor]) {google-chrome --process-per-site --proxy-server='socks5://localhost:9050'} <~/.fluxbox/icons/google-chrome.xpm>
 			[exec] (dillo) {dillo} <~/.fluxbox/icons/dillo.xpm>
-#			[exec] (links-graphic) {links -driver x fluxbox.org}
 			[exec] (konqueror) {kfmclient openProfile webbrowsing} <~/.fluxbox/icons/konqueror.xpm>
 			[exec] (links) {xterm -e links fluxbox.org}
 			[exec] (lynx) {xterm -e lynx fluxbox.org}
@@ -64,7 +50,6 @@
 			[exec] (micq) {xterm -e micq}
 		[end]
 		[submenu] (mail)
-#			[exec] (sylpheed) {sylpheed} <~/.fluxbox/icons/sylpheed.xpm>
 			[exec] (thunderbird) {thunderbird} <~/.fluxbox/icons/thunderbird.xpm>
 			[exec] (mutt) {xterm -e mutt}
 			[exec] (pine) {xterm -e pine}
@@ -89,22 +74,18 @@
 		[end]
 		[submenu] (ftp)
 			[exec] (gftp) {gftp} <~/.fluxbox/icons/gftp.xpm>
-#			[exec] (urlgfe) {urlgfe} <~/.fluxbox/icons/urlgfe.xpm>
 			[exec] (uget) {uget} <~/.fluxbox/icons/uget.xpm>
-#			[exec] (d4x) {d4x} <~/.fluxbox/icons/d4x.xpm>
 			[exec] (ncftp) {xterm -e ncftp}
 			[exec] (ftp) {xterm -e ftp}
 			[exec] (lftp) {xterm -e lftp}
 		[end]
 		[submenu] (admin)
 			[exec] (blueman-manager) {blueman-manager} <~/.fluxbox/icons/blueman.xpm>
-#			[exec] (mysql-cc) {mysqlcc} <~/.fluxbox/icons/mysqlcc.xpm>
 			[exec] (pgadmin3) {pgadmin3} <~/.fluxbox/icons/pgadmin3.xpm>
 			[exec] (sqlitebrowser) {sqlitebrowser} <~/.fluxbox/icons/sqlitebrowser.xpm>
 			[exec] (zenmap) {zenmap} <~/.fluxbox/icons/nmap.xpm>
 			[exec] (usbview) {usbview} <~/.fluxbox/icons/usbview.xpm>
 			[exec] (vidalia) {vidalia} <~/.fluxbox/icons/vidalia.xpm>
-#			[exec] (ethereal) {sudo ethereal} <~/.fluxbox/icons/ethereal.xpm>
 			[exec] (wireshark) {wireshark} <~/.fluxbox/icons/wireshark.xpm>
 			[exec] (wpa_gui) {wpa_gui} <~/.fluxbox/icons/wpa_gui.xpm>
 			[exec] (xca) {xca} <~/.fluxbox/icons/xca.xpm>
@@ -116,9 +97,7 @@
 		[exec] (eclipse) {/opt/eclipse/eclipse} <~/.fluxbox/icons/eclipse.xpm>
 		[exec] (xclips) {xclips}
 		[exec] (distcc monitor) {distccmon-gnome}
-#		[exec] (rapidsvn) {rapidsvn} <~/.fluxbox/icons/rapidsvn.xpm>
 		[exec] (gdb) {xterm -e gdb}
-#		[exec] (xxgdb) {xxgdb}
 		[exec] (glade) {glade-3}
 		[exec] (motor ide) {xterm -e motor}
 		[exec] (R) {xterm -e R --gui=gnome}
@@ -130,7 +109,6 @@
 		[exec] (filelight) {filelight} <~/.fluxbox/icons/filelight.xpm>
 		[exec] (gdmap) {gdmap} <~/.fluxbox/icons/gdmap.xpm>
 		[exec] (worker) {worker}
-#		[exec] (nautilus) {nautilus --no-desktop --browser} <~/.fluxbox/icons/nautilus.xpm>
 		[exec] (mc) {xterm -e mc}
 		[exec] (xarchiver) {xarchiver} <~/.fluxbox/icons/xarchiver.xpm>
 	[end]
@@ -139,17 +117,14 @@
 			[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
 			[exec] (xv) {xv} <~/.fluxbox/icons/xv.xpm>
 			[exec] (geeqie) {geeqie} <~/.fluxbox/icons/geeqie.xpm>
-#			[exec] (gqview) {gqview} <~/.fluxbox/icons/gqview.xpm>
 			[exec] (xpaint) {xpaint} <~/.fluxbox/icons/xpaint.xpm>
 			[exec] (mtpaint) {mtpaint}
 			[exec] (gthumb) {gthumb} <~/.fluxbox/icons/gthumb.xpm>
 			[exec] (mcomix) {mcomix} <~/.fluxbox/icons/mcomix.xpm>
-#			[exec] (gtkam) {gtkam} <~/.fluxbox/icons/gtkam.xpm>
 		[end]
 		[submenu] (audio)
 			[exec] (audacious) {audacious} <~/.fluxbox/icons/audacious2.xpm>
 			[exec] (xmms) {xmms} <~/.fluxbox/icons/xmms.xpm>
-#			[exec] (rhythmbox) {rhythmbox} <~/.fluxbox/icons/rhythmbox.xpm>
 			[exec] (grip) {grip} <~/.fluxbox/icons/grip.xpm>
 			[exec] (easytag) {easytag} <~/.fluxbox/icons/easytag.xpm>
 		[end]
@@ -157,13 +132,8 @@
 			[exec] (avidemux2) {avidemux2} <~/.fluxbox/icons/avidemux2.xpm>
 			[exec] (kdenlive) {kdenlive} <~/.fluxbox/icons/kdenlive.xpm>
 			[exec] (xine) {xine} <~/.fluxbox/icons/xine.xpm>
-#			[exec] (gxine) {gxine} <~/.fluxbox/icons/gxine.xpm>
-#			[exec] (totem) {totem} <~/.fluxbox/icons/totem.xpm>
-#			[exec] (aviplay) {aviplay}
 			[exec] (gtv) {gtv}
-#			[exec] (gmplayer) {gmplayer} <~/.fluxbox/icons/mplayer.xpm>
 			[exec] (smplayer) {smplayer} <~/.fluxbox/icons/mplayer.xpm>
-#			[exec] (xawtv) {xawtv}
 		[end]
 		[submenu] (recording)
 			[submenu] (recording)
@@ -210,7 +180,6 @@
 				[exec] (jackmaster) {jackmaster} <~/.fluxbox/icons/jackmaster.xpm>
 				[exec] (ffado-mixer) {ffado-mixer} <~/.fluxbox/icons/ffado.xpm>
 				[exec] (glashctl) {glashctl} <~/.fluxbox/icons/glashctl.xpm>
-#				[exec] (patchage) {patchage} <~/.fluxbox/icons/patchage.xpm>
 				[exec] (qjackctl) {qjackctl} <~/.fluxbox/icons/qjackctl.xpm>
 				[exec] (qmidictl) {qmidictl} <~/.fluxbox/icons/qmidictl.xpm>
 				[exec] (qmidinet) {qmidinet} <~/.fluxbox/icons/qmidinet.xpm>
@@ -238,7 +207,6 @@
 			[exec] (gtklick) {gtklick} <~/.fluxbox/icons/gtklick.xpm>
 			[exec] (cinelerra) {cinelerra} <~/.fluxbox/icons/cinelerra.xpm>
 			[exec] (jack_oscrolloscope) {jack_oscrolloscope}
-#			[exec] (patchage) {patchage} <~/.fluxbox/icons/patchage.xpm>
 		[end]
 	[end]
 	[submenu] (editors)
@@ -247,11 +215,8 @@
 		[exec] (gvim) {gvim} <~/.fluxbox/icons/gvim.xpm>
 		[exec] (bluefish) {bluefish} <~/.fluxbox/icons/bluefish.xpm>
 		[exec] (manedit) {manedit} <~/.fluxbox/icons/manedit.xpm>
-#		[exec] (nedit) {nedit}
 		[exec] (gedit) {gedit}
 		[exec] (xedit) {xedit}
-#		[exec] (kwrite) {kwrite} <~/.fluxbox/icons/kwrite.xpm>
-#		[exec] (kate) {kate}
 		[exec] (anjuta) {anjuta}
 		[exec] (emacs) {emacs} <~/.fluxbox/icons/emacs.xpm>
 		[exec] (nano) {xterm -e nano}
@@ -278,12 +243,9 @@
 			[exec] (tilem2) {tilem2} <~/.fluxbox/icons/tilem2.xpm>
 			[exec] (oregano) {oregano} <~/.fluxbox/icons/oregano.xpm>
 			[exec] (xcircuit) {xcircuit} <~/.fluxbox/icons/xcircuit.xpm>
-#			[exec] (wxmaxima) {wxmaxima}
 			[exec] (maxima) {xterm -e maxima} <~/.fluxbox/icons/maxima.xpm>
 			[exec] (gnuplot) {xterm -e gnuplot}
 		[end]
-#		[exec] (abiword) {abiword} <~/.fluxbox/icons/abiword.xpm>
-#		[exec] (sodipodi) {sodipodi} <~/.fluxbox/icons/sodipodi.xpm>
 		[exec] (inkscape) {inkscape} <~/.fluxbox/icons/inkscape.xpm>
 		[exec] (gucharmap) {gucharmap} <~/.fluxbox/icons/gucharmap.xpm>
 		[exec] (dia) {dia} <~/.fluxbox/icons/dia.xpm>
@@ -301,16 +263,11 @@
 	[submenu] (utilities)
 		[exec] (top) {xterm -e top}
 		[exec] (htop) {xterm -e htop}
-#		[exec] (aumix) {aumix} <~/.fluxbox/icons/aumix.xpm>
 		[exec] (alsamixer) {xterm -name alsamixer -e alsamixer}
 		[exec] (gtklp) {gtklp}
-#		[exec] (gtk-lshw) {gtk-lshw}
 		[exec] (gkrellm) {gkrellm}
-#		[exec] (glipper) {glipper} <~/.fluxbox/icons/glipper.xpm>
-#		[exec] (fluxter) {fluxter -w}
 		[exec] (fbpager) {fbpager -w}
 		[submenu] (cd burning)
-#			[exec] (xcdroast) {xcdroast} <~/.fluxbox/icons/xcdroast.xpm>
 			[exec] (graveman) {graveman} <~/.fluxbox/icons/graveman.xpm>
 			[exec] (k3b) {k3b} <~/.fluxbox/icons/k3b.xpm>
 		[end]
@@ -324,7 +281,6 @@
 			[exec] (xclock) {xclock} <~/.fluxbox/icons/xclock.xpm>
 			[exec] (xmag) {xmag} <~/.fluxbox/icons/xmag.xpm>
 			[exec] (wmagnify) {wmagnify}
-#			[exec] (xorgcfg) {xorgcfg}
 			[exec] (xvkbd) {xvkbd}
 			[exec] (xscreensaver-demo) {xscreensaver-demo} <~/.fluxbox/icons/xscreensaver.xpm>
 			[exec] (xlock) {xlock}
@@ -347,7 +303,6 @@
 		[end]
 		[exec] (angband) {angband} <~/.fluxbox/icons/angband.xpm>
 		[exec] (armagetronad) {armagetronad} <~/.fluxbox/icons/armagetronad.xpm>
-#		[exec] (blackjack) {blackjack}
 		[exec] (bzflag) {bzflag} <~/.fluxbox/icons/bzflag.xpm>
 		[exec] (chromium-bsu) {chromium-bsu} <~/.fluxbox/icons/chromium-bsu.xpm>
 		[exec] (corsix-th) {CorsixTH} <~/.fluxbox/icons/corsix-th.xpm>
@@ -362,8 +317,6 @@
 		[exec] (enigma) {enigma} <~/.fluxbox/icons/enigma.xpm>
 		[exec] (freecell) {sol --variation freecell} <~/.fluxbox/icons/sol.xpm>
 		[exec] (freedroidRPG) {freedroidRPG} <~/.fluxbox/icons/freedroidRPG.xpm>
-#		[exec] (frozen-bubble) {frozen-bubble} <~/.fluxbox/icons/frozen-bubble.xpm>
-#		[exec] (gataxx) {gataxx} <~/.fluxbox/icons/gataxx.xpm>
 		[exec] (gemrb: icewind dale) {gemrb -c ~/.gemrb/gemrb-iwd.cfg} <~/.fluxbox/icons/gemrb-iwd.xpm>
 		[exec] (gemrb: icewind dale 2) {gemrb -c ~/.gemrb/gemrb-iwd2.cfg} <~/.fluxbox/icons/gemrb-iwd2.xpm>
 		[exec] (gemrb: planescape: torment) {gemrb -c ~/.gemrb/gemrb-pst.cfg} <~/.fluxbox/icons/gemrb-pst.xpm>
@@ -371,7 +324,6 @@
 		[exec] (gnect) {gnect} <~/.fluxbox/icons/gnect.xpm>
 		[exec] (gnibbles) {gnibbles} <~/.fluxbox/icons/gnibbles.xpm>
 		[exec] (gnobots2) {gnobots2} <~/.fluxbox/icons/gnobots2.xpm>
-#		[exec] (gnometris) {gnometris} <~/.fluxbox/icons/gnometris.xpm>
 		[exec] (gnomine) {gnomine} <~/.fluxbox/icons/gnomine.xpm>
 		[exec] (gnotravex) {gnotravex}
 		[exec] (gnotski) {gnotski} <~/.fluxbox/icons/gnotski.xpm>
@@ -385,7 +337,6 @@
 		[exec] (lmarbles) {lmarbles} <~/.fluxbox/icons/lmarbles.xpm>
 		[exec] (lpairs) {lpairs} <~/.fluxbox/icons/lpairs.xpm>
 		[exec] (ltris) {ltris} <~/.fluxbox/icons/ltris.xpm>
-#		[exec] (mahjongg) {mahjongg} <~/.fluxbox/icons/mahjongg.xpm>
 		[exec] (minivmac) {cd ~/.vmac ; minivmac} <~/.fluxbox/icons/minivmac.xpm>
 		[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 		[exec] (netwalk) {netwalk}
@@ -397,7 +348,6 @@
 		[exec] (quake2) {quake2} <~/.fluxbox/icons/quake2.xpm>
 		[exec] (quake2: the reckoning) {quake2 +set game xatrix} <~/.fluxbox/icons/quake2.xpm>
 		[exec] (quake2: ground zero) {quake2 +set game rogue} <~/.fluxbox/icons/quake2.xpm>
-#		[exec] (same-gnome) {same-gnome}
 		[exec] (scummvm) {scummvm} <~/.fluxbox/icons/scummvm.xpm>
 		[exec] (sol) {sol} <~/.fluxbox/icons/sol.xpm>
 		[exec] (stendhal) {stendhal} <~/.fluxbox/icons/stendhal.xpm>
@@ -411,7 +361,6 @@
 		[exec] (xmahjongg) {xmahjongg}
 		[exec] (xsnow) {xsnow}
 		[exec] (xwelltris) {xwelltris}
-#		[exec] (zsnes) {zsnes} <~/.fluxbox/icons/zsnes.xpm>
 	[end]
 	[submenu] (fluxbox)
 		[config] (configure)
@@ -430,13 +379,10 @@
 		[end]
 		[submenu] (window)
 			[restart] (icewm) {icewm}
-#			[restart] (kde) {startkde}
 			[restart] (fvwm) {fvwm}
 			[restart] (xfce4) {startxfce4}
 			[restart] (fvwm2) {fvwm2}
 			[restart] (blackbox) {blackbox}
-#			[restart] (evilwm) {evilwm}
-#			[restart] (gnome) {gnome-session}
 			[restart] (compiz) {compiz}
 			[restart] (windowmaker) {wmaker}
 		[end]
