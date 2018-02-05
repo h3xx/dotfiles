@@ -8,18 +8,7 @@ bind-key "k" prev articlelist
 bind-key "h" quit articlelist
 bind-key "l" open feedlist
 
-# Color Scheme for Newsbeuter
-# Based mostly on the colors from the badwolf airline theme
-color article			default		default
-color background		default		default
-color info			color232	color39		bold
-color listfocus			color232	color154	bold
-color listfocus_unread		color232	color154	bold
-color listnormal		default		default
-color listnormal_unread		color165	color235	bold
-
-# article header
-highlight article ^(Feed|Title|Link|Date):.*$		color81		color235		bold
+include ~/.newsbeuter/newsbeuter-colors-neonwolf-256.conf
 #TODO:highlight article ^Feed:				color165	color235		bold
 
 # vi: ft=conf
