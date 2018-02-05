@@ -106,3 +106,7 @@
 	path = fluxbox/styles/solaris
 	url = git@github.com:h3xx/fluxbox-style-solaris.git
 	branch = master
+[submodule "newsbeuter/newsbeuter-colors-neonwolf"]
+	path = newsbeuter/newsbeuter-colors-neonwolf
+	url = git@github.com:h3xx/newsbeuter-colors-neonwolf.git
+	branch = master
