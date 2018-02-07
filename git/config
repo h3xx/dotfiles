@@ -77,6 +77,10 @@
 [pager]
 	# disable paged branch listings
 	branch		= no
+	# a better diff view
+	diff		= diff-highlight | less -R
+	show		= diff-highlight | less -R
+	log		= diff-highlight | less -R
 
 [pull]
 	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
