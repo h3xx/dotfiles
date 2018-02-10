@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 HELP_MESSAGE() {
 	local EXIT_CODE="${1:-0}"
@@ -47,11 +47,11 @@ done
 
 shift "$((OPTIND-1))"
 
-if [ -z "$LOGINS" ]; then
+if [[ -z $LOGINS ]]; then
 	LOGINS="$_HOME/$CONFIGDIR/$PROFILE/Login Data"
 fi
 
-if [ ! -f "$LOGINS" ]; then
+if [[ ! -f $LOGINS ]]; then
 	echo "Logins database \`$LOGINS' not found" >&2
 	exit 2
 fi
@@ -81,10 +81,10 @@ else
 fi
 
 cleanup() {
-	if [ -n "$db_temp" ]; then
+	if [[ -n $db_temp ]]; then
 		shred -f -n 1 -u -- "$db_temp" # secure delete first
 		rm -f -- "$db_temp" # plain unlink if that fails
-		if [ -e "$db_temp" ]; then
+		if [[ -e $db_temp ]]; then
 			echo "WARNING: Failed to remove file \`$db_temp'. This file contains sensitive information." >&2
 			echo "Please shred(1) and delete it." >&2
 		fi
@@ -111,7 +111,7 @@ search() {
 	for c in "${cols_search[@]}"; do
 		query+="$c like $srch"
 		let ++z
-		if [ "$z" -lt "${#cols_search[@]}" ]; then
+		if [[ $z -lt ${#cols_search[@]} ]]; then
 			query+=' or '
 		fi
 	done
