@@ -30,8 +30,8 @@ xset dpms 0 0 600
 #syndaemon -i 1 -KR &
 
 # Your own fonts-dir:
-if [[ -d ~/.font ]]; then
-	xset +fp ~/.font
+if [[ -d ~/.font/ohsnapmod ]]; then
+    xset +fp ~/.font/ohsnapmod
 fi
 
 #
