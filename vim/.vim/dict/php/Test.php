@@ -10,6 +10,7 @@ use TestOutputCapture;
 public function getDataSet() {
 $yaml = __DIR__.'/'.static::DATADIR.'/dataset.yaml';
 return new PHPUnit_Extensions_Database_DataSet_YamlDataSet($yaml);
+PHPUnit_Extensions_Database_DataSet_IDataSet
 * @return
 * @param
 * @throws Exception
@@ -28,10 +29,6 @@ return new PHPUnit_Extensions_Database_DataSet_YamlDataSet($yaml);
 * @coversNothing
 * @dataProvider
 * @depends
-* @expectedException
-* @expectedExceptionCode
-* @expectedExceptionMessage
-* @expectedExceptionMessageRegExp
 * @group
 * @large
 * @medium
@@ -91,6 +88,11 @@ $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message);
 $this->assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message);
 $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message);
 $this->markTestIncomplete($message);
+expectException
+expectExceptionCode
+expectExceptionMessage
+expectExceptionMessageRegExp
 $this->throwException($exception)
 $this->equalTo($value)
 $this->returnValue($value)
+$this->returnCallback($func)
