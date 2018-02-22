@@ -12,7 +12,7 @@
 	m		= merge
 	ma		= merge --abort
 	mff		= merge --ff
-	mb		= merge-base
+	mb		= merge-base --octopus
 	u		= pull
 	pu		= "!echo use git u;exit 1"
 	p		= push
