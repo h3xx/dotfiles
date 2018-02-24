@@ -1,4 +1,0 @@
-[submenu] (scummvm) <~/.fluxbox/icons/scummvm.xpm>
-	[exec] (scummvm) {scummvm} <~/.fluxbox/icons/scummvm.xpm>
-	[exec] ([SCUMM] The Secret of Monkey Island (CD/DOS/English\)) {scummvm monkey}
-[end]
