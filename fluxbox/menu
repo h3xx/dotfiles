@@ -26,7 +26,6 @@
 	[exec] (mumble) {mumble} <~/.fluxbox/icons/mumble.xpm>
 	[exec] (xvkbd) {xvkbd}
 	[separator]
-	[include] (~/.fluxbox/menus/projects)
 	[submenu] (terminals)
 		[exec] (xterm) {xterm} <~/.fluxbox/icons/xterm.xpm>
 		[exec] (rxvt) {rxvt}
