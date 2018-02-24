@@ -89,6 +89,14 @@ if [[ $ARCH = 'x86_64' ]]; then
 #   )
 fi
 
+# Use ccache by default for faster builds
+if hash ccache 2>/dev/null; then
+    CMAKE_DEFINES+=(
+        CMAKE_C_COMPILER_LAUNCHER=ccache
+        CMAKE_CXX_COMPILER_LAUNCHER=ccache
+    )
+fi
+
 CMAKE_ARGS=()
 
 for DEF in "${CMAKE_DEFINES[@]}"; do
