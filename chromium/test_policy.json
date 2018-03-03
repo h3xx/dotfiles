@@ -22,6 +22,8 @@
 	"TranslateEnabled": false,
 	// Don't use Google's autosuggest when searching, don't even ask me.
 	"SearchSuggestEnabled": false,
+	// "Use a prediction service to load pages more quickly" - no.
+	"NetworkPredictionOptions": 2,
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
