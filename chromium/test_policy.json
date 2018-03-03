@@ -24,6 +24,8 @@
 	"SearchSuggestEnabled": false,
 	// "Use a prediction service to load pages more quickly" - no.
 	"NetworkPredictionOptions": 2,
+	// Don't use Google's time service
+	"BrowserNetworkTimeQueriesEnabled": false,
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
