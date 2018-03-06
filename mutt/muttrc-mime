@@ -13,7 +13,7 @@ auto_view \
 	text/rtf application/rtf \
 	text/enriched \
 	application/msword \
-	text/calendar
+	text/calendar application/ics
 
 # save text part for last
 # rationale: elinks does a better job than outlook at formatting HTML mail
