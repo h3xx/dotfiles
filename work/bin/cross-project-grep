@@ -2,7 +2,9 @@
 
 ARGS=()
 EXTRA_ARGS=()
-EXCLUDE_PROJECTS=()
+EXCLUDE_PROJECTS=(
+    activecollab
+)
 for arg in "$@"; do
     if [[ $arg = --no-tests ]]; then
         # because this is a fuckin pain to type
