@@ -125,7 +125,7 @@ complete -A hostname host nmap ping traceroute ssh ftp telnet
 
 # postgresql support over SSH forwarded port ->dev
 alias \
-	psql='psql -h localhost -p 5498' \
+	psql='LC_ALL=en_US.utf8 psql -h localhost -p 5498' \
 	youtube-dl-music='youtube-dl -xwt --audio-format vorbis --audio-quality 8'
 
 MERGE_TARGET=origin/master
