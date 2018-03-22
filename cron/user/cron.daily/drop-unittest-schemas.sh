@@ -5,6 +5,9 @@ create database unittest;
 grant all on database unittest to unittest;
 
 EOSQL
+psql -U postgres unittest <<'EOSQL'
+create extension if not exists tablefunc;
+EOSQL
 
 # also clear out old temporary files
 rm -f \
