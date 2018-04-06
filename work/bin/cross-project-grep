@@ -3,29 +3,34 @@
 ARGS=()
 EXTRA_ARGS=()
 EXCLUDE_PROJECTS=(
+    # projects we're willfully ignorant of
     activecollab
+    cert-manager
+    ci-awscli
+    ci-jshint
+    ci-php-git
+    ci-phpcs
+    ci-phpunit
+    ci-syncdns
+    kserve
+    linux_server_setup
+    log-uploader
+    make_sync
+    pgdiff
+    submodule-merger
+    unit-testing-workshop
+
+    # really old projects (>5 years)
+    citrix-synergyanaheim2013
+    intelcalendar
 )
 for arg in "$@"; do
     if [[ $arg = --no-tests ]]; then
         # because this is a fuckin pain to type
         EXTRA_ARGS+=(':(exclude)**/tests/*')
-    elif [[ $arg = --srsly ]]; then
+    elif [[ $arg = --all ]]; then
         # ignore garbage projects
-        EXCLUDE_PROJECTS+=(
-            activecollab
-            unit-testing-workshop
-            submodule-merger
-            make_sync
-            log-uploader
-            linux_server_setup
-            kserve
-            ci-awscli
-            ci-jshint
-            ci-php-git
-            ci-phpcs
-            ci-phpunit
-            ci-syncdns
-        )
+        EXCLUDE_PROJECTS=()
     else
         ARGS+=("$arg")
     fi
