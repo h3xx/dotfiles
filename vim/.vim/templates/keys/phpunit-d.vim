@@ -9,7 +9,7 @@ append
             ],
         ]);
 
-        $actual = new PHPUnit_Extensions_Database_DataSet_QueryDataSet($this->getConnection());
+        $actual = new \PHPUnit_Extensions_Database_DataSet_QueryDataSet($this->getConnection());
         $actual->addTable('TABLE', "
             select
                 FIELD1
@@ -18,7 +18,7 @@ append
             where
                 ID = 101
         ");
-        "
+
         $message = "U wot m8?";
         $this->assertDataSetsEqual($expected, $actual, $message);
 .
