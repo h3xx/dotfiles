@@ -3,31 +3,37 @@
 insert
 <?php
 
-class CLASS extends EcDatabaseTestCase {
+/**
+ * @covers SOMECLASS
+.
+s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
+append
+ */
+#class CLASS extends EmaxDatabaseTestCase {
 .
 s/CLASS/\=expand("%:t:r")/
 append
-#class CLASS extends PHPUnit_Framework_TestCase {
+#class CLASS extends EcDatabaseTestCase {
+.
+s/CLASS/\=expand("%:t:r")/
+append
+class CLASS extends PHPUnit_Framework_TestCase {
 .
 s/CLASS/\=expand("%:t:r")/
 
 append
 
-    const DATADIR = 'CLASSData';
+    #const DATADIR = 'CLASSData';
 .
 s/CLASS/\=expand("%:t:r")/
 append
 
     /**
-     * @covers SOMECLASS::SOMEMETHOD
-.
-s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
-append
+     * @return void
      */
     public function test SOMEMETHOD() {
-        $db = $this->getDatabase();
-
-        $config = new ConfigUtilTestWrapper;
+        #$db = $this->getDatabase();
+        #$config = new ConfigUtilTestWrapper;
 
         $mock = $this->getMockBuilder(SOMECLASS::class)
 .
@@ -41,14 +47,6 @@ append
 
         $reflector = new ReflectionClass($mock);
 
-        $prop = $reflector->getProperty('database');
-        $prop->setAccessible(true);
-        $prop->setValue($mock, $db);
-
-        $prop = $reflector->getProperty('config');
-        $prop->setAccessible(true);
-        $prop->setValue($mock, $config);
-
         $meth = $reflector->getMethod('SOMEMETHOD');
         $meth->setAccessible(true);
         $actual = $meth->invokeArgs($mock, [$MYARG]);
@@ -60,42 +58,27 @@ append
         $this->assertEquals($expected, $actual, $message);
     }
 
-    /**
-     * @covers SOMECLASS::getSmartyVersion
-.
-s/SOMECLASS/\=expand("%:t:r:s?Test$??")/
-append
-     */
-    public function testgetSmartyVersion() {
-
-        $mock = $this->getMockBuilder('SOMECLASS')
-.
-s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
-append
+    private function setupContext(ConfigUtil $config = null, PDO $db = null) {
+        $mock_context = $this->getMockBuilder(DefaultGlobalContext::class)
             ->setMethods([
-                'dieString',
+                'getConfigObj',
+                'getDatabase',
             ])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $reflector = new ReflectionClass($mock);
-
-        $expected = 3;
-
-        $meth = $reflector->getMethod('getSmartyVersion');
-        $meth->setAccessible(true);
-        $actual = $meth->invoke($mock);
-
-        $message = "Bad Smarty version given by page";
-        $this->assertEquals($expected, $actual, $message);
-    }
+        if (isset($config)) {
+            $mock_context->expects($this->any())
+                ->method('getConfigObj')
+                ->will($this->returnValue($config));
+        }
+        if (isset($db)) {
+            $mock_context->expects($this->any())
+                ->method('getDatabase')
+                ->will($this->returnValue($db));
+        }
+        DefaultGlobalContextProvider::setGlobalContext($mock_context);
+    } // end setupContext()
 
 }
-
-class SOMECLASSWrapper extends SOMECLASS {
 .
-s/SOMECLASS/\=expand("%:t:r:s?Test$??")/g
-append
-    use TestOutputCapture;
-}
-.
+13
