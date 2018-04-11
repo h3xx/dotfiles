@@ -6,4 +6,4 @@
 # Source: http://tf.nist.gov/tf-cgi/servers.cgi
 NTPSERVER='time.nist.gov'
 
-exec /usr/sbin/ntpdate "$NTPSERVER"
+exec /usr/sbin/ntpdate -u "$NTPSERVER"
