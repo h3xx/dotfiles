@@ -9,6 +9,7 @@ Usage: $(basename -- "$0") [OPTIONS] [--]
 Open a web browser to Gitlab to a file.
 
   -h		Show this help message.
+  -b		Open the file in blame mode.
   -s BRANCH	Set source branch (defaults to current branch).
   -l LINE   Jump to line.
   --		Terminate options list.
@@ -24,11 +25,15 @@ EOF
 
 SOURCE_BRANCH=''
 LINE=''
-while getopts 'hs:l:' flag; do
+TYPE='blob'
+while getopts 'hbs:l:' flag; do
 	case "$flag" in
 		's')
 			SOURCE_BRANCH="$OPTARG"
 			;;
+        'b')
+            TYPE='blame'
+            ;;
         'l')
             LINE=$OPTARG
             ;;
@@ -65,7 +70,7 @@ full_path="$(git ls-files --full-name "$FILE")"
 push_url="$(git remote -v |sed -e 's#^'"$(git config "branch.$SOURCE_BRANCH.remote")"'\s*\(.*\)\s*(push)$#\1# p;d')"
 http_url="$(echo $push_url |perl -p -e ' s#^ssh://##; s#:\d+/#/#; if (m#^\w*@#) { s#:#/#g; s#^\w*@#https://#; } s#\.git$##;')"
 # XXX : NOT url-escaped shashes
-file_view_url="$http_url/blob/$SOURCE_BRANCH/$full_path"
+file_view_url="$http_url/$TYPE/$SOURCE_BRANCH/$full_path"
 
 if [[ ! -z $LINE ]]; then
     file_view_url+="#L$LINE"
