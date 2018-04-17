@@ -12,6 +12,7 @@ EXCLUDE_PROJECTS=(
     ci-phpcs
     ci-phpunit
     ci-syncdns
+    docker_images
     kserve
     linux_server_setup
     log-uploader
@@ -19,6 +20,7 @@ EXCLUDE_PROJECTS=(
     pgdiff
     submodule-merger
     unit-testing-workshop
+    helpdesk
 
     # really old projects (>5 years)
     citrix-synergyanaheim2013
