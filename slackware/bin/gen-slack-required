@@ -23,8 +23,8 @@ use constant CACHE_STORE_DIR    => "$ENV{'HOME'}/.cache";
 use constant CACHE_STORE    => CACHE_STORE_DIR . '/slackpacks.pdata';
 
 use constant PACKAGE_PATH   => '/var/log/packages';
-use constant SHLIB_MIME     => 'application/x-sharedlib; charset=binary';
-use constant EXEC_MIME      => 'application/x-executable; charset=binary';
+use constant SHLIB_MIME     => '^application/(x-sharedlib|x-pie-executable); charset=binary$';
+use constant EXEC_MIME      => '^application/x-executable; charset=binary$';
 
 my @JAVA_DEPS = (
     # these are ambiguous between jre/jdk and gcc-java
@@ -423,7 +423,8 @@ sub is_dynlib {
     # compare mimetype of file against expected mimetype of shared library
     $file = &abs_path($file);
 
-    $magic->checktype_filename($file) eq SHLIB_MIME
+    my $pat = SHLIB_MIME;
+    $magic->checktype_filename($file) =~ /$pat/
 }
 
 sub is_executable {
@@ -432,7 +433,8 @@ sub is_executable {
     # compare mimetype of file against expected mimetype of ELF executable
     $file = &abs_path($file);
 
-    $magic->checktype_filename($file) eq EXEC_MIME
+    my $pat = EXEC_MIME;
+    $magic->checktype_filename($file) =~ /$pat/
 }
 
 sub is_java {

@@ -2,7 +2,7 @@
 # vi: et sts=4 sw=4 ts=4
 use strict;
 use warnings;
-our $VERSION = 0.08;
+our $VERSION = 0.09;
 
 sub HELP_MESSAGE {
     my $fh = shift;
@@ -74,7 +74,7 @@ sub taghash {
         if ($opts{'M'}) {
             $mime_short = 'audio/mpeg';
         } elsif ($opts{'F'}) {
-            $mime_short = 'audio/x-flac';
+            $mime_short = 'audio/flac';
         } elsif ($opts{'O'}) {
             $mime_short = 'audio/ogg';
         } else {
@@ -87,7 +87,7 @@ sub taghash {
 
         if ($mime_short eq 'audio/mpeg') {
             %tags = &mp3_taghash($filename);
-        } elsif ($mime_short eq 'audio/x-flac') {
+        } elsif ($mime_short =~ m#audio/(?:x-)?flac#) {
             %tags = &flac_taghash($filename);
         } elsif ($mime_short =~ m#(application|audio)/ogg#) {
             %tags = &ogg_taghash($filename);
