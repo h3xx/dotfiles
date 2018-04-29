@@ -68,13 +68,19 @@ JackOutLeft		= "system:playback_1"
 JackOutRight		= "system:playback_2"
 
 # ALSA mixer device.
-AlsaMixer1		= PCM
+ALSAMixer1		= PCM
 
 # Second ALSA mixer device.
-AlsaMixer2		= Master
 
-# ALSA output device.
-AlsaDevice		= default
+# XXX use `aplay -l` / `amixer -c [0-9] info` for the correct card/mixer value
+
+# internal (motherboard) ac97 audio hardware
+ALSADevice		= hw:0
+ALSAMixer2		= Master
+
+# USB sound card
+#ALSADevice		= default
+#ALSAMixer2		= Headphone
 
 # Save software mixer state?
 # If enabled, a file 'softmixer' will
