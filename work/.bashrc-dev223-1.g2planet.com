@@ -1,1 +1,1 @@
-.bashrc-dev223.g2planet.com
+.bashrc-linux_dev

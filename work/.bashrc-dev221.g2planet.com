@@ -1,1 +1,0 @@
-.bashrc-dev.g2planet.com
