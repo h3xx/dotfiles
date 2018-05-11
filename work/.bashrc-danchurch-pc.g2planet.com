@@ -151,6 +151,18 @@ _cross_project_grep() {
     done
 }
 
+complete -o default -F _gcd gcd
+_gcd() {
+    if [[ -d ~/g2git/__all_projects__ ]]; then
+        COMPREPLY=(
+            $(
+                cd ~/g2git/__all_projects__ &&
+                compgen -G "$2*" "$2"
+            )
+        )
+    fi
+}
+
 # trial z
 export _Z_NO_RESOLVE_SYMLINKS=1
 
