@@ -110,3 +110,7 @@
 	path = newsbeuter/newsbeuter-colors-neonwolf
 	url = git@github.com:h3xx/newsbeuter-colors-neonwolf.git
 	branch = master
+[submodule "vim/.vim/pack/dist/opt/typescript-vim"]
+	path = vim/.vim/pack/dist/opt/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim.git
+	branch = master
