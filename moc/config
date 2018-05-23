@@ -75,7 +75,7 @@ ALSAMixer1		= PCM
 # XXX use `aplay -l` / `amixer -c [0-9] info` for the correct card/mixer value
 
 # internal (motherboard) ac97 audio hardware
-ALSADevice		= hw:0
+ALSADevice		= default
 ALSAMixer2		= Master
 
 # USB sound card
