@@ -5,6 +5,9 @@
 # ignore G2Planet standard Smarty compile dir
 --ignore-dir=match:/templates_c/
 
+# PHPUnit HTML coverage report output dir - bunch of auto-generated garbage
+--ignore-dir=match:/cov/
+
 # ignore git merge temps
 --ignore-file=ext:orig
 --ignore-file=match:/_(BACKUP|BASE|LOCAL|REMOTE)_.*$/
