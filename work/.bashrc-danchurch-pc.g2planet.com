@@ -45,6 +45,9 @@ if [[ -d ~/.go ]]; then
     export GOPATH=~/.go
     export PATH="${PATH:+$PATH:}$GOPATH/bin"
 fi
+if [[ -d ~/.config/composer/vendor/bin ]]; then
+    export PATH="${PATH:+$PATH:}$HOME/.config/composer/vendor/bin"
+fi
 #export GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitrepos/__objects__
 
 # quicker cloning
