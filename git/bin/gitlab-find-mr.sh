@@ -82,7 +82,7 @@ get_mr_info() {
         branch="$2"
         local api_url="projects/$(url_encode "$project")/merge_requests?source_branch=$(url_encode "$branch")"
 
-    callGitlabAPI GET "$api_url" '' 'map({target_branch,web_url})'
+    callGitlabAPI GET "$api_url" '' 'map({title,merge_status,state,target_branch,web_url})'
 }
 
 REMOTE=$(git remote |head -1)
