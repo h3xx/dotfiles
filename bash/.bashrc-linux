@@ -269,6 +269,17 @@ gcd() {
 	cd "$TARGETDIR"
 }
 
+# quickly switch to a git root directory
+# usefulness: TODO
+gr() {
+	local -r DIR=$(git rev-parse --show-toplevel)
+	if [[ -z $DIR ]]; then
+		printf 'Failed to find directory\n' >&2
+		return 2
+	fi
+	cd "$DIR"
+}
+
 # untar and cd to the tarball's directory
 # usefulness: *****
 # example:
