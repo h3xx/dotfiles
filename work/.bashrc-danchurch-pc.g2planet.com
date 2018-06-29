@@ -166,8 +166,7 @@ _gcd() {
     fi
 }
 
-# trial z
-export _Z_NO_RESOLVE_SYMLINKS=1
+. /etc/bash_completion.d/yarn
 
 # trial pgcli
 alias pgcli='pgcli -h localhost -p 5498'
