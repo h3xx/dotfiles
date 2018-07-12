@@ -17,3 +17,11 @@ setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
 " search ClassName.php when doing `gf'
 setl suffixesadd=.php
+
+" help resolve namespaces
+set isfname+=\\
+set includeexpr=substitute(v:fname,'\\','/','g')
+
+setl path+=../vendor/*
+setl path+=../../vendor/*
+setl path+=../../../vendor/*
