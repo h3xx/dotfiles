@@ -1,6 +1,5 @@
 " G2Planet customizations
 
-setl path=.
 setl path+=..
 setl path+=../..
 setl path+=../templates
@@ -20,8 +19,6 @@ setl path+=../eventlib/database
 setl path+=../eventlib/page
 setl path+=../../eventlib/database
 setl path+=../../eventlib/page
-" current dir
-setl path+=
 
 " open unit test file
 nnoremap <buffer> g<C-f> :tabe ../tests/<C-r>=expand("%:t:r")<CR>Test.php<CR>
