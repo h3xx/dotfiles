@@ -59,7 +59,7 @@
 			[exec] (tin) {xterm -e tin}
 		[end]
 		[submenu] (irc)
-			[exec] (xchat) {xchat} <~/.fluxbox/icons/xchat.xpm>
+			[exec] (hexchat) {hexchat} <~/.fluxbox/icons/hexchat.xpm>
 			[exec] (irssi) {xterm -e irssi}
 			[exec] (BitchX) {xterm -e BitchX -N} <~/.fluxbox/icons/bitchx.xpm>
 		[end]
