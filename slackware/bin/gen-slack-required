@@ -22,7 +22,7 @@ use Storable		qw/ lock_store retrieve /;
 use constant CACHE_STORE_DIR	=> "$ENV{'HOME'}/.cache";
 use constant CACHE_STORE	=> CACHE_STORE_DIR . '/slackpacks.pdata';
 
-use constant PACKAGE_PATH	=> '/var/log/packages';
+use constant PACKAGE_PATH	=> '/var/log/packages/';
 use constant SHLIB_MIME		=> '^application/(x-sharedlib|x-pie-executable); charset=binary$';
 use constant EXEC_MIME		=> '^application/x-executable; charset=binary$';
 
@@ -763,7 +763,7 @@ sub determine_current_package {
 		@package_paths
 	);
 
-	$package_name_candidates[0]	
+	$package_name_candidates[0]
 }
 
 # main operation function
@@ -781,7 +781,7 @@ sub generate_slack_required {
 
 	print STDERR "Scanning package contents..." if $opts{'v'};
 	my $package_contents = &get_package_data;
-	
+
 	print STDERR "done\nFinding dependencies..." if $opts{'v'};
 	my $all_deps = &find_deps($package_contents, @dep_searchdirs);
 
