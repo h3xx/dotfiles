@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 git_basedir=$(git rev-parse --show-toplevel)
 if [[ -z $git_basedir ]]; then
@@ -25,3 +25,7 @@ git gc
 
 git remote rename origin o
 git submodule foreach --recursive 'git remote rename origin o;true'
+
+if [[ -f composer.json || -f composer.lock ]]; then
+    composer install --quiet || exit
+fi
