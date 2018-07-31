@@ -149,6 +149,10 @@ aug sourcecode
 	au BufNewFile		*.xsd
 				\ so ~/.vim/templates/headers/xsd.vim
 
+	" Angular component templates
+	au BufNewFile,BufRead	*.component.html
+				\ setl et fdm=syntax ft=xml sts=4 sw=4 ts=4
+
 aug END " sourcecode
 
 " append compressors/decompressors to file pre-processing
