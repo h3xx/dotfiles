@@ -204,6 +204,10 @@ aug g2planet
 	au BufNewFile		*TestData/*.yaml
 				\ so ~/.vim/templates/headers/phpunit-dataset-yaml.vim
 
+	"" Angular component templates
+	au BufNewFile,BufRead	*.component.html
+				\ setl sts=4 ts=4 sw=4 et fdm=syntax
+
 	" G2Planet DBTable database fields definition -> YAML record
 	" 'thingy' => 'char',
 	" 'event_id' => 'fkey',
