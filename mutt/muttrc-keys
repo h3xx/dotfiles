@@ -25,9 +25,9 @@ bind index G imap-fetch-mail
 #macro index A "|procmail\nd"		"Re-sort mail and delete"
 #macro pager A "|procmail\nd"		"Re-sort mail and delete"
 
-# urlview integration
-macro index \cy "|urlview\n"		"View/browse URLs with urlview"
-macro pager \cy "|urlview\n"		"View/browse URLs with urlview"
+# urlscan integration
+macro index \cy "|urlscan\n"		"View/browse URLs with urlscan"
+macro pager \cy "|urlscan\n"		"View/browse URLs with urlscan"
 
 # X-Face
 # (See also: https://dev.mutt.org/trac/wiki/MuttGuide/XFace)
