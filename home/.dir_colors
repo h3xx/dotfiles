@@ -228,6 +228,7 @@ EXEC	01;32	# This is for files with execute permission:
 ## mkv - Matroska video
 .mkv	01;35
 .MKV	01;35
+.mod	00;35
 .mov	01;35
 .MOV	01;35
 .mp3	01;35
@@ -273,6 +274,7 @@ EXEC	01;32	# This is for files with execute permission:
 .rm	01;35
 .RM	01;35
 ## sf2 - SoundFont spec. 2
+.s3m	00;35
 .sf2	00;35
 .SF2	00;35
 ## spx - Speex audio
