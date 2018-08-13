@@ -1,6 +1,6 @@
 " quick temporary file creation
 append
-$temp_file = tempnam(sys_get_temp_dir(), 'MYFILE');
+$temp_file = tempnam(sys_get_temp_dir(), __CLASS__);
 
 // Cleanup when exiting
 register_shutdown_function(function ($temp_file) {
