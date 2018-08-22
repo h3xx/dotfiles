@@ -100,6 +100,7 @@ fi
 # annoying
 hash ghex && alias ghex='_noout_bg ghex'
 hash libreoffice && alias libreoffice='_noout_bg libreoffice'
+alias api='gr && cd ../g2p_api'
 
 # laaaazy
 shopt -s \
