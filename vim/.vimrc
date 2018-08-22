@@ -527,6 +527,11 @@ let g:ctrlp_prompt_mappings = {
 	\ 'AcceptSelection("t")': ['<c-g>'],
 	\ }
 
+" don't get lost in the largest man-made structure on earth
+let g:ctrlp_custom_ignore = {
+	\ 'dir':  '\v[\/]node_modules$',
+	\ }
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin = 1
