@@ -326,6 +326,10 @@ noremap L $
 nnoremap <C-u> 10k
 nnoremap <C-d> 10j
 
+" sort indented lists
+" usefulness: ****
+nmap \s vii:!sort -u<cr>
+
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
