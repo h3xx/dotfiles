@@ -1,0 +1,3 @@
+# Handle byte order swapping automatically
+# (See https://www.dosbox.com/wiki/Cuesheet)
+read_driver: "generic-mmc:0x20000"
