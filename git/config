@@ -73,7 +73,7 @@
 	t		= push --set-upstream origin
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
-	fsck-fix	= reflog expire --stale-fix --all --rewrite
+	fsck-fix	= reflog expire --stale-fix --expire-unreachable=now --all --rewrite
 
 [color]
 	branch = auto
