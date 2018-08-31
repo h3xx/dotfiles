@@ -1,6 +1,7 @@
 # vi: ft=sh
 # edit this file
-alias rch='vi ~/.bashrc-$HOSTNAME'
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rcl"
+alias rcl='vimreal ~/.bashrc-$HOSTNAME'
 
 if [[ $TERM = 'screen-256color' ]]; then
 	export TERM=xterm-256color

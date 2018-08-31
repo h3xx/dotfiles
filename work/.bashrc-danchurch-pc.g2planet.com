@@ -1,9 +1,9 @@
 # host-specific bashrc
 # vi: ft=sh
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rch"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rcl"
 
 # edit this file
-alias rch='vi ~/.bashrc-$HOSTNAME'
+alias rcl='vimreal ~/.bashrc-$HOSTNAME'
 
 alias \
 	slapt-get='sudo /usr/sbin/slapt-get' \
@@ -32,8 +32,11 @@ steamapps_local=~/.local/share/Steam/steamapps/common
 ## frequently-edited files
 alias \
 	fb='$EDITOR ~/.fluxbox/menu' \
-	fbk='$EDITOR ~/.fluxbox/keys' \
-	t2='ssh t2'
+	fbk='$EDITOR ~/.fluxbox/keys'
+
+alias \
+    yi='yarn install --link-duplicates' \
+    yiq='yi --silent --no-progress &>/dev/null &'
 
 type -t youtube-dl >/dev/null && alias youtube-dl='youtube-dl --audio-quality 6'
 

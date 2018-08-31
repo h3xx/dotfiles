@@ -1,6 +1,7 @@
 # vi: ft=sh
 # edit this file
-alias rch='vi ~/.bashrc-$HOSTNAME'
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rcl"
+alias rcl='vimreal ~/.bashrc-$HOSTNAME'
 
 alias ls='ls --color=auto'
 
