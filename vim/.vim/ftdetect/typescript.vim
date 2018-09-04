@@ -1,1 +1,0 @@
-../pack/dist/opt/typescript-vim/ftdetect/typescript.vim
