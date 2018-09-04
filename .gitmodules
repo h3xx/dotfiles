@@ -38,10 +38,6 @@
 	path = vim/.vim/pack/dist/opt/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 	branch = master
-[submodule "vim/.vim/pack/dist/opt/typescript-vim"]
-	path = vim/.vim/pack/dist/opt/typescript-vim
-	url = https://github.com/leafgarland/typescript-vim.git
-	branch = master
 [submodule "vim/.vim/pack/dist/opt/vim-coffee-script"]
 	path = vim/.vim/pack/dist/opt/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git
@@ -113,4 +109,8 @@
 [submodule "vim/.vim/pack/dist/start/webapi-vim"]
 	path = vim/.vim/pack/dist/start/webapi-vim
 	url = https://github.com/mattn/webapi-vim.git
+	branch = master
+[submodule "vim/.vim/pack/dist/start/yats.vim"]
+	path = vim/.vim/pack/dist/start/yats.vim
+	url = https://github.com/HerringtonDarkholme/yats.vim.git
 	branch = master
