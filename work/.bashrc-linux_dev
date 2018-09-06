@@ -68,10 +68,9 @@ _ssh() {
 }
 alias ssh=_ssh
 
-alias as_erik='sudo -u ebloomstrand'
-
-# pipe stuff to this to eliminate shit files we don't care about
-alias nogarbage="egrep -v '(~$|/CVS|/templates_c|/\.#)'"
+alias \
+    yi='yarn install --link-duplicates' \
+    yiq='yi --silent --no-progress &>/dev/null &'
 
 # xclip to local machine
 xclip() {
