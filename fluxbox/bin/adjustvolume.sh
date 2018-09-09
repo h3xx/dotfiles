@@ -1,8 +1,13 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+# USB sound card
+MIXER_NAME='PCM Playback Volume'
+# internal sound card
+#MIXER_NAME='Master Playback Volume'
+
 CURRENT_VOLUME=$(
-    amixer cget iface=MIXER,name='Master Playback Volume' |
+    amixer cget iface=MIXER,name="$MIXER_NAME" |
     grep -Po ': values=\d+' |
     cut -f 2- -d '='
 )
@@ -26,4 +31,4 @@ case "${1:0:1}" in
         ;;
 esac
 
-exec amixer cset iface=MIXER,name='Master Playback Volume' "$NEWVOL"
+exec amixer cset iface=MIXER,name="$MIXER_NAME" "$NEWVOL"
