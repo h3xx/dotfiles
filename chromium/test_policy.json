@@ -13,6 +13,7 @@
 	"RestrictSigninToPattern": "^$",
 	// Disable synchronization of data with Google (DOES NOT WORK)
 	"SyncDisabled": true,
+	"EnableSyncConsent": true, // just in case
 	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
 	"CloudPrintProxyEnabled": false,
 	"CloudPrintSubmitEnabled": false,
@@ -29,15 +30,26 @@
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
+	// Disable sending WebRTC event logs to Google
+	"WebRtcEventLogCollectionAllowed": false,
+	// "Chrome Cleanup" sends data to Google (Windows only)
+	"ChromeCleanupReportingEnabled": false,
 	// "With Safe Browsing, information about suspicious websites is sent and
 	// received between the browser you are using and Google's servers."
 	// @see https://www.google.com/chrome/browser/privacy/#safe-browsing-policies
 	"SafeBrowsingEnabled": false,
-	// Disable opting-in to sending data to Google's Safe Browsing program (DOES NOT WORK)
-	"SafeBrowsingExtendedReportingOptInAllowed": false,
+	// Don't ask Google if a site is pornographic (Google Safe Search API)
+	"SafeSitesFilterBehavior": 0,
+	// Disable opting-in to sending data to Google's Safe Browsing program
+	"SafeBrowsingExtendedReportingEnabled": false,
+	"SafeBrowsingExtendedReportingOptInAllowed": false, // deprecated
+	// Disable another spying feature from Google.
+	"UrlKeyedAnonymizedDataCollectionEnabled": false,
 	// Prevent app promotions from appearing on the new tab page (double yuk)
-	// (deprecated because Google supposedly learned their lesson)
-	"HideWebStorePromo": true,
+	//"HideWebStorePromo": true, // removed
+	// Prevent Chrome from showing tabs with ads served fresh from Google
+	// (apparently Google can and will keep trying this)
+	"PromotionalTabsEnabled": false,
 	// Third-party cookies are never needed
 	"BlockThirdPartyCookies": true,
 
@@ -159,4 +171,6 @@
 	// 2 = Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API
 	// 3 = Allow sites to ask the user to grant access to a nearby Bluetooth device
 	"DefaultWebBluetoothGuardSetting": 2,
+	// Completely disable WebUSB
+	"DefaultWebUsbGuardSetting": 2,
 }
