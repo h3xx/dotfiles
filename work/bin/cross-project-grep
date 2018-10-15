@@ -26,6 +26,13 @@ EXCLUDE_PROJECTS=(
     citrix-synergyanaheim2013
     intelcalendar
 )
+EXCLUDE_FILES=(
+    '*.min.js'
+    '*.js.map'
+    '*.css.map'
+    'jquery.min*'
+    'excanvas.js'
+)
 for arg in "$@"; do
     if [[ $arg = --no-tests ]]; then
         # because this is a fuckin pain to type
@@ -33,6 +40,7 @@ for arg in "$@"; do
     elif [[ $arg = --all ]]; then
         # ignore garbage projects
         EXCLUDE_PROJECTS=()
+        EXCLUDE_FILES=()
     else
         ARGS+=("$arg")
     fi
@@ -40,6 +48,9 @@ done
 
 for ex_proj in "${EXCLUDE_PROJECTS[@]}"; do
     EXTRA_ARGS+=(":(exclude)$ex_proj")
+done
+for ex_glob in "${EXCLUDE_FILES[@]}"; do
+    EXTRA_ARGS+=(":(exclude)**/$ex_glob")
 done
 
 cd ~/g2git/__all_projects__ &&
