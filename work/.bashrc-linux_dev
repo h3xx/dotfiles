@@ -126,6 +126,18 @@ fi
 
 complete -A hostname host nmap ping traceroute ssh ftp telnet
 
+# g2clouddb sees databases after -d
+if hash g2clouddb 2>/dev/null; then
+    complete -o default -F _g2clouddb                g2clouddb
+    _g2clouddb() {
+        if [[ ${COMP_WORDS[$COMP_CWORD-1]} = '-d' ]]; then
+            COMPREPLY=(
+                $(g2clouddb list-databases |grep "^$2")
+            )
+        fi
+    }
+fi
+
 ## chmod
 # usefulness: ****
 alias \
