@@ -22,6 +22,7 @@ db=~/g2git/emaxlib/eventmax.sql
 menu=~/future/php/eclib/data/menu.yaml
 tweaks=~/future/php/eclib/data/tweaks.sql
 scumm=/usr/share/games/scummvm
+dos=/usr/share/games/dos
 
 # so can be reached from vim
 export appconfig d da db js menu p struct t te tweaks u
