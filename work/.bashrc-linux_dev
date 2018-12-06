@@ -69,7 +69,6 @@ _ssh() {
 alias ssh=_ssh
 
 alias \
-    yi='yarn install --link-duplicates' \
     yiq='yi --silent --no-progress &>/dev/null &'
 
 # xclip to local machine

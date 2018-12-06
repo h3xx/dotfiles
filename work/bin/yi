@@ -1,0 +1,93 @@
+#!/bin/bash
+
+CXX='ccache c++' \
+yarn install --link-duplicates --prefer-offline "$@" &&
+
+# save some space by hard-linking files
+SCAN_DIRS=(
+    node_modules/
+    ~/.cache/yarn/v?/
+    ~/.cache/yarn/_extra_/
+)
+EXTENSION_REGEX=(
+    Makefile
+    ac
+    am
+    babelrc
+    bowerrc
+    c
+    coffee
+    cpp
+    css
+    dtd
+    editorconfig
+    el
+    eot
+    eshintignore
+    gif
+    gitattributes
+    gitignore
+    gyp
+    h
+    hpp
+    ico
+    jpe?g
+    js
+    js\\.flow
+    jshintignore
+    json5\?
+    jst
+    less
+    m4
+    mailmap
+    map
+    markdown
+    md
+    node
+    npmignore
+    nupkg
+    otf
+    pem
+    png
+    pub
+    py
+    sass
+    scss
+    sln
+    svg
+    swf
+    tar
+    tgz
+    travis.yml
+    ts
+    ttf
+    txt
+    vcxproj
+    woff
+    x?html
+    xml
+    ya?ml
+)
+FILENAMES_REGEX=(
+    AUTHORS
+    COPYING
+    INSTALL
+    LICENSE
+    Makefile
+    README
+    lessc
+    license
+    stylus
+    uglifyjs
+    xdg-open
+)
+MATCH_REGEX="$(
+    IFS='|'
+    printf '.*(\.(%s)|%s)' \
+        "${EXTENSION_REGEX[*]}" \
+        "${FILENAMES_REGEX[*]}"
+)"
+
+simplify_static_dir.pl -f \
+    -m "$MATCH_REGEX" \
+    "${SCAN_DIRS[@]}"

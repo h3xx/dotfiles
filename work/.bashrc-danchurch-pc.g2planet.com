@@ -36,7 +36,6 @@ alias \
 	fbk='$EDITOR ~/.fluxbox/keys'
 
 alias \
-    yi='yarn install --link-duplicates' \
     yiq='yi --silent --no-progress &>/dev/null &'
 
 type -t youtube-dl >/dev/null && alias youtube-dl='youtube-dl --audio-quality 6'
