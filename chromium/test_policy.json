@@ -67,7 +67,7 @@
 	// (apparently Google can and will keep trying this)
 	"PromotionalTabsEnabled": false,
 	// Third-party cookies are never needed
-	"BlockThirdPartyCookies": true,
+	//"BlockThirdPartyCookies": true, // disabled 2018-10-30 because it was screwing up Angular/Laravel integration ???
 
 	"CookiesBlockedForUrls": [
 		// clickbait sites
