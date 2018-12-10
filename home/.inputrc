@@ -37,6 +37,13 @@ $if bash
 "\M-m":		"git m "
 "\M-o":		"git co "
 
+# limit history garbage
+# escape + arrow key (both xterm and rxvt)
+"\e\e[A": ""
+"\e\e[B": ""
+"\e\e[C": ""
+"\e\e[D": ""
+
 # redirection short cuts
 $if term=xterm
 "\M-w":		"2>&1"
