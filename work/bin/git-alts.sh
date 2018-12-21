@@ -1,4 +1,7 @@
 #!/bin/bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+cd "$GIT_ROOT" || exit
+
 GD=''
 if [[ -d .git ]]; then
 	GD='.git'
