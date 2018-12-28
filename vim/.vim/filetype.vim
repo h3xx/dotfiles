@@ -189,6 +189,11 @@ aug g2planet
 	au FileType php
 				\ nmap <buffer> <silent> ,W :so ~/.vim/templates/keys/g2planet-php-W.vim<CR> |
 
+	" Angular
+	" XML indenting works better for template files
+	au BufNewFile,BufRead	*.component.html
+				\ setf xml
+
 	" Smarty
 	" addendum: this template sux
 	au BufNewFile,BufRead	*/templates/*.htm
