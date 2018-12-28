@@ -1,6 +1,6 @@
 # host-specific bashrc
 # vi: ft=sh
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rcl"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}rcl:a:api"
 
 # edit this file
 alias rcl='vimreal ~/.bashrc-$HOSTNAME'
@@ -104,6 +104,7 @@ fi
 hash ghex && alias ghex='_noout_bg ghex'
 hash libreoffice && alias libreoffice='_noout_bg libreoffice'
 alias api='gr && cd ../g2p_api'
+alias a='gr && cd ../EMCCv2'
 
 # laaaazy
 shopt -s \
