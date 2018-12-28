@@ -13,4 +13,8 @@
 
 # composer libs
 --ignore-dir=match:/vendor/
+
+# ignore Angular compile dir
+--ignore-dir=match:/dist/
+
 # vi: ft=conf
