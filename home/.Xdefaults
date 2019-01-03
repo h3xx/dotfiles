@@ -48,9 +48,9 @@ XTerm*font1:                    6x13
 !! (this fixes it!)
 !XTerm*boldFont:                6x10
 
-XTerm*font:                     -*-ohsnapmod-medium-r-normal-*-12-*-*-*-*-*-*-*
-XTerm*boldFont:                 -*-ohsnapmod-bold-r-normal-*-12-*-*-*-*-*-*-*
-XTerm*wideFont:                 DejaVu Sans-10:minspace=true
+XTerm.vt100.font:               -*-ohsnapmod-medium-r-normal-*-12-*-*-*-*-*-*-*
+XTerm.vt100.boldFont:           -*-ohsnapmod-bold-r-normal-*-12-*-*-*-*-*-*-*
+XTerm.vt100.wideFont:           DejaVu Sans-10:minspace=true
 
 !! use fonts from xft
 !XTerm*faceName:                DejaVu Sans Mono:minspace=true
