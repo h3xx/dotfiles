@@ -89,8 +89,9 @@ XTerm.termName:                 xterm-256color
 *VT100.color14:                 #66ffff
 *VT100.color15:                 #ffffff
 
-*VT100*cursorColor:             #afff00
-*VT100*cursorBlink:             false
+XTerm*cursorUnderLine:          false
+XTerm*cursorColor:              #afff00
+XTerm*cursorBlink:              false
 
 !! characters
 !! 1-5: fixes not being able to backspace
