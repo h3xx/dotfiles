@@ -28,6 +28,7 @@ Rxvt*termName:                  rxvt
 !! Fix backspace/^?/^H confusion
 XTerm*backarrowKeyIsErase:      true
 XTerm*ptyInitialErase:          true
+XTerm.vt100.metaSendsEscape:    false
 
 XTerm*utmpDisplayId:            false
 XTerm*utmpInhibit:              true
