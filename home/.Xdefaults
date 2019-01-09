@@ -74,21 +74,21 @@ XTerm*colorBD:                  white
 XTerm.termName:                 xterm-256color
 
 !! Terminology default color scheme:
-*VT100.color1:                  #cc3333
-*VT100.color2:                  #33cc33
-*VT100.color3:                  #cc8833
-*VT100.color4:                  #3333cc
-*VT100.color5:                  #cc33cc
-*VT100.color6:                  #33cccc
-*VT100.color7:                  #cccccc
-*VT100.color8:                  #666666
-*VT100.color9:                  #ff6666
-*VT100.color10:                 #66ff66
-*VT100.color11:                 #ffff66
-*VT100.color12:                 #6666ff
-*VT100.color13:                 #ff66ff
-*VT100.color14:                 #66ffff
-*VT100.color15:                 #ffffff
+XTerm*color1:                  #cc3333
+XTerm*color2:                  #33cc33
+XTerm*color3:                  #cc8833
+XTerm*color4:                  #3333cc
+XTerm*color5:                  #cc33cc
+XTerm*color6:                  #33cccc
+XTerm*color7:                  #cccccc
+XTerm*color8:                  #666666
+XTerm*color9:                  #ff6666
+XTerm*color10:                 #66ff66
+XTerm*color11:                 #ffff66
+XTerm*color12:                 #6666ff
+XTerm*color13:                 #ff66ff
+XTerm*color14:                 #66ffff
+XTerm*color15:                 #ffffff
 
 XTerm*cursorUnderLine:          false
 XTerm*cursorColor:              #afff00
