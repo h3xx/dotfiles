@@ -106,6 +106,8 @@ XTerm*cursorBlink:              false
         Shift <Btn1Up>:         exec-formatted("xdg-open '%t'", PRIMARY)
 *VT100*ttyModes:                erase ^?
 
+!! select Vim-esque "word" with double-click
+XTerm*charClass:                0:32,1-8:1,9:32,10-31:1,32-47,48-57:48,58-64,65-90:48,91-94,95:48,96,97-122:48,123-126,127-159:1,160-191,192-214:48,215,216-246:48,247,248-255:48
 !! select paths/URLs with 3 clicks
 XTerm*on3Clicks:                regex ([[:alpha:]]+://)?([[:alnum:]!#&+,./:=?@_~-]|(%[[:xdigit:]][[:xdigit:]]))+
 
