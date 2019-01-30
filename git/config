@@ -6,6 +6,7 @@
 	a		= add
 	c		= commit
 	ca		= commit --amend
+	rc		= commit -c HEAD --date=now --reset-author
 	f		= fetch
 	fa		= fetch --all
 	fp		= format-patch
