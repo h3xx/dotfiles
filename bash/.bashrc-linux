@@ -92,8 +92,8 @@ alias grep='grep --color=auto'
 alias \
 	privatize='find . \( -type f -exec chmod 0600 -- {} \; \) -o \( -type d -exec chmod 0700 -- {} \; \)' \
 	publicize='find . \( -type f -exec chmod 0644 -- {} \; \) -o \( -type d -exec chmod 0755 -- {} \; \)' \
-	ppublicize='find . \( -type f ! -perm +0111 -exec chmod 0644 -- {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0755 -- {} \; \)' \
-	pprivatize='find . \( -type f ! -perm +0111 -exec chmod 0600 -- {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0700 -- {} \; \)'
+	ppublicize='find . \( -type f ! -perm /0111 -exec chmod 0644 -- {} \; \) -o \( \( -type d -o \( -type f -perm /0111 \) \) -exec chmod 0755 -- {} \; \)' \
+	pprivatize='find . \( -type f ! -perm /0111 -exec chmod 0600 -- {} \; \) -o \( \( -type d -o \( -type f -perm /0111 \) \) -exec chmod 0700 -- {} \; \)'
 
 ## find
 # usefulness: *****
