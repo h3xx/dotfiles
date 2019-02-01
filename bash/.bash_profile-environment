@@ -5,7 +5,7 @@ if [[ -e ~/bin ]]; then
 fi
 
 # Standard editor, pager
-export PAGER='less' EDITOR='vim'
+export PAGER='less' MANPAGER='less' EDITOR='vim'
 alias vi='$EDITOR'
 
 # lynx
