@@ -4,7 +4,7 @@
 [[ -e ~/bin ]] && export PATH="${PATH:+$PATH:}$HOME/bin"
 
 ## standard editor, pager
-export PAGER='less' EDITOR='vim'
+export PAGER='less' MANPAGER='less' EDITOR='vim'
 alias vi='$EDITOR'
 
 ## lynx
