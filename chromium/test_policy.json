@@ -9,6 +9,8 @@
 
 	// Disable "Sign in to Chrome" bullshit (DOES NOT WORK)
 	"SigninAllowed": false,
+	// Disable "Sign in to Chrome"
+	"BrowserSignin": 0,
 	// Disable all users from signing-in (WORKS)
 	"RestrictSigninToPattern": "^$",
 	// Disable synchronization of data with Google (DOES NOT WORK)
