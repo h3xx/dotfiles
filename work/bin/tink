@@ -1,0 +1,18 @@
+#!/bin/bash
+gr () {
+    local dir=$(git rev-parse --show-toplevel);
+    if [[ -z $dir ]]; then
+        echo 'Failed to find directory' 1>&2;
+        return 2;
+    fi;
+    cd "$dir"
+}
+
+gr &&
+
+if [[ ! -e artisan ]]; then
+    echo 'Switching directory to ../g2p_api ...' >&2
+    cd ../g2p_api
+fi &&
+
+exec art tink

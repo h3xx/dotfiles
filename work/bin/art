@@ -1,0 +1,15 @@
+#!/bin/bash
+
+exec_if_exists() {
+    if [[ -e artisan ]]; then
+        exec php artisan "$@"
+    fi
+}
+
+while [[ $PWD != / ]]; do
+    exec_if_exists "$@"
+    cd ..
+done
+
+echo "Failed to find artisan" >&2
+exit 2
