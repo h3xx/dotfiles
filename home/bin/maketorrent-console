@@ -1,0 +1,112 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+use constant PIECE_LENGTH => 262144;
+
+require Net::BitTorrent::File;
+require Digest::SHA1;
+use Getopt::Long qw/ GetOptions /;
+use File::Basename qw/ dirname /;
+use File::Find qw/ find /;
+
+my $target;
+my $ignored;
+&GetOptions(
+    'target=s' => \$target,
+    'filesystem_encoding=s' => \$ignored,
+);
+if (!$target) {
+    die "--target is required";
+}
+
+my $tracker = shift;
+my $dir = shift;
+
+# strip trailing slashes
+$dir =~ s#/+$##;
+
+# make a safe name
+(my $name = $dir) =~ s,(^\./+|/+$|/),,g;
+
+sub makeTorrent {
+    my $files = shift;
+
+    my $torrent = new Net::BitTorrent::File;
+
+    $torrent->announce($tracker);
+    $torrent->name($name);
+    # XXX This actually sets the WRONG PROPERTY
+    #$torrent->piece_length(PIECE_LENGTH);
+    $torrent->{data}->{info}->{'piece length'} = PIECE_LENGTH;
+
+    $torrent->files(&makeFiles($files));
+    $torrent->pieces(&hashFiles($files));
+    # add more fields
+    $torrent->{data}->{'creation date'} = time;
+    $torrent->{data}->{private} = 1;
+
+    $torrent->gen_info_hash();
+    $torrent;
+}
+
+sub hashFiles {
+    my $files = shift;
+    my $piece_length = PIECE_LENGTH;
+    my $sha1 = Digest::SHA1->new;
+    my @pieces;
+    my $buff;
+    my $in_ctx = 0;
+    foreach my $file (@$files) {
+        printf STDERR "Reading file '%s`\n", $file;
+        open my $fh, '<', $file
+            or die "Failed to open `$file' for reading: $!";
+
+        my $bytes_read;
+        while ($bytes_read = read $fh, $buff, ($piece_length - $in_ctx)) {
+            print STDERR '.';
+            $sha1->add($buff);
+            $in_ctx += $bytes_read;
+            if ($piece_length == $in_ctx) {
+                $in_ctx = 0;
+                push @pieces, $sha1->digest;
+            }
+        }
+        print STDERR "\n";
+    }
+    if ($in_ctx > 0) {
+        push @pieces, $sha1->digest;
+    }
+    return join '', @pieces;
+}
+
+sub makeFiles {
+    my $files = shift;
+    my @buffs;
+    my $repl = '^' . quotemeta "$dir/";
+    foreach my $file (@$files) {
+        # XXX relative to base directory!
+        (my $relpath = $file) =~ s#$repl##;
+        push @buffs, {
+            path => [$relpath],
+            length => (stat $file)[7],
+        };
+    }
+    return \@buffs;
+}
+
+my @files;
+
+sub findexec {
+    # outright skip directories (don't report skip)
+    return if -d;
+    push @files, $File::Find::name;
+}
+
+&find(\&findexec, $dir);
+# important! files should be in the same order for hashing + adding
+@files = sort @files;
+
+my $torrent = &makeTorrent(\@files);
+$torrent->save($target);
