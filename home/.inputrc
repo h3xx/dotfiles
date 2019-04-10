@@ -83,13 +83,16 @@ $endif
 
 # postgresql shortcuts
 $if psql
+	"\e-c": "select count(*) from "
 	"\e-s": "select * from "
 	"\e-r": "rollback;begin;"
 	$if term=xterm
+	"\M-c": "select count(*) from "
 	"\M-r": "rollback;begin;"
 	"\M-s": "select * from "
 	$endif
 	$if term=screen
+	"\M-c": "select count(*) from "
 	"\M-r": "rollback;begin;"
 	"\M-s": "select * from "
 	$endif
