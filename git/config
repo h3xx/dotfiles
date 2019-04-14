@@ -125,6 +125,11 @@
 [diff "php"]
 	xfuncname = "^[\t ]*(((((public|protected|private|static)[\t ]+)*function)|class).*)$"
 
+# Compare SQLite databases via their dump:
+# Add `*.db diff=sqlite3' to .gitattributes to use
+[diff "sqlite3"]
+	textconv = ~/.config/git/bin/sqlite3-dump.sh
+
 [include]
 	path = ./git-colors-neonwolf-256.gitconfig
 
