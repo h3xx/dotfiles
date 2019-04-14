@@ -109,6 +109,11 @@
 	# Fix to give method or class name in php diff
 	xfuncname = "^[\t ]*(((((public|protected|private|static)[\t ]+)*function)|class).*)$"
 
+[diff "sqlite3"]
+	# Compare SQLite databases via their dump:
+	# Add `*.db diff=sqlite3' to .gitattributes to use
+	textconv = ~/.config/git/bin/sqlite3-dump.sh
+
 [fetch]
 	# Bad design on git's part: recurse-on-fetch can cause a fetch to fail if
 	# the submodules is in a detatched HEAD state.
