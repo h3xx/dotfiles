@@ -187,6 +187,7 @@ aug g2planet
 	au!
 
 	au FileType php
+				\ nmap <buffer> <silent> ,d :so ~/.vim/templates/keys/g2planet-php-d.vim<CR> |
 				\ nmap <buffer> <silent> ,W :so ~/.vim/templates/keys/g2planet-php-W.vim<CR> |
 
 	" Angular
