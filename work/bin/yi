@@ -10,34 +10,52 @@ SCAN_DIRS=(
     ~/.cache/yarn/_extra_/
 )
 EXTENSION_REGEX=(
+    1
+    DS_Store
     Makefile
+    StyleCop
     ac
     am
+    apk
+    aspx
     babelrc
+    bash_completion\\.in
+    bat
+    bazel
+    bnf
     bowerrc
     c
     coffee
     cpp
     css
+    def
     dtd
     editorconfig
     el
     eot
     eshintignore
+    eslintignore
+    eslintrc
     gif
     gitattributes
     gitignore
+    gitmodules
     gyp
     h
     hpp
     ico
+    iml
+    info
     jpe?g
     js
     js\\.flow
     jshintignore
     json5\?
     jst
+    key
+    lcov
     less
+    ls
     m4
     mailmap
     map
@@ -46,39 +64,85 @@ EXTENSION_REGEX=(
     node
     npmignore
     nupkg
+    nuspec
+    nvmrc
     otf
+    patch
+    pc\\.in
     pem
+    pl
     png
+    priv
     pub
     py
+    rb
+    rc
     sass
     scss
+    sh
     sln
+    spec
+    styl
     svg
     swf
     tar
+    test
     tgz
+    tmpl
     travis.yml
     ts
     ttf
     txt
     vcxproj
+    watchr
     woff
     x?html
     xml
+    xpi
+    xsl
     ya?ml
 )
 FILENAMES_REGEX=(
     AUTHORS
+    CHANGELOG
+    CONTRIBUTORS
     COPYING
+    CREDITS
+    Change[Ll]og
+    DEPS
+    Dockerfile
     INSTALL
-    LICENSE
+    LICEN[CS]E
+    License
     Makefile
+    PKG-INFO
     README
+    bootstrap
+    branding
+    ci-build-libsass
+    ci-build-plugin
+    ci-install-compiler
+    ci-install-deps
+    ci-report-coverage
+    encoding-async
+    gyp
+    handlebars
+    hyper-schema
+    jsesc
+    json-ref
     lessc
     license
+    links
+    marked
+    ng
+    parser
+    semver
+    spec
     stylus
+    tap-driver
+    tap-runner
     uglifyjs
+    which
     xdg-open
 )
 MATCH_REGEX="$(
