@@ -54,4 +54,4 @@ for ex_glob in "${EXCLUDE_FILES[@]}"; do
 done
 
 cd ~/g2git/__all_projects__ &&
-exec ionice -c 3 -t git grep --heading --cached --recurse-submodules "${ARGS[@]}" "${EXTRA_ARGS[@]}"
+exec ionice -c 3 -t git grep --heading --cached --recurse-submodules "${ARGS[@]}" "${EXTRA_ARGS[@]}" 2>/dev/null
