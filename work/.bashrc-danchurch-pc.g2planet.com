@@ -16,6 +16,7 @@ p=~/future/php/eclib/page
 d=~/future/php/eclib/database
 u=~/future/php/eclib/utility
 da=~/future/php/eclib/data
+a=~/g2git/smartco-testevent-v2/EMCCv2
 appconfig=~/future/php/eclib/configs/AppConfig.yaml
 struct=~/future/php/eclib/configs/event_edit_structure.yaml
 db=~/g2git/emaxlib/eventmax.sql
