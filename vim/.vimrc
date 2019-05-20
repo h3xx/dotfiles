@@ -329,6 +329,8 @@ nnoremap <C-d> 10j
 " sort indented lists
 " usefulness: ****
 nmap \s vii:!sort -u<cr>
+" same thing but case-insensitive and only considering letters
+nmap \S vii:!sort -fud<cr>
 
 " ************************************
 " ***** key bindings, paste mode *****
