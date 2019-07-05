@@ -1,157 +1,164 @@
 #!/bin/bash
 
-CXX='ccache c++' \
-yarn install --link-duplicates --prefer-offline "$@" &&
+run_yarn() {
+    CXX='ccache c++' \
+    yarn install --link-duplicates --prefer-offline "$@"
+}
 
-# save some space by hard-linking files
-SCAN_DIRS=(
-    node_modules/
-    ~/.cache/yarn/v?/
-    ~/.cache/yarn/_extra_/
-)
-EXTENSION_REGEX=(
-    1
-    DS_Store
-    Makefile
-    StyleCop
-    ac
-    am
-    apk
-    aspx
-    babelrc
-    bash_completion\\.in
-    bat
-    bazel
-    bnf
-    bowerrc
-    c
-    coffee
-    cpp
-    css
-    def
-    dtd
-    editorconfig
-    el
-    eot
-    eshintignore
-    eslintignore
-    eslintrc
-    gif
-    gitattributes
-    gitignore
-    gitmodules
-    gyp
-    h
-    hpp
-    ico
-    iml
-    info
-    jpe?g
-    js
-    js\\.flow
-    jshintignore
-    json5\?
-    jst
-    key
-    lcov
-    less
-    ls
-    m4
-    mailmap
-    map
-    markdown
-    md
-    node
-    npmignore
-    nupkg
-    nuspec
-    nvmrc
-    otf
-    patch
-    pc\\.in
-    pem
-    pl
-    png
-    priv
-    pub
-    py
-    rb
-    rc
-    sass
-    scss
-    sh
-    sln
-    spec
-    styl
-    svg
-    swf
-    tar
-    test
-    tgz
-    tmpl
-    travis.yml
-    ts
-    ttf
-    txt
-    vcxproj
-    watchr
-    woff
-    x?html
-    xml
-    xpi
-    xsl
-    ya?ml
-)
-FILENAMES_REGEX=(
-    AUTHORS
-    CHANGELOG
-    CONTRIBUTORS
-    COPYING
-    CREDITS
-    Change[Ll]og
-    DEPS
-    Dockerfile
-    INSTALL
-    LICEN[CS]E
-    License
-    Makefile
-    PKG-INFO
-    README
-    bootstrap
-    branding
-    ci-build-libsass
-    ci-build-plugin
-    ci-install-compiler
-    ci-install-deps
-    ci-report-coverage
-    encoding-async
-    gyp
-    handlebars
-    hyper-schema
-    jsesc
-    json-ref
-    lessc
-    license
-    links
-    marked
-    ng
-    parser
-    semver
-    spec
-    stylus
-    tap-driver
-    tap-runner
-    uglifyjs
-    which
-    xdg-open
-)
-MATCH_REGEX="$(
-    IFS='|'
-    printf '.*(\.(%s)|%s)' \
-        "${EXTENSION_REGEX[*]}" \
-        "${FILENAMES_REGEX[*]}"
-)"
+collpse_cache() {
+    # save some space by hard-linking files
+    local SCAN_DIRS=(
+        node_modules/
+        ~/.cache/yarn/v?/
+        ~/.cache/yarn/_extra_/
+    )
+    local EXTENSION_REGEX=(
+        1
+        DS_Store
+        Makefile
+        StyleCop
+        ac
+        am
+        apk
+        aspx
+        babelrc
+        bash_completion\\.in
+        bat
+        bazel
+        bnf
+        bowerrc
+        c
+        coffee
+        cpp
+        css
+        def
+        dtd
+        editorconfig
+        el
+        eot
+        eshintignore
+        eslintignore
+        eslintrc
+        gif
+        gitattributes
+        gitignore
+        gitmodules
+        gyp
+        h
+        hpp
+        ico
+        iml
+        info
+        jpe?g
+        js
+        js\\.flow
+        jshintignore
+        json5\?
+        jst
+        key
+        lcov
+        less
+        ls
+        m4
+        mailmap
+        map
+        markdown
+        md
+        node
+        npmignore
+        nupkg
+        nuspec
+        nvmrc
+        otf
+        patch
+        pc\\.in
+        pem
+        pl
+        png
+        priv
+        pub
+        py
+        rb
+        rc
+        sass
+        scss
+        sh
+        sln
+        spec
+        styl
+        svg
+        swf
+        tar
+        test
+        tgz
+        tmpl
+        travis.yml
+        ts
+        ttf
+        txt
+        vcxproj
+        watchr
+        woff
+        x?html
+        xml
+        xpi
+        xsl
+        ya?ml
+    )
+    local FILENAMES_REGEX=(
+        AUTHORS
+        CHANGELOG
+        CONTRIBUTORS
+        COPYING
+        CREDITS
+        Change[Ll]og
+        DEPS
+        Dockerfile
+        INSTALL
+        LICEN[CS]E
+        License
+        Makefile
+        PKG-INFO
+        README
+        base64_utf8
+        bootstrap
+        branding
+        ci-build-libsass
+        ci-build-plugin
+        ci-install-compiler
+        ci-install-deps
+        ci-report-coverage
+        encoding-async
+        gyp
+        handlebars
+        hyper-schema
+        jsesc
+        json-ref
+        lessc
+        license
+        links
+        marked
+        ng
+        parser
+        semver
+        spec
+        stylus
+        tap-driver
+        tap-runner
+        uglifyjs
+        which
+        xdg-open
+    )
+    local MATCH_REGEX=$(
+        IFS='|'
+        printf '.*(\.(%s)|%s)' \
+            "${EXTENSION_REGEX[*]}" \
+            "${FILENAMES_REGEX[*]}"
+    )
 
-simplify_static_dir.pl -f \
-    -m "$MATCH_REGEX" \
-    "${SCAN_DIRS[@]}"
+    simplify_static_dir.pl -f \
+        -m "$MATCH_REGEX" \
+        "${SCAN_DIRS[@]}"
+}
+
+run_yarn && collpse_cache
