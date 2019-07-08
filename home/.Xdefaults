@@ -25,6 +25,9 @@ Rxvt*termName:                  rxvt
 
 !!! XTerm
 
+!! Enable Sixel graphics
+XTerm*decTerminalID:            340
+
 !! Fix backspace/^?/^H confusion
 XTerm*backarrowKeyIsErase:      true
 XTerm*ptyInitialErase:          true
