@@ -6,7 +6,7 @@
 
 (function () {
   var autoSelectLabel = 'Engineer';
-  document.onclick = function () {
+  var cf = function () {
     var e = document.querySelectorAll('select#activity');
     if (e.length && e[0].value === '0') {
       var options = e[0].querySelectorAll('option');
@@ -18,5 +18,14 @@
       }
     }
   };
-
+  // add to onclick handlers
+  if (document.onclick) {
+     var ocf = document.onclick;
+     var ncf = cf;
+     cf = function () {
+       ocf();
+       ncf();
+     };
+  }
+  document.onclick = cf;
 })();
