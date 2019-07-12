@@ -516,6 +516,8 @@ endfunction
 " wait until I save the file to update signs
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
+" support non-utf8 terminals
+let g:gitgutter_sign_removed_first_line = '^'
 
 " *** tagbar ***
 let g:tagbar_autofocus = 1
