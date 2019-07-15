@@ -29,3 +29,9 @@ git submodule foreach --recursive 'git remote rename origin o;true'
 if [[ -f composer.json || -f composer.lock ]]; then
     composer install --quiet || exit
 fi
+
+# free up some space
+if [[ -d ~/g2git/eclib/data && (-d $git_basedir/php/eclib/data || -d $git_basedir/php/v1/eclib/data) ]]; then
+    simplify_static_dir.pl -f -m '.*/eclib/data/(zipcode_gps\.csv|zipcodes/.*\.yaml)$' "$git_basedir/php" ~/g2git/eclib/data
+fi
+
