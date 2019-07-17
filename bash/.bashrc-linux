@@ -5,7 +5,7 @@
 HISTTIMEFORMAT='%s'		# the beloved Second of Our Linux
 HISTFILESIZE=65535
 HISTSIZE=65535
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:rma:fol:pfol"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:rma:fol"
 HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
 # save history after every command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }history -a"
@@ -239,9 +239,6 @@ fol() {
 		"$CD_OP" "$(dirname -- "$LASTARG")"
 	fi
 }
-
-alias \
-	pfol='fol -p;echo "use fol -p"'
 
 # clone and switch to a new directory
 # usefulness: ***
