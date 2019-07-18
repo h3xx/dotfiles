@@ -2,7 +2,7 @@
 
 ## prompt
 
-if [[ "$TERM" = 'dumb' ]]; then
+if [[ $TERM = 'dumb' ]]; then
 PS1='\u@\h:\w\$ ' # factory default
 else
 
