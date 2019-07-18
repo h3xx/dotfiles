@@ -5,16 +5,5 @@ if [[ $TERM =~ ^(xterm|rxvt) ]]; then
 	tty -s && echo -n $'\e]2;'"$(tty | cut -c 6-)@$(uname -n)"$'\a'
 fi
 
-# fix backspacing
-# addendum: Fixed with the following line in ~/.Xdefaults:
-#XTerm*ttyModes:			erase ^?
-
-#case "$TERM" in
-#	'xterm')
-#		# \C-H sends backspace
-#		stty erase '^H'
-#		;;
-#esac
-
 # FUCK YOU DBUS
 unset DBUS_SESSION_BUS_ADDRESS
