@@ -59,6 +59,8 @@ for fn; do
 		cd "$dirbase" &&
 		7z x "$absfn"
 	); then
+		# remove empty directory it just created (don't care if it fails)
+		rmdir -- "$dirbase"
 		failures=1
 		continue
 	fi
