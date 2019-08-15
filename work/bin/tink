@@ -11,8 +11,20 @@ gr () {
 gr &&
 
 if [[ ! -e artisan ]]; then
-    echo 'Switching directory to ../g2p_api ...' >&2
-    cd ../g2p_api
+    for dir in \
+        ../g2p_api \
+        api \
+        ; do
+
+        if [[ -d $dir ]]; then
+            printf 'Switching directory to %s ...\n' "$dir" >&2
+            cd "$dir"
+            break
+        fi
+    done
 fi &&
+if [[ ! -e artisan ]]; then
+    exit 1
+fi
 
 exec art tink
