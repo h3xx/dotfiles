@@ -19,7 +19,7 @@ the end.
   -p NUM        Pad to NUM bytes (default is 8192).
   --            Terminate options list.
 
-Copyright (C) 2008-2017 Dan Church.
+Copyright (C) 2008-2019 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -47,6 +47,11 @@ while getopts 'hp:' FLAG; do
 done
 
 shift "$((OPTIND-1))"
+
+if [[ $# -eq 0 ]]; then
+    USAGE >&2
+    exit 1
+fi
 
 TEMP_FILES=()
 
