@@ -102,9 +102,6 @@ Mod4 m :RootMenu
 Control Mod1 Delete :Exit
 
 # change to previous/next workspace
-Control Mod1 Left :PrevWorkspace
-Control Mod1 Right :NextWorkspace
-# (old fluxbox bindings)
 Mod4 v :PrevWorkspace
 Mod4 b :NextWorkspace
 
