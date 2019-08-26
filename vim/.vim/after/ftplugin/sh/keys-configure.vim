@@ -18,6 +18,8 @@ if expand("%:p:h") =~ '\(/_configure\|/build/scripts\)$'
 		nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/_configure-h.vim<CR>
 		" ,H - insert header but with make_args array
 		nnoremap <buffer> <silent> ,H :so ~/.vim/templates/keys/_configure-H.vim<CR>
+		" ,i - install data
+		nnoremap <buffer> <silent> ,i :so ~/.vim/templates/keys/_configure-i.vim<CR>
 		" ,s - insert command for writing slack-desc
 		nnoremap <buffer> <silent> ,s :so ~/.vim/templates/keys/_configure-s.vim<CR>
 		" ,f - insert finisher text
