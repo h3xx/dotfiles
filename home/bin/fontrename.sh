@@ -30,10 +30,10 @@ done
 
 shift "$((OPTIND-1))"
 
-TEMP_FILES=()
+TEMPDIR="$(mktemp -d -t "$(basename -- "$0").XXXXXX")"
 
 cleanup() {
-    rm -rf -- "${TEMP_FILES[@]}"
+    rm -rf -- "$TEMPDIR"
 }
 
 trap 'cleanup'  EXIT
@@ -53,7 +53,7 @@ fontname() {
     local \
         font="$1" \
         mimetype \
-        tempdir \
+        tempfile \
         result=1
 
     mimetype="$(get_mimetype "$font")"
@@ -64,13 +64,11 @@ fontname() {
             #   extension, so the creation of a temporary
             #   symlink is necessary
 
-            tempdir="$(mktemp -d -t "$(basename -- "$0").XXXXXX")"
-            TEMP_FILES+=("$tempdir")
-
-            ln -sf -- "$(readlink -m -- "$font")" "$tempdir/foo.ttf" &&
+            tempfile="$(mktemp --tmpdir="$TEMPDIR" -t "$(basename -- "$0").XXXXXX.ttf")"
+            ln -sf -- "$(realpath -- "$font")" "$tempfile" &&
 
             # XXX : segfaulting ttf2afm needs this to die safely
-            (trap 'true' ERR; exec ttf2afm -- "$tempdir/foo.ttf") |
+            (trap 'true' ERR; exec ttf2afm -- "$tempfile") |
             grep -- '^FullName ' |
             cut --fields='2-' --delimiter=' ' |
             head --lines='1'
