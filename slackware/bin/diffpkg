@@ -323,12 +323,23 @@ find . \
         cut -c 3- |
         fix_listing '0' >"$TEMP_ONE" &&
 
-find "$PACKAGES/" \
-    -type f \
-    -iname "$INST_PKGNAME*" |
-        sort |
-        head -1 |
-        xargs cat |
-        fix_listing '1' >"$TEMP_TWO" &&
+if [[ $AUTOMATIC_PKG -ne 0 ]]; then
+    find "$PACKAGES/" \
+        -type f \
+        -regextype posix-egrep \
+        -regex ".*/${INST_PKGNAME//[^-]/.}-([^-]*)-([^-]*)-([^-]*)" \
+        -name "$INST_PKGNAME*" |
+    sort |
+    head -1 |
+    xargs cat
+else
+    find "$PACKAGES/" \
+        -type f \
+        -iname "$INST_PKGNAME*" |
+    sort |
+    head -1 |
+    xargs cat
+fi |
+    fix_listing '1' >"$TEMP_TWO" &&
 
 run_diff "$TEMP_ONE" "$TEMP_TWO"
