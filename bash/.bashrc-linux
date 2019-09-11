@@ -27,7 +27,7 @@ shopt -u \
 	sourcepath
 
 # use C-s to search forward through history (do not block output)
-stty stop ''
+stty -ixon
 
 ## edit this file
 alias rc='$EDITOR ~/.bashrc-linux'
