@@ -1,0 +1,84 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [--] [DIRECTORY]
+Create a lazy self-deleting directory. I.e. one that uses at(1) to delete
+itself at some point in the future.
+
+If DIRECTORY is specified, create that directory, otherwise delete the current
+directory.
+
+  -h            Show this help message.
+  -d DATE       Set the at(1)-compatible deletion time (default is \`sunday').
+  -i            Operate in interactive mode.
+  -v            Operate in verbose mode.
+
+Copyright (C) 2019 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+DELETE_DATE='sunday'
+INTERACTIVE=0
+VERBOSE=0
+
+while getopts 'hd:iv' flag; do
+    case "$flag" in
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        'd')
+            DELETE_DATE=$OPTARG
+            ;;
+        'i')
+            INTERACTIVE=1
+            ;;
+        'v')
+            VERBOSE=1
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+schedule_delete() {
+    local \
+        DIR=$1 \
+        DATE=$2
+    # pass the directory in as an environment variable, since that's the safest
+    echo 'rm -rf -- "$SDD_DIR"' | SDD_DIR=$(realpath -- "$DIR") at "$DATE"
+}
+
+DIR=${1:-.}
+
+if [[ $VERBOSE -ne 0 ]]; then
+    echo "Using directory \`$DIR'" >&2
+fi
+
+if [[ ! -d $DIR ]]; then
+    if [[ $INTERACTIVE -ne 0 ]]; then
+        read -p "Create directory \`$DIR'? [Yn] " ANS
+        if [[ $ANS =~ [Nn0] ]]; then
+            exit 1
+        fi
+    elif [[ $VERBOSE -ne 0 ]]; then
+        echo "Using directory \`$DIR'" >&2
+    fi
+    mkdir -p -- "$DIR"
+fi &&
+if [[ $INTERACTIVE -ne 0 ]]; then
+    read -p "Schedule deletion for $DELETE_DATE? [Yn] " ANS
+    if [[ $ANS =~ [Nn0] ]]; then
+        exit 1
+    fi
+fi &&
+schedule_delete "$DIR" "$DELETE_DATE"
