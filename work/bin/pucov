@@ -46,22 +46,8 @@ done
 shift "$((OPTIND-1))"
 
 HTML_OUT_DIR='cov'
-
-# find phpunit.xml
-while [[ ! -f phpunit.xml && $PWD != / ]]; do
-	cd ..
-done
-
-if [[ ! -f phpunit.xml && $PWD = / ]]; then
-	echo "Failed to find phpunit.xml" >&2
-	exit 3
-fi
-
-if [[ -x ./vendor/phpunit/phpunit/phpunit ]]; then
-    PHPUNIT=./vendor/phpunit/phpunit/phpunit
-else
-    PHPUNIT=phpunit
-fi
+# no need to find phpunit.xml - phpunit should already be a smart wrapper
+PHPUNIT=phpunit
 
 PHPUNIT_ARGS=()
 
