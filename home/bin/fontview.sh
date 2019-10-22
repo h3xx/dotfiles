@@ -61,4 +61,4 @@ for FN; do
     fontimage "${FONTIMAGE_ARGS[@]}" -o "$TEMP" "$FN" || exit
 done
 
-xv "$TEMP_DIR"/*.png
+geeqie "$TEMP_DIR"/*.png
