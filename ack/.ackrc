@@ -17,4 +17,7 @@
 # ignore Angular compile dir
 --ignore-dir=match:/dist/
 
+# ignore Composer compiled files
+--ignore-file=match:/autoload_(?:classmap|files|namespaces|psr4|real|static)\.php/
+
 # vi: ft=conf
