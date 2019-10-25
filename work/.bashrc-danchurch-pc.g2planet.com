@@ -135,7 +135,6 @@ complete -A hostname host nmap ping traceroute ssh ftp telnet
 
 # postgresql support over SSH forwarded port ->dev
 alias \
-	psql='LC_ALL=en_US.utf8 psql -h localhost -p 5498' \
 	youtube-dl-music='youtube-dl -xwt --audio-format vorbis --audio-quality 8'
 
 MERGE_TARGET=origin/master
@@ -175,6 +174,4 @@ _gcd() {
 
 . /etc/bash_completion.d/yarn
 
-# trial pgcli
-alias pgcli='pgcli -h localhost -p 5498'
 complete -o default -F _psqlcomp                pgcli
