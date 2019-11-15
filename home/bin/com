@@ -1,0 +1,14 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+while [[ $PWD != / ]]; do
+    if [[ -e composer.json ]]; then
+        exec composer \
+            "$@"
+    fi
+    cd ..
+done
+
+printf 'Failed to find composer.json\n' \
+    >&2
+exit 2
