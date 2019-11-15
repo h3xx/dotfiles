@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while [[ $PWD != / ]]; do
+    if [[ -e composer.json ]]; then
+        exec composer "$@"
+    fi
+    cd ..
+done
+
+echo 'Failed to find composer.json' >&2
+exit 2
