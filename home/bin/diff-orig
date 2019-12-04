@@ -55,7 +55,7 @@ diff_orig() {
             '-ru'       # (shorter output)
         )
 
-    if [ "$NEW_FILES" -ne 0 ]; then
+    if [[ $NEW_FILES -ne 0 ]]; then
         diff_opts+=(
         #'--new-file'   # treat absent files as empty
         '-N'
@@ -65,9 +65,9 @@ diff_orig() {
     # set up signal handlers
     trap 'diemsg "Killed"' INT
 
-    if [ -f "$src1" ]; then
+    if [[ -f $src1 ]]; then
         # attempt to untar the source file to a temporary directory
-        [ -n "${temp1:=$(mktemp -d -t "$(basename "$0").XXXXXX")}" ] &&
+        [[ -n ${temp1:=$(mktemp -d -t "$(basename "$0").XXXXXX")} ]] &&
         tar x -C "$temp1" -f "$src1" &&
         dir1="$temp1/$(tar_maindir "$src1")" ||
         diemsg "Failed to un-tar file \`$src1' into \`$temp1"
@@ -75,9 +75,9 @@ diff_orig() {
         dir1="$src1"
     fi
 
-    if [ -f "${src2:=.}" ]; then
+    if [[ -f ${src2:=.} ]]; then
         # attempt to untar the source file to a temporary directory
-        [ -n "${temp2:=$(mktemp -d -t "$(basename "$0").XXXXXX")}" ] &&
+        [[ -n ${temp2:=$(mktemp -d -t "$(basename "$0").XXXXXX")} ]] &&
         tar x -C "$temp2" -f "$src2" &&
         dir2="$temp2/$(tar_maindir "$src2")" ||
         diemsg "Failed to un-tar file \`$src2' into \`$temp2"
