@@ -112,25 +112,6 @@ alias a='gr && if [[ -d ../EMCCv2 ]]; then cd ../EMCCv2; else cd site; fi'
 shopt -s \
 	cdable_vars
 
-# "magic directories" for ssh
-# i.e. if you're in a project directory, it'll automatically cd to that directory on the target machine
-_ssh() {
-	if [[ $# -eq 1 ]]; then
-		if [[ $(pwd -P) =~ public_html/code/([^/]+)/ec ]]; then
-			echo "Magic directory: ~/${BASH_REMATCH[1]}"
-			\ssh -t "$@" "cd ~/${BASH_REMATCH[1]};bash -l"
-		elif [[ $(pwd -P) =~ public_html/code/([^/]+)/([^/]+) ]]; then
-			echo "Magic directory: ~/${BASH_REMATCH[2]}"
-			\ssh -t "$@" "cd ~/${BASH_REMATCH[2]};bash -l"
-		else
-			\ssh "$@"
-		fi
-	else
-		\ssh "$@"
-	fi
-}
-alias ssh=_ssh
-
 complete -A hostname host nmap ping traceroute ssh ftp telnet
 
 # postgresql support over SSH forwarded port ->dev
