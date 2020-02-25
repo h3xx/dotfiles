@@ -28,7 +28,6 @@
 	[separator]
 	[submenu] (terminals)
 		[exec] (xterm) {xterm} <~/.fluxbox/icons/xterm.xpm>
-		[exec] (rxvt) {rxvt}
 	[end]
 	[submenu] (net)
 		[submenu] (browsers)
@@ -64,14 +63,12 @@
 			[exec] (BitchX) {xterm -e BitchX -N} <~/.fluxbox/icons/bitchx.xpm>
 		[end]
 		[submenu] (p2p)
-			[exec] (azureus) {azureus} <~/.fluxbox/icons/azureus.xpm>
 			[exec] (gtk-gnutella) {gtk-gnutella} <~/.fluxbox/icons/gtk-gnutella.xpm>
 			[exec] (mutella) {xterm -e mutella}
 			[exec] (giftui) {giftui} <~/.fluxbox/icons/giftui.xpm>
 		[end]
 		[submenu] (ftp)
 			[exec] (gftp) {gftp} <~/.fluxbox/icons/gftp.xpm>
-			[exec] (uget) {uget} <~/.fluxbox/icons/uget.xpm>
 			[exec] (ncftp) {xterm -e ncftp}
 			[exec] (ftp) {xterm -e ftp}
 			[exec] (lftp) {xterm -e lftp}
@@ -112,7 +109,6 @@
 	[submenu] (multimedia)
 		[submenu] (graphics)
 			[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
-			[exec] (xv) {xv} <~/.fluxbox/icons/xv.xpm>
 			[exec] (geeqie) {geeqie} <~/.fluxbox/icons/geeqie.xpm>
 			[exec] (xpaint) {xpaint} <~/.fluxbox/icons/xpaint.xpm>
 			[exec] (mtpaint) {mtpaint}
@@ -129,7 +125,6 @@
 			[exec] (avidemux2) {avidemux2} <~/.fluxbox/icons/avidemux2.xpm>
 			[exec] (kdenlive) {kdenlive} <~/.fluxbox/icons/kdenlive.xpm>
 			[exec] (xine) {xine} <~/.fluxbox/icons/xine.xpm>
-			[exec] (gtv) {gtv}
 			[exec] (smplayer) {smplayer} <~/.fluxbox/icons/mplayer.xpm>
 		[end]
 		[submenu] (recording)
@@ -211,7 +206,6 @@
 		[exec] (evim) {evim}
 		[exec] (gvim) {gvim} <~/.fluxbox/icons/gvim.xpm>
 		[exec] (bluefish) {bluefish} <~/.fluxbox/icons/bluefish.xpm>
-		[exec] (manedit) {manedit} <~/.fluxbox/icons/manedit.xpm>
 		[exec] (gedit) {gedit}
 		[exec] (xedit) {xedit}
 		[exec] (anjuta) {anjuta}
@@ -289,7 +283,7 @@
 		[exec] (desmume [nds]) {desmume}
 		[exec] (dosbox) {dosbox} <~/.fluxbox/icons/dosbox.xpm>
 		[exec] (fceux [nes]) {fceux} <~/.fluxbox/icons/fceux.xpm>
-		[exec] (fs-uae) {fs-uae-launcher} <~/.fluxbox/icons/fs-uae.xpm>
+		[exec] (fs-uae) {fs-uae} <~/.fluxbox/icons/fs-uae.xpm>
 		[exec] (gambatte [gbc]) {gambatte}
 		[exec] (mfe [multi]) {mfe}
 		[exec] (m64py) {m64py} <~/.fluxbox/icons/m64py.xpm>
@@ -302,9 +296,9 @@
 		[exec] (armagetronad) {armagetronad} <~/.fluxbox/icons/armagetronad.xpm>
 		[exec] (bzflag) {bzflag} <~/.fluxbox/icons/bzflag.xpm>
 		[exec] (chromium-bsu) {chromium-bsu} <~/.fluxbox/icons/chromium-bsu.xpm>
-		[exec] (corsix-th) {CorsixTH} <~/.fluxbox/icons/corsix-th.xpm>
+		[exec] (corsix-th) {corsix-th} <~/.fluxbox/icons/corsix-th.xpm>
 		[exec] (crawl) {crawl} <~/.fluxbox/icons/crawl.xpm>
-		[exec] (d2x) {d2x}
+		[exec] (d2x-rebirth) {d2x-rebirth}
 		[exec] (doom) {prboom -iwad doom.wad} <~/.fluxbox/icons/doom.xpm>
 		[exec] (doom2) {prboom -iwad doom2.wad} <~/.fluxbox/icons/doom2.xpm>
 		[exec] (plutonia) {prboom -iwad plutonia.wad} <~/.fluxbox/icons/plutonia.xpm>
