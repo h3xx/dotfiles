@@ -353,13 +353,3 @@ histoff() {
 	# same decolorization, using __git_ps1
 	PROMPT_COMMAND='printf '\''\e[01;37m'\'"; $(sed -e 's,\(\\\e\[[0-9;]*m\),,g;s,\\\[\\\],,g' <<<"$PROMPT_COMMAND")"
 }
-
-# colorized manpages
-alias man='LESS_TERMCAP_mb=$'\''\e[05m'\'' \
-	LESS_TERMCAP_md=$'\''\e[01;38;5;38m'\'' \
-	LESS_TERMCAP_me=$'\''\e[0m'\'' \
-	LESS_TERMCAP_so=$'\''\e[07;38;5;154m'\'' \
-	LESS_TERMCAP_se=$'\''\e[0m'\'' \
-	LESS_TERMCAP_us=$'\''\e[04;01;38;5;165m'\'' \
-	LESS_TERMCAP_ue=$'\''\e[0m'\'' \
-	man'
