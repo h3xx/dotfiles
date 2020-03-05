@@ -14,6 +14,10 @@ nnoremap <buffer> <silent> ,D :so ~/.vim/templates/keys/php-D.vim<CR>
 " ,Ctrl-D - insert class deprecation warning
 nnoremap <buffer> <silent> ,<C-d> :so ~/.vim/templates/keys/php-c-D.vim<CR>
 
+" ,e - put " // end <FUNCTION>()" at the end of the current function's end
+" brace
+nnoremap <buffer> <silent> ,e :so ~/.vim/templates/keys/php-e.vim<CR>
+
 " ,G - auto setter/getter generation
 nnoremap <buffer> <silent> ,G :so ~/.vim/templates/keys/php-G.vim<CR>
 
