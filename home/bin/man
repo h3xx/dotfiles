@@ -1,0 +1,17 @@
+#!/bin/bash
+
+MAN=$(which -a man 2>/dev/null |grep -Fvx -m 1 "$0")
+if [[ -z $MAN ]]; then
+	echo 'Unable to find man(1)' >&2
+	exit 127
+fi
+
+# colorized manpages
+LESS_TERMCAP_mb=$'\e[05m' \
+LESS_TERMCAP_md=$'\e[01;38;5;38m' \
+LESS_TERMCAP_me=$'\e[0m' \
+LESS_TERMCAP_so=$'\e[07;38;5;154m' \
+LESS_TERMCAP_se=$'\e[0m' \
+LESS_TERMCAP_us=$'\e[04;01;38;5;165m' \
+LESS_TERMCAP_ue=$'\e[0m' \
+exec "$MAN" "$@"
