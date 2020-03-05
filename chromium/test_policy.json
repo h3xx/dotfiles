@@ -16,9 +16,21 @@
 	// Disable synchronization of data with Google (DOES NOT WORK)
 	"SyncDisabled": true,
 	"EnableSyncConsent": true, // just in case
+  // (new in Chrome 79) Please don't send my passwords to Google, k thx.
+  "PasswordLeakDetectionEnabled": false,
+  // (new in Chrome 79) Don't send contents of clipboard to Google, pls.
+  "SharedClipboardEnabled": false,
 	// Disable "Google Cloud Print" with FedEx Office promotion (yuk)
 	"CloudPrintProxyEnabled": false,
 	"CloudPrintSubmitEnabled": false,
+  // (new in Chrome 81) Stop Chrome from listening for devices on the local
+  // network (chrome://devices)
+  "LocalDiscoveryEnabled": false,
+  // (new in Chrome 80) Google will bypass the proxy to request a non-existent
+  // domain from DNS on startup and every time the DNS settings change. While this
+  // may give incentive for shitty ISP's redirecting customers to a "helpful"
+  // error resolution page, it's not useful enough to warrant the paranoia.
+  "DNSInterceptionChecksEnabled": false,
 	// Don't use Google's spell checking service, don't even ask me.
 	"SpellCheckServiceEnabled": false,
 	// Don't use Google Translate to translate pages, don't even ask me.
@@ -32,6 +44,8 @@
 	// Disable reporting of usage and crash data to Google (!!!).
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false, // chromium-OS
+  // (new in Chrome 77) Disable built-in bug reporting dialog in Help -> Report an Issue
+  "UserFeedbackAllowed": false,
 	// Disable sending WebRTC event logs to Google
 	"WebRtcEventLogCollectionAllowed": false,
 	// "Chrome Cleanup" sends data to Google (Windows only)
@@ -175,4 +189,6 @@
 	"DefaultWebBluetoothGuardSetting": 2,
 	// Completely disable WebUSB
 	"DefaultWebUsbGuardSetting": 2,
+  // (new in Chrome 80) Prevent sites from seeing if we have payment methods stored
+  "PaymentMethodQueryEnabled": false,
 }
