@@ -1,7 +1,7 @@
 # .bash_profile-environment
 
 ## path
-[[ -e ~/bin ]] && export PATH="${PATH:+$PATH:}$HOME/bin"
+[[ -e ~/bin ]] && export PATH="$HOME/bin${PATH:+:$PATH}"
 
 ## standard editor, pager
 export PAGER='less' MANPAGER='less' EDITOR='vim'
