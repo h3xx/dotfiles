@@ -252,6 +252,9 @@ let g:sh_fold_enabled=3
 " hitting ; in normal mode starts a command
 nnoremap ; :
 
+" Remove search highlighting
+nnoremap <Esc><Esc> :noh<CR>
+
 " force opening new tabs when gf-ing
 nnoremap gf <C-W>gf
 
