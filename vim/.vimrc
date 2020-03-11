@@ -117,6 +117,8 @@ if has('gui_running') || &t_Co > 2
 	"syntax on
 	" Also switch on highlighting the last used search pattern. (default)
 	"set hlsearch
+	" Removing search highlighting
+	nnoremap <ESC><ESC> :nohlsearch<CR>
 
 	"" color tweaks
 	" 1-2: Show trailing whitespace and spaces before a tab:
