@@ -14,8 +14,8 @@ LOADS=(
     'textures/dhtp/zandronum-dhtp-20161017.pk3'
 
     # TC
-    'Project_Brutality_12-1-15/Project Brutality.pk3'
-    'Project_Brutality_12-1-15/Misc/Allow_SV_Cheats.pk3'
+    'Project_Brutality_2.03a/Project Brutality 2.03.pk3'
+    'Project_Brutality_2.03a/External Files/Cheats/PB_Allow_SV_Cheats.pk3'
 )
 
 while getopts 'Hh' FLAG; do
