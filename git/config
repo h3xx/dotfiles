@@ -88,6 +88,10 @@
 	# note: if rejected, either use pull -r OR rebase origin/$branch and retry
 	ff = only
 
+[rebase]
+	# use 'p' instead of 'pick' when generating git-rebase-todo
+	abbreviateCommands = true
+
 [merge]
 	# merges should only be explicit merges, regardless of whether they're ff merges
 	ff = false
