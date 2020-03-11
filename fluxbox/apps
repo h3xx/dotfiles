@@ -14,5 +14,8 @@
   [Sticky]	{yes}
 [end]
 [app] (name=xterm) (class=XTerm)
-  [Position]	(UPPERLEFT)	{712 0}
+  [Position]	(UPPERLEFT)	{56% 0%}
+[end]
+[app] (name=dosbox) (class=dosbox)
+  [Position]	(UPPERLEFT)	{12% 14%}
 [end]
