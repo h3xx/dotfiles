@@ -11,6 +11,7 @@ session.groupFile:	/home/h3xx/.fluxbox/groups
 session.ignoreBorder:	false
 session.keyFile:	/home/h3xx/.fluxbox/keys
 session.menuFile:	/home/h3xx/.fluxbox/menu
+session.menuSearch:	itemstart
 session.modKey:	Mod1
 session.numLayers:	13
 session.screen0.allowRemoteActions:	false
@@ -27,6 +28,7 @@ session.screen0.edgeSnapThreshold:	5
 session.screen0.focusLastWindow:	true
 session.screen0.focusModel:	ClickFocus
 session.screen0.focusNewWindows:	true
+session.screen0.focusSameHead:	false
 session.screen0.followModel:	Ignore
 session.screen0.fullMaximization:	false
 session.screen0.iconbar.alignment:	Relative
@@ -68,7 +70,7 @@ session.screen0.strftimeFormat:	%Y-%m%d-%H%M
 session.screen0.tab.placement:	TopLeft
 session.screen0.tab.width:	66
 session.screen0.tabFocusModel:	ClickToTabFocus
-session.screen0.tabs.intitlebar:	false
+session.screen0.tabs.intitlebar:	true
 session.screen0.tabs.maxOver:	true
 session.screen0.tabs.usePixmap:	false
 session.screen0.titlebar.left:	Stick 
@@ -95,7 +97,7 @@ session.screen0.workspaceNames:	I,II,III,IV,V,VI,VII,VIII,IX,
 session.screen0.workspaces:	5
 session.screen0.workspacewarping:	true
 session.slitlistFile:	/home/h3xx/.fluxbox/slitlist
-session.styleFile:	/home/h3xx/.fluxbox/styles/gray
+session.styleFile:	/home/h3xx/.fluxbox/styles/solaris
 session.styleOverlay:	~/.fluxbox/overlay
 session.tabPadding:	0
 session.tabs:	false
