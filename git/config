@@ -154,6 +154,10 @@
 [push]
 	default = simple
 
+[rebase]
+	# use 'p' instead of 'pick' when generating git-rebase-todo
+	abbreviateCommands = true
+
 [status]
 	ignoreSubmodules = dirty
 
