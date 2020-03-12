@@ -28,7 +28,7 @@
 	cpc		= cherry-pick --continue
 	d		= diff
 	f		= fetch
-	fa		= fetch --all
+	fa		= fetch --all --no-tags
 	fp		= format-patch
 	g		= grep
 	gr		= grep --recurse-submodules
