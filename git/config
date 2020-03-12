@@ -8,7 +8,7 @@
 	ca		= commit --amend
 	rc		= commit -c HEAD --date=now --reset-author
 	f		= fetch
-	fa		= fetch --all
+	fa		= fetch --all --no-tags
 	fp		= format-patch
 	m		= merge
 	ma		= merge --abort
