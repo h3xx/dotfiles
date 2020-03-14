@@ -43,11 +43,13 @@ FIND_ARGS=(
 	.
 	-maxdepth 1
 	'('
-		"${FILE_ARGS[@]}"
-	')'
-	-o
-	'('
-		"${DIR_ARGS[@]}"
+        '('
+            "${FILE_ARGS[@]}"
+        ')'
+        -o
+        '('
+            "${DIR_ARGS[@]}"
+        ')'
 	')'
 )
 
