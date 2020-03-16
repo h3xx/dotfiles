@@ -568,11 +568,6 @@ let g:PHP_vintage_case_default_indent = 1
 " g:is_bash       : bash
 let g:is_bash = 1
 
-"" tohtml
-"let g:html_use_encoding = 'utf-8'
-let g:html_ignore_folding = 1
-let g:html_use_css = 0
-
 "" netrw
 " press gx in normal mode to open the URL under the cursor
 let g:netrw_browsex_viewer = 'google-chrome'
