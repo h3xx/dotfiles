@@ -21,6 +21,9 @@ nnoremap <buffer> <silent> ,e :so ~/.vim/templates/keys/php-e.vim<CR>
 " ,G - auto setter/getter generation
 nnoremap <buffer> <silent> ,G :so ~/.vim/templates/keys/php-G.vim<CR>
 
+" ,i - replace inline control structure with braced one
+nnoremap <buffer> <silent> ,i :so ~/.vim/templates/keys/php-i.vim<CR>
+
 " ,l - convert inline block to curly-braced block
 nnoremap <buffer> <silent> ,l :so ~/.vim/templates/keys/php-l.vim<CR>
 
