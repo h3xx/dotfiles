@@ -200,8 +200,8 @@ endif " has('multi_byte')
 
 " {{{BEGIN Fancy Plugin Options
 
+" vim-airline
 "if exists(':Airline')
-	" for airline
 	set laststatus=2 noru
 	if has('gui_running')
 		set guifont=Terminess\ Powerline\ 9
@@ -214,11 +214,11 @@ endif " has('multi_byte')
 	endif
 	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#show_buffers=0
-	let g:airline_extensions = ['branch', 'tabline', 'whitespace']
+	let g:airline_extensions = ['branch', 'tabline', 'whitespace', 'tagbar']
 "endif " exists(':Airline')
-"
+
+" vim-fugitive
 "if exists(':Git')
-	" for fugitive
 	" \l opens the git revision log
 	nmap <silent> <leader>l :Glog<CR>:cwindow<CR>
 "endif " exists(':Git')
@@ -229,6 +229,7 @@ let g:IDE_SyntaxScript = "~/.vim/plugin/ideSyntax.pl"
 " "s" => disable warnings about being unable to generate syntax files (wtf)
 let g:IDE_AdvancedFlags = "fMOsTw"
 
+" nerdtree
 "if exists(':NERDTree')
 	" activate NERDTree when pressing the minus key
 	" (first make sure the window is comfortably wide)
@@ -242,6 +243,11 @@ let g:IDE_AdvancedFlags = "fMOsTw"
 
 "endif " exists(':NERDTree')
 
+" tagbar
+"if exists(':TagbarToggle')
+	nmap <F8> :TagbarToggle<CR>
+"endif " exists(':TagbarToggle')
+"
 " }}}END Fancy Plugin Options
 
 " {{{BEGIN formatting options
