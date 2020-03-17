@@ -411,7 +411,7 @@ if has('gui_running') || &termencoding == 'utf-8'
 endif
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#show_buffers=0
-let g:airline_extensions=['branch', 'tabline', 'whitespace']
+let g:airline_extensions=['branch', 'tabline', 'whitespace', 'tagbar']
 
 " *** vim-fugitive ***
 " \l opens the git revision log
@@ -437,6 +437,9 @@ let NERDTreeIgnore=['^CVS$', '\~$']
 if !has('gui_running') && &termencoding != 'utf-8'
 	let NERDTreeDirArrows=0
 endif
+
+" *** tagbar ***
+nmap <F8> :TagbarToggle<CR>
 
 " ***********************************
 " ***** syntax specific options *****
