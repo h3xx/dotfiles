@@ -18,3 +18,7 @@
 	path = vim/.vim/pack/dist/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/webapi-vim"]
+	path = vim/.vim/pack/dist/start/webapi-vim
+	url = https://github.com/mattn/webapi-vim.git
+	branch = master
