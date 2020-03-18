@@ -30,8 +30,16 @@ if [[ -f composer.json || -f composer.lock ]]; then
     composer install --quiet || exit
 fi
 
-# free up some space
-if [[ -d ~/g2git/eclib/data && (-d $git_basedir/php/eclib/data || -d $git_basedir/php/v1/eclib/data) ]]; then
-    simplify_static_dir.pl -f -m '.*/eclib/data/(zipcode_gps\.csv|zipcodes/.*\.yaml)$' "$git_basedir/php" ~/g2git/eclib/data
-fi
+if [[ -d php/eclib ]]; then
+    # free up some space
+    if [[ -d ~/g2git/eclib/data && (-d $git_basedir/php/eclib/data || -d $git_basedir/php/v1/eclib/data) ]]; then
+        simplify_static_dir.pl -f -m '.*/eclib/data/(zipcode_gps\.csv|zipcodes/.*\.yaml)$' "$git_basedir/php" ~/g2git/eclib/data
+    fi
 
+    # mark known huuuge zipfiles as ignored by git update-index
+    if [[ -d php/eclib/data/zipcodes ]]; then
+        (cd php/eclib &&
+        find data/zipcodes/ -type f -exec git update-index --assume-unchanged {} +)
+    fi
+
+fi
