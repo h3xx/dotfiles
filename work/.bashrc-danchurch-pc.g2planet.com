@@ -74,31 +74,49 @@ if [[ -d ~/.gitrepos ]]; then
 
     gcd() {
         local \
-            url="$1" \
-            targetdir="$_"
+            targetdir=$_ \
+            quick_and_dangerous=0
+        if [[ $1 = -q ]]; then
+            quick_and_dangerous=1
+            shift 1
+        fi
+        local url=$1
 
-        if [[ -d ~/.gitrepos/"$url".git/objects ]]; then
+        local pcc=~/.gitrepos/$url.git
+        local pcc_dangerous=~/g2git/__all_projects__/.git/modules/$url
+
+        if [[ -d $pcc/objects ]]; then
             # shortcut clone
-            git clone --reference ~/.gitrepos/"$url".git g2:g2planet/"$url".git &&
-            targetdir="$_"
-            (cd "$url" && (git remote rename origin o ; true)) ||
-                return
+            printf 'Using pre-cloned objects in %s\n' "$pcc" >&2
+            git clone --reference "$pcc" "g2:g2planet/$url.git" &&
+            targetdir=$_
+            (cd "$url" && (git remote rename origin o ; true)) || return
+        elif [[ $quick_and_dangerous -ne 0 && -d $pcc_dangerous/objects ]]; then
+            printf 'Using pre-cloned objects in %s\n' "$pcc_dangerous" >&2
+            git clone --reference "$pcc_dangerous" "g2:g2planet/$url.git" &&
+            targetdir=$_
+            (cd "$url" && (git remote rename origin o ; true)) || return
         elif [[ ! $url =~ : ]]; then
             # I used a shorthand
             git clone "g2:g2planet/$*.git" || return
-            targetdir="$_"
+            targetdir=$_
         else
             git clone "$@" || return
-            targetdir="$_"
+            targetdir=$_
         fi
 
-        if [[ -d "$targetdir" ]]; then
+        if [[ -d $targetdir ]]; then
             cd "$targetdir"
             return
         fi
 
-        targetdir="$(basename "$targetdir" .git)"
+        targetdir=$(basename "$targetdir" .git)
         cd "$targetdir"
+
+        # mark known huuuge zipfiles as ignored by git update-index
+        if [[ -d data/zipcodes ]]; then
+            find data/zipcodes/ -type f -exec git update-index --assume-unchanged {} +
+        fi
     }
 fi
 
