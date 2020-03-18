@@ -1,5 +1,8 @@
 " common key combinations
 
+" ,a - replace long array with short
+nnoremap <buffer> <silent> ,a :so ~/.vim/templates/keys/php-replace_array.vim<CR>
+
 " ,h - insert <?php header in php files
 nnoremap <buffer> <silent> ,h :so ~/.vim/templates/keys/php-h.vim<CR>
 
