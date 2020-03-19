@@ -26,6 +26,8 @@ xset m 30/10
 # Set DPMS timeouts
 xset dpms 0 0 600
 
+xrandr --output VGA-0 --right-of LVDS-0 --auto
+
 # syndaemon disables the trackpad while typing
 #syndaemon -i 1 -KR &
 
@@ -53,11 +55,11 @@ fi
 fbsetbg -l
 
 # start the autolocker (default 10 minutes)
-#xautolock &
+xautolock -detectsleep -time 30 &
 
 # start pager
 #fbpager -w & # deprecated
-ipager &
+#ipager &
 
 if [[ -x /etc/rc.d/rc.networkmanager ]]; then
     nm-applet &
@@ -69,7 +71,7 @@ if [[ -x ~/.fluxbox/bin/root-tail.sh ]]; then
 fi
 
 # start conky
-conky -q &
+#conky -q &
 
 # start Dropbox
 if [[ -x ~/.dropbox-dist/dropboxd ]]; then
@@ -78,10 +80,23 @@ fi
 
 #qjackctl &
 volumeicon &
+gkrellm -w &
+wmstickynotes &
 redshift &
+~/.dropbox-dist/dropboxd &
+xscreensaver &
 
-# start glipper (broken)
-#glipper &
+if [ -e /proc/acpi/battery ]; then
+	batterymon \
+		--theme=16x16 \
+		--on-critical=~/bin/batt-warn-shutdown &
+fi
+
+# XXX : hack: wpa_gui won't detect system tray until fluxbox is up and running
+#(sleep 10s ; exec wpa_gui -t) &
+#wpa_gui -t &
+
+nm-applet &
 
 # open up a terminal
 xterm -e 'TERM=xterm-256color tmux new -A -s main' &
@@ -89,6 +104,13 @@ xterm -e 'TERM=xterm-256color tmux new -A -s main' &
 # And last but not least we start fluxbox.
 # Because it is the last app you have to run it with ''exec'' before it.
 
-exec fluxbox
+
+# Start the window manager:
+if [ -z "$DESKTOP_SESSION" -a -x /usr/bin/ck-launch-session ]; then
+	exec ck-launch-session fluxbox
+else
+   exec fluxbox
+fi
+
 # or if you want to keep a log:
 # exec fluxbox -log ~/.fluxbox/log
