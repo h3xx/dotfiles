@@ -24,8 +24,8 @@ backups=/mnt1/backups/g2planet
 www=/usr/local/www/data
 g2p=/usr/local/g2planet
 
-# auto-logout after 5 minutes of being logged in idle
-TMOUT=300
+# auto-logout after 8 hours of being logged in idle
+TMOUT=28800
 
 export BROWSER=lynx
 
