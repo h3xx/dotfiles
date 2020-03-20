@@ -1,6 +1,23 @@
 " vimrc
 " vi: fdm=marker
 
+" Defaults missing on G2Planet Linux servers
+if ! &undofile
+	" this stuff is for really old (<8) versions of vim that don't ship with defaults.vim
+	set showcmd incsearch hlsearch ttimeout ttimeoutlen=100 wildmenu
+	filetype plugin indent on
+	augroup vimStartup
+		au!
+	       autocmd BufReadPost *
+	         \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	         \ |   exe "normal! g`\""
+	         \ | endif
+	 augroup END
+	 runtime defaults.vim
+	 " modifications on top of defaults
+	 set backup hlsearch undofile
+endif
+
 " ***********************
 " ***** environment *****
 " ***********************
