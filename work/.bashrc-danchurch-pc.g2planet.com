@@ -9,20 +9,20 @@ alias \
 	slapt-get='sudo /usr/sbin/slapt-get' \
 	slap='slapt-get --update && slapt-get --upgrade --no-prompt'
 
-t=~/future/php/eclib/templates
-js=~/future/php/eclib/js
-te=~/future/php/eclib/tests
-p=~/future/php/eclib/page
-d=~/future/php/eclib/database
-u=~/future/php/eclib/utility
-da=~/future/php/eclib/data
+t=~/next/php/eclib/templates
+js=~/next/php/eclib/js
+te=~/next/php/eclib/tests
+p=~/next/php/eclib/page
+d=~/next/php/eclib/database
+u=~/next/php/eclib/utility
+da=~/next/php/eclib/data
 #a=~/g2git/smartco-testevent-v2/EMCCv2
 a=~/PhpstormProjects/g2planet-sso/site
-appconfig=~/future/php/eclib/configs/AppConfig.yaml
-struct=~/future/php/eclib/configs/event_edit_structure.yaml
+appconfig=~/next/php/eclib/configs/AppConfig.yaml
+struct=~/next/php/eclib/configs/event_edit_structure.yaml
 db=~/g2git/emaxlib/eventmax.sql
-menu=~/future/php/eclib/data/menu.yaml
-tweaks=~/future/php/eclib/data/tweaks.sql
+menu=~/next/php/eclib/data/menu.yaml
+tweaks=~/next/php/eclib/data/tweaks.sql
 scumm=/usr/share/games/scummvm
 dos=/usr/share/games/dos
 

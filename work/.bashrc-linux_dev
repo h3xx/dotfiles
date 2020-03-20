@@ -6,20 +6,18 @@ alias rcl='vimreal ~/.bashrc-$HOSTNAME'
 FIGNORE='templates_c'
 GLOBIGNORE='*~'
 
-# most visited directories
-e=~/erik/smartco/ec/php/eclib/templates
-eb=~/erik/brocade/ec/php/eclib/templates
-
-t=~/future/php/eclib/templates
-p=~/future/php/eclib/page
-d=~/future/php/eclib/database
-da=~/future/php/eclib/data
-u=~/future/php/eclib/utility
-menu=~/future/php/eclib/data/menu.yaml
-appconfig=~/future/php/eclib/configs/AppConfig.yaml
-tweaks=~/future/php/eclib/data/tweaks.sql
-db=~/future/php/emaxlib/eventmax.sql
-pj=~pjarosch/public_html/code/future-ec/php/eclib/
+next=~/next
+t=$next/php/eclib/templates
+js=$next/php/eclib/js
+te=$next/php/eclib/tests
+p=$next/php/eclib/page
+d=$next/php/eclib/database
+da=$next/php/eclib/data
+u=$next/php/eclib/utility
+menu=$next/php/eclib/data/menu.yaml
+appconfig=$next/php/eclib/configs/AppConfig.yaml
+tweaks=$next/php/eclib/data/tweaks.sql
+db=$next/php/emaxlib/eventmax.sql
 
 # system locations
 backups=/mnt1/backups/g2planet
