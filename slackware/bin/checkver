@@ -1,17 +1,19 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+PACKAGES='/var/log/packages'
+
 HELP_MESSAGE() {
     local EXIT_CODE=${1:-0}
     cat <<EOF
 Usage: ${0##*/} [OPTIONS] [DIR]...
 Check whether the current code repository is installed.
 
-  -h        Show this help message.
+  -h            Show this help message.
   -p PKG_DIR    Read package install records from PKG_DIR. Defaults to
-          /var/log/packages (the Slackware default).
+                  $PACKAGES (the Slackware default).
 
-Copyright (C) 2011 Dan Church.
+Copyright (C) 2011-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -19,12 +21,10 @@ EOF
     exit "$EXIT_CODE"
 }
 
-PACKAGES='/var/log/packages'
-
 while getopts 'p:dDh' flag; do
     case "$flag" in
         'p')
-            PACKAGES="$OPTARG"
+            PACKAGES=$OPTARG
             ;;
         'h')
             HELP_MESSAGE 0
@@ -37,109 +37,90 @@ done
 
 shift "$((OPTIND-1))"
 
-package_installed() {
+package_version_installed() {
     local \
-        pack_base="$1"
-
+        PACK_BASE=$1
 
     find "$PACKAGES/" \
         -type f \
         -maxdepth 1 \
         -regextype 'posix-egrep' \
-        -regex ".*/${pack_base}-[^-]*-[^-]*-[^-]*\$" \
+        -regex ".*/${PACK_BASE}-[^-]*-[^-]*-[^-]*\$" \
         -printf '%f\n' |
-    head \
-        --lines=1
-}
-
-package_version_installed() {
-    local \
-        pack_base="$1"
-
-    package_installed "$pack_base" |
-    rev |
-    cut \
-        --delimiter='-' \
-        --fields='3' |
-    rev
+    head -1 |
+    rev | cut -d - -f 3 | rev
 }
 
 report_installed() {
     local \
-        docdir \
-        extname="$1" \
-        ext \
-        ver_here \
-        ver_installed \
-        ver_message \
-        dot \
-        color \
-        color_reset=$'\e[0m' \
-        result=0
+        SRCDIR=$1 \
+        DOCDIR \
+        PKG_BASE \
+        VER_HERE \
+        VER_INSTALLED \
+        VER_MSG \
+        DOT \
+        COLOR \
+        YELLOW=$'\e[01;33m' \
+        GREEN=$'\e[01;32m' \
+        COLOR_RESET=$'\e[0m' \
+        RESULT=0
 
-    ext="$(basename -- "$extname")"
+    PKG_BASE=${SRCDIR##*/}
+    DOCDIR=$(cd "$SRCDIR" && svn-docdir)
+    VER_HERE=$(
+        basename -- "$DOCDIR" |
+        rev | cut -d - -f 1 | rev
+    )
+    VER_INSTALLED=$(package_version_installed "$PKG_BASE")
+    VER_MSG=$VER_HERE
 
-    docdir="$(cd "$extname" && svn-docdir)"
-
-    ver_here="$(
-        basename -- "$docdir" |
-        rev |
-        cut -d - -f 1 |
-        rev
-    )"
-
-    ver_installed="$(
-        package_version_installed "$ext"
-    )"
-
-    ver_message="$ver_here"
-
-    if [ -n "$ver_installed" ]; then
-        if [ "$ver_installed" != "$ver_here" ]; then
+    if [[ -n $VER_INSTALLED ]]; then
+        if [[ $VER_INSTALLED != $VER_HERE ]]; then
             # can be upgraded
-            color=$'\e[01;33m' # bright yellow
-            dot='+'
-            ver_message="$ver_installed => $ver_here"
-            result=1
+            COLOR=$YELLOW
+            DOT='+'
+            VER_MSG="$VER_INSTALLED => $VER_HERE"
+            RESULT=1
         else
             # installed and at current version
-            color=$'\e[01;32m' # bright green
-            dot='*'
-            result=0
+            COLOR=$GREEN
+            DOT='*'
+            RESULT=0
         fi
     else
         # not installed at all
-        color=$'\e[01;31m' # bright red
-        dot=' '
-        result=2
+        COLOR=$'\e[01;31m' # bright red
+        DOT=' '
+        RESULT=2
     fi
 
     # if not terminal, ignore color
-    if [ ! -t 2 ]; then
-        color=''
-        color_reset=''
+    if [[ ! -t 1 ]]; then
+        COLOR=
+        COLOR_RESET=
     fi
 
-    echo "${color}[${dot}] ${ext} ${ver_message}${color_reset}" >&2
+    echo "${COLOR}[${DOT}] ${PKG_BASE} ${VER_MSG}${COLOR_RESET}"
 
-    return "$result"
+    return $RESULT
 }
 
 check_all() {
     local \
-        srcdir \
-        _r \
-        result=0
+        SRCDIR \
+        _R \
+        RESULT=0
 
-    for srcdir; do
-        report_installed "$srcdir"
-        _r="$?"
-        if [ "$_r" -gt "$result" ]; then
-            result="$_r"
+    for SRCDIR; do
+        report_installed "$SRCDIR"
+        _R=$?
+        if [[ $_R > $RESULT ]]; then
+            RESULT=$_R
         fi
     done
 
-    return "$result"
+    return $RESULT
 }
 
 check_all "${@:-$PWD}"
