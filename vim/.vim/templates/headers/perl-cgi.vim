@@ -1,8 +1,9 @@
 " header for perl CGI scripts
 
 append
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 use strict;
+use warnings;
 
 #use CGI::Carp 'fatalsToBrowser';
 require CGI::Simple;
