@@ -1,6 +1,7 @@
 " header for perl scripts
 
 append
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 use strict;
+use warnings;
 .
