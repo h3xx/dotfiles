@@ -1,0 +1,29 @@
+" G2Planet customizations
+
+setl path+=..
+setl path+=../..
+setl path+=../templates
+setl path+=../utility
+setl path+=../page
+setl path+=../eclib/page
+setl path+=../eclib/database
+setl path+=../eclib/utility
+setl path+=../eclib/templates
+setl path+=../../eclib/page
+setl path+=../../eclib/database
+setl path+=../../eclib/utility
+setl path+=../../eclib/templates
+setl path+=../emaxlib/page
+setl path+=../emaxlib/database
+setl path+=../emaxlib/utility
+setl path+=../../emaxlib/page
+setl path+=../../emaxlib/database
+setl path+=../../emaxlib/utility
+setl path+=../eventlib/page
+setl path+=../eventlib/database
+setl path+=../eventlib/utility
+setl path+=../eventlib/templates
+setl path+=../../eventlib/page
+setl path+=../../eventlib/database
+setl path+=../../eventlib/utility
+setl path+=../../eventlib/templates
