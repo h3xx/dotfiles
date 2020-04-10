@@ -7,6 +7,7 @@ grant all on database unittest to unittest;
 EOSQL
 psql -U postgres unittest <<'EOSQL'
 create extension if not exists tablefunc;
+create extension if not exists "uuid-ossp" with schema public;
 EOSQL
 
 # also clear out old temporary files
