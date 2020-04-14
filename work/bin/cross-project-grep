@@ -27,11 +27,13 @@ EXCLUDE_PROJECTS=(
     intelcalendar
 )
 EXCLUDE_FILES=(
-    '*.min.js'
-    '*.js.map'
     '*.css.map'
-    'jquery.min*'
+    '*.js.map'
+    '*.min.js'
+    'certificate-header.svg'
     'excanvas.js'
+    'jquery.min*'
+    'pptxgen.bundle.js'
 )
 for arg in "$@"; do
     if [[ $arg = --no-tests ]]; then
