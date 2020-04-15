@@ -13,8 +13,8 @@ backups=/mnt1/backups/g2planet
 www=/usr/local/www/data
 g2p=/usr/local/g2planet
 
-# auto-logout after 5 minutes of being logged in idle
-TMOUT=300
+# auto-logout after 8 hours of being logged in idle
+TMOUT=28800
 
 export BROWSER=lynx
 
@@ -23,7 +23,6 @@ shopt -s \
 	cdable_vars
 
 alias \
-	diff='diff -x CVS -x template_c' \
 	cdf='colordiff |less -R' \
 	ddd='sudo make prod pause backup deletedb createdb restore unpause' \
 	dddd='sudo make demo pause backup deletedb createdb restore unpause' \
@@ -49,12 +48,56 @@ _ssh() {
 }
 alias ssh=_ssh
 
-alias as_erik='sudo -u ebloomstrand'
+if [[ -d ~/.gitrepos ]]; then
+	complete -o default -F _gcdcomp gcd
+	_gcdcomp() {
+        # is it on?
+        local nullglob_off="$(shopt -q nullglob || echo 1)"
+        shopt -s nullglob
+        local repos=(~/.gitrepos/"$2"*.git)
+        if [[ -n $nullglob_off ]]; then
+            # turn it back off
+            shopt -u nullglob
+        fi
+        repos=("${repos[@]%.git}")
+        COMPREPLY=("${repos[@]##*/}")
+	}
+
+    gcd() {
+        local \
+            url="$1" \
+            targetdir="$_"
+
+        if [[ -d ~/.gitrepos/"$url".git/objects ]]; then
+            # shortcut clone
+            GIT_ALTERNATE_OBJECT_DIRECTORIES=~/.gitrepos/"$url".git/objects \
+            git clone g2:g2planet/"$url".git &&
+            targetdir="$_"
+            (cd "$url" && git-alts.sh && (git remote rename origin o ; true)) ||
+                return
+        elif [[ ! $url =~ : ]]; then
+            # I used a shorthand
+            git clone "g2:g2planet/$*.git" || return
+            targetdir="$_"
+        else
+            git clone "$@" || return
+            targetdir="$_"
+        fi
+
+        if [[ -d "$targetdir" ]]; then
+            cd "$targetdir"
+            return
+        fi
+
+        targetdir="$(basename "$targetdir" .git)"
+        cd "$targetdir"
+    }
+fi
 
 complete -A hostname host nmap ping traceroute ssh ftp telnet
 
 # g2clouddb sees databases after -d
-if hash g2clouddb; then
+if hash g2clouddb 2>/dev/null; then
     complete -o default -F _g2clouddb                g2clouddb
     _g2clouddb() {
         if [[ ${COMP_WORDS[$COMP_CWORD-1]} = '-d' ]]; then

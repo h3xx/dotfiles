@@ -140,8 +140,8 @@ fi
 alias \
 	privatize='sudo find . \( -type f -exec chmod 0600 {} \; \) -o \( -type d -exec chmod 0700 {} \; \)' \
 	publicize='sudo find . \( -type f -exec chmod 0644 {} \; \) -o \( -type d -exec chmod 0755 {} \; \)' \
-	ppublicize='sudo find . \( -type f ! -perm +0111 -exec chmod 0644 {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0755 {} \; \)' \
-	pprivatize='sudo find . \( -type f ! -perm +0111 -exec chmod 0600 {} \; \) -o \( \( -type d -o \( -type f -perm +0111 \) \) -exec chmod 0700 {} \; \)'
+	ppublicize='sudo find . \( -type f ! -perm /0111 -exec chmod 0644 {} \; \) -o \( \( -type d -o \( -type f -perm /0111 \) \) -exec chmod 0755 {} \; \)' \
+	pprivatize='sudo find . \( -type f ! -perm /0111 -exec chmod 0600 {} \; \) -o \( \( -type d -o \( -type f -perm /0111 \) \) -exec chmod 0700 {} \; \)'
 
 # --- Linux server annoyances ---
 alias ls='ls --color=auto'
