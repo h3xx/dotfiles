@@ -161,4 +161,8 @@ collpse_cache() {
         "${SCAN_DIRS[@]}"
 }
 
-run_yarn && collpse_cache
+(run_yarn && collpse_cache) || exit
+# update timestamp (yarn sometimes does this, but inconsistently)
+if [[ -e node_modules/.yarn-integrity && -e yarn.lock && node_modules/.yarn-integrity -ot yarn.lock ]]; then
+    touch node_modules/.yarn-integrity
+fi
