@@ -28,6 +28,7 @@ OPTIONS=boulder:0
 AUTOPICKUP_EXCEPTION=">*chest*"
 AUTOPICKUP_EXCEPTION=">*large box*"
 AUTOPICKUP_EXCEPTION=">*iron safe*"
+AUTOPICKUP_EXCEPTION=">*iron chain*"
 AUTOPICKUP_EXCEPTION=">*statue of*"
 AUTOPICKUP_EXCEPTION=">*figurine of*"
 
@@ -52,6 +53,7 @@ AUTOPICKUP_EXCEPTION=">*sed stone"
 
 ## annoying shit
 AUTOPICKUP_EXCEPTION=">*mummy wrapping"
+AUTOPICKUP_EXCEPTION=">*tin whistle"
 
 ## Never pick up corpses except lizards & lichens
 ### "blessed/(un)cursed greased partly-eaten monstertype/unique's corpse"
