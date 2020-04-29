@@ -123,7 +123,7 @@ fi
 # annoying
 hash ghex && alias ghex='_noout_bg ghex'
 hash libreoffice && alias libreoffice='_noout_bg libreoffice'
-alias api='gr && if [[ -d ../g2p_api ]]; then cd ../g2p_api; else cd api; fi'
+alias api='gr && if [[ -d api ]]; then cd api; elif [[ -d ../g2p_api ]]; then cd ../g2p_api; else echo "Nope."; false; fi'
 alias a='gr && if [[ -d ../EMCCv2 ]]; then cd ../EMCCv2; else cd site; fi'
 
 # laaaazy
