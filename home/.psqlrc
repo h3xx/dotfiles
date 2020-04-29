@@ -1,6 +1,9 @@
 -- Don't display the "helpful" message on startup.
 \set QUIET 1
 
+-- Ignore repeated commands, and commands beginning with space characters
+\set HISTCONTROL ignoreboth
+
 -- failed attempt at colorizing nulls
 --\pset null '[01;31mNULL[0m'
 --\pset null '%[%033[1;31m%]NULL%[%033[0m%]'
