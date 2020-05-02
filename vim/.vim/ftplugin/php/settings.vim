@@ -11,8 +11,6 @@
 " reference: http://pear.php.net/manual/en/standards.indenting.php
 setl ts=4 sw=4 sts=4 et
 
-setl keywordprg=~/.vim/bin/php_doc
-
 " syntax check the current buffer when `:make'
 setl makeprg=php\ -ln\ % |
 setl errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
