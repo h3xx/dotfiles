@@ -1,5 +1,0 @@
-#!/bin/sh
-
-BROWSER=elinks
-
-exec $BROWSER "http://php.net/$1#layout"
