@@ -15,8 +15,9 @@ directory.
   -d DATE       Set the at(1)-compatible deletion time (default is \`sunday').
   -i            Operate in interactive mode.
   -v            Operate in verbose mode.
+  -l            List scheduled deletions instead of scheduling.
 
-Copyright (C) 2019 Dan Church.
+Copyright (C) 2019-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -27,8 +28,9 @@ EOF
 DELETE_DATE='sunday'
 INTERACTIVE=0
 VERBOSE=0
+MODE='schedule'
 
-while getopts 'hd:iv' flag; do
+while getopts 'hd:ilv' flag; do
     case "$flag" in
         'h')
             HELP_MESSAGE 0
@@ -38,6 +40,9 @@ while getopts 'hd:iv' flag; do
             ;;
         'i')
             INTERACTIVE=1
+            ;;
+        'l')
+            MODE='list'
             ;;
         'v')
             VERBOSE=1
@@ -50,35 +55,94 @@ done
 
 shift "$((OPTIND-1))"
 
-schedule_delete() {
-    local \
-        DIR=$1 \
-        DATE=$2
-    # pass the directory in as an environment variable, since that's the safest
-    echo 'rm -rf -- "$SDD_DIR"' | SDD_DIR=$(realpath -- "$DIR") at "$DATE"
-}
-
-DIR=${1:-.}
-
-if [[ $VERBOSE -ne 0 ]]; then
-    echo "Using directory \`$DIR'" >&2
-fi
-
-if [[ ! -d $DIR ]]; then
-    if [[ $INTERACTIVE -ne 0 ]]; then
-        read -p "Create directory \`$DIR'? [Yn] " ANS
-        if [[ $ANS =~ [Nn0] ]]; then
-            exit 1
-        fi
-    elif [[ $VERBOSE -ne 0 ]]; then
+schedule_delete() (
+    DIR=${1:-.}
+    if [[ $VERBOSE -ne 0 ]]; then
         echo "Using directory \`$DIR'" >&2
     fi
-    mkdir -p -- "$DIR"
-fi &&
-if [[ $INTERACTIVE -ne 0 ]]; then
-    read -p "Schedule deletion for $DELETE_DATE? [Yn] " ANS
-    if [[ $ANS =~ [Nn0] ]]; then
-        exit 1
+
+    if [[ ! -e $DIR ]]; then
+        if [[ $INTERACTIVE -ne 0 ]]; then
+            read -p "Create directory \`$DIR'? [Yn] " ANS
+            if [[ $ANS =~ [Nn0] ]]; then
+                return 1
+            fi
+        elif [[ $VERBOSE -ne 0 ]]; then
+            echo "Using directory \`$DIR'" >&2
+        fi
+        mkdir -p -- "$DIR" || return
     fi
-fi &&
-schedule_delete "$DIR" "$DELETE_DATE"
+    if [[ $INTERACTIVE -ne 0 ]]; then
+        read -p "Schedule deletion for $DELETE_DATE? [Yn] " ANS
+        if [[ $ANS =~ [Nn0] ]]; then
+            return 1
+        fi
+    fi
+    # pass the directory in as an environment variable, since that's the safest
+    echo 'rm -rf -- "$SDD_DIR"' | SDD_DIR=$(realpath -- "$DIR") at "$DELETE_DATE"
+)
+
+list_scheduled() (
+    NOW=$(date +%s)
+
+    from_now() (
+        TS=$1
+        NOW=$2
+        PRECISION=8
+
+        rpt() {
+            printf '%d %s%s ' "$1" "$2" $([[ $1 > 1 ]] && echo 's')
+        }
+        DIFF=$((TS-NOW))
+        if [[ $DIFF < 0 ]]; then
+            DESC='ago'
+        else
+            DESC='from now'
+        fi
+        _DAYS=$((DIFF/3600/24))
+        _HOURS=$((DIFF%(3600*24)/3600))
+        _MINUTES=$((DIFF%3600/60))
+        _SECONDS=$((DIFF%60))
+        if [[ $PRECISION -gt 0 && $_DAYS > 0 ]]; then
+            rpt "$_DAYS" 'day'
+            let --PRECISION
+        fi
+        if [[ $PRECISION -gt 0 && $_HOURS > 0 ]]; then
+            rpt "$_HOURS" 'hour'
+            let --PRECISION
+        fi
+        if [[ $PRECISION -gt 0 && $_MINUTES > 0 ]]; then
+            rpt "$_MINUTES" 'minute'
+            let --PRECISION
+        fi
+        if [[ $PRECISION -gt 0 && $_SECONDS > 0 ]]; then
+            rpt "$_SECONDS" 'second'
+            let --PRECISION
+        fi
+        printf '%s' "$DESC"
+    )
+
+    atq |
+        while IFS= read -r LINE; do
+            JOBID=${LINE%%[^0-9]*}
+            SDD_DIR=$(at -c "$JOBID" |grep ^SDD_DIR |
+                # eliminate "SDD_DIR="
+                cut -f 2- -d = |
+                # eliminate "; export SDD_DIR"
+                rev |cut -f 2- -d ';' |rev
+            )
+            if [[ -n $SDD_DIR ]]; then
+                DATE=$(rev <<< "$LINE" |cut -f 3- -d ' ' |rev | cut -f 2-)
+                TS=$(date +%s --date="$DATE")
+                printf '%d\t#%d %s (%s)\n' "$TS" "$JOBID" "$SDD_DIR" "$(from_now "$TS" "$NOW")"
+            fi
+        done |
+        sort -n |
+        cut -f 2-
+)
+
+if [[ $MODE = 'list' ]]; then
+    list_scheduled "$@"
+else
+    schedule_delete "$@"
+fi
