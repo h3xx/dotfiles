@@ -14,9 +14,11 @@ List postgresql databases
   -b            Bare database listing.
   -h            Show this help message.
   -l            List extra info about the database.
+  -S            Order by size.
+  -r            Reverse order.
   -U USER       Log into the cluster using USER.
 
-Copyright (C) 2017-2018 Dan Church.
+Copyright (C) 2017-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -25,8 +27,10 @@ EOF
 
 BARE=0
 LONG=0
+ORDER_COL='datname'
+ORDER_DIR='asc'
 USER=postgres
-while getopts 'hbU:l' FLAG; do
+while getopts 'hbU:Srl' FLAG; do
     case "$FLAG" in
         'b')
             BARE=1
@@ -38,6 +42,12 @@ while getopts 'hbU:l' FLAG; do
             ;;
         'U')
             USER=$OPTARG
+            ;;
+        'S')
+            ORDER_COL='pg_catalog.pg_database_size(datname)'
+            ;;
+        'r')
+            ORDER_DIR='desc'
             ;;
         'h')
             HELP_MESSAGE
@@ -69,7 +79,7 @@ if [[ $LONG -ne 0 ]]; then
             )
             and datistemplate = 'f'
         order by
-            datname
+            $ORDER_COL $ORDER_DIR
     "
 else
     LIST_CMD="
@@ -83,7 +93,7 @@ else
             )
             and datistemplate = 'f'
         order by
-            datname
+            $ORDER_COL $ORDER_DIR
     "
 fi
 
