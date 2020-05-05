@@ -10,6 +10,8 @@ CACHEDIRS=(
 ~/.cache/youtube-dl
 ~/.cache/fontconfig
 ~/.cache/winetricks
+# g2planet-specific script caches
+~/.cache/get-sanitized-g2p
 )
 
 DAYS=7
