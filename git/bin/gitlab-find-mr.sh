@@ -18,7 +18,7 @@ List data about the GitLab merge requests associated with the branch.
   -v        Verbose output
   --        Terminate options list.
 
-Copyright (C) 2018 Dan Church.
+Copyright (C) 2018-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -85,10 +85,6 @@ get_mr_info() {
     callGitlabAPI GET "$api_url" '' 'map({title,merge_status,state,target_branch,web_url})'
 }
 
-REMOTE=$(git remote |head -1)
-remote_url="$(get_remote_url "$REMOTE"|tr : /)"
-PROJ="$(basename -- "$(dirname -- "$remote_url")")/$(basename -- "$remote_url" .git)"
-
 BRANCHES=()
 if [[ $# < 1 ]]; then
     # use current branch
@@ -106,5 +102,9 @@ for SOURCE_BRANCH in "${BRANCHES[@]}"; do
     if [[ $VERBOSE > 0 ]]; then
         printf 'Querying branch "%s"\n' "$SOURCE_BRANCH"
     fi
-    get_mr_info "$PROJ" "$SOURCE_BRANCH"
+    git remote | while read REMOTE_LINE; do
+        remote_url=$(get_remote_url "$REMOTE_LINE" |tr : /)
+        PROJ=$(basename -- "$(dirname -- "$remote_url")")/$(basename -- "$remote_url" .git)
+        get_mr_info "$PROJ" "$SOURCE_BRANCH"
+    done
 done
