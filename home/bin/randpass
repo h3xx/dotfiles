@@ -13,9 +13,10 @@ Generate a random password.
 
   -h        Show this help message.
   -w        Generate a wordy password of size LENGTH words.
+  -C        Do not copy to clipboard.
   --        Terminate options list.
 
-Copyright (C) 2017 Dan Church.
+Copyright (C) 2017-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -23,11 +24,15 @@ EOF
 }
 
 WORD=0
+COPY_TO_CLIPBOARD=1
 
-while getopts 'hw' FLAG; do
+while getopts 'hwC' FLAG; do
     case "$FLAG" in
         'w')
             WORD=1
+            ;;
+        'C')
+            COPY_TO_CLIPBOARD=0
             ;;
         'h')
             HELP_MESSAGE
@@ -57,10 +62,30 @@ rand_alnum() {
     openssl rand -base64 "$LENGTH" |tr -d '\n=' |cut -c -"$LENGTH"
 }
 
+CLIPPED=0
+copy_to_clipboard() {
+    local PASS=$1
+    # if not being piped somewhere, and user wants it, and it's available
+    if [[ -t 1 && $COPY_TO_CLIPBOARD -ne 0 && -n $DISPLAY ]] && hash xclip 2>/dev/null; then
+        if [[ $CLIPPED -eq 0 ]]; then
+            if printf '%s\n' "$PASS" |xclip -selection clipboard; then
+                printf '(Copied to clipboard)\n' >&2
+                CLIPPED=1
+            else
+                printf 'Warning: Unable to copy to clipboard!\n' >&2
+            fi
+        else
+            printf '(Not copied to clipboard!)\n' >&2
+        fi
+    fi
+}
+
 for PW_LENGTH; do
     if [[ $WORD -eq 0 ]]; then
-        rand_alnum "$PW_LENGTH"
+        PASS=$(rand_alnum "$PW_LENGTH")
     else
-        rand_words "$PW_LENGTH"
+        PASS=$(rand_words "$PW_LENGTH")
     fi
+    printf '%s\n' "$PASS"
+    copy_to_clipboard "$PASS"
 done
