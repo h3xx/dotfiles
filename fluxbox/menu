@@ -19,7 +19,7 @@
 	# TERM is set here because xterm refuses to set it via *termName
 	[exec] (xterm) {xterm -e 'tmux new -A -s main'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
-	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled --proxy-server='http://localhost:3128' --proxy-bypass-list='localhost'} <~/.fluxbox/icons/google-chrome.xpm>
+	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled} <~/.fluxbox/icons/google-chrome.xpm>
 	[exec] (arduino) {startarduino} <~/.fluxbox/icons/arduino.xpm>
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
 	[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
