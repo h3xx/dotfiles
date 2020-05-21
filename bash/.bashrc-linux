@@ -5,7 +5,7 @@
 HISTTIMEFORMAT='%s'		# the beloved Second of Our Linux
 HISTFILESIZE=65535
 HISTSIZE=65535
-HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:rma:fol:..:...*"
+HISTIGNORE="${HISTIGNORE:+$HISTIGNORE:}la:ll:lah:lat:;a:-:fg:bg:j:git s :rma:fol:..:...*"
 HISTCONTROL='ignoreboth'	# ignore duplicates and /^\s/
 # save history after every command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }history -a"
