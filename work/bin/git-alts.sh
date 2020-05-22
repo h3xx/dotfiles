@@ -19,6 +19,11 @@ fi
 REMOTE_URL="$(git remote -v |head -1 |tr '\t' ' ' |cut -f 2 -d ' ')"
 ALT=''
 
+# cheat
+if [[ $1 = -a ]]; then
+    ALT=~/g2git/__all_projects__/.git/modules/$(basename "$REMOTE_URL" .git)/objects
+fi
+
 case "$REMOTE_URL" in
 	*/eclib.git)
 		ALT=~/.gitrepos/eclib.git/objects
