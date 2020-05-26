@@ -43,15 +43,17 @@
 	mt		= mergetool
 	p		= push
 	pu		= "!echo use git u;exit 1"
-	r		= reset
+	r		= !~/.config/git/bin/git-reset-wrapper.sh
 	ra		= remote add
 	rb		= rebase
 	rba		= rebase --abort
 	rbc		= rebase --continue
 	rc		= commit -c HEAD --date=now --reset-author
-	rh		= reset --hard
+	rh		= !~/.config/git/bin/git-reset-wrapper.sh --hard
+	rho		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --hard
 	rr		= remote remove
-	rs		= reset --soft
+	rs		= !~/.config/git/bin/git-reset-wrapper.sh --soft
+	rso		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --soft
 	rv		= revert
 	rva		= revert --abort
 	rvc		= revert --continue

@@ -245,6 +245,25 @@ test -n "$(
 	done
 )" && {
 	. "$_" &&
+	_completion_loader() {
+		case "$1" in
+			'git-r')
+				_git_r() {
+					_git_reset "$@"
+				}
+				;;
+			'git-rh')
+				_git_rh() {
+					_git_reset "$@"
+				}
+				;;
+			'git-rs')
+				_git_rs() {
+					_git_reset "$@"
+				}
+				;;
+		esac
+	}
 	# also complete git refs for tig
 	__git_complete tig __git_complete_revlist
 }
