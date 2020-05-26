@@ -28,9 +28,11 @@
 	ib		= bisect bad
 	ra		= remote add
 	rr		= remote remove
-	r		= reset
-	rh		= reset --hard
-	rs		= reset --soft
+	r		= !~/.config/git/bin/git-reset-wrapper.sh
+	rh		= !~/.config/git/bin/git-reset-wrapper.sh --hard
+	rs		= !~/.config/git/bin/git-reset-wrapper.sh --soft
+	rho		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --hard
+	rso		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --soft
 	rb		= rebase
 	rbc		= rebase --continue
 	rba		= rebase --abort
