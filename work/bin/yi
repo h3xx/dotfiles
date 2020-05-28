@@ -2,10 +2,14 @@
 
 run_yarn() {
     CXX='ccache c++' \
-    yarn install --link-duplicates --prefer-offline "$@"
+    yarn install --link-duplicates --prefer-offline "$@" &&
+    collapse_yarn_cache
+}
+run_pnpm() {
+    pnpm i --prefer-frozen-lockfile "$@"
 }
 
-collpse_cache() {
+collapse_yarn_cache() {
     # save some space by hard-linking files
     local SCAN_DIRS=(
         node_modules/
@@ -161,8 +165,12 @@ collpse_cache() {
         "${SCAN_DIRS[@]}"
 }
 
-(run_yarn && collpse_cache) || exit
+if [[ -e pnpm-lock.yaml ]]; then
+    run_pnpm
+else
+    run_yarn
+fi &&
 # update timestamp (yarn sometimes does this, but inconsistently)
 if [[ -e node_modules/.yarn-integrity && -e yarn.lock && node_modules/.yarn-integrity -ot yarn.lock ]]; then
     touch node_modules/.yarn-integrity
-fi
+fi || exit
