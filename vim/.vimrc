@@ -540,6 +540,11 @@ let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]node_modules$',
 	\ }
 
+" If multiple vim sessions are open in the same directory, it'll clobber each
+" others' caches.
+" Work around stale caches by pressing F5 in the Ctrl P search panel.
+let g:ctrlp_clear_cache_on_exit = 0
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin = 1
