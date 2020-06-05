@@ -144,6 +144,7 @@ collapse_yarn_cache() {
         marked
         ng
         parser
+        pnpm-lock\\.yaml
         semver
         spec
         stylus
@@ -152,6 +153,7 @@ collapse_yarn_cache() {
         uglifyjs
         which
         xdg-open
+        yarn\\.lock
     )
     local MATCH_REGEX=$(
         IFS='|'
