@@ -1,8 +1,17 @@
 #!/bin/bash
 
 run_yarn() {
+    # e.g. %%home%%user%%my-project
+    # (so named such that our automatic cleaner scripts can pick it up)
+    local MUTEXDIR=/tmp/yarn--$UID-mutexes
+    local MUTEX=$MUTEXDIR/${PWD//\//%%}-mutex
+    mkdir -p "$MUTEXDIR" &&
     CXX='ccache c++' \
-    yarn install --link-duplicates --prefer-offline "$@" &&
+    yarn install \
+        --link-duplicates \
+        --prefer-offline \
+        --mutex "file:$MUTEX" \
+        "$@" &&
     collapse_yarn_cache
 }
 run_pnpm() {
