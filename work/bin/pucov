@@ -7,11 +7,12 @@ Usage: $(basename -- "$0") [OPTIONS] FILE...
 Run coverage testing.
 
   -h		Show this help message.
+  -b BIN    Override default PHPUnit binary name.
   -p		Permissive coverage.
   -R		Stop on risky.
   -t		Show tap tracing instead.
 
-Copyright (C) 2016 Dan Church.
+Copyright (C) 2016-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -22,9 +23,14 @@ EOF
 MODE='html'
 STOP_ON_RISKY=0
 PERMISSIVE=0
+# no need to find phpunit.xml - phpunit should already be a smart wrapper
+PHPUNIT=phpunit
 
-while getopts 'hpRt' flag; do
+while getopts 'hb:pRt' flag; do
 	case "$flag" in
+        'b')
+            PHPUNIT=$OPTARG
+            ;;
 		'p')
 			PERMISSIVE=1
 			;;
@@ -46,8 +52,6 @@ done
 shift "$((OPTIND-1))"
 
 HTML_OUT_DIR='cov'
-# no need to find phpunit.xml - phpunit should already be a smart wrapper
-PHPUNIT=phpunit
 
 PHPUNIT_ARGS=()
 
