@@ -70,7 +70,7 @@ XTerm*colorBD:                  white
 
 !! tell programs xterm can support 256 colors
 !! addendum: doesn't work without termcap entry >:-E
-XTerm*termName:                 xterm-256color
+XTerm.termName:                 xterm-256color
 
 !! Terminology default color scheme:
 *VT100.color1:                  #cc3333
