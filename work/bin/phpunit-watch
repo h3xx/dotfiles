@@ -1,0 +1,133 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# e.g.
+# phpunit-watch --phpunit-args='--strict-coverage'
+# forks:
+#   - phpunit-watch --mode=watcher
+#   - phpunit-watch --mode=runner --strict-coverage'
+
+PHPUNIT_GROUP=focus
+PHPUNIT_WAITFIRST=1
+
+MODE=
+PHPUNIT_ARGS=()
+for ARG; do
+    if [[ $ARG =~ --mode= ]]; then
+        MODE=${ARG#--mode=}
+        break
+    else
+        PHPUNIT_ARGS+=("$ARG")
+    fi
+done
+
+TEMP_FILES=()
+cleanup() {
+    rm -fv -- "${TEMP_FILES[@]}"
+}
+trap 'cleanup' EXIT
+
+phpunit_basedir() (
+    while [[ $PWD != / ]]; do
+        if [[ -e phpunit.xml ]]; then
+            pwd
+            return 0
+        fi
+        cd ..
+    done
+    echo 'Unable to find phpunit.xml' >&2
+    return 1
+)
+
+do_phpunit() (
+    cd "$_PHPUNIT_WATCHER_BASEDIR" &&
+    phpunit "${PHPUNIT_ARGS[@]}" "$@"
+)
+
+run_phpunit_tests() (
+    if do_phpunit --list-groups |grep "$PHPUNIT_GROUP" >/dev/null 2>&1; then
+        printf 'runner: Running phpunit @group "%s"\n' "$PHPUNIT_GROUP" >&2
+        do_phpunit --group "$PHPUNIT_GROUP"
+    else
+        printf 'runner: Running all phpunit tests\n' >&2
+        do_phpunit
+    fi
+    touch "$_PHPUNIT_WATCHER_LASTRUN"
+)
+
+wait_until_touched() {
+    inotifywait -e OPEN "$@"
+    #inotifywait -e OPEN "$@" >/dev/null 2>&1
+}
+
+wait_until_modified() {
+    inotifywait -e MODIFY,MOVE_SELF "$@"
+    #inotifywait -e MODIFY,MOVE_SELF "$@" >/dev/null 2>&1
+}
+
+check_vars() {
+    if [[ -z $_PHPUNIT_WATCHER_LASTMOD ]]; then
+        echo "Something went wrong; no _PHPUNIT_WATCHER_LASTMOD environment variable!" >&2
+        exit 2
+    fi
+    if [[ -z $_PHPUNIT_WATCHER_LASTRUN ]]; then
+        echo "Something went wrong; no _PHPUNIT_WATCHER_LASTRUN environment variable!" >&2
+        exit 2
+    fi
+    if [[ -z $_PHPUNIT_WATCHER_BASEDIR ]]; then
+        echo "Something went wrong; no _PHPUNIT_WATCHER_BASEDIR environment variable!" >&2
+        exit 2
+    fi
+}
+
+case "$MODE" in
+    'watcher')
+        check_vars
+        echo 'watcher: Starting watcher' >&2
+        shopt -s globstar
+        shopt -s extglob
+        FILELIST="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+        TEMP_FILES+=("$FILELIST")
+        while :; do
+            find "$_PHPUNIT_WATCHER_BASEDIR" -type f \
+                ! -regex '.*/vendor/.*' \
+                ! -regex '.*/storage/.*' \
+                >"$FILELIST"
+            wait_until_modified --fromfile "$FILELIST"
+            touch "$_PHPUNIT_WATCHER_LASTMOD"
+            wait_until_touched "$_PHPUNIT_WATCHER_LASTRUN"
+        done
+        ;;
+
+    'runner')
+        check_vars
+        echo 'runner: Starting runner' >&2
+        if [[ $PHPUNIT_WAITFIRST -eq 0 ]]; then
+            while :; do
+                run_phpunit_tests
+                wait_until_touched "$_PHPUNIT_WATCHER_LASTMOD"
+            done
+        else
+            while :; do
+                wait_until_touched "$_PHPUNIT_WATCHER_LASTMOD"
+                run_phpunit_tests
+            done
+        fi
+        ;;
+
+    *)
+        _PHPUNIT_WATCHER_BASEDIR=$(phpunit_basedir)
+        if [[ -z $_PHPUNIT_WATCHER_BASEDIR ]]; then
+            exit 1
+        fi
+        _PHPUNIT_WATCHER_LASTMOD="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+        _PHPUNIT_WATCHER_LASTRUN="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+        TEMP_FILES+=("$_PHPUNIT_WATCHER_LASTMOD" "$_PHPUNIT_WATCHER_LASTRUN")
+        export \
+            _PHPUNIT_WATCHER_BASEDIR \
+            _PHPUNIT_WATCHER_LASTMOD \
+            _PHPUNIT_WATCHER_LASTRUN
+        echo hi $_PHPUNIT_WATCHER_BASEDIR >&2
+        parallel --ungroup "$0" "${PHPUNIT_ARGS[@]}" ::: '--mode=watcher' '--mode=runner'
+        ;;
+esac
