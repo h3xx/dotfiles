@@ -6,6 +6,6 @@ conf_script="${build_script%-build}"
 . "$conf_script") &&
 make && midest &&
 mkdir -p \
-	b/install \
-	"b/$(svn-docdir)" &&
+    b/install \
+    "b/$(svn-docdir)" &&
 .
