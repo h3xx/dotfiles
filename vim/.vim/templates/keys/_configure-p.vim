@@ -6,9 +6,9 @@ for patch in "$patch_dir"/FILE-*.patch ; do
 .
 s/FILE/\=expand("%:t:r")/
 append
-	rejfile="$(mktemp -t 'patch.XXXXXX')"
-	patch -p1 -N -r "$rejfile" <"$patch" |cat
-	rm -f "$rejfile"
-	true
+    rejfile="$(mktemp -t 'patch.XXXXXX')"
+    patch -p1 -N -r "$rejfile" <"$patch" |cat
+    rm -f "$rejfile"
+    true
 done) &&
 .

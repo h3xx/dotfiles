@@ -2,10 +2,8 @@
 
 append
 TEMP_FILES=()
-
 cleanup() {
-	rm -f -- "${TEMP_FILES[@]}"
+    rm -f -- "${TEMP_FILES[@]}"
 }
-
-trap 'cleanup'	EXIT
+trap 'cleanup' EXIT
 .
