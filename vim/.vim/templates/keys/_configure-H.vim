@@ -11,6 +11,6 @@ make "${make_args[@]}" &&
 midest "${make_args[@]}"
 ) &&
 mkdir -p \
-	b/install \
-	"b/$(svn-docdir)" &&
+    b/install \
+    "b/$(svn-docdir)" &&
 .
