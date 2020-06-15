@@ -1,27 +1,27 @@
 [submodule "fluxbox/styles/solaris"]
 	path = fluxbox/styles/solaris
 	url = https://github.com/h3xx/fluxbox-style-solaris.git
-	branch = master
+	branch = main
 [submodule "font/ohsnapmod"]
 	path = font/ohsnapmod
 	url = https://github.com/h3xx/ohsnapmod.git
-	branch = master
+	branch = main
 [submodule "git/git-colors-neonwolf"]
 	path = git/git-colors-neonwolf
 	url = https://github.com/h3xx/git-colors-neonwolf.git
-	branch = master
+	branch = main
 [submodule "mutt/mutt-colors-neonwolf"]
 	path = mutt/mutt-colors-neonwolf
 	url = https://github.com/h3xx/mutt-colors-neonwolf.git
-	branch = master
+	branch = main
 [submodule "newsbeuter/newsbeuter-colors-neonwolf"]
 	path = newsbeuter/newsbeuter-colors-neonwolf
 	url = https://github.com/h3xx/newsbeuter-colors-neonwolf.git
-	branch = master
+	branch = main
 [submodule "tig/tig-colors-neonwolf"]
 	path = tig/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf.git
-	branch = master
+	branch = main
 [submodule "vim/.vim/pack/dist/opt/PHP-Indenting-for-VIm"]
 	path = vim/.vim/pack/dist/opt/PHP-Indenting-for-VIm
 	url = https://github.com/2072/PHP-Indenting-for-VIm.git
@@ -45,7 +45,7 @@
 [submodule "vim/.vim/pack/dist/opt/vim-late_evening"]
 	path = vim/.vim/pack/dist/opt/vim-late_evening
 	url = https://github.com/h3xx/vim-late_evening.git
-	branch = master
+	branch = main
 [submodule "vim/.vim/pack/dist/start/Vim-PHP-Doc/after/syntax"]
 	path = vim/.vim/pack/dist/start/Vim-PHP-Doc/after/syntax
 	url = https://github.com/tetsuo13/Vim-PHP-Doc.git
