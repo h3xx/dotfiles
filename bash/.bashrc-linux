@@ -59,11 +59,7 @@ lsr() {
 # same thing as above but filters out .svn, .git, .hg, .bzr
 # usefulness: ****
 lsrr() {
-	find "${@:-.}" \
-		! \( \
-			-regextype posix-egrep \
-			-regex '.*/(\.(svn|git|hg|bzr)|CVS)(/.*)?' \
-		\) \
+	gfind "${@:-.}" \
 		-print0 |
 	# XXX : must sort or large file lists will be out of order if split up
 	#	to different ls invocations by xargs
