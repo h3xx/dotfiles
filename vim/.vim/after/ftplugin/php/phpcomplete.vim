@@ -15,6 +15,10 @@ let s:include_old_phpunit_class_names = 1
 
 " Dictionary of proper class basename => namespace
 let s:alt_testcase_classes = {
+            \ 'DatabaseTestCase': '',
+            \ 'EcDatabaseTestCase': '',
+            \ 'EmaxDatabaseTestCase': '',
+            \ 'GenericDatabaseTestCase': '',
             \ 'PHPUnit_Framework_TestCase': '',
             \ }
 
