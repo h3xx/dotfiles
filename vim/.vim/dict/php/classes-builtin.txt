@@ -1,9 +1,0 @@
-ArrayAccess
-Closure
-Generator
-Iterator
-IteratorAggregate
-Serializable
-Throwable
-Traversable
-WeakReference
