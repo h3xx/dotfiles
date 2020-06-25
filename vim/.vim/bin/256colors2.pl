@@ -2,6 +2,8 @@
 # vi: et sts=4 sw=4 ts=4
 use strict;
 use warnings;
+use Getopt::Std	qw/ getopts /;
+
 # Author: Todd Larason <jtl@molehill.org>
 # $XFree86: xc/programs/xterm/vttests/256colors2.pl,v 1.2 2002/03/26 01:46:43 dickey Exp $
 # modified by Dan Church to output the terminal color numbers in order to aid in writing Vim color schemes
@@ -9,7 +11,28 @@ use warnings;
 # modified AGAIN by Dan Church to show a specific palette by passing the script a list of numbers
 # modified AGAIN by Dan Church to make OO and DRY
 
+
+sub HELP_MESSAGE {
+    my $fh = shift;
+    print $fh <<EOF
+Usage: $0 [OPTIONS] [COLOR...]
+Display a terminal color cube.
+
+  -a            Display TERM::ANSIColor compatible aliases.
+
+Copyright (C) 2015-2020 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+;
+    exit 0;
+}
+
+
 MAIN: {
+    &getopts('a', \ my %opts);
+
     my %reverse_colors;
     if (@ARGV) {
         @reverse_colors{0..255} = (1) x 256;
@@ -18,6 +41,7 @@ MAIN: {
 
     my $cc = Color::Cube->new(
         reverse_colors => \%reverse_colors,
+        ($opts{a} ? (format => 'ansicolor') : ()),
     );
 
     print $cc, "\n";
@@ -32,6 +56,7 @@ sub new {
     my $class = shift;
 
     my $self = bless {
+        format => 'number',
         reverse_colors => {},
         @_,
     }, $class;
@@ -115,19 +140,28 @@ sub set_resources {
     @out
 }
 
+sub text {
+    my $self = shift;
+    my ($alias, $color) = @_;
+    if ($self->{format} eq 'ansicolor') {
+        return $alias;
+    }
+    return $color;
+}
+
 sub brick {
     my $self = shift;
-    my ($color, $red, $green, $blue) = @_;
+    my ($alias, $color, $red, $green, $blue) = @_;
     my $fg = $self->fg($color, $red, $green, $blue);
-    sprintf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $color;
+    sprintf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $self->text($alias, $color);
 }
 
 sub system_colors {
     my $self = shift;
     my @out = (
-        (map { $self->brick($_) } 0 .. 7),
+        (map { $self->brick("ansi$_", $_) } 0 .. 7),
         "\n",
-        (map { $self->brick($_) } 8 .. 15),
+        (map { $self->brick("ansi$_", $_) } 8 .. 15),
     );
     @out
 }
@@ -139,7 +173,7 @@ sub color_cube {
         foreach my $red (0 .. 5) {
             foreach my $blue (0 .. 5) {
                 my $color = 16 + ($red * 36) + ($green * 6) + $blue;
-                push @out, $self->brick($color, $red, $green, $blue);
+                push @out, $self->brick("rgb$red$green$blue", $color, $red, $green, $blue);
             }
             push @out, " ";
         }
@@ -151,7 +185,7 @@ sub color_cube {
 sub gray_ramp {
     my $self = shift;
     my @out;
-    push @out, map { $self->brick($_) } 232 .. 255;
+    push @out, map { $self->brick('grey' . ($_ - 232), $_) } 232 .. 255;
 
     @out
 }
