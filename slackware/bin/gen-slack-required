@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-our $VERSION = '0.5.8';
+our $VERSION = '0.6.0';
 
 # TODO	: detect interpreted languages
 #	  (*) Java
@@ -19,7 +19,7 @@ use Getopt::Std		qw/ getopts /;
 use Storable		qw/ lock_store retrieve /;
 
 # settings for temporary storage (this greatly speeds up processing)
-use constant CACHE_STORE_DIR	=> "$ENV{'HOME'}/.cache";
+use constant CACHE_STORE_DIR	=> "$ENV{HOME}/.cache";
 use constant CACHE_STORE	=> CACHE_STORE_DIR . '/slackpacks.pdata';
 
 use constant PACKAGE_PATH	=> '/var/log/packages/';
@@ -250,7 +250,7 @@ directories and the contents of `install/slack-desc'.
 
 If DIRECTORY is not specified, then the current directory is used.
 
-Copyright (C) 2010-2011 Dan Church.
+Copyright (C) 2010-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -261,22 +261,22 @@ EOF
 
 # correct relative paths
 # OR if no directories given, search the current directory
-push @ARGV, $ENV{'PWD'} unless map { s#^([^/])#$ENV{'PWD'}/$1# } @ARGV;
+push @ARGV, $ENV{PWD} unless map { s#^([^/])#$ENV{PWD}/$1# } @ARGV;
 
 # automatic output file detection
-if ($opts{'a'} && (! length $opts{'o'} or $opts{'o'} eq '-')) {
+if ($opts{a} && (! length $opts{o} or $opts{o} eq '-')) {
 	foreach my $dir (@ARGV) {
 		if (-d "${dir}/install" && -w _) {
-			$opts{'o'} = "${dir}/install/slack-required";
+			$opts{o} = "${dir}/install/slack-required";
 			last;
 		}
 	}
 
-	if ($opts{'v'}) {
-		unless (length $opts{'o'} and $opts{'o'} ne '-') {
+	if ($opts{v}) {
+		unless (length $opts{o} and $opts{o} ne '-') {
 			print STDERR "Automatic detection of output file failed; outputting to STDOUT\n";
 		} else {
-			print STDERR "Automatically writing slack-required to file `$opts{'o'}'\n";
+			print STDERR "Automatically writing slack-required to file `$opts{o}'\n";
 		}
 	}
 }
@@ -284,59 +284,109 @@ if ($opts{'a'} && (! length $opts{'o'} or $opts{'o'} eq '-')) {
 # dynlib magic checker
 my $magic = File::LibMagic->new;
 
-sub read_dynlib_deps {
-	(my $elfbin = shift)
-		# shell-escape argument for inclusion in non-interpolated
-		# single quotes (probably not necessary, as shared libraries
-		# rarely have /\W/ in their filenames, but you can never be
-		# sure)
-		=~ s/'/'\\''/g;
+my $libdirs;
+sub system_libdirs {
+	unless (defined $libdirs) {
+		# TODO this is making assumptions about where libraries come from; I
+		# tried inspecting how glibc resolves libraries using /etc/ld.so.conf
+		# and LD_LIBRARY_PATH, but it was stupidly complex C code
+		my @assume_dirs = (
+			'/lib64',
+			'/lib',
+			'/usr/lib64',
+			'/usr/lib',
+		);
+		if ($ENV{LD_LIBRARY_PATH}) {
+			unshift @assume_dirs, split /:/, $ENV{LD_LIBRARY_PATH};
+		}
+		$libdirs = [
+			grep { -d } @assume_dirs
+		];
+	}
+	return @$libdirs;
+}
 
-	# make sure ldd(1) outputs messages in English by setting LC_MESSAGES
-	# to C
-	((my $lcm_backup), $ENV{'LC_MESSAGES'}) =
-	($ENV{'LC_MESSAGES'}, 'C');
-	# use ldd(1) to read dynamic library links
-	open my $ldd, '-|', "ldd '$elfbin'"
-		or die "cannot open pipe from ldd(1) on file `$elfbin': $!";
+sub shell_quote {
+	# shell-escape argument for inclusion in non-interpolated single quotes
+	# (probably not necessary, as shared libraries rarely have /\W/ in their
+	# filenames, but you can never be sure)
+	my @transformed = map {
+		(my $out = $_)
+			=~ s/'/'\\''/g;
+		"'$out'";
+	} @_;
+	wantarray ? @transformed : $transformed[0];
+}
+
+sub read_dynlib_deps {
+	my $elfbin = shift;
+	# make sure the program outputs messages in ANSI English
+	((my $lcm_backup), $ENV{LC_MESSAGES}) =
+	($ENV{LC_MESSAGES}, 'C');
+	open my $readelf, '-|', 'readelf -d ' . &shell_quote($elfbin)
+		or die "cannot open pipe from readelf(1) on file `$elfbin': $!";
 	# restore environment
-	$ENV{'LC_MESSAGES'} = $lcm_backup if defined $lcm_backup;
+	$ENV{LC_MESSAGES} = $lcm_backup if defined $lcm_backup;
+
+	# e.g. "Share library: [blarg]" => "blarg"
+	my $extract_bracketed = sub {
+		my $value = shift;
+		if ($value =~ /\[(.*)\]/) {
+			return $1;
+		}
+		die "Expected bracketed string, got `$value'; perhaps the format of readelf(1) isn't compatible with this script";
+	};
+
+	my @found_libs;
+	my @found_libdirs;
+
+	foreach my $line (<$readelf>) {
+		chomp $line;
+		$line =~ s/^\s+|\s+$//;
+
+		# example readelf -d output:
+		#
+		# 0x0000000000000001 (NEEDED)             Shared library: [libavdevice.so.58]
+		# 0x0000000000000001 (NEEDED)             Shared library: [libavcodec.so.58]
+		# ...
+		# 0x000000000000001d (RUNPATH)            Library runpath: [/usr/lib64]
+		# - OR -
+		# 0x000000000000000f (RPATH)              Library rpath: [/usr/lib64/qt/lib]
+		# 0x000000000000000c (INIT)               0x406000
+
+		# shared libraries have an additional line type:
+		# 0x000000000000000e (SONAME)             Library soname: [libSimGearCore.so.2017.3.1]
+
+		my @parts = split /\s+/, $line, 3;
+		if (@parts < 3) {
+			next;
+		}
+		my (undef, $type, $value) = @parts;
+
+		if ($type =~ /^\((?:RPATH|RUNPATH)\)$/) {
+			push @found_libdirs, &$extract_bracketed($value);
+			next;
+		}
+		if ($type =~ /^\(NEEDED\)$/) {
+			push @found_libs, &$extract_bracketed($value);
+			next;
+		}
+
+	}
+	close $readelf;
 
 	my @lib_deps;
 
-	foreach my $ldd_line (<$ldd>) {
-		# TODO : subject to breakage
-		if ($ldd_line =~ /^\s*(\S+\s+=>\s)?(\S+)\s/) {
-			# description of lines output by ldd(1):
-			#
-			# "[LIBBASENAME] => [LIBABS] ([HEX STRING])"
-			#	rpath-specified dynamic library link
-			# "[LIBABS] ([HEX STRING])"
-			#	absolute path (-L) -specified library link
-			#
-			# where `LIBABS' is an absolute path to a shared
-			# library, and `LIBBASENAME' is the basename of a
-			# shared library that is located and loaded at runtime
-			#
-			# example lines:
-			#
-			# libm.so.6 => /lib64/libm.so.6 (0x00007f354b6ea000)
-			# /lib64/ld-linux-x86-64.so.2 (0x00007f354b96d000)
-			#
-			# note: if a library is not found, it will print a
-			# double-space in place of like so:
-			#
-			# linux-vdso.so.1 =>  (0x00007fff235ff000)
-			#
-			# this is why the `\s' in the first parenthetical
-			# pattern is not scaled
-
-			# follow all symlinks to the absolute file name
-			push @lib_deps, &abs_path($2);
+	my @library_search_path = (@found_libdirs, &system_libdirs);
+	foreach my $lib (@found_libs) {
+		foreach my $libdir (@library_search_path) {
+			my $test_path = "$libdir/$lib";
+			if (-f $test_path) {
+				push @lib_deps, &abs_path($test_path);
+				last;
+			}
 		}
 	}
-
-	close $ldd;
 
 	\@lib_deps
 }
@@ -453,7 +503,7 @@ sub add_deps {
 			@{$deps->{$libfile}}{@{$pdata->{$libfile}}} =
 				(1) x @{$pdata->{$libfile}};
 		} else {
-			print STDERR "dependency lib `$libfile' not found in any package\n" if $opts{'v'};
+			print STDERR "dependency lib `$libfile' not found in any package\n" if $opts{v};
 			#use Data::Dumper; print STDERR Data::Dumper->Dump([$libfile]);
 		}
 	}
@@ -494,7 +544,7 @@ sub get_package_data {
 		} else {
 			printf STDERR '(creating cache in %s)...',
 				CACHE_STORE
-				if $opts{'v'};
+				if $opts{v};
 
 			# `touch' the file by storing an empty hash ref in it
 			&lock_store({}, CACHE_STORE);
@@ -503,28 +553,28 @@ sub get_package_data {
 		}
 
 		if ($packages_mtime < $cache_mtime) {
-			print STDERR '(cached)...' if $opts{'v'};
+			print STDERR '(cached)...' if $opts{v};
 			$package_data = &retrieve(CACHE_STORE);
 
 			# invalidate the cache if it's newer than this script
-			unless (defined $package_data->{'version'} and
-				$package_data->{'version'} eq $VERSION) {
+			unless (defined $package_data->{version} and
+				$package_data->{version} eq $VERSION) {
 				print STDERR '(cache is invalid, regenerating)...'
-					if $opts{'v'};
+					if $opts{v};
 					$package_data = &update_package_data({});
 					&lock_store($package_data, CACHE_STORE);
 			}
 		} else {
 			# outdated (or non-existent) cache;
 			# it's going to have to be updated
-			print STDERR '(updating cache)...' if $opts{'v'};
+			print STDERR '(updating cache)...' if $opts{v};
 			$package_data = &update_package_data($package_data);
 			&lock_store($package_data, CACHE_STORE);
 		}
 	}
 
-	# only interested in the location hash (->{'times'} is for updating)
-	$package_data->{'locations'}
+	# only interested in the location hash (->{times} is for updating)
+	$package_data->{locations}
 }
 
 sub update_package_data {
@@ -532,8 +582,8 @@ sub update_package_data {
 	my $new_package_data = {};
 
 	my ($locations, $times) = (
-		$old_package_data->{'locations'}	|| {},
-		$old_package_data->{'times'}		|| {},
+		$old_package_data->{locations}	|| {},
+		$old_package_data->{times}		|| {},
 	);
 
 	&find(
@@ -661,8 +711,8 @@ sub format_slack_required {
 		my @pks = grep {
 			# note: if `-m' is not specified or is blank, this will
 			# match
-			m#$opts{'m'}# and
-			!(length $opts{'M'} and m#$opts{'M'}#) and
+			m#$opts{m}# and
+			!(length $opts{M} and m#$opts{M}#) and
 			!(length $BLACKLIST and m#$BLACKLIST#)
 		} keys %{$lib_deps};
 
@@ -777,22 +827,22 @@ sub generate_slack_required {
 	my $current_package = &determine_current_package(@dep_searchdirs);
 
 	print STDERR "Using '$current_package' as current package name\n"
-		if $opts{'v'} and $current_package;
+		if $opts{v} and $current_package;
 
-	print STDERR "Scanning package contents..." if $opts{'v'};
+	print STDERR "Scanning package contents..." if $opts{v};
 	my $package_contents = &get_package_data;
 
-	print STDERR "done\nFinding dependencies..." if $opts{'v'};
+	print STDERR "done\nFinding dependencies..." if $opts{v};
 	my $all_deps = &find_deps($package_contents, @dep_searchdirs);
 
-	print STDERR "done\n" if $opts{'v'};
+	print STDERR "done\n" if $opts{v};
 
 	my $slack_required_contents = &format_slack_required($all_deps, $current_package);
 
 	print STDERR "=== contents of slack-required ===\n",
 		$slack_required_contents, "\n",
 		"=== end of slack-required ===\n"
-			if $opts{'v'};
+			if $opts{v};
 
 	if (length $slack_required_contents) {
 		# only write to file if there is content to be written
@@ -815,4 +865,4 @@ sub generate_slack_required {
 	}
 }
 
-&generate_slack_required($opts{'o'}, @ARGV);
+&generate_slack_required($opts{o}, @ARGV);
