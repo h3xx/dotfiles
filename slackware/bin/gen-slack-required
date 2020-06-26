@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-our $VERSION = '0.5.8';
+our $VERSION = '0.6.0';
 
 # TODO  : detect interpreted languages
 #     (*) Java
@@ -250,7 +250,7 @@ directories and the contents of `install/slack-desc'.
 
 If DIRECTORY is not specified, then the current directory is used.
 
-Copyright (C) 2010-2011 Dan Church.
+Copyright (C) 2010-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -284,59 +284,109 @@ if ($opts{a} && (! length $opts{o} or $opts{o} eq '-')) {
 # dynlib magic checker
 my $magic = File::LibMagic->new;
 
-sub read_dynlib_deps {
-    (my $elfbin = shift)
-        # shell-escape argument for inclusion in non-interpolated
-        # single quotes (probably not necessary, as shared libraries
-        # rarely have /\W/ in their filenames, but you can never be
-        # sure)
-        =~ s/'/'\\''/g;
+my $libdirs;
+sub system_libdirs {
+    unless (defined $libdirs) {
+        # TODO this is making assumptions about where libraries come from; I
+        # tried inspecting how glibc resolves libraries using /etc/ld.so.conf
+        # and LD_LIBRARY_PATH, but it was stupidly complex C code
+        my @assume_dirs = (
+            '/lib64',
+            '/lib',
+            '/usr/lib64',
+            '/usr/lib',
+        );
+        if ($ENV{LD_LIBRARY_PATH}) {
+            unshift @assume_dirs, split /:/, $ENV{LD_LIBRARY_PATH};
+        }
+        $libdirs = [
+            grep { -d } @assume_dirs
+        ];
+    }
+    return @$libdirs;
+}
 
-    # make sure ldd(1) outputs messages in English by setting LC_MESSAGES
-    # to C
+sub shell_quote {
+    # shell-escape argument for inclusion in non-interpolated single quotes
+    # (probably not necessary, as shared libraries rarely have /\W/ in their
+    # filenames, but you can never be sure)
+    my @transformed = map {
+        (my $out = $_)
+            =~ s/'/'\\''/g;
+        "'$out'";
+    } @_;
+    wantarray ? @transformed : $transformed[0];
+}
+
+sub read_dynlib_deps {
+    my $elfbin = shift;
+    # make sure the program outputs messages in ANSI English
     ((my $lcm_backup), $ENV{LC_MESSAGES}) =
     ($ENV{LC_MESSAGES}, 'C');
-    # use ldd(1) to read dynamic library links
-    open my $ldd, '-|', "ldd '$elfbin'"
-        or die "cannot open pipe from ldd(1) on file `$elfbin': $!";
+    open my $readelf, '-|', 'readelf -d ' . &shell_quote($elfbin)
+        or die "cannot open pipe from readelf(1) on file `$elfbin': $!";
     # restore environment
     $ENV{LC_MESSAGES} = $lcm_backup if defined $lcm_backup;
 
+    # e.g. "Share library: [blarg]" => "blarg"
+    my $extract_bracketed = sub {
+        my $value = shift;
+        if ($value =~ /\[(.*)\]/) {
+            return $1;
+        }
+        die "Expected bracketed string, got `$value'; perhaps the format of readelf(1) isn't compatible with this script";
+    };
+
+    my @found_libs;
+    my @found_libdirs;
+
+    foreach my $line (<$readelf>) {
+        chomp $line;
+        $line =~ s/^\s+|\s+$//;
+
+        # example readelf -d output:
+        #
+        # 0x0000000000000001 (NEEDED)             Shared library: [libavdevice.so.58]
+        # 0x0000000000000001 (NEEDED)             Shared library: [libavcodec.so.58]
+        # ...
+        # 0x000000000000001d (RUNPATH)            Library runpath: [/usr/lib64]
+        # - OR -
+        # 0x000000000000000f (RPATH)              Library rpath: [/usr/lib64/qt/lib]
+        # 0x000000000000000c (INIT)               0x406000
+
+        # shared libraries have an additional line type:
+        # 0x000000000000000e (SONAME)             Library soname: [libSimGearCore.so.2017.3.1]
+
+        my @parts = split /\s+/, $line, 3;
+        if (@parts < 3) {
+            next;
+        }
+        my (undef, $type, $value) = @parts;
+
+        if ($type =~ /^\((?:RPATH|RUNPATH)\)$/) {
+            push @found_libdirs, &$extract_bracketed($value);
+            next;
+        }
+        if ($type =~ /^\(NEEDED\)$/) {
+            push @found_libs, &$extract_bracketed($value);
+            next;
+        }
+
+    }
+    close $readelf;
+
     my @lib_deps;
 
-    foreach my $ldd_line (<$ldd>) {
-        # TODO : subject to breakage
-        if ($ldd_line =~ /^\s*(\S+\s+=>\s)?(\S+)\s/) {
-            # description of lines output by ldd(1):
-            #
-            # "[LIBBASENAME] => [LIBABS] ([HEX STRING])"
-            #   rpath-specified dynamic library link
-            # "[LIBABS] ([HEX STRING])"
-            #   absolute path (-L) -specified library link
-            #
-            # where `LIBABS' is an absolute path to a shared
-            # library, and `LIBBASENAME' is the basename of a
-            # shared library that is located and loaded at runtime
-            #
-            # example lines:
-            #
-            # libm.so.6 => /lib64/libm.so.6 (0x00007f354b6ea000)
-            # /lib64/ld-linux-x86-64.so.2 (0x00007f354b96d000)
-            #
-            # note: if a library is not found, it will print a
-            # double-space in place of like so:
-            #
-            # linux-vdso.so.1 =>  (0x00007fff235ff000)
-            #
-            # this is why the `\s' in the first parenthetical
-            # pattern is not scaled
-
-            # follow all symlinks to the absolute file name
-            push @lib_deps, &abs_path($2);
+    my @library_search_path = (@found_libdirs, &system_libdirs);
+    foreach my $lib (@found_libs) {
+        foreach my $libdir (@library_search_path) {
+            my $test_path = "$libdir/$lib";
+            if (-f $test_path) {
+                push @lib_deps, &abs_path($test_path);
+                last;
+            }
         }
     }
-
-    close $ldd;
 
     \@lib_deps
 }
