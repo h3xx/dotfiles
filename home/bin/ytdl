@@ -2,7 +2,9 @@
 # vi: sts=4 sw=4 ts=4 et
 
 YTDL_ARGS=(
+    --add-metadata
     --default-search ytsearch
+    --recode-video mkv
     -w
     -o "%(title)s-%(id)s.%(ext)s"
 )
