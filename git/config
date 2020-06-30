@@ -19,6 +19,7 @@
 	bb		= branch --all -vv
 	bbc		= branch --all -vv --contains
 	bc		= branch --contains
+	bdm		= !~/.config/git/bin/git-branch-delete-merged.sh
 	c		= commit
 	ca		= commit --amend
 	co		= checkout
