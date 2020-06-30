@@ -21,6 +21,7 @@
 	bb		= branch --all -vv
 	bc		= branch --contains
 	bbc		= branch --all -vv --contains
+	bdm		= !~/.config/git/bin/git-branch-delete-merged.sh
 	i		= bisect
 	is		= bisect start # b[i]sect
 	ir		= bisect reset
