@@ -554,7 +554,7 @@ let g:ctrlp_prompt_mappings = {
 
 " don't get lost in the largest man-made structure on earth
 let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\v[\/]node_modules$',
+	\ 'dir':  '\v[\/](node_modules|cov)$',
 	\ }
 
 " If multiple vim sessions are open in the same directory, it'll clobber each
