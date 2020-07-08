@@ -25,6 +25,7 @@ menu=~/next/php/eclib/data/menu.yaml
 tweaks=~/next/php/eclib/data/tweaks.sql
 scumm=/usr/share/games/scummvm
 dos=/usr/share/games/dos
+win31=/usr/share/games/win31
 
 # so can be reached from vim
 export appconfig d da db js menu p struct t te tweaks u
