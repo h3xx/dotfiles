@@ -1,73 +1,19 @@
 #!/bin/bash
 
-VERSION=1
-CACHE_DIR=~/.cache/yarn/yi-$VERSION
-
-yarn_precomputed_cache() {
-    if [[ -e yarn.lock ]]; then
-        printf '%s/yarn-node_modules-%s' "$CACHE_DIR" $(sha256sum yarn.lock |cut -f 1 -d ' ')
-    fi
-}
-
-# 1. yarn.lock does not exist
-# -> install locally, then copy to cache
-# 2. yarn.lock exists, but the cache does not
-# -> install directly into cache, then link locally
-
-run_yarn() (
-    MYCACHE=$(yarn_precomputed_cache)
-    if [[ -n $MYCACHE ]]; then
-        rmdir -p -- "$MYCACHE" >/dev/null 2>&1
-        if [[ -d $MYCACHE ]]; then
-            printf 'yi: Found precomputed node_modules in %s\n' "$MYCACHE" >&2
-            rm -rf node_modules &&
-            cp -al -- "$MYCACHE" node_modules || exit
-        fi
-    fi
-    YARN_MUTEXDIR=/tmp/yarn--$UID-mutexes
-    YARN_MUTEX=$YARN_MUTEXDIR/${PWD//\//%%}-mutex
-    YARN_ARGS=(
-        --link-duplicates
-        --prefer-offline
-        --mutex "file:$YARN_MUTEX"
-        "$@"
-    )
-    # yarn is SOOOO stupid!
-    mkdir -p "$YARN_MUTEXDIR"
-    if [[ -n $MYCACHE ]]; then
-        # (sic; must go after user args)
-        YARN_ARGS+=(--modules-folder "$MYCACHE")
-    fi
+run_yarn() {
+    # e.g. %%home%%user%%my-project
+    # (so named such that our automatic cleaner scripts can pick it up)
+    local MUTEXDIR=/tmp/yarn--$UID-mutexes
+    local MUTEX=$MUTEXDIR/${PWD//\//%%}-mutex
+    mkdir -p "$MUTEXDIR" &&
+    CXX='ccache c++' \
     yarn install \
-        "${YARN_ARGS[@]}" || exit
-    if [[ -z $MYCACHE ]]; then
-        # yarn.lock was generated
-        # -> files are installed locally, need to be sent to cache
-        MYCACHE=$(yarn_precomputed_cache)
-        if [[ -z $MYCACHE ]]; then
-            printf 'Failed to compute cache directory\n' >&2
-            exit 2
-        fi
-        if [[ -d $MYCACHE ]]; then
-            rm -rf -- "$MYCACHE"
-            if [[ -d $MYCACHE ]]; then
-                printf 'Failed to remove %s\n' "$MYCACHE" >&2
-                exit 2
-            fi
-        fi
-        cp -al -- node_modules "$MYCACHE" || exit
-    else
-        if [[ ! -d $MYCACHE ]]; then
-            printf 'yarn failed to generate directory %s\n' "$MYCACHE" >&2
-            exit 2
-        fi
-        # yarn.lock existed
-        # -> files were installed into cache
-        rm -rf node_modules &&
-        cp -al -- "$MYCACHE" node_modules || exit
-    fi
-)
-
+        --link-duplicates \
+        --prefer-offline \
+        --mutex "file:$MUTEX" \
+        "$@" &&
+    collapse_yarn_cache
+}
 run_pnpm() {
     pnpm i --prefer-frozen-lockfile "$@"
 }
