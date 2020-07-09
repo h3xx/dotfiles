@@ -10,7 +10,7 @@ Usage: $(basename -- "$0") [OPTIONS] [--]
 Open a web browser to Gitlab to a pipeline.
 
   -h        Show this help message.
-  -s BRANCH Set source branch (defaults to current branch).
+  -s BRANCH Set source branch/commit (defaults to current branch).
   --        Terminate options list.
 
 Copyright (C) 2020 Dan Church.
@@ -22,7 +22,7 @@ EOF
 
 }
 
-SOURCE_BRANCH=
+SOURCE_BRANCH='HEAD'
 while getopts 'hs:' flag; do
     case "$flag" in
         's')
@@ -39,15 +39,14 @@ done
 
 shift "$((OPTIND-1))"
 
-if [[ -z $SOURCE_BRANCH ]]; then
-    SOURCE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    if [[ -z $SOURCE_BRANCH ]]; then
-        printf 'Unable to determine current branch (are you in a git directory?)\n' >&2
-        exit 2
-    fi
+# determine remote URL
+LOCAL_BRANCH=$(git rev-parse --abbrev-ref "$SOURCE_BRANCH")
+if [[ -z $LOCAL_BRANCH ]]; then
+    LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
-
-REMOTE=$(git config "branch.$SOURCE_BRANCH.remote")
+if [[ -n $LOCAL_BRANCH ]]; then
+    REMOTE=$(git config "branch.$LOCAL_BRANCH.remote")
+fi
 if [[ -z $REMOTE ]]; then
     # I guess $SOURCE_BRANCH refers to a remote branch
     REMOTE=${SOURCE_BRANCH%%/*}
@@ -59,7 +58,10 @@ fi
 
 # construct URL
 COMMIT=$(git rev-parse "$SOURCE_BRANCH") || exit
-ARGS="?ref=$SOURCE_BRANCH"
+BRANCH=$(git rev-parse --abbrev-ref "$SOURCE_BRANCH")
+if [[ -n $BRANCH ]]; then
+    ARGS="?ref=$BRANCH"
+fi
 PUSH_URL=$(git remote -v |sed -e 's#^'"$REMOTE"'\s*\(.*\)\s*(push)$#\1# p;d')
 HTTP_URL=$(echo $PUSH_URL |perl -p -e ' s#^ssh://##; s#:\d+/#/#; if (m#^\w*@#) { s#:#/#g; s#^\w*@#https://#; } s#\.git$##;')
 
