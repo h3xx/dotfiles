@@ -1,0 +1,740 @@
+#!/bin/bash
+# vi: et fdm=marker sts=4 sw=4 ts=4
+
+PROJECT_NAME_KEBAB=$(basename -- "$PWD")
+INTERACTIVE=0
+
+FILES_TO_INDENT=(
+    e2e/protractor.conf.js
+    e2e/src/app.e2e-spec.ts
+    karma.conf.js
+    src/app/app.component.spec.ts
+    src/app/app.component.ts
+    src/app/app.module.ts
+    src/environments/environment.prod.ts
+    src/environments/environment.ts
+    src/index.html
+    src/main.ts
+    src/test.ts
+)
+
+FILES_TO_DELETE=(
+    README.md
+    src/app/app.component.scss
+    # this screws up tslint's rule 'no-implicit-dependencies'
+    src/app/package.json
+)
+
+# apply_patch1_angular10() {{{
+apply_patch1_angular10() {
+cat <<'EOPATCH' | patch -p1
+From 9d5f25ab707fca1e98f5c37c6895335903303e61 Mon Sep 17 00:00:00 2001
+From: Dan Church <dchurch@g2planet.com>
+Date: Mon, 13 Jul 2020 12:19:23 -0500
+Subject: [PATCH] Configure project to my liking
+
+- Configure editor
+- Configure linting, TypeScript strictness
+---
+ .editorconfig                        |   9 +-
+ .gitattributes                       |   4 +
+ .gitignore                           |   1 +
+ angular.json                         |   9 +-
+ e2e/src/app.e2e-spec.ts              |   5 +-
+ e2e/src/app.po.ts                    |  14 ++-
+ src/app/app.component.html           |   1 -
+ src/app/app.component.spec.ts        |   5 +-
+ src/app/app.component.ts             |   1 -
+ src/app/app.module.ts                |   8 +-
+ src/environments/environment.prod.ts |   2 +-
+ src/environments/environment.ts      |   2 +-
+ src/index.html                       |   1 -
+ src/main.ts                          |   4 +-
+ src/polyfills.ts                     |   1 -
+ src/test.ts                          |   2 +-
+ tsconfig.dev.json                    |   8 ++
+ tsconfig.spec.json                   |   8 ++
+ tslint.json                          | 170 ++++++++++++++++++++++++---
+ 19 files changed, 211 insertions(+), 44 deletions(-)
+ create mode 100644 .gitattributes
+ create mode 100644 tsconfig.dev.json
+
+diff --git a/.editorconfig b/.editorconfig
+index 59d9a3a..3d19017 100644
+--- a/.editorconfig
++++ b/.editorconfig
+@@ -4,13 +4,16 @@ root = true
+ [*]
+ charset = utf-8
+ indent_style = space
+-indent_size = 2
++indent_size = 4
+ insert_final_newline = true
+ trim_trailing_whitespace = true
+ 
+-[*.ts]
+-quote_type = single
++[*.json]
++indent_size = 2
+ 
+ [*.md]
+ max_line_length = off
+ trim_trailing_whitespace = false
++
++[*.ts]
++quote_type = single
+diff --git a/.gitattributes b/.gitattributes
+new file mode 100644
+index 0000000..da6066b
+--- /dev/null
++++ b/.gitattributes
+@@ -0,0 +1,4 @@
++# treat lockfiles as binary
++package-lock.json binary
++pnpm-lock.yaml binary
++yarn.lock binary
+diff --git a/.gitignore b/.gitignore
+index 86d943a..e85fe16 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -38,6 +38,7 @@ speed-measure-plugin*.json
+ /libpeerconnection.log
+ npm-debug.log
+ yarn-error.log
++pnpm-debug.log
+ testem.log
+ /typings
+ 
+diff --git a/angular.json b/angular.json
+index 1b46966..611fa48 100644
+--- a/angular.json
++++ b/angular.json
+@@ -30,7 +30,6 @@
+             "tsConfig": "tsconfig.app.json",
+             "aot": true,
+             "assets": [
+-              "src/favicon.ico",
+               "src/assets"
+             ],
+             "styles": [
+@@ -66,6 +65,13 @@
+                   "maximumError": "4kb"
+                 }
+               ]
++            },
++            "serve": {
++              "buildOptimizer": false,
++              "extractCss": true,
++              "namedChunks": true,
++              "tsConfig": "tsconfig.dev.json",
++              "vendorChunk": true
+             }
+           }
+         },
+@@ -94,7 +100,6 @@
+             "tsConfig": "tsconfig.spec.json",
+             "karmaConfig": "karma.conf.js",
+             "assets": [
+-              "src/favicon.ico",
+               "src/assets"
+             ],
+             "styles": [
+diff --git a/e2e/src/app.e2e-spec.ts b/e2e/src/app.e2e-spec.ts
+index 8bbf3cb..c78caf2 100644
+--- a/e2e/src/app.e2e-spec.ts
++++ b/e2e/src/app.e2e-spec.ts
+@@ -1,6 +1,7 @@
+-import { AppPage } from './app.po';
+ import { browser, logging } from 'protractor';
+ 
++import { AppPage } from './app.po';
++
+ describe('workspace-project App', () => {
+   let page: AppPage;
+ 
+@@ -18,6 +19,6 @@ describe('workspace-project App', () => {
+     const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+     expect(logs).not.toContain(jasmine.objectContaining({
+       level: logging.Level.SEVERE,
+-    } as logging.Entry));
++    }));
+   });
+ });
+diff --git a/e2e/src/app.po.ts b/e2e/src/app.po.ts
+index b68475e..2b4446e 100644
+--- a/e2e/src/app.po.ts
++++ b/e2e/src/app.po.ts
+@@ -1,11 +1,15 @@
+-import { browser, by, element } from 'protractor';
++import {
++  browser,
++  by,
++  element,
++} from 'protractor';
+ 
+ export class AppPage {
+-  navigateTo(): Promise<unknown> {
++  public async navigateTo(): Promise<unknown> {
+     return browser.get(browser.baseUrl) as Promise<unknown>;
+-  }
++  } // end navigateTo()
+ 
+-  getTitleText(): Promise<string> {
++  public async getTitleText(): Promise<string> {
+     return element(by.css('app-root .content span')).getText() as Promise<string>;
+-  }
++  } // end getTitleText()
+ }
+diff --git a/src/app/app.component.html b/src/app/app.component.html
+index fdb26fb..c909d50 100644
+--- a/src/app/app.component.html
++++ b/src/app/app.component.html
+@@ -330,7 +330,6 @@
+       </g>
+     </svg>
+ 
+-    <span>{{ title }} app is running!</span>
+ 
+     <svg id="rocket-smoke" alt="Rocket Ship Smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
+       <path id="Path_40" data-name="Path 40" d="M644.6,141S143.02,215.537,147.049,870.207s342.774,201.755,342.774,201.755S404.659,847.213,388.815,762.2c-27.116-145.51-11.551-384.124,271.9-609.1C671.15,139.365,644.6,141,644.6,141Z" transform="translate(-147.025 -140.939)" fill="#f5f5f5"/>
+diff --git a/src/app/app.component.spec.ts b/src/app/app.component.spec.ts
+index 95a534e..7cd9392 100644
+--- a/src/app/app.component.spec.ts
++++ b/src/app/app.component.spec.ts
+@@ -1,11 +1,12 @@
+-import { TestBed, async } from '@angular/core/testing';
++import { async, TestBed } from '@angular/core/testing';
++
+ import { AppComponent } from './app.component';
+ 
+ describe('AppComponent', () => {
+   beforeEach(async(() => {
+     TestBed.configureTestingModule({
+       declarations: [
+-        AppComponent
++        AppComponent,
+       ],
+     }).compileComponents();
+   }));
+diff --git a/src/app/app.component.ts b/src/app/app.component.ts
+index a394539..dfa2cc9 100644
+--- a/src/app/app.component.ts
++++ b/src/app/app.component.ts
+@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
+ @Component({
+   selector: 'app-root',
+   templateUrl: './app.component.html',
+-  styleUrls: ['./app.component.scss']
+ })
+ export class AppComponent {
+   title = '';
+diff --git a/src/app/app.module.ts b/src/app/app.module.ts
+index f657163..fe5a95c 100644
+--- a/src/app/app.module.ts
++++ b/src/app/app.module.ts
+@@ -1,16 +1,16 @@
+-import { BrowserModule } from '@angular/platform-browser';
+ import { NgModule } from '@angular/core';
++import { BrowserModule } from '@angular/platform-browser';
+ 
+ import { AppComponent } from './app.component';
+ 
+ @NgModule({
++  bootstrap: [AppComponent],
+   declarations: [
+-    AppComponent
++    AppComponent,
+   ],
+   imports: [
+-    BrowserModule
++    BrowserModule,
+   ],
+   providers: [],
+-  bootstrap: [AppComponent]
+ })
+ export class AppModule { }
+diff --git a/src/environments/environment.prod.ts b/src/environments/environment.prod.ts
+index 3612073..c966979 100644
+--- a/src/environments/environment.prod.ts
++++ b/src/environments/environment.prod.ts
+@@ -1,3 +1,3 @@
+ export const environment = {
+-  production: true
++  production: true,
+ };
+diff --git a/src/environments/environment.ts b/src/environments/environment.ts
+index 7b4f817..99c3763 100644
+--- a/src/environments/environment.ts
++++ b/src/environments/environment.ts
+@@ -3,7 +3,7 @@
+ // The list of file replacements can be found in `angular.json`.
+ 
+ export const environment = {
+-  production: false
++  production: false,
+ };
+ 
+ /*
+diff --git a/src/index.html b/src/index.html
+index c850996..cc181f3 100644
+--- a/src/index.html
++++ b/src/index.html
+@@ -5,7 +5,6 @@
+   <title>AngularHttpStatusCodePoster</title>
+   <base href="/">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+ </head>
+ <body>
+   <app-root></app-root>
+diff --git a/src/main.ts b/src/main.ts
+index c7b673c..3c61fae 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -9,4 +9,6 @@ if (environment.production) {
+ }
+ 
+ platformBrowserDynamic().bootstrapModule(AppModule)
+-  .catch(err => console.error(err));
++  .catch((err): void => {
++      console.error(err);
++  });
+diff --git a/src/polyfills.ts b/src/polyfills.ts
+index 03711e5..82bedfe 100644
+--- a/src/polyfills.ts
++++ b/src/polyfills.ts
+@@ -57,7 +57,6 @@
+  */
+ import 'zone.js/dist/zone';  // Included with Angular CLI.
+ 
+-
+ /***************************************************************************************************
+  * APPLICATION IMPORTS
+  */
+diff --git a/src/test.ts b/src/test.ts
+index 50193eb..2a12978 100644
+--- a/src/test.ts
++++ b/src/test.ts
+@@ -1,11 +1,11 @@
+ // This file is required by karma.conf.js and loads recursively all the .spec and framework files
+ 
+-import 'zone.js/dist/zone-testing';
+ import { getTestBed } from '@angular/core/testing';
+ import {
+   BrowserDynamicTestingModule,
+   platformBrowserDynamicTesting
+ } from '@angular/platform-browser-dynamic/testing';
++import 'zone.js/dist/zone-testing';
+ 
+ declare const require: {
+   context(path: string, deep?: boolean, filter?: RegExp): {
+diff --git a/tsconfig.dev.json b/tsconfig.dev.json
+new file mode 100644
+index 0000000..1835580
+--- /dev/null
++++ b/tsconfig.dev.json
+@@ -0,0 +1,8 @@
++{
++  "extends": "./tsconfig.app.json",
++  "compilerOptions": {
++    "noImplicitReturns": false,
++    "noUnusedLocals": false,
++    "noUnusedParameters": false
++  }
++}
+diff --git a/tsconfig.spec.json b/tsconfig.spec.json
+index 729a6d6..8a35db7 100644
+--- a/tsconfig.spec.json
++++ b/tsconfig.spec.json
+@@ -3,6 +3,14 @@
+   "extends": "./tsconfig.base.json",
+   "compilerOptions": {
+     "outDir": "./out-tsc/spec",
++    "paths": {
++      "@app/*": [
++        "src/app/*"
++      ],
++      "@e2e/*": [
++        "e2e/*"
++      ]
++    },
+     "types": [
+       "jasmine"
+     ]
+diff --git a/tslint.json b/tslint.json
+index eba6f79..f89a77d 100644
+--- a/tslint.json
++++ b/tslint.json
+@@ -1,15 +1,44 @@
+ {
+   "extends": "tslint:recommended",
+   "rules": {
++    "adjacent-overload-signatures": true,
+     "align": {
+       "options": [
+         "parameters",
+         "statements"
+       ]
+     },
+-    "array-type": false,
++    "array-type": [
++      true,
++      "array"
++    ],
+     "arrow-return-shorthand": true,
++    "await-promise": true,
++    "ban-comma-operator": true,
++    "ban-types": [
++      true,
++      ["Array", "Use [] instead."],
++      ["Function", "Use '() => T' any instead."],
++      ["Number", "Use 'number' instead."],
++      ["Object", "Use {} instead."],
++      ["String", "Use 'string' instead."]
++    ],
++    "callable-types": true,
++    "class-name": true,
++    "comment-format": [
++      true,
++      "check-space"
++    ],
++    "component-class-suffix": true,
++    "component-selector": [
++      true,
++      "element",
++      "app",
++      "kebab-case"
++    ],
++    "contextual-lifecycle": true,
+     "curly": true,
++    "cyclomatic-complexity": [true, 10],
+     "deprecation": {
+       "severity": "warning"
+     },
+@@ -29,6 +58,7 @@
+       "kebab-case"
+     ],
+     "eofline": true,
++    "forin": true,
+     "import-blacklist": [
+       true,
+       "rxjs/Rx"
+@@ -39,11 +69,20 @@
+         "spaces"
+       ]
+     },
+-    "max-classes-per-file": false,
++    "interface-name": false,
++    "interface-over-type-literal": true,
++    "jsdoc-format": true,
++    "label-position": true,
++    "linebreak-style": [true, "LF"],
++    "max-classes-per-file": [
++      true,
++      1
++    ],
+     "max-line-length": [
+       true,
+       140
+     ],
++    "member-access": true,
+     "member-ordering": [
+       true,
+       {
+@@ -55,7 +94,14 @@
+         ]
+       }
+     ],
++    "new-parens": false,
++    "no-angle-bracket-type-assertion": true,
+     "no-any": true,
++    "no-arg": true,
++    "no-bitwise": true,
++    "no-boolean-literal-compare": true,
++    "no-conflicting-lifecycle": true,
++    "no-consecutive-blank-lines": true,
+     "no-console": [
+       true,
+       "debug",
+@@ -64,23 +110,99 @@
+       "timeEnd",
+       "trace"
+     ],
++    "no-construct": true,
++    "no-debugger": true,
++    "no-duplicate-imports": true,
++    "no-duplicate-super": true,
++    "no-duplicate-switch-case": true,
++    "no-duplicate-variable": true,
+     "no-empty": false,
++    "no-empty-interface": true,
++    "no-eval": true,
++    "no-host-metadata-property": true,
++    "no-implicit-dependencies": [
++      true,
++      "dev",
++      [
++        "@app",
++        "@e2e"
++      ]
++    ],
+     "no-inferrable-types": [
+       true,
+       "ignore-params"
+     ],
++    "no-inferred-empty-object-type": true,
++    "no-input-rename": true,
++    "no-inputs-metadata-property": true,
++    "no-internal-module": true,
++    "no-invalid-template-strings": true,
++    "no-invalid-this": true,
++    "no-irregular-whitespace": true,
++    "no-mergeable-namespace": true,
++    "no-misused-new": true,
++    "no-namespace": true,
+     "no-non-null-assertion": true,
++    "no-object-literal-type-assertion": true,
++    "no-output-native": true,
++    "no-output-on-prefix": true,
++    "no-output-rename": true,
++    "no-outputs-metadata-property": true,
+     "no-redundant-jsdoc": true,
++    "no-parameter-properties": false,
++    "no-parameter-reassignment": true,
++    "no-reference": true,
++    "no-reference-import": true,
++    "no-require-imports": true,
++    "no-return-await": true,
++    "no-shadowed-variable": true,
++    "no-string-literal": true,
++    "no-string-throw": true,
+     "no-switch-case-fall-through": true,
+-    "no-var-requires": false,
++    "no-this-assignment": true,
++    "no-trailing-whitespace": true,
++    "no-unnecessary-callback-wrapper": true,
++    "no-unnecessary-initializer": true,
++    "no-unnecessary-qualifier": true,
++    "no-unsafe-finally": true,
++    "no-unused-expression": true,
++    "no-var-keyword": true,
++    "no-var-requires": true,
++    "no-void-expression": true,
++    "number-literal-format": true,
+     "object-literal-key-quotes": [
+       true,
+       "as-needed"
+     ],
++    "object-literal-sort-keys": true,
++    "one-line": [
++      true,
++      "check-open-brace",
++      "check-catch",
++      "check-else",
++      "check-whitespace"
++    ],
++    "only-arrow-functions": true,
++    "ordered-imports": true,
++    "prefer-const": true,
++    "prefer-function-over-method": false,
++    "prefer-method-signature": true,
++    "prefer-template": true,
++    "prefer-while": true,
++    "promise-function-async": [
++      true,
++      "check-arrow-function",
++      "check-function-declaration",
++      "check-function-expression",
++      "check-method-declaration"
++    ],
++    "prefer-readonly": true,
+     "quotemark": [
+       true,
+       "single"
+     ],
++    "radix": true,
++    "restrict-plus-operands": true,
+     "semicolon": {
+       "options": [
+         "always"
+@@ -95,6 +217,24 @@
+         "named": "never"
+       }
+     },
++    "strict-type-predicates": true,
++    "template-banana-in-box": true,
++    "template-no-negated-async": true,
++    "trailing-comma": {
++      "options": {
++        "multiline": {
++          "objects": "always",
++          "arrays": "always",
++          "functions": "ignore",
++          "typeLiterals": "always"
++        },
++        "esSpecCompliant": true
++      }
++    },
++    "triple-equals": [
++      true,
++      "allow-null-check"
++    ],
+     "typedef": [
+       true,
+       "call-signature"
+@@ -117,11 +257,17 @@
+         }
+       ]
+     },
++    "unified-signatures": true,
++    "unnecessary-bind": true,
++    "use-lifecycle-interface": true,
++    "use-pipe-transform-interface": true,
+     "variable-name": {
+       "options": [
++        "allow-leading-underscore",
++        "allow-pascal-case",
+         "ban-keywords",
+         "check-format",
+-        "allow-pascal-case"
++        "require-const-for-all-caps"
+       ]
+     },
+     "whitespace": {
+@@ -133,21 +279,9 @@
+         "check-type",
+         "check-typecast"
+       ]
+-    },
+-    "no-conflicting-lifecycle": true,
+-    "no-host-metadata-property": true,
+-    "no-input-rename": true,
+-    "no-inputs-metadata-property": true,
+-    "no-output-native": true,
+-    "no-output-on-prefix": true,
+-    "no-output-rename": true,
+-    "no-outputs-metadata-property": true,
+-    "template-banana-in-box": true,
+-    "template-no-negated-async": true,
+-    "use-lifecycle-interface": true,
+-    "use-pipe-transform-interface": true
++    }
+   },
+   "rulesDirectory": [
+     "codelyzer"
+   ]
+-}
+\ No newline at end of file
++}
+-- 
+2.27.0
+
+EOPATCH
+}
+# apply_patch1_angular10() }}}
+
+# apply_patch2_angular10() {{{
+apply_patch2_angular10() {
+cat <<EOPATCH2 | patch -p1
+From af4184c12fdfa3a39535ab68e472d44eba10dacd Mon Sep 17 00:00:00 2001
+From: Dan Church <dchurch@g2planet.com>
+Date: Mon, 13 Jul 2020 13:29:24 -0500
+Subject: [PATCH] Step 2
+
+---
+ angular.json                  |  2 +-
+ src/app/app.component.spec.ts | 12 ------------
+ src/app/app.component.ts      |  1 -
+ 3 files changed, 1 insertion(+), 14 deletions(-)
+
+diff --git a/angular.json b/angular.json
+index 611fa48..22b9d86 100644
+--- a/angular.json
++++ b/angular.json
+@@ -78,7 +78,7 @@
+         "serve": {
+           "builder": "@angular-devkit/build-angular:dev-server",
+           "options": {
+-            "browserTarget": "${PROJECT_NAME_KEBAB}:build"
++            "browserTarget": "${PROJECT_NAME_KEBAB}:build:serve"
+           },
+           "configurations": {
+             "production": {
+diff --git a/src/app/app.component.spec.ts b/src/app/app.component.spec.ts
+index 7cd9392..16098da 100644
+--- a/src/app/app.component.spec.ts
++++ b/src/app/app.component.spec.ts
+@@ -17,16 +17,4 @@ describe('AppComponent', () => {
+     expect(app).toBeTruthy();
+   });
+ 
+-  it(\`should have as title '${PROJECT_NAME_KEBAB}'\`, () => {
+-    const fixture = TestBed.createComponent(AppComponent);
+-    const app = fixture.componentInstance;
+-    expect(app.title).toEqual('${PROJECT_NAME_KEBAB}');
+-  });
+-
+-  it('should render title', () => {
+-    const fixture = TestBed.createComponent(AppComponent);
+-    fixture.detectChanges();
+-    const compiled = fixture.nativeElement;
+-    expect(compiled.querySelector('.content span').textContent).toContain('${PROJECT_NAME_KEBAB} app is running!');
+-  });
+ });
+diff --git a/src/app/app.component.ts b/src/app/app.component.ts
+index dfa2cc9..967833b 100644
+--- a/src/app/app.component.ts
++++ b/src/app/app.component.ts
+@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
+   templateUrl: './app.component.html',
+ })
+ export class AppComponent {
+-  title = '${PROJECT_NAME_KEBAB}';
+ }
+-- 
+2.27.0
+EOPATCH2
+}
+# apply_patch2_angular10() }}}
+
+do_indents() (
+    FAILS=0
+    for FN; do
+        if [[ ! -f $FN ]] || ! vim -c "exec 'normal! gg=G' | x" "$FN"; then
+            printf 'Failed to indent file %s\n' "$FN" >&2
+            (( ++FAILS ))
+        fi
+    done
+    return "$FAILS"
+)
+
+customize() {
+    TROUBLE=0
+    if ! apply_patch1_angular10; then
+        (( ++TROUBLE ))
+        read -r -p 'Patch had an oopsie, fix then press enter to continue...'
+    elif [[ $INTERACTIVE -ne 0 ]]; then
+        read -r -p 'Patch step 1 complete. Press enter to continue...'
+    fi
+    if ! apply_patch2_angular10; then
+        (( ++TROUBLE ))
+        read -r -p 'Patch had an oopsie, fix then press enter to continue...'
+    elif [[ $INTERACTIVE -ne 0 ]]; then
+        read -r -p 'Patch step 2 complete. Press enter to continue...'
+    fi
+    if ! do_indents "${FILES_TO_INDENT[@]}"; then
+        (( ++TROUBLE ))
+        read -r -p 'Indent step had an oopsie, fix then press enter to continue...'
+    elif [[ $INTERACTIVE -ne 0 ]]; then
+        read -r -p 'Indenting complete. Press enter to continue...'
+    fi
+    rm -f -- "${FILES_TO_DELETE[@]}"
+    if [[ $INTERACTIVE -ne 0 ]]; then
+        read -r -p 'Cleanup complete. Press enter to continue...'
+    fi
+    if [[ $TROUBLE -eq 0 ]]; then
+        printf 'Everything went smoothly!\n' >&2
+    fi
+}
+
+customize
