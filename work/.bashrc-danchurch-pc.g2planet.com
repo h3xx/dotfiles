@@ -39,7 +39,7 @@ alias \
 	fbk='$EDITOR ~/.fluxbox/keys'
 
 alias \
-    yiq='yi --silent --no-progress &>/dev/null &'
+    yiq='yi &>/dev/null &'
 
 type -t youtube-dl >/dev/null && alias youtube-dl='youtube-dl --audio-quality 6'
 
