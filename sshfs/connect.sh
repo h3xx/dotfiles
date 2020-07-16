@@ -9,4 +9,4 @@ OPTS=(
     noatime
     max_conns=4
 )
-sshfs -o "$(IFS=,; echo "${OPTS[*]}")" dev224-0: /home/dchurch/.sshfs/dchurch@dev224-0.1
+sshfs -o "$(IFS=,; echo "${OPTS[*]}")" dev224-0: /home/dchurch/.sshfs/dchurch@dev225-0.1
