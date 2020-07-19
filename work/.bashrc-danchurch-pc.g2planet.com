@@ -121,6 +121,8 @@ if [[ -d ~/.gitrepos ]]; then
     }
 fi
 
+alias insp='(gr && geeqie design-templates-and-inspiration)'
+
 # annoying
 hash ghex && alias ghex='_noout_bg ghex'
 hash libreoffice && alias libreoffice='_noout_bg libreoffice'
