@@ -1,0 +1,24 @@
+#!/bin/bash
+# vi: sts=4 sw=4 ts=4 et
+
+ME=${0/*\//}
+BIN=$(which -a "$ME" 2>/dev/null |grep -Fvx -m 1 "$0")
+
+check_recursion() {
+    # failsafe - is npx recursively calling this script?
+    if [[ $___NG_RECURSION_LEVEL -gt 4 ]]; then
+        printf 'Recursion threshold reached! (E_GRAY_GOO)\n' >&2
+        return 2
+    fi
+    (( ++___NG_RECURSION_LEVEL ))
+    export ___NG_RECURSION_LEVEL
+}
+
+if [[ -n $BIN ]]; then
+    exec "$BIN" "$@"
+else
+    check_recursion || exit
+
+    printf 'Running npx %s %s\n' "$ME" "$*" >&2
+    exec npx "$ME" "$@"
+fi
