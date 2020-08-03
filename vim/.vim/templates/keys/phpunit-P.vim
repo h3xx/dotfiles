@@ -1,10 +1,11 @@
-" property reflection for php unit tests
+" property reflection for phpunit tests
+" vi: et
 
 insert
 
-        $reflector = new ReflectionClass($tclass);
+        $reflector = new ReflectionClass($mock);
         $prop = $reflector->getProperty('MYPROPERTY');
         $prop->setAccessible(true);
-        $prop->setValue($tclass, $MYPROPERTY);
+        $prop->setValue($mock, $MYPROPERTY);
 
 .
