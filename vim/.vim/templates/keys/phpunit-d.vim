@@ -1,4 +1,5 @@
 " data set equality assertion for phpunit tests
+" vi: et
 
 append
         $expected = $this->createArrayDataSet([
@@ -9,7 +10,7 @@ append
             ],
         ]);
 
-        $actual = new \PHPUnit_Extensions_Database_DataSet_QueryDataSet($this->getConnection());
+        $actual = new PHPUnit_Extensions_Database_DataSet_QueryDataSet($this->getConnection());
         $actual->addTable('TABLE', "
             select
                 FIELD1
