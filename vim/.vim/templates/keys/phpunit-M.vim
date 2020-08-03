@@ -1,10 +1,11 @@
-" method reflection for php unit tests
+" method reflection for phpunit tests
+" vi: et
 
 insert
 
-        $reflector = new ReflectionClass($tclass);
+        $reflector = new ReflectionClass($mock);
         $meth = $reflector->getMethod('MYMETHOD');
         $meth->setAccessible(true);
-        $out = $meth->invoke($tclass, $MYARG);
+        $out = $meth->invoke($mock, $MYARG);
 
 .
