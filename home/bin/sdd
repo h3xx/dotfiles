@@ -97,8 +97,12 @@ schedule_delete() (
             return 1
         fi
     fi
-    # pass the directory in as an environment variable, since that's the safest
-    echo 'rm -rf -- "$SDD_DIR"' | SDD_DIR=$(realpath -- "$DIR") at "$DELETE_DATE"
+    # - Don't depend on the directory being there at runtime (at(1) cd's to the
+    #   directory you execute at(1) from job runtime).
+    # - Pass the directory in as an environment variable, since that's the
+    #   safest.
+    export SDD_DIR=$(realpath -- "$DIR")
+    echo 'rm -rf -- "$SDD_DIR"' | (cd /; at "$DELETE_DATE")
 )
 
 from_now() (
