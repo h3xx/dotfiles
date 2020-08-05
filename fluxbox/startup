@@ -67,6 +67,11 @@ fi
 # start conky
 conky -q &
 
+# start Dropbox
+if [[ -x ~/.dropbox-dist/dropboxd ]]; then
+    ~/.dropbox-dist/dropboxd &
+fi
+
 #qjackctl &
 volumeicon &
 redshift &
