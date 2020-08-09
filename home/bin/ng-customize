@@ -23,18 +23,170 @@ FILES_TO_DELETE=(
     src/app/app.component.scss
     # this screws up tslint's rule 'no-implicit-dependencies'
     src/app/package.json
+    src/app/app.component.spec.ts.rej
+    src/app/app.module.ts.rej
 )
+
+# apply_patch1_routing_angular10() {{{
+apply_patch1_routing_angular10() {
+cat <<'EOPATCH' | patch -p1
+From 880192bc85c0fe0a8a4ebc8b5fddcb7d02d883a2 Mon Sep 17 00:00:00 2001
+From: Dan Church <amphetamachine@gmail.com>
+Date: Sun, 9 Aug 2020 11:53:10 -0500
+Subject: [PATCH] Configure project to my liking
+
+Routing mode changes ONLY.
+---
+ src/app/app-routing.module.ts | 2 +-
+ src/app/app.component.spec.ts | 6 +++---
+ src/app/app.module.ts         | 8 ++++----
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/app/app-routing.module.ts b/src/app/app-routing.module.ts
+index d425c6f..4ae0ce5 100644
+--- a/src/app/app-routing.module.ts
++++ b/src/app/app-routing.module.ts
+@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
+ const routes: Routes = [];
+ 
+ @NgModule({
++  exports: [RouterModule],
+   imports: [RouterModule.forRoot(routes)],
+-  exports: [RouterModule]
+ })
+ export class AppRoutingModule { }
+diff --git a/src/app/app.component.spec.ts b/src/app/app.component.spec.ts
+index ec7bb7a..5b4f5fe 100644
+--- a/src/app/app.component.spec.ts
++++ b/src/app/app.component.spec.ts
+@@ -1,4 +1,4 @@
+-import { TestBed, async } from '@angular/core/testing';
++import { async, TestBed } from '@angular/core/testing';
+ import { RouterTestingModule } from '@angular/router/testing';
+ import { AppComponent } from './app.component';
+ 
+@@ -6,10 +6,10 @@ describe('AppComponent', () => {
+   beforeEach(async(() => {
+     TestBed.configureTestingModule({
+       imports: [
+-        RouterTestingModule
++        RouterTestingModule,
+       ],
+       declarations: [
+-        AppComponent
++        AppComponent,
+       ],
+     }).compileComponents();
+   }));
+diff --git a/src/app/app.module.ts b/src/app/app.module.ts
+index 2c3ba29..571bc8e 100644
+--- a/src/app/app.module.ts
++++ b/src/app/app.module.ts
+@@ -1,18 +1,18 @@
+-import { BrowserModule } from '@angular/platform-browser';
+ import { NgModule } from '@angular/core';
++import { BrowserModule } from '@angular/platform-browser';
+ 
+ import { AppRoutingModule } from './app-routing.module';
+ import { AppComponent } from './app.component';
+ 
+ @NgModule({
++  bootstrap: [AppComponent],
+   declarations: [
+-    AppComponent
++    AppComponent,
+   ],
+   imports: [
++    AppRoutingModule,
+     BrowserModule,
+-    AppRoutingModule
+   ],
+   providers: [],
+-  bootstrap: [AppComponent]
+ })
+ export class AppModule { }
+-- 
+2.28.0
+EOPATCH
+}
+# apply_patch1_routing_angular10() }}}
+
+# apply_patch1_nonrouting_angular10() {{{
+apply_patch1_nonrouting_angular10() {
+cat <<'EOPATCH' | patch -p1
+From f7d91f5e2109c23c8f2a1c868d1eb0856465f098 Mon Sep 17 00:00:00 2001
+From: Dan Church <amphetamachine@gmail.com>
+Date: Sun, 9 Aug 2020 11:59:52 -0500
+Subject: [PATCH] Configure project to my liking
+
+Non-routing changes ONLY.
+---
+ src/app/app.component.spec.ts | 5 +++--
+ src/app/app.module.ts         | 8 ++++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/app/app.component.spec.ts b/src/app/app.component.spec.ts
+index 465986a..1a9aa2c 100644
+--- a/src/app/app.component.spec.ts
++++ b/src/app/app.component.spec.ts
+@@ -1,11 +1,12 @@
+-import { TestBed, async } from '@angular/core/testing';
++import { async, TestBed } from '@angular/core/testing';
++
+ import { AppComponent } from './app.component';
+ 
+ describe('AppComponent', () => {
+   beforeEach(async(() => {
+     TestBed.configureTestingModule({
+       declarations: [
+-        AppComponent
++        AppComponent,
+       ],
+     }).compileComponents();
+   }));
+diff --git a/src/app/app.module.ts b/src/app/app.module.ts
+index f657163..fe5a95c 100644
+--- a/src/app/app.module.ts
++++ b/src/app/app.module.ts
+@@ -1,16 +1,16 @@
+-import { BrowserModule } from '@angular/platform-browser';
+ import { NgModule } from '@angular/core';
++import { BrowserModule } from '@angular/platform-browser';
+ 
+ import { AppComponent } from './app.component';
+ 
+ @NgModule({
++  bootstrap: [AppComponent],
+   declarations: [
+-    AppComponent
++    AppComponent,
+   ],
+   imports: [
+-    BrowserModule
++    BrowserModule,
+   ],
+   providers: [],
+-  bootstrap: [AppComponent]
+ })
+ export class AppModule { }
+-- 
+2.28.0
+EOPATCH
+}
+# apply_patch1_nonrouting_angular10() }}}
 
 # apply_patch1_angular10() {{{
 apply_patch1_angular10() {
 cat <<'EOPATCH' | patch -p1
-From 9d5f25ab707fca1e98f5c37c6895335903303e61 Mon Sep 17 00:00:00 2001
-From: Dan Church <dchurch@g2planet.com>
-Date: Mon, 13 Jul 2020 12:19:23 -0500
+From b6b3e506f522d149c526e909f25051835810170a Mon Sep 17 00:00:00 2001
+From: Dan Church <amphetamachine@gmail.com>
+Date: Sun, 9 Aug 2020 12:02:08 -0500
 Subject: [PATCH] Configure project to my liking
 
 - Configure editor
 - Configure linting, TypeScript strictness
+
+The rest of the changes.
 ---
  .editorconfig                        |   9 +-
  .gitattributes                       |   4 +
@@ -43,9 +195,7 @@ Subject: [PATCH] Configure project to my liking
  e2e/src/app.e2e-spec.ts              |   5 +-
  e2e/src/app.po.ts                    |  14 ++-
  src/app/app.component.html           |   1 -
- src/app/app.component.spec.ts        |   5 +-
  src/app/app.component.ts             |   1 -
- src/app/app.module.ts                |   8 +-
  src/environments/environment.prod.ts |   2 +-
  src/environments/environment.ts      |   2 +-
  src/index.html                       |   1 -
@@ -55,7 +205,7 @@ Subject: [PATCH] Configure project to my liking
  tsconfig.dev.json                    |   8 ++
  tsconfig.spec.json                   |   8 ++
  tslint.json                          | 170 ++++++++++++++++++++++++---
- 19 files changed, 211 insertions(+), 44 deletions(-)
+ 17 files changed, 204 insertions(+), 38 deletions(-)
  create mode 100644 .gitattributes
  create mode 100644 tsconfig.dev.json
 
@@ -106,7 +256,7 @@ index 86d943a..e85fe16 100644
  /typings
  
 diff --git a/angular.json b/angular.json
-index 1b46966..611fa48 100644
+index 8dd202e..91b790f 100644
 --- a/angular.json
 +++ b/angular.json
 @@ -30,7 +30,6 @@
@@ -140,7 +290,7 @@ index 1b46966..611fa48 100644
              ],
              "styles": [
 diff --git a/e2e/src/app.e2e-spec.ts b/e2e/src/app.e2e-spec.ts
-index 8bbf3cb..c78caf2 100644
+index 1bab952..7465972 100644
 --- a/e2e/src/app.e2e-spec.ts
 +++ b/e2e/src/app.e2e-spec.ts
 @@ -1,6 +1,7 @@
@@ -197,27 +347,8 @@ index fdb26fb..c909d50 100644
  
      <svg id="rocket-smoke" alt="Rocket Ship Smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
        <path id="Path_40" data-name="Path 40" d="M644.6,141S143.02,215.537,147.049,870.207s342.774,201.755,342.774,201.755S404.659,847.213,388.815,762.2c-27.116-145.51-11.551-384.124,271.9-609.1C671.15,139.365,644.6,141,644.6,141Z" transform="translate(-147.025 -140.939)" fill="#f5f5f5"/>
-diff --git a/src/app/app.component.spec.ts b/src/app/app.component.spec.ts
-index 95a534e..7cd9392 100644
---- a/src/app/app.component.spec.ts
-+++ b/src/app/app.component.spec.ts
-@@ -1,11 +1,12 @@
--import { TestBed, async } from '@angular/core/testing';
-+import { async, TestBed } from '@angular/core/testing';
-+
- import { AppComponent } from './app.component';
- 
- describe('AppComponent', () => {
-   beforeEach(async(() => {
-     TestBed.configureTestingModule({
-       declarations: [
--        AppComponent
-+        AppComponent,
-       ],
-     }).compileComponents();
-   }));
 diff --git a/src/app/app.component.ts b/src/app/app.component.ts
-index a394539..dfa2cc9 100644
+index 9dd348c..941eaf6 100644
 --- a/src/app/app.component.ts
 +++ b/src/app/app.component.ts
 @@ -3,7 +3,6 @@ import { Component } from '@angular/core';
@@ -227,32 +358,7 @@ index a394539..dfa2cc9 100644
 -  styleUrls: ['./app.component.scss']
  })
  export class AppComponent {
-   title = '';
-diff --git a/src/app/app.module.ts b/src/app/app.module.ts
-index f657163..fe5a95c 100644
---- a/src/app/app.module.ts
-+++ b/src/app/app.module.ts
-@@ -1,16 +1,16 @@
--import { BrowserModule } from '@angular/platform-browser';
- import { NgModule } from '@angular/core';
-+import { BrowserModule } from '@angular/platform-browser';
- 
- import { AppComponent } from './app.component';
- 
- @NgModule({
-+  bootstrap: [AppComponent],
-   declarations: [
--    AppComponent
-+    AppComponent,
-   ],
-   imports: [
--    BrowserModule
-+    BrowserModule,
-   ],
-   providers: [],
--  bootstrap: [AppComponent]
- })
- export class AppModule { }
+   title = 'test';
 diff --git a/src/environments/environment.prod.ts b/src/environments/environment.prod.ts
 index 3612073..c966979 100644
 --- a/src/environments/environment.prod.ts
@@ -276,11 +382,11 @@ index 7b4f817..99c3763 100644
  
  /*
 diff --git a/src/index.html b/src/index.html
-index c850996..cc181f3 100644
+index 8a2f317..a0728b1 100644
 --- a/src/index.html
 +++ b/src/index.html
 @@ -5,7 +5,6 @@
-   <title>AngularHttpStatusCodePoster</title>
+   <title>Test</title>
    <base href="/">
    <meta name="viewport" content="width=device-width, initial-scale=1">
 -  <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -627,8 +733,7 @@ index eba6f79..f89a77d 100644
 \ No newline at end of file
 +}
 -- 
-2.27.0
-
+2.28.0
 EOPATCH
 }
 # apply_patch1_angular10() }}}
@@ -715,6 +820,16 @@ customize() {
         read -r -p 'Patch had an oopsie, fix then press enter to continue...'
     elif [[ $INTERACTIVE -ne 0 ]]; then
         read -r -p 'Patch step 1 complete. Press enter to continue...'
+    fi
+    if ! apply_patch1_nonrouting_angular10; then
+        echo 'Non-routing patch had an oopsie, trying routing patch...' >&2
+        if ! apply_patch1_routing_angular10; then
+            (( ++TROUBLE ))
+            read -r -p 'Both routing and non-routing patches had an oopsie, fix then press enter to continue...'
+        fi
+    fi
+    if [[ $INTERACTIVE -ne 0 ]]; then
+        read -r -p 'Patch step 1 (routing vs. non-routing) complete. Press enter to continue...'
     fi
     if ! apply_patch2_angular10; then
         (( ++TROUBLE ))
