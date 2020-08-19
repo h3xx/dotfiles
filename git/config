@@ -31,8 +31,8 @@
 	f		= fetch
 	fa		= fetch --all --no-tags
 	fp		= format-patch
-	g		= grep
-	gr		= grep --recurse-submodules
+	g		= grep --cached
+	gr		= grep --cached --recurse-submodules
 	h		= help
 	i		= bisect
 	ib		= bisect bad
