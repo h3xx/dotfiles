@@ -3,11 +3,7 @@
 
 # colorized manpages
 
-REALBIN=$(type -aP man 2>/dev/null |grep -Fvx -m 1 "$0")
-if [[ -z $REALBIN ]]; then
-	echo 'Unable to find man(1)' >&2
-	exit 127
-fi
+REALBIN=$(type -aP less 2>/dev/null |grep -Fvx -m 1 "$0")
 
 LESS_TERMCAP_mb=$'\e[05m' \
 LESS_TERMCAP_md=$'\e[01;38;5;38m' \
