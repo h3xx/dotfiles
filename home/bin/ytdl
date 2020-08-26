@@ -9,6 +9,17 @@ YTDL_ARGS=(
     -o "%(title)s-%(id)s.%(ext)s"
 )
 
+# XXX Unicode
+# Work around not being able to encode UTF-8 filenames from the web into
+# non-UTF-8 locales.
+#
+# Ideally, this should just be handled in youtube-dl; it should either apply a
+# filter to strip incompatible endpoints from the output (ala `iconv -f utf8 -t
+# latin1//TRANSLIT'), or should refrain from translating them altogether.
+#
+# Setting the locale here causes the translation to be UTF-8 -> UTF-8.
+export LANG=en_US.utf8
+
 exec youtube-dl \
     "${YTDL_ARGS[@]}" \
     "$@"
