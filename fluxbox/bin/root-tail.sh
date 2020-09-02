@@ -6,8 +6,13 @@ if [[ -n "$rt_pid" ]]; then
     exit 2
 fi
 
+# palette
+COLOR_LOW_PRIO='#816ff7'
+COLOR_MED_PRIO='#30d4bb'
+COLOR_HIGH_PRIO='#ff00aa'
+
 rt_opts=(
-    '--geometry'    '800x600+20+20'
+    '--geometry'    '1600x600+20+20'
     '--noinitial'
 
     '--font'    '6x10'
@@ -27,25 +32,21 @@ rt_opts=(
 logs=(
     # file                          color           label
     # ---------------------------------------------------
-    /var/log/messages               brown           messages
-    /var/log/debug                  brown           debug
-    /var/log/secure                 red             secure
-    /var/log/acpid                  red             acpid
-    /var/log/Xorg.0.log             brown           X
+    /var/log/secure                 "$COLOR_HIGH_PRIO"      secure
+    /var/log/messages               "$COLOR_LOW_PRIO"       messages
+    /var/log/debug                  "$COLOR_LOW_PRIO"       debug
+    /var/log/Xorg.0.log             "$COLOR_LOW_PRIO"       X
 
-    /var/log/httpd/access_log       orange          apache
-    /var/log/httpd/error_log        brown           apache-errors
+    /var/log/httpd/access_log       "$COLOR_LOW_PRIO"       apache
+    /var/log/httpd/error_log        "$COLOR_LOW_PRIO"       apache-errors
 
-    /var/lib/mysql/necronomicon.err orange          mysql
-    /var/lib/pgsql/serverlog        orange          pgsql
+    #/var/log/cups/access_log       "$COLOR_LOW_PRIO"       cups
+    /var/log/cups/error_log         "$COLOR_MED_PRIO"       cups
 
-    #/var/log/cups/access_log       brown           cups
-    /var/log/cups/error_log         orange          cups
-
-    ~/.log/procmail.log             yellow          mail
-    #~/.log/chatsound.log           yellow          chat
-    #~/.log/fluxbox.log             orange          fluxbox
-    ~/.log/kippo.log                red             kippo
+    ~/.log/procmail.log             "$COLOR_HIGH_PRIO"      mail
+    #~/.log/chatsound.log           "$COLOR_HIGH_PRIO"      chat
+    #~/.log/fluxbox.log             "$COLOR_HIGH_PRIO"      fluxbox
+    ~/.log/kippo.log                "$COLOR_HIGH_PRIO"      kippo
 )
 
 for ((l_idx=0;l_idx<${#logs[@]};l_idx+=3)); do
@@ -53,7 +54,7 @@ for ((l_idx=0;l_idx<${#logs[@]};l_idx+=3)); do
     log_color="${logs[l_idx+1]}"
     log_label="${logs[l_idx+2]}"
 
-    if [[ -r "$log_file" && ! -d "$log_file" ]]; then
+    if [[ -r $log_file && ! -d $log_file ]]; then
         # can tail it
         rt_opts+=(
 "${log_file}${log_color:+,${log_color}}${log_label:+,${log_label}}"
