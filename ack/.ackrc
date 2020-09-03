@@ -3,19 +3,17 @@
 --color-lineno=bold ansi165 on_ansi235
 
 # ignore git merge temps
---ignore-file=match:/\.orig$/
+--ignore-file=ext:orig
 --ignore-file=match:/_(BACKUP|BASE|LOCAL|REMOTE)_.*$/
 
 # ignore SCSS cache files
---ignore-file=match:/\.scssc$/
-# ignore SCSS map files
---ignore-file=match:/\.css\.map$/
+--ignore-file=ext:scssc
 
 # composer libs
---ignore-dir=match:/vendor/
+--ignore-dir=is:vendor
 
 # ignore Angular compile dir
---ignore-dir=match:/dist/
+--ignore-dir=is:dist
 
 # ignore Composer compiled files
 --ignore-file=match:/autoload_(?:classmap|files|namespaces|psr4|real|static)\.php/
