@@ -59,6 +59,10 @@ fbsetbg -l
 #fbpager -w & # deprecated
 ipager &
 
+if [[ -x /etc/rc.d/rc.networkmanager ]]; then
+    nm-applet &
+fi
+
 # start root-tail
 if [[ -x ~/.fluxbox/bin/root-tail.sh ]]; then
     ~/.fluxbox/bin/root-tail.sh &
