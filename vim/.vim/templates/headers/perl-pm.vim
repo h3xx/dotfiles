@@ -5,19 +5,20 @@
 :0put =printf('package %s::%s;', expand('%:p:h:t'), expand('%:t:r'))
 
 insert
+# vi: et sts=4 sw=4 ts=4
 use strict;
 use warnings;
 
 our $VERSION = '0.01';
 
 sub new {
-	my $class = shift;
+    my $class = shift;
 
-	my $self = bless {
-		@_,
-	}, $class;
+    my $self = bless {
+        @_,
+    }, $class;
 
-	$self
+    $self
 }
 
 =head1 AUTHOR
@@ -31,9 +32,9 @@ Copyright (C) YEAR Dan Church.
 s/YEAR/\=strftime("%Y")/
 append
 
-This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
-
-The full text of the license can be found in the LICENSE file included with this module.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
 
 =cut
 
