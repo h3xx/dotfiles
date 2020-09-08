@@ -9,67 +9,47 @@ else
 # Only show this number of directories in path when expanding \W and \w
 PROMPT_DIRTRIM=4
 
-## define colors
-declare -A COLORS
-COLORS['BLACK']='\e[30m'
-COLORS['RED']='\e[31m'
-COLORS['GREEN']='\e[32m'
-COLORS['YELLOW']='\e[33m'
-COLORS['BLUE']='\e[34m'
-COLORS['MAGENTA']='\e[35m'
-COLORS['CYAN']='\e[36m'
-COLORS['WHITE']='\e[37m'
-#COLORS['BRIGHT']='\e[01m'
-#COLORS['NORMAL']='\e[0m'
-#COLORS['BLINK']='\e[05m'
-#COLORS['REVERSE']='\e[07m'
-
-FRAME_COLOR='\e[01;30m'
-BG_COLOR=''
-ERR_COLOR='\e[01;38;5;222;48;5;235m'
+FRAME_COLOR='\e[1;30m'
+BG_COLOR=
+ERR_COLOR='\e[1;38;5;222;48;5;235m'
 
 # BASE_COLOR=(user root)
 case "$HOSTNAME" in
 	'necronomicon.slackware')
-		BASE_COLOR=('RED'	'BLUE')
+		# vaporwave prompt! color141 (bold:color207) / color39 (bold:color45)
+		BASE_COLOR=('\e[0;38;5;141m' '\e[1;38;5;207m' '\e[0;38;5;39m' '\e[1;38;5;45m')
 		;;
 	'delicious.slackware')
-		BASE_COLOR=('GREEN'	'CYAN')
-		;;
-	'shell.sf.net')
-		BASE_COLOR=('GREEN'	'YELLOW')
+		# green (32)/cyan (36)
+		BASE_COLOR=('\e[0;32m' '\e[1;32m' '\e[0;36m' '\e[1;36m')
 		;;
 
 	# default
 	*)
-		BASE_COLOR=('MAGENTA'	'CYAN')
+		# green (32)/yellow (33)
+		BASE_COLOR=('\e[0;32m' '\e[1;32m' '\e[0;33m' '\e[1;33m')
 		;;
 esac
 
 # select appropriate index for color (user=0; root=1)
-[[ "$UID" -ne 0 ]] ; BASE_COLOR="${COLORS[${BASE_COLOR[$?]}]}"
+[[ $UID -eq 0 ]] && BASE_COLOR=("${BASE_COLOR[@]:2}")
 
-# hint: \e)0 sets G1 to special characters,
-#	\x0e (\016) puts terminal into G1 mode,
-#	\x0f (\017) puts terminal into normal mode
-
-err='$(err="$?"; [[ "$err" -eq 0 ]] || printf '\'' \[%s\][%d]'\'' '\'"$ERR_COLOR"\'' $err)'
+err='$(err=$?; [[ $err -eq 0 ]] || printf '\'' \[%s\][%d]'\'' '\'"$ERR_COLOR"\'' $err)'
 
 # first line
 line1_frame='\[\e)0'"$BG_COLOR$FRAME_COLOR"'\016\]lqqu\[\017\]\l '
-line1_mid='\['"$BASE_COLOR"'\]\u\[\e[0;37m'"$BG_COLOR"'\]@\['"$BASE_COLOR"'\]\h'
+line1_mid='\['"${BASE_COLOR[1]}"'\]\u\[\e[0m'"$BG_COLOR"'\]@\['"${BASE_COLOR[0]}"'\]\h'
 line1_last='\['"$BG_COLOR$FRAME_COLOR"'\016\] tq\`\[\017\]'
 
 line2_frame='\[\e[0m'"$BG_COLOR$FRAME_COLOR"'\016\]mq['
 line2_mid=' \[\e[0m'"$BG_COLOR"'\017\]\w'
-line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[01;37m\]\$\[\e[0m\] '
+line2_last='\['"$FRAME_COLOR"'\] ]= \[\e[1;37m\]\$\[\e[0m\] '
 
 # alternate setup:
 PS1="$line1_frame$line1_mid$line1_last$err\\n$line2_frame$line2_mid$gps1$line2_last"
 
 # clean up
 unset \
-	COLORS \
 	BASE_COLOR \
 	FRAME_COLOR \
 	ERR_COLOR \
