@@ -19,6 +19,7 @@ Usage: $0 [OPTIONS] [COLOR...]
 Display a terminal color cube.
 
   -a            Display TERM::ANSIColor compatible aliases.
+  -O            When filtering by colors, show ONLY those colors.
 
 Copyright (C) 2015-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
@@ -31,16 +32,23 @@ EOF
 
 
 MAIN: {
-    &getopts('a', \ my %opts);
+    &getopts('aO', \ my %opts);
 
     my %reverse_colors;
+    my $limit_to_colors;
     if (@ARGV) {
         @reverse_colors{0..255} = (1) x 256;
-        @reverse_colors{@ARGV} = (0) x @ARGV;
+        if ($opts{O}) {
+            $limit_to_colors = {};
+            @{$limit_to_colors}{@ARGV} = (1) x @ARGV;
+        } else {
+            @reverse_colors{@ARGV} = (0) x @ARGV;
+        }
     }
 
     my $cc = Color::Cube->new(
         reverse_colors => \%reverse_colors,
+        limit_to_colors => $limit_to_colors,
         ($opts{a} ? (format => 'ansicolor') : ()),
     );
 
@@ -57,6 +65,7 @@ sub new {
 
     my $self = bless {
         format => 'number',
+        limit_to_colors => undef,
         reverse_colors => {},
         @_,
     }, $class;
@@ -151,6 +160,9 @@ sub text {
 sub brick {
     my $self = shift;
     my ($alias, $color, $red, $green, $blue) = @_;
+    if (defined $self->{limit_to_colors} and not defined $self->{limit_to_colors}->{$color}) {
+        return '';
+    }
     my $fg = $self->fg($color, $red, $green, $blue);
     sprintf "\x1b[%s;48;5;%dm%3s \x1b[0m", $fg, $color, $self->text($alias, $color);
 }
@@ -169,14 +181,23 @@ sub color_cube {
     my $self = shift;
     my @out;
     foreach my $green (0 .. 5) {
+        my @row;
         foreach my $red (0 .. 5) {
+            my @group;
             foreach my $blue (0 .. 5) {
                 my $color = 16 + ($red * 36) + ($green * 6) + $blue;
-                push @out, $self->brick("rgb$red$green$blue", $color, $red, $green, $blue);
+                my $brick = $self->brick("rgb$red$green$blue", $color, $red, $green, $blue);
+                if ($brick) {
+                    push @group, $brick;
+                }
             }
-            push @out, " ";
+            if (@group) {
+                push @row, @group, " ";
+            }
         }
-        push @out, "\n";
+        if (@row) {
+            push @out, @row, "\n";
+        }
     }
     @out
 }
