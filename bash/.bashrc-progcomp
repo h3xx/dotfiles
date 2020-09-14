@@ -1,4 +1,5 @@
 # .bashrc-progcomp
+# vi: noet
 
 # turn on programmable completion
 shopt -s progcomp
@@ -155,19 +156,21 @@ _kmods() {
 # TODO: use $MANPATH and $LANG settings
 complete -o default -F _manpages man
 _manpages() {
-	local \
-		mans \
-		sect='[0-9]'
-
-	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
 	[[ ${COMP_WORDS[1]} = */* ]] && return
-	[[ $COMP_CWORD > 1 ]] && sect="${COMP_WORDS[1]}"
+	readarray -t COMPREPLY < <(
+		COMP_WORDBREAKS=
+		if [[ $COMP_CWORD > 1 ]]; then
+			sect=${COMP_WORDS[1]}
+		else
+			sect='[0-9]'
+		fi
+		shopt -s nullglob
 
-	mans=('/usr/man/man'${sect}"/${2}"*)
-	[[ -f ${mans[0]} ]] || return
-	mans=("${mans[@]#/usr/man/man[0-9]/}")
-	COMPREPLY=("${mans[@]%.[0-9]*}")
-	COMP_WORDBREAKS+=':'
+		mans=('/usr/man/man'${sect}"/${2}"*.${sect}*)
+		mans=("${mans[@]#/usr/man/man[0-9]/}")
+		IFS=$'\n'
+		echo -n "${mans[*]%.[0-9]*}"
+	)
 }
 
 # umount only sees mounted file systems
