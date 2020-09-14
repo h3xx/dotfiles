@@ -154,18 +154,21 @@ _kmods() {
 # TODO: use $MANPATH and $LANG settings
 complete -o default -F _manpages man
 _manpages() {
-	local \
-		MANS \
-		SECT='[0-9]'
-
-	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
 	[[ ${COMP_WORDS[1]} = */* ]] && return
-	[[ $COMP_CWORD -gt 1 ]] && SECT=${COMP_WORDS[1]}
-	MANS=('/usr/man/man'${SECT}"/${2}"*)
-	[[ -f ${MANS[0]} ]] || return
-	MANS=("${MANS[@]#/usr/man/man[0-9]/}")
-	COMPREPLY=("${MANS[@]%.[0-9]*}")
-	COMP_WORDBREAKS+=':'
+	readarray -t COMPREPLY < <(
+		COMP_WORDBREAKS=
+		if [[ $COMP_CWORD -gt 1 ]]; then
+			SECT=${COMP_WORDS[1]}
+		else
+			SECT='[0-9]'
+		fi
+		shopt -s nullglob
+
+		MANS=('/usr/man/man'${SECT}"/${2}"*.${SECT}*)
+		MANS=("${MANS[@]#/usr/man/man[0-9]/}")
+		IFS=$'\n'
+		echo -n "${MANS[*]%.[0-9]*}"
+	)
 }
 
 # umount only sees mounted file systems
