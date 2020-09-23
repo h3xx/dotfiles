@@ -1,0 +1,66 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+# Usefulness: *****
+
+PACKAGES='/var/log/packages'
+
+USAGE() {
+    printf 'Usage: %s [--] PACKAGE [PACKAGE]...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Slackware-specific script to check for packages installed on the system.
+
+  -h        Show this help message.
+  --        Terminate options list.
+
+Copyright (C) 2007-2020 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+}
+
+while getopts 'h-' FLAG; do
+    case "$FLAG" in
+        'h')
+            HELP_MESSAGE
+            exit 0
+            ;;
+        *)
+            HELP_MESSAGE
+            exit 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+cpk() {
+    local -r REGEX="($(IFS='|'; echo "$*"))"
+    find "$PACKAGES/" \
+        -maxdepth 1 \
+        -printf '%f\n' |
+    sort -f |
+    grep --color=auto -Ei -- "$REGEX"
+}
+
+if [[ $# -gt 0 ]]; then
+    cpk "$@"
+    ERR=$?
+else
+    # read in package patterns one line at a time
+    # Usefulness: ?
+    while read LINE; do
+        if [[ -n $LINE ]]; then
+            # (sic) split on whitespace
+            cpk $LINE
+            ERR=$?
+        fi
+    done
+fi
+
+exit $ERR
