@@ -1,0 +1,59 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+# Usefulness: *****
+
+PACKAGES='/var/log/packages'
+
+HELP_MESSAGE() {
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
+Usage: $(basename -- "$0") [--] PACKAGE [PACKAGE]...
+Slackware-specific script to check for packages installed on the system.
+
+  -h        Show this help message.
+  --        Terminate options list.
+
+Copyright (C) 2007-2020 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+while getopts 'h-' flag; do
+    case "$flag" in
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+cpk() {
+    local regex="($(IFS='|'; echo "$*"))"
+    find "$PACKAGES/" \
+        -maxdepth 1 \
+        -printf '%f\n' |
+    sort -f |
+    grep --color=auto -Ei -- "$regex"
+}
+
+if [[ $# -gt 0 ]]; then
+    cpk "$@"
+    err=$?
+else
+    # read in package patterns one line at a time
+    # Usefulness: ?
+    while read line; do
+        if [[ -n $line ]]; then
+            # (sic) split on whitespace
+            cpk $line
+            err=$?
+        fi
+    done
+fi
+
+exit $err
