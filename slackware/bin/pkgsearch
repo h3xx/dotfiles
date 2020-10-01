@@ -101,9 +101,9 @@ sub format_line {
         &colored($pkg_name, $colors->[0]) .
         &colored(':', $colors->[1]) .
         &colorize_pattern(
-            'line'          => $line,
-            'pattern'       => $pattern,
-            'color'         => $colors->[2]
+            line        => $line,
+            pattern     => $pattern,
+            color       => $colors->[2]
         )
     } else {
         "${pkg_name}:${line}"
@@ -123,9 +123,13 @@ sub disp_matches {
         my $pkg_name = &basename($pkgfile);
         my $match_count = 0;
 
+        my $in_file_list = 0;
         while (my $pkgline = <$pfh>) {
-            # if searching only slack-desc portion
-            next if $opts{s} && $pkgline !~ /^\w+:/;
+            if (!$in_file_list && $pkgline =~ /^FILE LIST:$/) {
+                $in_file_list = 1;
+                next;
+            }
+            next unless $in_file_list;
 
             if ($pkgline =~ /${pattern}/) {
                 # display matching lines if we're not counting
