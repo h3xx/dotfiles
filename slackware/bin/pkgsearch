@@ -32,7 +32,7 @@ Options:
   -C        Count the number of occurrences per package, rather than
               display them.
 
-Copyright (C) 2010-2011 Dan Church.
+Copyright (C) 2010-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -74,24 +74,35 @@ sub colorize_pattern {
     my ($pattern, $line, $color, $exclusive) =
         @{{@_}}{qw/ pattern line color exclusive /};
 
-    my $colored_line;
-    if (defined $pattern and $line =~ /${pattern}/) {
-        # for some reason (I'll figure it out eventually) this causes a
-        # repeat of everything up until the first match
-        #$colored_line = $`;
-        do {
-            $colored_line .= $` . &colored($&, $color);
-        #} until ($' !~ /${pattern}/);
-        # This will not hang if given a pattern like /\b/, but it has
-        # the effect of not matching anything for /(\b|.)/
-        # (figure this out later)
-        } until (! length $& or $' !~ /${pattern}/);
-        $colored_line .= $';
-    } elsif (! $exclusive) {
-        $colored_line = $line;
+    $pattern = qr/$pattern/ if defined $pattern and ref $pattern ne 'Regexp';
+
+    my @colored_lines;
+    foreach my $_line (ref $line eq 'ARRAY' ? @{$line} : $line) {
+        if (defined $pattern and $_line =~ $pattern) {
+            my $_colored;
+
+            # for some reason (I'll figure it out eventually) this causes a
+            # repeat of everything up until the first match
+            #$_colored = $`;
+
+            do {
+                $_colored .= $` . &colored($&, $color);
+
+            # This will not hang if given a pattern like /\b/, but it has
+            # the effect of not matching anything for /(\b|.)/
+            # (figure this out later)
+            #} until ($' !~ $pattern);
+            # (this fixes it)
+            } until (! length $& or $' !~ $pattern);
+
+            push @colored_lines, $_colored . $';
+
+        } elsif (! $exclusive) {
+            push @colored_lines, $_line;
+        }
     }
 
-    $colored_line
+    wantarray ? @colored_lines : $colored_lines[0]
 }
 
 sub format_line {
@@ -131,7 +142,7 @@ sub disp_matches {
             }
             next unless $in_file_list;
 
-            if ($pkgline =~ /${pattern}/) {
+            if ($pkgline =~ $pattern) {
                 # display matching lines if we're not counting
                 # matches only (`-C' flag)
                 print &format_line(
@@ -205,7 +216,8 @@ sub interpolate_patterns {
         s#^/#^# foreach @patterns_out;
     }
 
-    wantarray
-        ? @patterns_out
-        : sprintf '(' . (join '|', (('%s') x @patterns_out)) . ')', @patterns_out
+    my $combined = sprintf '(' . (join '|', (('%s') x @patterns_out)) . ')', @patterns_out;
+    $opts{i}
+        ? qr/$combined/i
+        : qr/$combined/;
 }
