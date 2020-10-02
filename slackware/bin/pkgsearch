@@ -85,8 +85,11 @@ sub colorize_pattern {
             # repeat of everything up until the first match
             #$_colored = $`;
 
+            # holds last after-pattern match ($' gets overwritten in the loop test)
+            my $after;
             do {
                 $_colored .= $` . &colored($&, $color);
+                $after = $';
 
             # This will not hang if given a pattern like /\b/, but it has
             # the effect of not matching anything for /(\b|.)/
@@ -95,7 +98,7 @@ sub colorize_pattern {
             # (this fixes it)
             } until (! length $& or $' !~ $pattern);
 
-            push @colored_lines, $_colored . $';
+            push @colored_lines, $_colored . $after;
 
         } elsif (! $exclusive) {
             push @colored_lines, $_line;
