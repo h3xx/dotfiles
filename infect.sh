@@ -276,7 +276,8 @@ fi
 
 # OPT: tmux
 if has tmux; then
-    soft_link_all ~ "$DOTFILES/tmux"/*
+    soft_link_all ~ "$DOTFILES/tmux"/!(.|..|bin)
+    soft_link_all ~/bin "$DOTFILES/tmux/bin"/*
 fi
 
 # OPT: urlview
