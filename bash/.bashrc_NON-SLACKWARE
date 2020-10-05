@@ -1,0 +1,28 @@
+# .bashrc
+
+# aliases and functions
+# test for interactive shell
+if [[ $- = *i* ]]; then
+	for RC_NAME in \
+		prompt \
+		gpg-agent \
+		tty \
+		linux \
+		progcomp \
+		"$HOSTNAME"{,"-$USER"} \
+		xterm \
+		; do
+
+		if [[ -f ~/.bashrc-$RC_NAME ]]; then
+			. ~/".bashrc-$RC_NAME"
+		fi
+	done
+
+	unset RC_NAME
+
+	# Fixes for non-Slackware systems
+	if ! alias ls &>/dev/null; then
+		LS_OPTIONS=${LS_OPTIONS:-'-F -b -T 0 --color=auto'}
+		alias ls='ls $LS_OPTIONS'
+	fi
+fi
