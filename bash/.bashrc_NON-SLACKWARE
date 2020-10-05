@@ -1,0 +1,29 @@
+# .bashrc
+# vi: noet
+
+# aliases and functions
+# test for interactive shell
+if [[ $- = *i* ]]; then
+	for rc_name in \
+		prompt \
+		gpg-agent \
+		tty \
+		linux \
+		slackware{,"-${USER}"} \
+		progcomp \
+		"${HOSTNAME}"{,"-${USER}"} \
+		xterm ; do
+
+		if [[ -f "${HOME}/.bashrc-${rc_name}" ]]; then
+			. "${HOME}/.bashrc-${rc_name}"
+		fi
+	done
+
+	unset rc_name
+
+    # Fixes for non-Slackware systems
+    if ! alias ls >/dev/null 2>&1; then
+        LS_OPTIONS=${LS_OPTIONS:-'-F -b -T 0 --color=auto'}
+        alias ls='ls $LS_OPTIONS'
+    fi
+fi
