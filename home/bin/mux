@@ -1,0 +1,24 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+SESSION=${1:-main}
+
+ask_yn() (
+    PROMPT=$1
+    DEFAULT=$2
+    read -p "$PROMPT [$([[ $DEFAULT = 'y' ]] && echo 'Y/n' || echo 'y/N')]? " ANSWER
+    [[ $ANSWER =~ [01NYny] ]] || ANSWER=$DEFAULT
+    # return
+    [[ $ANSWER =~ [1Yy] ]]
+)
+
+# if STDIN is a tty, ask to upgrade $TERM
+if [[ -t 1 ]]; then
+    if [[ $TERM = 'xterm' ]]; then
+        if ask_yn "Term was $TERM - upgrade to xterm-256color" y; then
+            TERM=xterm-256color
+        fi
+    fi
+fi
+
+exec tmux new -A -s "$SESSION"
