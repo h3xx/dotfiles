@@ -255,6 +255,11 @@ if has mutt; then
     soft_link_all ~/.mutt "$DOTFILES/mutt"/!(.|..|*.xbm)
 fi
 
+# OPT: qemu-nbd
+if has qemu-nbd; then
+    soft_link_all ~/bin "$DOTFILES/qemu/bin"/*
+fi
+
 # OPT: quakespasm
 if has quakespasm; then
     if [[ $GUI -ne 0 ]]; then
