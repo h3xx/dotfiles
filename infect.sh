@@ -244,6 +244,11 @@ if hash mutt 2>/dev/null; then
     soft_link_all ~/.mutt "$DOTFILES/mutt"/!(.|..|*.xbm)
 fi
 
+# OPT: qemu-nbd
+if hash qemu-nbd 2>/dev/null; then
+    soft_link_all ~/bin "$DOTFILES/qemu/bin"/*
+fi
+
 # OPT: quakespasm
 if hash quakespasm 2>/dev/null; then
     if [[ $GUI -ne 0 ]]; then
