@@ -38,10 +38,6 @@
 	path = vim/.vim/pack/dist/opt/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 	branch = master
-[submodule "vim/.vim/pack/dist/opt/vim-coffee-script"]
-	path = vim/.vim/pack/dist/opt/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
-	branch = master
 [submodule "vim/.vim/pack/dist/opt/vim-late_evening"]
 	path = vim/.vim/pack/dist/opt/vim-late_evening
 	url = https://github.com/h3xx/vim-late_evening.git
@@ -61,6 +57,10 @@
 [submodule "vim/.vim/pack/dist/start/lightline.vim"]
 	path = vim/.vim/pack/dist/start/lightline.vim
 	url = https://github.com/itchyny/lightline.vim.git
+	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-coffee-script"]
+	path = vim/.vim/pack/dist/start/vim-coffee-script
+	url = https://github.com/kchmck/vim-coffee-script.git
 	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-easymotion"]
 	path = vim/.vim/pack/dist/start/vim-easymotion
