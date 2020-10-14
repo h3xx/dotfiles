@@ -1,0 +1,69 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+_MYBINDIR=$(dirname -- "$0")
+
+
+ask_yn() (
+    PROMPT=$1
+    DEFAULT=$2
+    read -p "$PROMPT [$([[ $DEFAULT = 'y' ]] && echo 'Y/n' || echo 'y/N')]? " ANSWER
+    [[ $ANSWER =~ [01NYny] ]] || ANSWER=$DEFAULT
+    # return
+    [[ $ANSWER =~ [1Yy] ]]
+)
+
+# if STDIN is a tty, ask to use sane options
+# If you use default options, reads and writes will be S-L-O-W.
+EXTRA_ARGS=()
+if [[ -t 1 ]]; then
+    _SANE_CACHE=0
+    _SANE_DISCARD=0
+    _CONNECTING=0
+    for ARG; do
+        if [[ $ARG = -c ]]; then
+            _CONNECTING=1
+        elif [[ $ARG = --cache=unsafe ]]; then
+            _SANE_CACHE=1
+        elif [[ $ARG = --discard=unmap ]]; then
+            _SANE_DISCARD=1
+        fi
+    done
+    if [[ $_CONNECTING -ne 0 ]]; then
+        if [[ $_SANE_CACHE -eq 0 || $_SANE_DISCARD -eq 0 ]]; then
+            echo "Warning: You are about to create an NBD that will be extremely slow!" >&2
+        fi
+        if [[ $_SANE_CACHE -eq 0 ]]; then
+            if ask_yn "Add --cache=unsafe to arguments" y; then
+                EXTRA_ARGS+=('--cache=unsafe')
+            fi
+        fi
+        if [[ $_SANE_DISCARD -eq 0 ]]; then
+            if ask_yn "Add --discard=unmap to arguments" y; then
+                EXTRA_ARGS+=('--discard=unmap')
+            fi
+        fi
+    fi
+fi
+
+# Alter path so we don't start ourselves again
+PATH=:$PATH:
+while [[ $PATH = *:$_MYBINDIR:* ]]; do
+    PATH=${PATH//:$_MYBINDIR:/:}
+done
+PATH=${PATH#:}
+PATH=${PATH%:}
+
+if [[ $(which -- qemu-nbd 2>/dev/null) = $0 ]]; then
+    # Can't happen
+    echo "$0: Bug! Refusing to infinitely start self" >&2
+    exit 2
+fi
+
+if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
+    # Show you what I'm doing
+    set -x
+    exec qemu-nbd "${EXTRA_ARGS[@]}" "$@"
+else
+    exec qemu-nbd "$@"
+fi
