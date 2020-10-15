@@ -27,6 +27,12 @@ GUI=1
 TERSE=1
 # END OPTIONS
 
+if [[ $GUI -ne 0 && -n $SSH_CONNECTION ]]; then
+    if ! ask_yn "You're connected over SSH. Still include GUI programs?" n; then
+        GUI=0
+    fi
+fi
+
 DOTFILES=$(dirname -- "$0")
 RES_COL=80
 MOVE_TO_COL=$'\033['"${RES_COL}G"
