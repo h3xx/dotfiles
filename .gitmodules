@@ -118,3 +118,7 @@
 	path = vim/.vim/pack/dist/start/Vim-PHP-Doc/after/syntax
 	url = https://github.com/tetsuo13/Vim-PHP-Doc.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-bbcode"]
+	path = vim/.vim/pack/dist/start/vim-bbcode
+	url = https://github.com/Winseven4lyf/vim-bbcode.git
+	branch = master
