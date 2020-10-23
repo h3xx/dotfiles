@@ -1,6 +1,15 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+ask_yn_only_if_tty() {
+    if [[ -t 1 ]]; then
+        ask_yn "$@"
+    else
+        # return default
+        [[ $2 =~ [1Yy] ]]
+    fi
+}
+
 ask_yn() (
     PROMPT=$1
     DEFAULT=$2
@@ -10,7 +19,7 @@ ask_yn() (
     [[ $ANSWER =~ [1Yy] ]]
 )
 
-if ! ask_yn "This will infect your configuration files (nicely). Continue?" y; then
+if ! ask_yn_only_if_tty "This will infect your configuration files (nicely). Continue?" y; then
     printf 'Aborted.\n' >&2
     exit 1
 fi
@@ -28,7 +37,7 @@ TERSE=1
 # END OPTIONS
 
 if [[ $GUI -ne 0 && -n $SSH_CONNECTION ]]; then
-    if ! ask_yn "You're connected over SSH. Still include GUI programs?" n; then
+    if ! ask_yn_only_if_tty "You're connected over SSH. Still include GUI programs?" n; then
         GUI=0
     fi
 fi
