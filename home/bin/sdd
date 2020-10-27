@@ -147,6 +147,7 @@ list_scheduled() (
     NOW=$(date +%s)
 
     atq |
+        grep -w -- "$USER$" | # Limit to the current user
         while IFS= read -r LINE; do
             JOBID=${LINE%%[^0-9]*}
             SDD_DIR=$(at -c "$JOBID" |grep ^SDD_DIR |
