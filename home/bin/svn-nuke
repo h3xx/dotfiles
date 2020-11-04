@@ -1,2 +1,8 @@
-#!/bin/sh
-exec svn cleanup --remove-unversioned --remove-ignored "$@"
+#!/bin/bash
+# Restart with a directory argument if we don't have one.
+# (Revert needs a path, cleanup doesn't, but defaults to ".")
+if [[ $# -eq 0 ]]; then
+    exec "$0" .
+fi
+svn revert -R "$@" &&
+svn cleanup --remove-unversioned --remove-ignored "$@"
