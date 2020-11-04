@@ -8,4 +8,10 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-exec svn cleanup --remove-unversioned --remove-ignored "$@"
+# Restart with a directory argument if we don't have one.
+# (Revert needs a path, cleanup doesn't, but defaults to ".")
+if [[ $# -eq 0 ]]; then
+    exec "$0" .
+fi
+svn revert -R "$@" &&
+svn cleanup --remove-unversioned --remove-ignored "$@"
