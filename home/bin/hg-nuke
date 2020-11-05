@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+# Undo local changes
+hg revert --all "$@"
+# Only print untracked files
+hg purge --all --print "$@"
+# Actually remove
+hg purge --all "$@"
