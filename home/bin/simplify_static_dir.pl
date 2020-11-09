@@ -4,9 +4,9 @@
 package main;
 use strict;
 use warnings;
-require Cwd;
+use List::Util qw/ sum /;
 
-our $VERSION = '3.0.0';
+our $VERSION = '3.1.0';
 
 =pod
 
@@ -98,7 +98,6 @@ Written by Dan Church S<E<lt>amphetamachine@gmail.comE<gt>>
 =cut
 
 use File::Find      qw/ find /;
-require Digest::SHA;
 use Getopt::Std     qw/ getopts /;
 
 sub HELP_MESSAGE {
@@ -168,14 +167,31 @@ MAIN: {
             return;
         }
 
-        push @files, $File::Find::name;
+        push @files, Directory::Simplify::File->new($File::Find::name);
     }, @dirs_to_process);
 
-    printf STDERR "%s files found.\nGenerating hashes...", scalar @files
+    printf STDERR "%s files found.\n",
+        scalar @files
         if $opts{v};
 
+    print STDERR "Generating hashes..." if $opts{v};
     my $filehash = Directory::Simplify::FileHash->new;
-    $filehash->add(@files);
+    my $report_every = 1; # seconds
+    my $processed_bytes = 0;
+    my $last_report = time;
+    my $total_size_hr = sprintf "%0.4G %s", Directory::Simplify::Utils::hr_size(&sum(map { $_->{size} } @files));
+    printf STDERR "\e\x{37}";
+    my $cb = sub {
+        my ($file, $now) = (shift, time);
+        $processed_bytes += $file->{size};
+        if ($now >= $last_report + $report_every) {
+            printf STDERR "\e\x{38}%8s / %8s",
+                (sprintf '%0.4G %s', Directory::Simplify::Utils::hr_size($processed_bytes)),
+                $total_size_hr;
+            $last_report = $now;
+        }
+    };
+    $filehash->add({ files => \@files, callback => $cb });
     print STDERR "done.\n"
         if $opts{v};
 
@@ -470,10 +486,36 @@ sub instructions {
     @inst
 }
 
+package Directory::Simplify::File;
+use strict;
+use warnings;
+require Cwd;
+
+sub new {
+    my $class = shift;
+    my $self = bless {
+        name => Cwd::abs_path(shift),
+    }, $class;
+    (@{$self}{qw/ dev ino mode nlink uid gid rdev size
+                atime mtime ctime blksize blocks /})
+        = lstat $self->{name};
+    $self
+}
+
+sub hash {
+    my $self = shift;
+    unless (defined $self->{_hash}) {
+        require Digest::SHA;
+        my $ctx = Digest::SHA->new;
+        $ctx->addfile($self->{name});
+        $self->{_hash} = $ctx->hexdigest;
+    }
+    $self->{_hash}
+}
+
 package Directory::Simplify::FileHash;
 use strict;
 use warnings;
-require Digest::SHA;
 
 =head1 DESCRIPTION
 
@@ -505,28 +547,30 @@ sub new {
 }
 
 sub add {
-    require Cwd;
     my $self = shift;
-    my $ctx = $self->{_ctx};
-    unless (defined $ctx) {
-        $ctx = $self->{_ctx} = Digest::SHA->new;
+    my (@files, $callback);
+    if (ref $_[0] eq 'HASH') {
+        # Called method like { files => [] }
+        my %opts = %{$_[0]};
+        @files = @{$opts{files}};
+        $callback = $opts{callback};
+    } else {
+        @files = @_;
     }
-    foreach my $filename (@_) {
-        $filename = Cwd::abs_path($filename);
-        unless ($self->{_files_in_hash}->{$filename}) {
-            my $entry = {};
-            (@{$entry}{qw/ name dev ino mode nlink uid gid rdev size
-                atime mtime ctime blksize blocks /})
-            = ($filename, lstat $filename);
+    foreach my $file (@files) {
+        unless (ref $file eq 'Directory::Simplify::File') {
+            $file = Directory::Simplify::File->new($file);
+        }
+        unless ($self->{_files_in_hash}->{$file->{name}}) {
+            my $hash = $file->hash;
 
-            $ctx->addfile($filename);
-            my $hash = $ctx->hexdigest;
             unless (defined $self->{_entries}->{$hash}) {
                 $self->{_entries}->{$hash} = [];
             }
-            push @{$self->{_entries}->{$hash}}, $entry;
+            push @{$self->{_entries}->{$hash}}, $file;
+            &{$callback}($file) if ref $callback eq 'CODE';
         }
-        $self->{_files_in_hash}->{$filename} = 1;
+        $self->{_files_in_hash}->{$file->{name}} = 1;
     }
 }
 
