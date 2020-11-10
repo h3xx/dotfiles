@@ -17,7 +17,7 @@
 [begin] (fluxbox)
 [encoding] {UTF-8}
 	# TERM is set here because xterm refuses to set it via *termName
-	[exec] (xterm) {xterm -e 'tmux new -A -s main'} <~/.fluxbox/icons/xterm.xpm>
+	[exec] (xterm) {xterm -e 'mux'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
 	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled} <~/.fluxbox/icons/google-chrome.xpm>
 	[exec] (arduino) {startarduino} <~/.fluxbox/icons/arduino.xpm>
