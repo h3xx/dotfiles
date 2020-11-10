@@ -39,7 +39,7 @@ aug keycommands
 
 	" insert lorem ipsum text for all file types
 	au BufNewFile,BufRead	*
-				\ nnoremap <buffer> <silent> ,L :so ~/.vim/templates/keys/lorem_ipsum.vim<CR>
+				\ nnoremap <buffer> <silent> ,L :ru templates/keys/lorem_ipsum.vim<CR>
 
 	" use backslash-pipe (or [num]-backslash-pipe) to quickly comment lines
 
@@ -71,7 +71,7 @@ aug keycommands
 
 	" ,v - insertion of vim filetype specification
 	au FileType		sh,perl,html,xml,c,cpp,conf,mplayerconf,vim
-				\ nnoremap <buffer> <silent> ,v :so ~/.vim/templates/keys/hintline-filetype.vim<CR>
+				\ nnoremap <buffer> <silent> ,v :ru templates/keys/hintline-filetype.vim<CR>
 
 aug END " keycommands
 
@@ -120,34 +120,34 @@ aug sourcecode
 
 	" perl
 	au BufNewFile		*.pl
-				\ so ~/.vim/templates/headers/perl.vim
+				\ ru templates/headers/perl.vim
 	" perl modules
 	au BufNewFile		*.pm
-				\ so ~/.vim/templates/headers/perl-pm.vim
+				\ ru templates/headers/perl-pm.vim
 
 	" perl-CGI scripts
 	au BufNewFile		*.cgi
-				\ so ~/.vim/templates/headers/perl-cgi.vim
+				\ ru templates/headers/perl-cgi.vim
 
 	" sh
 	au BufNewFile		*.sh
-				\ so ~/.vim/templates/headers/sh.vim
+				\ ru templates/headers/sh.vim
 
 	" HTML
 	au BufNewFile		*.html
-				\ so ~/.vim/templates/headers/html5.vim
+				\ ru templates/headers/html5.vim
 
 	" XML
 	au BufNewFile		*.xml
-				\ so ~/.vim/templates/headers/xml.vim
+				\ ru templates/headers/xml.vim
 
 	"" XSLT
 	au BufNewFile		*.xsl,*.xslt
-				\ so ~/.vim/templates/headers/xsl.vim
+				\ ru templates/headers/xsl.vim
 
 	"" XSD
 	au BufNewFile		*.xsd
-				\ so ~/.vim/templates/headers/xsd.vim
+				\ ru templates/headers/xsd.vim
 
 	" Angular component templates
 	au BufNewFile,BufRead	*.component.html
