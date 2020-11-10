@@ -308,6 +308,7 @@
 		[exec] (eboard) {eboard}
 		[exec] (eduke32) {eduke32} <~/.fluxbox/icons/eduke32.xpm>
 		[exec] (enigma) {enigma} <~/.fluxbox/icons/enigma.xpm>
+		[exec] (fizmo) {xterm -geometry 72x25 -xrm 'XTerm.vt100.renderFont: true' -fa 'Px437 IBM BIOS' -fs 12 -e fizmo-ncursesw}
 		[exec] (freecell) {sol --variation freecell} <~/.fluxbox/icons/sol.xpm>
 		[exec] (freedroidRPG) {freedroidRPG} <~/.fluxbox/icons/freedroidRPG.xpm>
 		[exec] (gemrb: icewind dale) {gemrb -c ~/.gemrb/gemrb-iwd.cfg} <~/.fluxbox/icons/gemrb-iwd.xpm>
