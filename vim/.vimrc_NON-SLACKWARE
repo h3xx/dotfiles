@@ -1,0 +1,64 @@
+" Vim defaults missing on non-Slackware Linux servers
+if ! filereadable(expand("$VIMRUNTIME/defaults.vim"))
+	" this stuff is for really old (<8) versions of vim that don't ship with defaults.vim
+	" (Skipped: mouse, backspace, scrolloff)
+	set display=truncate hlsearch incsearch nrformats-=octal showcmd ttimeout ttimeoutlen=100 wildmenu
+	map Q gq
+	filetype plugin indent on
+	augroup vimStartup
+		au!
+		autocmd BufReadPost *
+					\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+					\ |   exe "normal! g`\""
+					\ | endif
+	augroup END
+else
+	runtime defaults.vim
+endif
+
+" Most of Slackware's /usr/share/vim/vimrc
+" ----- %< -----
+if has("vms")
+	set nobackup		" do not keep a backup file, use versions instead
+else
+	set backup		" keep a backup file (restore to previous version)
+	if has('persistent_undo')
+		set undofile	" keep an undo file (undo changes after closing)
+	endif
+endif
+
+if &t_Co > 2 || has("gui_running")
+	" Switch on highlighting the last used search pattern.
+	set hlsearch
+endif
+
+" Put these in an autocmd group, so that we can delete them easily.
+augroup vimrcEx
+	au!
+
+	" For all text files set 'textwidth' to 78 characters.
+	autocmd FileType text setlocal textwidth=78
+augroup END
+
+" Make vim work with the 'crontab -e' command
+set backupskip+=/var/spool/cron/*,/run/cron/*
+
+" Add optional packages.
+"
+" The matchit plugin makes the % command work better, but it is not backwards
+" compatible.
+" The ! means the package won't be loaded right away but when plugins are
+" loaded during initialization.
+if has('syntax') && has('eval')
+	packadd! matchit
+endif
+" ----- >% -----
+
+" Include the .vimrc this file overrides
+" Resolve to e.g. '/home/.../dotfiles/vim'
+let s:dotfiles_vim_dir = fnamemodify(resolve(fnamemodify('~/.vimrc', ':p')), ':h')
+let s:vimrc = s:dotfiles_vim_dir . '/.vimrc'
+" Do another readlink on it to make absolutely sure it's not this file
+if resolve(s:vimrc) != resolve(expand('<sfile>:p'))
+	exec 'so ' . s:vimrc
+endif
