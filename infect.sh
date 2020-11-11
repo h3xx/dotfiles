@@ -212,8 +212,13 @@ fi
 soft_link_all ~/.config "$DOTFILES/git"
 
 # Install vim
-soft_link_all ~ "$DOTFILES/vim"/!(.|..|.bsdvimrc|bin)
+soft_link_all ~ "$DOTFILES/vim"/!(.|..|.bsdvimrc|.vimrc|.vimrc_NON-SLACKWARE|bin)
 soft_link_all ~/bin "$DOTFILES/vim/bin"/*
+if is_slackware; then
+    soft_link "$DOTFILES/vim"/.vimrc ~/.vimrc
+else
+    soft_link "$DOTFILES/vim"/.vimrc_NON-SLACKWARE ~/.vimrc
+fi
 
 # Install misc other files
 soft_link_all ~ "$DOTFILES/home"/!(.|..|.fonts|.local|bin|rc.d|sbin)
