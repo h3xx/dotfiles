@@ -184,7 +184,7 @@ is_slackware() {
 }
 
 # Install bashrc's
-soft_link_all ~ "$DOTFILES/bash"/!(.|..|.bashrc|.bashrc-prompt_lite)
+soft_link_all ~ "$DOTFILES/bash"/!(.|..|.bashrc|.bashrc_NON-SLACKWARE|promptgen.pl)
 if is_slackware; then
     soft_link "$DOTFILES/bash"/.bashrc ~/.bashrc
 else
