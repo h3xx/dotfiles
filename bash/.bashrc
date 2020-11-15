@@ -20,7 +20,7 @@ if [[ $- = *i* ]]; then
 	#fi
 
 	for rc_name in \
-		prompt \
+		promptgen \
 		gpg-agent \
 		tty \
 		linux \
