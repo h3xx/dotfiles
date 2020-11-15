@@ -4,7 +4,7 @@
 # test for interactive shell
 if [[ $- = *i* ]]; then
 	for RC_NAME in \
-		prompt \
+		promptgen \
 		gpg-agent \
 		tty \
 		linux \
