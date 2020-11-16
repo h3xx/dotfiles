@@ -3,5 +3,6 @@
 exec \
 sqlite3 \
     -bail \
+    -init '' \
     "$1" \
     .dump
