@@ -170,7 +170,20 @@ MAIN: {
         push @files, Directory::Simplify::File->new($File::Find::name);
     }, @dirs_to_process);
 
-    printf STDERR "%s files found.\n",
+    printf STDERR "%d files found",
+        scalar @files
+        if $opts{v};
+
+    # Shortcut: Only generate hashes and inspect files that do not have a
+    # unique size. The reasoning being that file sizes do not match, there's no
+    # possible way those two files can have the same contents.
+    my %file_sizes;
+    ++$file_sizes{$_->{size}} foreach @files;
+    @files = grep {
+        $file_sizes{$_->{size}} > 1
+    } @files;
+
+    printf STDERR " (%d candidates).\n",
         scalar @files
         if $opts{v};
 
