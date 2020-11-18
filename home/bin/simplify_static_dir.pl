@@ -144,24 +144,6 @@ MAIN: {
         # outright skip directories (don't report skip)
         return if -d $File::Find::name;
 
-        # limit to or exclude file patterns specified by `-m' or `-M',
-        # respectively
-
-        # truth table
-        # -m matches    | -M is used & matches  | !return?
-        # 0     | 0         | 0
-        # 0     | 1         | 0
-        # 1     | 0         | 1
-        # 1     | 1         | 0
-        # note: m// will match everything
-        unless ($File::Find::name =~ m/$opts{m}/ and
-            !(length $opts{M} and $File::Find::name =~ m/$opts{M}/)) {
-
-            print STDERR "Skipping path `$File::Find::name'\n"
-                if $opts{v};
-            return;
-        }
-
         # skip non-existent files and links
         unless (-f $File::Find::name && ! -l $File::Find::name) {
             return;
@@ -173,6 +155,36 @@ MAIN: {
     printf STDERR "%d files found",
         scalar @files
         if $opts{v};
+
+    # Limit to or exclude file patterns specified by `-m' or `-M', respectively
+    #
+    # Truth table:
+    # -m matches    | -M is used & matches  | !return?
+    # 0             | 0                     | 0
+    # 0             | 1                     | 0
+    # 1             | 0                     | 1
+    # 1             | 1                     | 0
+    # note: m// will match everything
+    my $file_ct_before_filter = scalar @files;
+    @files = grep {
+        $_->{rel_name} =~ $opts{m}
+    } @files;
+    if ($file_ct_before_filter != scalar @files) {
+        printf STDERR " (%d files filtered by -m rule)",
+            $file_ct_before_filter - scalar @files
+            if $opts{v};
+    }
+    if (length $opts{M}) {
+        $file_ct_before_filter = scalar @files;
+        @files = grep {
+            not $_->{rel_name} =~ $opts{M}
+        } @files;
+        if ($file_ct_before_filter != scalar @files) {
+            printf STDERR " (%d files filtered by -M rule)",
+                $file_ct_before_filter - scalar @files
+                if $opts{v};
+        }
+    }
 
     # Shortcut: Only generate hashes and inspect files that do not have a
     # unique size. The reasoning being that file sizes do not match, there's no
@@ -506,8 +518,10 @@ require Cwd;
 
 sub new {
     my $class = shift;
+    my $rel_name = shift;
     my $self = bless {
-        name => Cwd::abs_path(shift),
+        rel_name => $rel_name,
+        name => Cwd::abs_path($rel_name),
     }, $class;
     (@{$self}{qw/ dev ino mode nlink uid gid rdev size
                 atime mtime ctime blksize blocks /})
