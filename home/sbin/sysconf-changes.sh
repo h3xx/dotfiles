@@ -7,6 +7,8 @@ SYSCONFDIRS=(
     /etc
     # system-wide vimrc has been known to stage changes with a .new file
     /usr/share/vim
+    /var/lib/games
+    /var/yp
 )
 
 APPLY_ALL=0
