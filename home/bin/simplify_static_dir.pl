@@ -199,12 +199,17 @@ MAIN: {
         scalar @files
         if $opts{v};
 
+    unless (@files) {
+        printf STDERR "Nothing to do.\n";
+        exit 0;
+    }
+
     print STDERR "Generating hashes..." if $opts{v};
     my $filehash = Directory::Simplify::FileHash->new;
     my $report_every = 1; # seconds
     my $processed_bytes = 0;
     my $last_report = time;
-    my $total_size_hr = sprintf "%0.4G %s", Directory::Simplify::Utils::hr_size(&sum(map { $_->{size} } @files));
+    my $total_size_hr = sprintf "%0.4G %s", Directory::Simplify::Utils::hr_size(&sum(map { $_->{size} } @files) or 0);
     printf STDERR "\e\x{37}";
     my $cb = sub {
         my ($file, $now) = (shift, time);
