@@ -7,3 +7,6 @@ fi
 # Standard editor, pager
 export PAGER='less' MANPAGER='less' EDITOR='vim'
 alias vi='$EDITOR'
+
+# Disable gvfs mounts
+export GVFS_DISABLE_FUSE=1
