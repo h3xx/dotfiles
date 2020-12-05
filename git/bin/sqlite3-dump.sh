@@ -1,5 +1,5 @@
 #!/bin/sh
 exec sqlite3 \
-    -init '' \
+    -init /dev/null \
     -bail "$1" \
     .dump
