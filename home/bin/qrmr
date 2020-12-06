@@ -1,0 +1,118 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# usefulness: *****
+# options:
+#  -s : shred(1) files before unlinking them. WARNING: if another instance of
+#     this function is already running it may simply unlink the files
+#
+
+HELP_MESSAGE() {
+    local EXIT_CODE=${1:-0}
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS] [--] FILE...
+Delete a huge directory in the background so you can do more interesting things
+with the terminal.
+
+  -h        Show this help message.
+  -f        Remove in the foreground instead of the background.
+  -s        Shred instead of just rm.
+  --        Terminate options list.
+
+Copyright (C) 2010-2020 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+    exit "$EXIT_CODE"
+}
+
+SHRED=0
+FOREGROUND=0
+
+while getopts 'hfs-' flag; do
+    case "$flag" in
+        'f')
+            FOREGROUND=1
+            ;;
+        's')
+            SHRED=1
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
+done
+
+shift "$((OPTIND-1))"
+
+if [[ $# -lt 1 ]]; then
+    HELP_MESSAGE 2
+fi
+
+LOCK_FILE=.qrmr.lock
+
+do_remove() {
+    local DIR=$1
+    if [[ $SHRED -ne 0 ]]; then
+        flock -x "$DIR/$LOCK_FILE" \
+            ionice -c 3 \
+            sh -c '
+                DIR=$0;
+                find "$DIR"/* -type f -exec shred -zu -- {} + &&
+                find "$DIR"/* -type d -empty -delete &&
+                rm -rf -- "$DIR"
+            ' \
+            "$DIR"
+    else
+        flock -x "$DIR/$LOCK_FILE" ionice -c 3 rm -rf -- "$DIR"/* "$DIR"
+    fi
+}
+
+if [[ $SHRED -ne 0 ]]; then
+    DIRS=(
+        ZZZ-shred
+        YYY-shred
+    )
+else
+    DIRS=(
+        ZZZ
+        YYY
+    )
+fi
+
+QUEUED=0
+for DIR in "${DIRS[@]}"; do
+    if [[ ! -d $DIR ]]; then
+        mkdir -p -- "$DIR" &&
+        touch "$DIR"/.okaytodelete
+        for fn; do
+            mv -- "$fn" "$(mktemp -dp "$DIR" 'qrmr.XXXXXX')"
+        done
+        if [[ $FOREGROUND -ne 0 ]]; then
+            do_remove "$DIR"
+        else
+            do_remove "$DIR" &
+        fi
+        exit
+    elif [[ -e $DIR/.okaytodelete ]]; then
+        if ! flock -n "$DIR/$LOCK_FILE" -c :; then
+            # There's a lock on the dir; there's a process in the middle of
+            # deleting it.
+            # Ergo, we can simply move it into the directory and it should
+            # automatically remove it.
+            echo "Using existing directory $DIR" >&2
+            for fn; do
+                mv -- "$fn" "$(mktemp -dp "$DIR" 'qrmr.XXXXXX')"
+            done
+            exit
+        fi
+    fi
+    printf '`%s'\'' exists, but cannot be used.\n' "$DIR" >&2
+done
+
+printf 'Unable to queue deletions.\n' >&2
+exit 1
