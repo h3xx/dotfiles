@@ -288,57 +288,6 @@ tcd() {
 	cd "$(tar tf "$tarball" |head -1 |cut -f 1 -d /)"
 }
 
-# delete a huge directory in the background so you can do more interesting
-# things with the terminal
-# usefulness: *****
-# options:
-#  -s : shred(1) files before unlinking them. WARNING: if another instance of
-#	  this function is already running it may simply unlink the files
-#
-qrmr() {
-	# disconnect and destruct
-	local dir fn shr=0
-	# -s => shred instead of just rm
-	if [[ "_$1" == '_-s' ]]; then
-		shr=1
-		shift 1
-	fi
-
-	for dir in ZZZ YYY; do
-		# truth table
-		# $dir is dir?	| exists $dir/.ok?	|| action
-		# 0		| x			|| 1
-		# 1		| 0			|| 0
-		# 1		| 1			|| 2
-		# --
-		# r=1 : normal; create $dir, move $thing into $dir, start destruct of $dir
-		# r=0 : abort (move on)
-		# r=2 : just move $thing into $dir because $dir is already being destroyed
-		if [[ ! -d "$dir" ]]; then
-			mkdir -p -- "$dir" &&
-			touch "$dir"/.okaytodelete || return
-			for fn; do
-				mv -- "$fn" "$(mktemp -dp "$dir" 'qrmr.XXXXXX')"
-			done
-			if [[ "$shr" -eq 0 ]]; then
-				rm -rf -- "$dir"/* "$dir" &
-			else
-				ionice -c 3 find "$dir"/* -type f -exec shred -zu -- {} + &&
-				find "$dir"/* -type d -empty -delete &&
-				rm -rf -- "$dir" &
-			fi
-			return 0
-		elif [[ -e "$dir"/.okaytodelete ]]; then
-			for fn; do
-				mv -- "$fn" "$(mktemp -dp "$dir" 'qrmr.XXXXXX')"
-			done
-			return
-		fi
-		echo "\`$dir' exists."
-	done
-	return 1
-}
-
 # turn off history (incognito mode)
 # usefulness: ?
 histoff() {
