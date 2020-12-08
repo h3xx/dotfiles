@@ -1,4 +1,15 @@
-"" quickie key sequence to clean up and auto-format imports
+" Quickie key sequence to clean up and auto-format imports
+
+" Before:
+" import {
+" Foo as   Quux        , Baz, Qux } from '@foo';
+"
+" After:
+" import {
+"     Foo as Quux,
+"     Baz,
+"     Qux,
+" } from '@foo';
 
 " join the import
 normal vaBJ
