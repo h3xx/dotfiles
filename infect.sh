@@ -19,6 +19,84 @@ ask_yn() (
     [[ $ANSWER =~ [1Yy] ]]
 )
 
+USAGE() {
+    printf 'Usage: %s [OPTIONS]\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Infect your configuration files (nicely).
+
+  -h|--help     Show this help message.
+  --dry-run     Show what would be installed.
+  --force       Overwrite existing files.
+  --no-force    Do not overwrite existing files (default).
+  --gui         Install configs for GUI programs (default).
+  --no-gui      Omit configs for GUI programs.
+  --verbose     Emit more messages.
+  --terse       Emit fewer messages (default).
+
+Copyright (C) 2020 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+}
+
+# OPTIONS
+DRY_RUN=0
+FORCE=0
+GUI=1
+TERSE=1
+ARG_ERRORS=0
+# END OPTIONS
+for ARG; do
+    case "$ARG" in
+        --dry-run)
+            DRY_RUN=1
+            ;;
+        --force)
+            FORCE=1
+            ;;
+        --no-force)
+            FORCE=0
+            ;;
+        --gui)
+            GUI=1
+            ;;
+        --no-gui)
+            GUI=0
+            ;;
+        --verbose)
+            TERSE=0
+            ;;
+        --terse|--quiet)
+            TERSE=1
+            ;;
+        --help|-h)
+            HELP_MESSAGE
+            exit 0
+            ;;
+        --)
+            break
+            ;;
+        *)
+            printf 'Unrecognized flag: %s\n' "$ARG" >&2
+            ARG_ERRORS=1
+            ;;
+    esac
+done
+
+if [[ $ARG_ERRORS -ne 0 ]]; then
+    USAGE >&2
+    printf 'Try "%s --help" for more information\n' \
+        "${0##*/}" \
+        >&2
+    exit 1
+fi
+
 if ! ask_yn_only_if_tty "This will infect your configuration files (nicely). Continue?" y; then
     printf 'Aborted.\n' >&2
     exit 1
@@ -28,13 +106,6 @@ fi
 shopt -s dotglob
 # Make it so e.g. vim/!(.gvimrc) will NOT list .gvimrc
 shopt -s extglob
-
-# OPTIONS
-DRY_RUN=0
-FORCE=0
-GUI=1
-TERSE=1
-# END OPTIONS
 
 if [[ $GUI -ne 0 && -n $SSH_CONNECTION ]]; then
     if ! ask_yn_only_if_tty "You're connected over SSH. Still include GUI programs?" n; then
@@ -89,7 +160,7 @@ echo_mkdir() {
 }
 
 echo_already_linked() {
-    if [[ $TERSE -ne 1 ]]; then
+    if [[ $TERSE -lt 1 ]]; then
         printf '%s[%s%s%s]\r' \
             "$MOVE_TO_COL" \
             "$SETCOLOR_SUCCESS" \
