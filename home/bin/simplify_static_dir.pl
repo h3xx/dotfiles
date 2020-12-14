@@ -122,15 +122,14 @@ EOF
 
 
 MAIN: {
-    my %opts = (
-        v => 0,
-        f => 0,
-        m => '',
-        M => '',
-        z => 0,
-    );
+    &getopts('vfm:M:z', \ my %opts);
 
-    &getopts('vfm:M:z', \%opts);
+    my $verbose = defined $opts{v};
+    my $print_freed = defined $opts{f};
+    my $files_match = $opts{m} || '';
+    my $files_exclude = $opts{M} || '';
+    my $include_zero_length_files = defined $opts{z};
+    my $print_progress = $verbose;
 
     # correct relative paths
     # OR if no directories given, search the current directory
@@ -138,7 +137,7 @@ MAIN: {
 
     my @files;
     print STDERR 'Finding files...'
-        if $opts{v};
+        if $verbose;
 
     &find(sub {
         # outright skip directories (don't report skip)
@@ -154,7 +153,7 @@ MAIN: {
 
     printf STDERR "%d files found",
         scalar @files
-        if $opts{v};
+        if $verbose;
 
     # Limit to or exclude file patterns specified by `-m' or `-M', respectively
     #
@@ -167,22 +166,22 @@ MAIN: {
     # note: m// will match everything
     my $file_ct_before_filter = scalar @files;
     @files = grep {
-        $_->{rel_name} =~ $opts{m}
+        $_->{rel_name} =~ $files_match
     } @files;
     if ($file_ct_before_filter != scalar @files) {
         printf STDERR " (%d files filtered by -m rule)",
             $file_ct_before_filter - scalar @files
-            if $opts{v};
+            if $verbose;
     }
-    if (length $opts{M}) {
+    if (length $files_exclude) {
         $file_ct_before_filter = scalar @files;
         @files = grep {
-            not $_->{rel_name} =~ $opts{M}
+            not $_->{rel_name} =~ $files_exclude
         } @files;
         if ($file_ct_before_filter != scalar @files) {
             printf STDERR " (%d files filtered by -M rule)",
                 $file_ct_before_filter - scalar @files
-                if $opts{v};
+                if $verbose;
         }
     }
 
@@ -197,50 +196,56 @@ MAIN: {
 
     printf STDERR " (%d candidates).\n",
         scalar @files
-        if $opts{v};
+        if $verbose;
 
     unless (@files) {
         printf STDERR "Nothing to do.\n";
         exit 0;
     }
 
-    print STDERR "Generating hashes..." if $opts{v};
+    print STDERR "Generating hashes..." if $verbose;
     my $filehash = Directory::Simplify::FileHash->new;
     my $report_every = 1; # seconds
     my $processed_bytes = 0;
     my $last_report = time;
     my $total_size_hr = sprintf "%0.4G %s", Directory::Simplify::Utils::hr_size(&sum(map { $_->{size} } @files) or 0);
-    printf STDERR "\e\x{37}";
-    my $cb = sub {
-        my ($file, $now) = (shift, time);
-        $processed_bytes += $file->{size};
-        if ($now >= $last_report + $report_every) {
-            printf STDERR "\e\x{38}%8s / %8s",
-                (sprintf '%0.4G %s', Directory::Simplify::Utils::hr_size($processed_bytes)),
-                $total_size_hr;
-            $last_report = $now;
-        }
-    };
-    $filehash->add({ files => \@files, callback => $cb });
+    my $cb;
+    if ($print_progress) {
+        printf STDERR "\e\x{37}";
+        $cb = sub {
+            my ($file, $now) = (shift, time);
+            $processed_bytes += $file->{size};
+            if ($now >= $last_report + $report_every) {
+                printf STDERR "\e\x{38}%8s / %8s",
+                    (sprintf '%0.4G %s', Directory::Simplify::Utils::hr_size($processed_bytes)),
+                    $total_size_hr;
+                $last_report = $now;
+            }
+        };
+    }
+    $filehash->add({
+        files => \@files,
+        callback => $cb,
+    });
     print STDERR "done.\n"
-        if $opts{v};
+        if $verbose;
 
     my $generator = Directory::Simplify::Instruction::Generator->new(
         filehash => $filehash,
-        min_size => ($opts{z} ? 0 : 1),
+        min_size => ($include_zero_length_files ? 0 : 1),
     );
 
     my $freed_bytes = 0;
 
     foreach my $inst ($generator->instructions) {
-        print STDERR $inst, "\n" if $opts{v};
+        print STDERR $inst, "\n" if $verbose;
         $inst->run;
         $freed_bytes += $inst->bytes_freed;
     }
 
     printf STDERR "freed %d bytes (%0.4G %s)\n",
         $freed_bytes, Directory::Simplify::Utils::hr_size($freed_bytes)
-            if $opts{f} or $opts{v};
+            if $print_freed or $verbose;
 }
 
 package Directory::Simplify::Utils;
