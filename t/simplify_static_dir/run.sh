@@ -1,33 +1,10 @@
 #!/bin/bash
-# vi: et sts=4 sw=4 ts=4 fdm=marker fdl=-1
+# vi: et sts=4 sw=4 ts=4
 
-SCRIPT=../../home/bin/simplify_static_dir.pl
-
-# {{{echo funcs
-echo_success() {
-    printf '[\033[1;32m%s\033[0;39m] %s' \
-        '  OK  ' \
-        "$*"
-}
-
-echo_failure() {
-    printf '[\033[1;31m%s\033[0;39m] %s' \
-        'FAILED' \
-        "$*"
-}
-
-echo_warning() {
-    printf '[\033[1;33m%s\033[0;39m] %s' \
-        'WARNING' \
-        "$*"
-}
-
-echo_passed() {
-    printf '[\033[1;33m%s\033[0;39m] %s' \
-        'PASSED' \
-        "$*"
-}
-# }}}
+WORKDIR=$(dirname -- "$0")
+SCRIPT=$WORKDIR/../../home/bin/simplify_static_dir.pl
+TAR=$WORKDIR/t.tar
+. "$WORKDIR/../funcs.sh"
 
 assert_equals() {
     local \
@@ -100,7 +77,7 @@ assert_older_than() {
 
 _prep_tar() {
     rm -rf t &&
-    tar xf t.tar
+    tar xf "$TAR"
 }
 _cleanup() {
     rm -rf t
