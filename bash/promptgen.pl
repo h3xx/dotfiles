@@ -5,6 +5,8 @@ use Getopt::Long qw/ GetOptions /;
 
 
 
+our $VERSION = '1.0.0';
+
 sub HELP_MESSAGE {
     my $fh = shift;
     print $fh <<EOF
@@ -65,11 +67,11 @@ MAIN: {
     my $prompt = Prompt->new(
         utf8 => $utf8,
         colors => {
-            defined $host_color ? (host => $host_color) : (),
-            defined $user_color ? (user => $user_color) : (),
-            defined $frame_color ? (frame => $frame_color) : (),
-            defined $strudel_color ? (strudel => $strudel_color) : (),
-            defined $err_color ? (err => $err_color) : (),
+            host => $host_color,
+            user => $user_color,
+            frame => $frame_color,
+            strudel => $strudel_color,
+            err => $err_color,
         },
         features => {
             git => $git,
@@ -84,8 +86,6 @@ MAIN: {
 package Color;
 use strict;
 use warnings;
-
-our $VERSION = '0.01';
 
 sub new {
     my $class = shift;
@@ -307,8 +307,11 @@ sub new {
         pwd => '7:-0',
         strudel => '7:-0',
         tty => '0:b',
+        host => '2',
+        user => '2:b',
     );
     my $self = bless {
+        colors => {},
         space_bg => 0,
         @_,
     }, $class;
@@ -317,9 +320,11 @@ sub new {
         %default_features,
         (defined $self->{features} ? %{$self->{features}} : ()),
     };
+    # Eliminate undef colors, apply default colors
+    delete @{$self->{colors}}{ grep { not defined $self->{colors}->{$_} } keys %{$self->{colors}} };
     $self->{colors} = {
         %default_colors,
-        (defined $self->{colors} ? %{$self->{colors}} : ()),
+        %{$self->{colors}},
     };
     foreach my $key (keys %{$self->{colors}}) {
         $self->{colors}->{$key} = Color->from_string($self->{colors}->{$key})
@@ -441,13 +446,12 @@ sub line2 {
 
 sub git_prompt_loader {
     my $self = shift;
-    return '' unless $self->{features}->{git_loader};
+    return undef unless $self->{features}->{git_loader};
     my @candidates = (
         '/usr/doc/git-*.*.*/contrib/completion/git-prompt.sh',
         '/usr/share/git-core/contrib/completion/git-prompt.sh',
         '/usr/lib/git-core/git-sh-prompt',
     );
-    my $load;
     foreach my $globstr (@candidates) {
         if ($globstr =~ /\*|\?/) {
             if (glob $globstr) {
@@ -467,7 +471,7 @@ sub git_prompt_loader {
             }
         }
     }
-    return '';
+    return undef;
 }
 
 sub git_color_override {
@@ -499,8 +503,7 @@ r=$c_clear$r
 # Basic git-enabled prompt; Will show you the branch or tag, but that's about
 # it.
 sub git_basic_ps1 {
-    my $self = shift;
-    my $state = Color::Transform::State->new;
+    my ($self, $state) = @_;
     $self->line1_left($state)
         . '$(__git_ps1 \''
             . &blocker($state->next_nonprinting($self->{space_bg}))
@@ -517,23 +520,23 @@ sub git_prompt {
     my @lines = (
         $self->git_prompt_loader,
     );
+    my $state = Color::Transform::State->new;
     if ($self->{basic_git}) {
-        (my $p = $self->git_basic_ps1) =~ s/'/'\\''/g;
+        (my $p = $self->git_basic_ps1($state)) =~ s/'/'\\''/g;
         push @lines, "PS1='$p'";
     } else {
-        (my $p = $self->git_prompt_command) =~ s/'/'\\''/g;
+        (my $p = $self->git_prompt_command($state)) =~ s/'/'\\''/g;
         push @lines,
             $self->git_color_override,
             'GIT_PS1_SHOWCOLORHINTS=1',
             "PROMPT_COMMAND='$p'";
     }
-    join "\n", @lines;
+    join "\n", grep { defined $_ } @lines;
 }
 
 # Fancy git prompt; Shows branch, tag, special status, all in different colors
 sub git_prompt_command {
-    my $self = shift;
-    my $state = Color::Transform::State->new;
+    my ($self, $state) = @_;
     my $l1left = $self->line1_left($state);
     # The space before the git section is based on the last color state of the
     # line1_left. In order to color the space properly, we need to calculate it
@@ -549,13 +552,13 @@ sub git_prompt_command {
 
 sub non_git_prompt {
     my $self = shift;
-    (my $p = $self->non_git_ps1) =~ s/'/'\\''/g;
+    my $state = Color::Transform::State->new;
+    (my $p = $self->non_git_ps1($state)) =~ s/'/'\\''/g;
     sprintf q~PS1='%s'~, $p;
 }
 
 sub non_git_ps1 {
-    my $self = shift;
-    my $state = Color::Transform::State->new;
+    my ($self, $state) = @_;
     $self->line1_left($state)
         . $self->line1_right($state)
         . ($self->{features}->{err} ? $self->err($state) : '')
