@@ -1,68 +1,67 @@
 #!/bin/bash
+# vi: et sts=4 sw=4 ts=4
 
 HELP_MESSAGE() {
-	local EXIT_CODE="${1:-0}"
-	cat <<EOF
+    local EXIT_CODE="${1:-0}"
+    cat <<EOF
 Usage: $(basename -- "$0") [OPTIONS] [SERVERS]...
-Retrieve SSL certificates.
+Retrieve and display SSL certificates.
 
-  -o FILE		Output to FILE. Default is STDOUT.
-  -p PORT		Connect to server on PORT. Default is 443, the HTTPS
-			port.
-  -b			Format the bare key only, not including x509 header
-			information.
-  -h			Print this help message.
+  -o FILE   Output to FILE. Default is STDOUT.
+  -p PORT   Connect to server on PORT. Default is 443, the HTTPS port.
+  -b        Format the bare key only, not including x509 header information.
+  -h        Print this help message.
 
-Copyright (C) 2010-2014 Dan Church.
+Copyright (C) 2010-2020 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
 EOF
-	exit "$EXIT_CODE"
+    exit "$EXIT_CODE"
 }
 
 PORT='443'
-OUT=''
+OUT=
 TEXT='-text'
 CAFILE='/etc/ssl/certs/ca-certificates.crt'
 while getopts 'o:p:bh' flag; do
-	case "$flag" in
-		'o')
-			OUT="$OPTARG"
-			;;
-		'p')
-			PORT="$OPTARG"
-			;;
-		'b')
-			TEXT=''
-			;;
-		'h')
-			HELP_MESSAGE 0
-			;;
-		*)
-			HELP_MESSAGE 1
-			;;
-	esac
+    case "$flag" in
+        'o')
+            OUT="$OPTARG"
+            ;;
+        'p')
+            PORT="$OPTARG"
+            ;;
+        'b')
+            TEXT=
+            ;;
+        'h')
+            HELP_MESSAGE 0
+            ;;
+        *)
+            HELP_MESSAGE 1
+            ;;
+    esac
 done
 
 shift "$((OPTIND-1))"
 
 OPTS=()
 
-if [ "$#" -lt 1 ]; then
-	HELP_MESSAGE 2
+if [[ $# -lt 1 ]]; then
+    HELP_MESSAGE 2
 fi
 
-if [ -f "$CAFILE" ]; then
-	OPTS+=('-CAfile' "$CAFILE")
+if [[ -f $CAFILE ]]; then
+    OPTS+=('-CAfile' "$CAFILE")
 fi
 
 for server; do
-	# note: `</dev/null' will make it so s_client will not wait for command
-	# inputs, which would cause the session to hang until the session is
-	# closed
-	openssl s_client \
-		"${OPTS[@]}" \
-		-connect "$server:$PORT" </dev/null |
-	openssl x509 $TEXT ${OUT:+-out "$OUT"}
+    # note: `</dev/null' will make it so s_client will not wait for command
+    # inputs, which would cause the session to hang until the session is
+    # closed
+    openssl s_client \
+        "${OPTS[@]}" \
+        -connect "$server:$PORT" </dev/null |
+    openssl x509 $TEXT ${OUT:+-out "$OUT"}
 done
