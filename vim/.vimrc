@@ -510,6 +510,19 @@ function! LightLineFugitive()
 	return ''
 endfunction
 
+if &encoding == 'utf-8'
+	let g:lightline.separator.right='«'
+	let g:lightline.separator.left='»'
+	let g:lightline.component.lineinfo=substitute(g:lightline['component']['lineinfo'], '�', '¶', 'g')
+	function! LightLineFugitive()
+		if exists('*fugitive#head')
+			let _=fugitive#head()
+			return strlen(_) ? 'µ '._ : ''
+		endif
+		return ''
+	endfunction
+endif
+
 " *** vim-gitgutter ***
 " wait until I save the file to update signs
 let g:gitgutter_realtime=0
