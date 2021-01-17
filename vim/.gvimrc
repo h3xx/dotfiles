@@ -21,28 +21,6 @@ if has('gui_running')
 		set mouse=n
 	endif " has('mouse')
 
-	" Fancy Plugin Options
-
-	set guifont=Terminess\ Powerline\ 9
-
-	let g:lightline.component.lineinfo = ' %3l:%-2v'
-	let g:lightline.separator.left = ''
-	let g:lightline.separator.right = ''
-	let g:lightline.subseparator.left = ''
-	let g:lightline.subseparator.right = ''
-
-	function! LightLineReadonly()
-		return &ft != 'help' && &readonly ? '' : ''
-	endfunction
-
-	function! LightLineFugitive()
-		if exists('*fugitive#head')
-			let _ = fugitive#head()
-			return strlen(_) ? ' '._ : ''
-		endif
-		return ''
-	endfunction
-
 	" Stop the cursor from blinking, ever
 	" addendum: this was to stop a bug where the cursor disappeared when
 	" the window was maximized, but I decided to just never maximize
