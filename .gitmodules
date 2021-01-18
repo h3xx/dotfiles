@@ -30,6 +30,10 @@
 	path = vim/.vim/pack/dist/start/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-shitespace"]
+	path = vim/.vim/pack/dist/start/vim-shitespace
+	url = https://github.com/h3xx/vim-shitespace.git
+	branch = main
 [submodule "vim/.vim/pack/dist/start/vim-surround"]
 	path = vim/.vim/pack/dist/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
