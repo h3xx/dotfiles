@@ -395,12 +395,6 @@ set ttyfast
 " (addendum: fixed 'the Right Way' by setting TERM=xterm-256color)
 "set t_Co=16 t_AB=[48;5;%dm t_AF=[38;5;%dm
 
-" Show trailing whitespace and spaces before a tab
-" (note: must occur BEFORE colorscheme invocation)
-autocmd ColorScheme * hi ExtraWhitespace term=reverse ctermbg=red guibg=red
-" (match commands only apply to the current buffer)
-autocmd BufEnter,WinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
-
 " *** lightline.vim
 " make mode bold
 autocmd ColorScheme *
