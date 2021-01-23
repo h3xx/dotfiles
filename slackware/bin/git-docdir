@@ -12,8 +12,7 @@ git_rev() {
 
     if [[ -e $DIR/.git ]]; then
         if hash git &>/dev/null; then
-            git --git-dir="$DIR/.git" rev-list HEAD |
-            wc --lines
+            git --git-dir="$DIR/.git" rev-list --count HEAD
         fi
     fi
 }
