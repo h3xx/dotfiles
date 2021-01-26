@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
 USAGE() {
@@ -19,7 +19,7 @@ Slackware packages.
   -r            Auto-rename files to \`FILE.new'.
   -R ROOTDIR    Use ROOTDIR as the package root directory.
 
-Copyright (C) 2010 Dan Church.
+Copyright (C) 2010-2021 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -29,7 +29,7 @@ EOF
 RENAME=0
 CREATE=0
 PKG_ROOT='.'
-OUT=''
+OUT=
 
 while getopts 'hco:rR:' FLAG; do
     case "$FLAG" in
@@ -37,13 +37,13 @@ while getopts 'hco:rR:' FLAG; do
             CREATE=1
             ;;
         'o')
-            OUT="$OPTARG"
+            OUT=$OPTARG
             ;;
         'r')
             RENAME=1
             ;;
         'R')
-            PKG_ROOT="$OPTARG"
+            PKG_ROOT=$OPTARG
             ;;
         'h')
             HELP_MESSAGE
@@ -69,32 +69,43 @@ cleanup() {
 
 trap 'cleanup' EXIT
 
-# precursor function
+print_config_fn() {
+    # This is Patrick Volkerding's config() function
+    # (I know it's insecure)
+    cat <<'EOCONFIG'
+config() {
+  NEW="$1"
+  OLD="`dirname $NEW`/`basename $NEW .new`"
+  # If there's no config file by that name, mv it over:
+  if [ ! -r $OLD ]; then
+    mv $NEW $OLD
+  elif [ "`cat $OLD | md5sum`" = "`cat $NEW | md5sum`" ]; then # toss the redundant copy
+    rm $NEW
+  fi
+  # Otherwise, we leave the .new copy for the admin to consider...
+}
+
+EOCONFIG
+}
+
+# Add a "config [file]" instruction to the doinst.sh file
 #
-# makes sure all 'config ...' commands get put at the top of the install script
-# (if they're not there already)
+# makes sure a 'config()' function gets put at the top of the install script
+# (if it's not there already)
 #
 # arguments:
-#   1: backup file
-#   2: doinst.sh file
-setup_doinstsh() {
+#   1: doinst.sh file
+#   2: the line
+add_config_line_to_doinst() {
     local \
-        backup_file="$1" \
-        doinst="$2"
+        DOINST=$1 \
+        config_line=$2 \
 
-    # if it exists and it's not a file, then we must be outputting to
-    # STDOUT.
-#   if [ -e "$doinst" -a ! -f "$doinst" ]; then
-#   fi
+    # make sure the file gets deleted on exit
 
-    if [ ! -d "$(dirname -- "$doinst")" ]; then
-        mkdir -p "$(dirname -- "$doinst")" ||
-            return "$?"
-    fi
-
-    if [ -f "$doinst" ]; then
-        mv "$doinst" "$backup_file" ||
-            return "$?"
+    if [[ ! -d $(dirname -- "$DOINST") ]]; then
+        mkdir -p "$(dirname -- "$DOINST")" ||
+            return
     fi
 
     # truth table
@@ -112,27 +123,31 @@ setup_doinstsh() {
     # 1 | 0 | 1
     # 1 | 1 | 0
 
-    if ! ([ -f "$backup_file" ] &&
-        grep -q '^config() {$' "$backup_file"); then
+    if [[ ! -f $DOINST ]] ||
+        ! grep -q -- '^config() {$' "$DOINST"; then
 
-        # this is Patrick Volkerding's config() function
-        # (I know it's insecure)
-        cat <<EOF >>"$doinst"
-config() {
-  NEW="\$1"
-  OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
-  # If there's no config file by that name, mv it over:
-  if [ ! -r \$OLD ]; then
-    mv \$NEW \$OLD
-  elif [ "\`cat \$OLD | md5sum\`" = "\`cat \$NEW | md5sum\`" ]; then # toss the redundant copy
-    rm \$NEW
-  fi
-  # Otherwise, we leave the .new copy for the admin to consider...
+        local -r BACKUP_FILE=$(mktemp -t "${0##*/}.XXXXXX")
+        TEMP_FILES+=("$BACKUP_FILE")
+
+        print_config_fn >> "$BACKUP_FILE" &&
+
+        printf '%s\n' "$config_line" >> "$BACKUP_FILE" &&
+        if [[ -f $DOINST ]]; then
+            cat -- "$DOINST" >> "$BACKUP_FILE"
+        fi &&
+        # XXX Can't just move file; what if outputting to STDOUT?
+        cat -- "$BACKUP_FILE" > "$DOINST"
+    else
+        printf '%s\n' "$config_line" >> "$DOINST"
+    fi
 }
 
-EOF
-
+smartquote() {
+    local ARG=$1
+    if [[ $ARG = *[^:@,./%^_=+a-zA-Z0-9-]* ]]; then
+        ARG=\'${ARG//'/'\\''}\'
     fi
+    printf '%s\n' "$ARG"
 }
 
 # main function
@@ -142,101 +157,56 @@ EOF
 #   ...: names of files to process
 handy_config() {
     local \
-        doinst_out="$1" \
-        rootdir="$2" \
-        conffile \
-        conffile_inst \
-        backup_file="$(mktemp -t "$(basename -- "$0").XXXXXX")"
+        DOINST_OUT=$1 \
+        ROOTDIR=$2 \
+        CONFFILE \
+        CONFFILE_INST \
 
     shift 2
 
-    # remove trailing slashes from root directory
-#   while [ "${rootdir%/}" != "$rootdir" ]; do
-#       rootdir="${rootdir%/}"
-#   done
-
-    # make sure the file gets deleted on exit
-    TEMP_FILES+=("$backup_file")
-
-    setup_doinstsh "$backup_file" "$doinst_out" ||
-        return "$?"
-
-    for conffile; do
+    for CONFFILE; do
         # kill the root directory part of the conf file name
-        conffile_inst="$(readlink -m -- "$conffile")"
-        conffile_inst="${conffile_inst#$(readlink -m -- $rootdir)/}"
+        CONFFILE_INST=$(realpath -- "$CONFFILE")
+        CONFFILE_INST=${CONFFILE_INST#"$(realpath -- "$ROOTDIR")"/}
 
         # rename files if wanted
         #
         # this also affects creation of new files:
         # if on, then the file, plus `.new' is created; otherwise, just
         # the plain file
-        if [ "$RENAME" -ne 0 ]; then
-            if [ "${conffile%.new}" == "${conffile}" ]; then
-                # no .new prefix
-                mv -- "${conffile}"{,.new}
-                conffile+='.new'
-                conffile_inst+='.new'
+        if [[ $RENAME -ne 0 ]]; then
+            if [[ ${CONFFILE%.new} != "$CONFFILE" ]]; then
+                printf 'Warning: %s already contains .new suffix\n' "$CONFFILE" >&2
             fi
+            mv -- "$CONFFILE"{,.new}
+            CONFFILE+='.new'
+            CONFFILE_INST+='.new'
         fi
 
         # create files if wanted
-        if [ "$CREATE" -ne 0 ]; then
-            if [ ! -d "$(dirname -- "$conffile")" ]; then
-                mkdir -p -- "$(dirname -- "$conffile")" ||
-                    return "$?"
+        if [[ $CREATE -ne 0 ]]; then
+            if [[ ! -d $(dirname -- "$CONFFILE") ]]; then
+                mkdir -p -- "$(dirname -- "$CONFFILE")" ||
+                    return
             fi
 
-            if [ ! -e "$conffile" ]; then
-                touch -- "$conffile"
+            if [[ ! -e $CONFFILE ]]; then
+                touch -- "$CONFFILE"
             fi
         fi
 
-        if [[ "$conffile_inst" == *[^:@,./%^_=+a-zA-Z0-9-]* ]]; then
-            # filename contains shell metacharacters or spaces
-            #
-            # best remedy: use single quotes, transforming
-            # ' => '\''
-            #
-            # note: there is no other way to do this without using
-            #   an external program
-            conffile="'${conffile_inst//\'/$(echo \'\\\'\')}'"
-        fi
-
-        echo "config $conffile_inst" >>"$doinst_out"
+        add_config_line_to_doinst "$DOINST_OUT" "config $(smartquote "$CONFFILE_INST")"
     done
-
-    restore_doinstsh "$backup_file" "$doinst_out"
 }
 
-# finisher function
-#
-# restores the contents of the old doinst.sh file to the new one
-#
-# arguments:
-#   1: backup file
-#   2: doinst.sh file
-restore_doinstsh() {
-    local \
-        backup_file="$1" \
-        doinst="$2"
-
-    # add the contents of the last install script back onto the main one
-    if [ -f "$backup_file" -a -f "$doinst" ]; then
-        # leave a space
-        echo >>"$doinst"
-        cat -- "$backup_file" >>"$doinst"
-    fi
-}
-
-if [ "$#" -eq 0 ]; then
+if [[ $# -eq 0 ]]; then
     USAGE
     exit 2
 fi
 
-if [ -z "$OUT" ]; then
+if [[ -z $OUT ]]; then
     OUT="${PKG_ROOT:-.}/install/doinst.sh"
-elif [ "$OUT" == '-' ]; then
+elif [[ $OUT = '-' ]]; then
     OUT='/dev/stdout'
 fi
 
