@@ -19,8 +19,14 @@ DAYS=7
 for dir in "${CACHEDIRS[@]}"; do
     if [[ -d $dir ]]; then
 
-        # remove old files
         (
+        # Fix permissions on directories
+        find "$dir/" \
+            -type d \
+            ! -perm /0200 \
+            -exec chmod u+w -- {} + &&
+
+        # Remove old files
         find "$dir/" \
             -mindepth 1 \
             -type f \
@@ -29,7 +35,7 @@ for dir in "${CACHEDIRS[@]}"; do
             -print \
             -delete &&
 
-        # clear out any empty directories, including the cache dir
+        # Clear out any empty directories, including the cache dir
         # itself
         find "$dir/" \
             -type d \
