@@ -22,6 +22,13 @@ for DIR in "${CACHEDIRS[@]}"; do
     if [[ -d $DIR ]]; then
 
         (
+
+        # Fix permissions on directories
+        find "$DIR/" \
+            -type d \
+            ! -perm /0200 \
+            -exec chmod u+w -- {} +
+
         # Remove old files
         find "$DIR/" \
             -mindepth 1 \
