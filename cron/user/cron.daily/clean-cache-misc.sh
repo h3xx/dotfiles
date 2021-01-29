@@ -5,17 +5,18 @@ set -e
 
 . ~/.cron/cron.conf
 
-CACHEDIRS=(
-# auto-generated thumbnails from geeqie, probably others
-~/.thumbnails
-# Steam crash dumps - whenever a game crashes Steam adds a file here
-/tmp/dumps
-~/.cache/youtube-dl
-~/.cache/fontconfig
-~/.cache/winetricks
-)
+WORKDIR=${0%/*}
+BASE=${0##*/}
+MYCONF=$WORKDIR/.$BASE.conf
+if [[ ! -f $MYCONF ]]; then
+    printf '%s: Unable to find configuration file "%s"\n' "$0" "$MYCONF" >&2
+    exit 1
+fi
 
+# Set defaults
 DAYS=7
+
+. "$MYCONF"
 
 for DIR in "${CACHEDIRS[@]}"; do
     if [[ -d $DIR ]]; then
