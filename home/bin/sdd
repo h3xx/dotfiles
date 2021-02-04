@@ -89,8 +89,13 @@ schedule_delete() (
     #   directory you execute at(1) from job runtime).
     # - Pass the directory in as an environment variable, since that's the
     #   safest.
+    # - Fix permissions on any stubborn (non-writable) directories before removing.
     export SDD_DIR=$(realpath -- "$DIR")
-    echo 'rm -rf -- "$SDD_DIR"' | (cd /; at "$DELETE_DATE")
+    cat <<'EOF' |
+test -d "$SDD_DIR" && find "$SDD_DIR" -type d ! -perm /0200 -exec chmod u+w -- {} +
+rm -rf -- "$SDD_DIR"
+EOF
+        (cd /; at "$DELETE_DATE")
 )
 
 list_scheduled() (
