@@ -178,7 +178,7 @@ remove_slackware_cruft() {
     # PACKAGE NAME:
     # UNCOMPRESSED PACKAGE SIZE:
     # my_package:
-    local SLACKPACK_HEADER_PAT='^[A-Za-z][^/]+:( |$)'
+    local SLACKPACK_HEADER_PAT='^[A-Za-z][^/]*:( |$)'
 
     egrep -v "$SLACKPACK_HEADER_PAT"
 }
