@@ -53,7 +53,11 @@ fi
 fbsetbg -l
 
 # start the autolocker (default 10 minutes)
-#xautolock &
+xautolock \
+    -time 30 \
+    -notify 15 \
+    -notifier '~/.fluxbox/bin/xautolock-notify.sh 15' \
+    &
 
 # start pager
 #fbpager -w & # deprecated
