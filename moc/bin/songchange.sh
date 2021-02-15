@@ -56,6 +56,7 @@ done
 if [[ -n $NOTIFY_DISP ]]; then
     notify-send \
         --app-name=mocp \
+        --hint=int:transient:1 \
         --urgency=low \
         "$ARTIST - $TITLE"
 fi
