@@ -183,8 +183,8 @@ endif " executable('ack')
 " Don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
 
-" Don't consider "octal" numbers when using C-a and C-x (thanks vim-sensible)
-set nrformats-=octal
+" Don't consider "octal" numbers when using C-a and C-x (default)
+"set nrformats-=octal
 
 " Modify `formatlistpat' to include `*'-ed lists
 "set formatlistpat=^\\s*\\d\\+\[\\]:.)}\\t\ ]\\s*			" default

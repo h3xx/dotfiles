@@ -38,7 +38,7 @@ Infect your configuration files (nicely).
   --verbose     Emit more messages.
   --terse       Emit fewer messages (default).
 
-Copyright (C) 2020 Dan Church.
+Copyright (C) 2020-2021 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -283,7 +283,7 @@ fi
 soft_link_all ~/.config "$DOTFILES/git"
 
 # Install vim
-soft_link_all ~ "$DOTFILES/vim"/!(.|..|.bsdvimrc|.vimrc|.vimrc_NON-SLACKWARE|bin)
+soft_link_all ~ "$DOTFILES/vim"/!(.|..|.vimrc|.vimrc_NON-SLACKWARE|bin)
 soft_link_all ~/bin "$DOTFILES/vim/bin"/*
 if is_slackware; then
     soft_link "$DOTFILES/vim"/.vimrc ~/.vimrc
