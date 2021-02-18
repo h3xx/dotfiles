@@ -161,8 +161,8 @@ endif " executable('ack')
 " ***** normal mode, navigation *****
 " ***********************************
 
-" start scrolling when we're 5 lines away from bottom/top margins
-set scrolloff=5
+" start scrolling when we're 5 lines away from bottom/top margins (default)
+"set scrolloff=5
 
 " set lines to scroll when the cursor moves off screen (default)
 "set scrolljump=1
@@ -179,8 +179,8 @@ set scrolloff=5
 " ***** normal mode, editing *****
 " ********************************
 
-" don't consider "octal" numbers when using C-a and C-x (thanks vim-sensible)
-set nrformats-=octal
+" don't consider "octal" numbers when using C-a and C-x (default)
+"set nrformats-=octal
 
 " don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces

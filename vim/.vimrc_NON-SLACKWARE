@@ -1,12 +1,15 @@
 " Vim defaults missing on non-Slackware Linux servers
 if ! filereadable(expand("$VIMRUNTIME/defaults.vim"))
 	" this stuff is for really old (<8) versions of vim that don't ship with defaults.vim
-	" (Skipped: mouse, backspace, scrolloff)
+	" (Skipped: history, mouse)
 	set
+		\ backspace=indent,eol,start
 		\ display=truncate
-		\ hlsearch
 		\ incsearch
+		\ nocompatible
 		\ nrformats-=octal
+		\ ruler
+		\ scrolloff=5
 		\ showcmd
 		\ ttimeout
 		\ ttimeoutlen=100
