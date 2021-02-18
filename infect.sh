@@ -96,7 +96,7 @@ fi
 
 # Make it so e.g. bash/* will list .bashrc
 shopt -s dotglob
-# Make it so e.g. vim/!(.bsdvimrc) will NOT list .bsdvimrc
+# Make it so e.g. vim/!(.gvimrc) will NOT list .gvimrc
 shopt -s extglob
 
 if [[ $GUI -ne 0 && -n $SSH_CONNECTION ]]; then
@@ -270,7 +270,7 @@ fi
 soft_link_all ~/.config "$DOTFILES/git"
 
 # Install vim
-soft_link_all ~ "$DOTFILES/vim"/!(.|..|.bsdvimrc|.vimrc|.vimrc_NON-SLACKWARE)
+soft_link_all ~ "$DOTFILES/vim"/!(.|..|.vimrc|.vimrc_NON-SLACKWARE)
 if is_slackware; then
     soft_link "$DOTFILES/vim"/.vimrc ~/.vimrc
 else
