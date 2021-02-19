@@ -377,10 +377,7 @@ set completeopt+=menuone
 
 " I: disable startup message
 " c: don't give useless ins-completion-menu messages in the statusbar
-set shortmess+=I
-if v:version > 704 || v:version == 704 && has("patch314")
-	set shortmess+=c
-endif
+set shortmess+=Ic
 
 " ***************************
 " ***** display, colors *****
