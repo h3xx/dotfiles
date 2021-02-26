@@ -1,4 +1,18 @@
 #!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+smartquote() {
+    local ARG=$1
+    if [[ $ARG = *[^:@,./%^_=+a-zA-Z0-9-]* ]]; then
+        ARG=\'${ARG//'/'\\''}\'
+    fi
+    printf '%s\n' "$ARG"
+}
+
+ARGS=()
+for ARG; do
+    ARGS+=("$(smartquote "$ARG")")
+done
 
 # open vim with `:grep' results
-exec vim "+grep $* |cw"
+exec vim "+grep ${ARGS[*]} |cw"
