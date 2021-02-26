@@ -14,6 +14,7 @@ Slackware packages.
 
   -h            Show this help message.
   -c            Create FILE if it doesn't exist.
+  -d            Delete FILE.new file if it doesn't match.
   -o DOINST     Output to DOINST. Use \`-' to output to STDOUT. Default is
                   \`ROOTDIR/install/doinst.sh'.
   -r            Auto-rename files to \`FILE.new'.
@@ -30,11 +31,15 @@ RENAME=0
 CREATE=0
 PKG_ROOT='.'
 OUT=
+DELETE_NEW=0
 
-while getopts 'hco:rR:' FLAG; do
+while getopts 'hcdo:rR:' FLAG; do
     case "$FLAG" in
         'c')
             CREATE=1
+            ;;
+        'd')
+            DELETE_NEW=1
             ;;
         'o')
             OUT=$OPTARG
@@ -70,9 +75,10 @@ cleanup() {
 trap 'cleanup' EXIT
 
 print_config_fn() {
-    # This is Patrick Volkerding's config() function
-    # (I know it's insecure)
-    cat <<'EOCONFIG'
+    if [[ $DELETE_NEW -eq 0 ]]; then
+        # this is Patrick Volkerding's config() function
+        # (I know it's insecure)
+        cat <<'EOCONFIG'
 config() {
   NEW="$1"
   OLD="`dirname $NEW`/`basename $NEW .new`"
@@ -86,6 +92,22 @@ config() {
 }
 
 EOCONFIG
+    else
+        cat <<'EOCONFIG'
+config() {
+  NEW=$1
+  OLD=$(dirname "$NEW")/$(basename "$NEW" .new)
+  # If there's no scores file by that name, mv it over:
+  if [ -r "$NEW" ] && [ ! -r "$OLD" ]; then
+    mv "$NEW" "$OLD"
+  else
+    # Otherwise, toss the .new copy
+    rm -f "$NEW"
+  fi
+}
+
+EOCONFIG
+    fi
 }
 
 # Add a "config [file]" instruction to the doinst.sh file
