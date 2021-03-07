@@ -150,7 +150,7 @@ iptables_start() {
     ###--- malicious_hosts ---###
 
     # Retrieve list of malicious hosts from text files
-    for blocklist in /root/{offenders,bluetack} ; do
+    for blocklist in /root/blocklist.d/* ; do
         if [[ -f $blocklist ]]; then
             for ip in $(sed -e 's/#.*$//' "$blocklist") ; do
                 if [[ $ip = *-* ]]; then
