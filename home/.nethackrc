@@ -25,68 +25,29 @@ OPTIONS=boulder:0
 #OPTIONS=pickup_burden:unencumbered
 
 ## heavy crap
-AUTOPICKUP_EXCEPTION=">*chest*"
-AUTOPICKUP_EXCEPTION=">*large box*"
-AUTOPICKUP_EXCEPTION=">*iron safe*"
-AUTOPICKUP_EXCEPTION=">*iron chain*"
-AUTOPICKUP_EXCEPTION=">*statue of*"
-AUTOPICKUP_EXCEPTION=">*figurine of*"
+AUTOPICKUP_EXCEPTION=">chest"
+AUTOPICKUP_EXCEPTION=">large bo"
+AUTOPICKUP_EXCEPTION=">iron (safe|chain)"
+AUTOPICKUP_EXCEPTION=">(statue|figurine) of"
 
 ## avoid turning your scrolls of scare monster to dust:
-AUTOPICKUP_EXCEPTION=">*scroll of scare monster"
-AUTOPICKUP_EXCEPTION=">*scroll called scare monster"
+AUTOPICKUP_EXCEPTION=">scroll (of|called) scare monster"
 
 ## rocks 'n shit
-AUTOPICKUP_EXCEPTION=">*rock*"
-AUTOPICKUP_EXCEPTION=">*stone"
-AUTOPICKUP_EXCEPTION=">*huge chunk of meat*"
-AUTOPICKUP_EXCEPTION=">*worthles*"
-AUTOPICKUP_EXCEPTION=">* called glass"
-AUTOPICKUP_EXCEPTION=">*gray stone"
-AUTOPICKUP_EXCEPTION=">*stone called loa*"
-AUTOPICKUP_EXCEPTION=">*loadstone"
-AUTOPICKUP_EXCEPTION=">*loadstone named *"
-### (blind, not gems)
+AUTOPICKUP_EXCEPTION=">rock"
 AUTOPICKUP_EXCEPTION=">stone"
-### blessed, uncursed, cursed, greased
-AUTOPICKUP_EXCEPTION=">*sed stone"
+AUTOPICKUP_EXCEPTION=">huge chunk of meat"
+AUTOPICKUP_EXCEPTION=">worthles"
+AUTOPICKUP_EXCEPTION="> called glass"
 
 ## annoying shit
-AUTOPICKUP_EXCEPTION=">*mummy wrapping"
-AUTOPICKUP_EXCEPTION=">*tin whistle"
+AUTOPICKUP_EXCEPTION=">mummy wrapping"
+AUTOPICKUP_EXCEPTION=">tin whistle"
 
 ## Never pick up corpses except lizards & lichens
 ### "blessed/(un)cursed greased partly-eaten monstertype/unique's corpse"
-AUTOPICKUP_EXCEPTION=">*a corpse*"
-AUTOPICKUP_EXCEPTION=">*b corpse*"
-AUTOPICKUP_EXCEPTION=">*c corpse*"
-AUTOPICKUP_EXCEPTION=">*e corpse*"
-AUTOPICKUP_EXCEPTION=">*f corpse*"
-AUTOPICKUP_EXCEPTION=">*g corpse*"
-AUTOPICKUP_EXCEPTION=">*h corpse*"
-AUTOPICKUP_EXCEPTION=">*i corpse*"
-AUTOPICKUP_EXCEPTION=">*k corpse*"
-AUTOPICKUP_EXCEPTION=">*l corpse*"
-AUTOPICKUP_EXCEPTION=">*m corpse*"
-AUTOPICKUP_EXCEPTION=">*n corpse*"
-AUTOPICKUP_EXCEPTION=">*o corpse*"
-AUTOPICKUP_EXCEPTION=">*p corpse*"
-AUTOPICKUP_EXCEPTION=">*r corpse*"
-AUTOPICKUP_EXCEPTION=">*s corpse*"
-AUTOPICKUP_EXCEPTION=">*' corpse*"
-AUTOPICKUP_EXCEPTION=">*t corpse*"
-AUTOPICKUP_EXCEPTION=">*u corpse*"
-AUTOPICKUP_EXCEPTION=">*v corpse*"
-AUTOPICKUP_EXCEPTION=">*x corpse*"
-AUTOPICKUP_EXCEPTION=">*y corpse*"
-AUTOPICKUP_EXCEPTION=">*ld corpse*"
-AUTOPICKUP_EXCEPTION=">*nd corpse*"
-AUTOPICKUP_EXCEPTION=">*ud corpse*"
-AUTOPICKUP_EXCEPTION=">*ord corpse*"
-AUTOPICKUP_EXCEPTION=">*uard corpse*"
-AUTOPICKUP_EXCEPTION=">*wizard corpse*"
-AUTOPICKUP_EXCEPTION="<*lizard corpse"
-AUTOPICKUP_EXCEPTION="<*lichen corpse"
+AUTOPICKUP_EXCEPTION=">corpse"
+AUTOPICKUP_EXCEPTION="<(lizard|lichen) corpse"
 
 # With Statuscolor patch installed
 # HP
@@ -111,9 +72,9 @@ STATUSCOLOR=held:red&inverse,blind:red&inverse
 # Menu colors
 OPTIONS=menucolors
 
-#MENUCOLOR="* cursed *"=red
-#MENUCOLOR="* unholy *"=red
-#MENUCOLOR="* blessed *"=green
+#MENUCOLOR=" cursed "=red
+#MENUCOLOR=" unholy "=red
+#MENUCOLOR=" blessed "=green
 
 MENUCOLOR=" blessed| B($| )"=green
 MENUCOLOR=" holy"=green
