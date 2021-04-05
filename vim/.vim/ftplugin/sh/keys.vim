@@ -1,5 +1,8 @@
 " common key combinations
 
+" ,a - insert ask_yn function
+nnoremap <buffer> <silent> ,a :ru templates/keys/sh-ask_yn.vim<CR>
+
 " ,b - insert in-bash basename
 nnoremap <buffer> <silent> ,b :ru templates/keys/sh-basename.vim<CR>
 
