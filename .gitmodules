@@ -62,10 +62,6 @@
 	path = vim/.vim/pack/dist/start/vim-bbcode
 	url = https://github.com/Winseven4lyf/vim-bbcode.git
 	branch = master
-[submodule "vim/.vim/pack/dist/start/vim-coffee-script"]
-	path = vim/.vim/pack/dist/start/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
-	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-easymotion"]
 	path = vim/.vim/pack/dist/start/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion.git
