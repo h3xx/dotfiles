@@ -4,7 +4,7 @@ append
 HELP_MESSAGE() {
     local EXIT_CODE=${1:-0}
     cat <<EOF
-Usage: $(basename -- "$0") [OPTIONS] [--] FILE...
+Usage: ${0##*/} [OPTIONS] [--] FILE...
 Lorem ipsum dolor sit amet, consectetur adipiscing.
 
   -h        Show this help message.
