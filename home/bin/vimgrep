@@ -4,7 +4,7 @@
 smartquote() {
     local ARG=$1
     if [[ $ARG = *[^:@,./%^_=+a-zA-Z0-9-]* ]]; then
-        ARG=\'${ARG//'/'\\''}\'
+        ARG=\'${ARG//\'/\'\\\'\'}\'
     fi
     printf '%s\n' "$ARG"
 }
