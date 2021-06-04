@@ -281,6 +281,7 @@ fi
 
 # Install git
 soft_link_all ~/.config "$DOTFILES/git"
+soft_link_all ~/bin "$DOTFILES/git/bin"/git-*
 
 # Install vim
 soft_link_all ~ "$DOTFILES/vim"/!(.|..|.vimrc|.vimrc_NON-SLACKWARE|bin)

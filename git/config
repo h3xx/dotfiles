@@ -16,7 +16,7 @@
 	bb		= branch --all -vv
 	bbc		= branch --all -vv --contains
 	bc		= branch --contains
-	bdm		= !~/.config/git/bin/git-branch-delete-merged.sh
+	bdm		= branch-delete-merged
 	c		= commit
 	ca		= commit --amend
 	co		= checkout
@@ -44,17 +44,17 @@
 	mt		= mergetool
 	p		= push
 	pu		= "!echo use git u;exit 1"
-	r		= !~/.config/git/bin/git-reset-wrapper.sh
+	r		= reset-wrapper
 	ra		= remote add
 	rb		= rebase
 	rba		= rebase --abort
 	rbc		= rebase --continue
 	rc		= commit -c HEAD --date=now --reset-author
-	rh		= !~/.config/git/bin/git-reset-wrapper.sh --hard
-	rho		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --hard
+	rh		= reset-wrapper --hard
+	rho		= reset-wrapper --upstream --hard
 	rr		= remote remove
-	rs		= !~/.config/git/bin/git-reset-wrapper.sh --soft
-	rso		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --soft
+	rs		= reset-wrapper --soft
+	rso		= reset-wrapper --upstream --soft
 	rv		= revert
 	rva		= revert --abort
 	rvc		= revert --continue
@@ -65,7 +65,6 @@
 	subco		= submodule foreach git checkout
 	subinit		= submodule init
 	submaster	= submodule foreach git checkout master
-	subpull		= !~/.config/git/bin/git-subpull.sh
 	subup		= submodule update --init
 	u		= pull
 	url		= remote -v # list checkout urls
@@ -73,11 +72,9 @@
 
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
-	tattle		= "!echo use git t;exit 1"
-	t		= !~/.config/git/bin/git-tattle.sh
+	t		= tattle
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
-	fsck-fix	= !~/.config/git/bin/git-fsck-fix.sh
 
 [color]
 	branch = auto
