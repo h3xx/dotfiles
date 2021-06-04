@@ -95,8 +95,6 @@
 	gpgSign = yes
 
 [core]
-	attributesfile = ~/.config/git/gitattributes_global
-	excludesfile = ~/.config/git/gitignore_global
 	# -R: Handle colors correctly
 	pager = less -R
 
