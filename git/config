@@ -21,7 +21,7 @@
 	bb		= branch --all -vv
 	bc		= branch --contains
 	bbc		= branch --all -vv --contains
-	bdm		= !~/.config/git/bin/git-branch-delete-merged.sh
+	bdm		= branch-delete-merged
 	i		= bisect
 	is		= bisect start # b[i]sect
 	ir		= bisect reset
@@ -29,11 +29,11 @@
 	ib		= bisect bad
 	ra		= remote add
 	rr		= remote remove
-	r		= !~/.config/git/bin/git-reset-wrapper.sh
-	rh		= !~/.config/git/bin/git-reset-wrapper.sh --hard
-	rs		= !~/.config/git/bin/git-reset-wrapper.sh --soft
-	rho		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --hard
-	rso		= !~/.config/git/bin/git-reset-wrapper.sh --upstream --soft
+	r		= reset-wrapper
+	rh		= reset-wrapper --hard
+	rs		= reset-wrapper --soft
+	rho		= reset-wrapper --upstream --hard
+	rso		= reset-wrapper --upstream --soft
 	rb		= rebase
 	rbc		= rebase --continue
 	rba		= rebase --abort
@@ -52,7 +52,6 @@
 	subinit		= submodule init
 	subco		= submodule foreach git checkout
 	submaster	= submodule foreach git checkout master
-	subpull		= !~/.config/git/bin/git-subpull.sh
 	w		= whatchanged
 	url		= remote -v	# list checkout urls
 	logg		= log --graph --pretty=format:'%C(bold 232 154)%h%C(reset) %C(bold 165 235)%cd%C(reset) %C(bold 39 235)%an%C(reset)%C(bold 121 235)%d%C(reset) %s' --date=short
@@ -62,11 +61,9 @@
 
 	# tattle = tell our remote about branch (or delete it with :branch)
 	# usefulness: TODO
-	tattle		= "!echo use git t;exit 1"
-	t		= !~/.config/git/bin/git-tattle.sh
+	t		= tattle
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
-	fsck-fix	= !~/.config/git/bin/git-fsck-fix.sh
 
 [commit]
 	# automatically gpg-sign all commits
