@@ -4,6 +4,7 @@
 RES_COL=15
 RES_COL2=14
 SHOW_ERRORS=1
+SHOW_HINTS=1
 MOVE_TO_COL=$'\e['"${RES_COL}G"
 SETCOLOR_HIGHPOWER=$'\e[1;32m'
 SETCOLOR_LOWPOWER=$'\e[1;36m'
@@ -53,17 +54,18 @@ report_dev() {
             ;;
         1)
             echo_highpower "$1"
+            return 1
             ;;
         2)
             if [[ $SHOW_ERRORS -ne 0 ]]; then
                 echo_error "$1"
-                return 1
+                return 2
             fi
             ;;
         3)
             if [[ $SHOW_ERRORS -ne 0 ]]; then
                 echo_missing "$1"
-                return 1
+                return 2
             fi
             ;;
     esac
@@ -101,6 +103,20 @@ else
     DEVS=(/dev/sd[a-z])
 fi
 
+HIGH=()
+LOW=()
 for D in "${DEVS[@]}"; do
     report_dev "$D"
+    case "$?" in
+        0)
+            LOW+=("$D")
+            ;;
+        1)
+            HIGH+=("$D")
+            ;;
+    esac
 done
+
+if [[ ${#HIGH[@]} -gt 0 && $SHOW_HINTS -ne 0 ]]; then
+    echo "Hint: Run 'smartctl -s standby,now [DEVICE]' to put your drives in low power mode."
+fi
