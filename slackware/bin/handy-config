@@ -17,6 +17,8 @@ Slackware packages.
   -d            Delete FILE.new file if it doesn't match.
   -o DOINST     Output to DOINST. Use \`-' to output to STDOUT. Default is
                   \`ROOTDIR/install/doinst.sh'.
+  -p            Preserve permissions when replacing files (suitable for e.g.
+                  scripts in /etc/rc.d).
   -r            Auto-rename files to \`FILE.new'.
   -R ROOTDIR    Use ROOTDIR as the package root directory.
 
@@ -32,8 +34,9 @@ CREATE=0
 PKG_ROOT='.'
 OUT=
 DELETE_NEW=0
+PRESERVE_PERMS=0
 
-while getopts 'hcdo:rR:' FLAG; do
+while getopts 'hcdo:prR:' FLAG; do
     case "$FLAG" in
         'c')
             CREATE=1
@@ -43,6 +46,9 @@ while getopts 'hcdo:rR:' FLAG; do
             ;;
         'o')
             OUT=$OPTARG
+            ;;
+        'p')
+            PRESERVE_PERMS=1
             ;;
         'r')
             RENAME=1
@@ -75,26 +81,28 @@ cleanup() {
 trap 'cleanup' EXIT
 
 print_config_fn() {
-    if [[ $DELETE_NEW -eq 0 ]]; then
-        # this is Patrick Volkerding's config() function
-        # (I know it's insecure)
-        cat <<'EOCONFIG'
+    # This is Patrick Volkerding's config() function
+    # (I know it's insecure)
+    cat <<'EOCONFIG'
 config() {
   NEW="$1"
-  OLD="`dirname $NEW`/`basename $NEW .new`"
+  OLD="$(dirname $NEW)/$(basename $NEW .new)"
   # If there's no config file by that name, mv it over:
   if [ ! -r $OLD ]; then
     mv $NEW $OLD
-  elif [ "`cat $OLD | md5sum`" = "`cat $NEW | md5sum`" ]; then # toss the redundant copy
+  elif [ "$(cat $OLD | md5sum)" = "$(cat $NEW | md5sum)" ]; then
+    # toss the redundant copy
     rm $NEW
   fi
   # Otherwise, we leave the .new copy for the admin to consider...
 }
 
 EOCONFIG
-    else
-        cat <<'EOCONFIG'
-config() {
+}
+
+print_config_scorefile_fn() {
+    cat <<'EOCONFIG'
+config_scorefile() {
   NEW=$1
   OLD=$(dirname "$NEW")/$(basename "$NEW" .new)
   # If there's no scores file by that name, mv it over:
@@ -107,7 +115,74 @@ config() {
 }
 
 EOCONFIG
-    fi
+}
+
+print_preserve_perms_fn() {
+    cat <<'EOPRESERVE_PERMS'
+preserve_perms() {
+  NEW="$1"
+  OLD="$(dirname $NEW)/$(basename $NEW .new)"
+  if [ -e $OLD ]; then
+    cp -a $OLD ${NEW}.incoming
+    cat $NEW > ${NEW}.incoming
+    mv ${NEW}.incoming $NEW
+  fi
+  config $NEW
+}
+
+EOPRESERVE_PERMS
+}
+
+print_preserve_perms_scorefile_fn() {
+    cat <<'EOPRESERVE_PERMS'
+preserve_perms_scorefile() {
+  NEW="$1"
+  OLD="$(dirname $NEW)/$(basename $NEW .new)"
+  if [ -e $OLD ]; then
+    cp -a $OLD ${NEW}.incoming
+    cat $NEW > ${NEW}.incoming
+    mv ${NEW}.incoming $NEW
+  fi
+  config_scorefile $NEW
+}
+
+EOPRESERVE_PERMS
+}
+
+add_functions_to_doinst() {
+    local \
+        DOINST=$1 \
+        FUNCTION \
+        GENERATOR \
+        TEMP \
+
+    shift 1
+
+    for FUNCTION; do
+        mkdir -p -- "$(dirname -- "$DOINST")" || exit
+
+        GENERATOR="print_${FUNCTION}_fn"
+        if [[ $(type -t "$GENERATOR") != 'function' ]]; then
+            printf 'Unable to generate function "%s"\n' "$FUNCTION" >&2
+            exit 2
+        else
+            if [[ ! -f $DOINST ]] ||
+                ! grep -q -- "^$FUNCTION() {$" "$DOINST"; then
+                # Function not defined in script, add it
+
+                TEMP=$(mktemp -t "${0##*/}.XXXXXX")
+                TEMP_FILES+=("$TEMP")
+
+                "$GENERATOR" >> "$TEMP" &&
+
+                if [[ -f $DOINST ]]; then
+                    cat -- "$DOINST" >> "$TEMP"
+                fi &&
+                # XXX Can't just move file; what if outputting to STDOUT?
+                cat -- "$TEMP" > "$DOINST"
+            fi
+        fi
+    done
 }
 
 # Add a "config [file]" instruction to the doinst.sh file
@@ -117,51 +192,30 @@ EOCONFIG
 #
 # arguments:
 #   1: doinst.sh file
-#   2: the line
+#   2: the path to the config file
 add_config_line_to_doinst() {
     local \
         DOINST=$1 \
-        config_line=$2 \
+        CONFFILE_INST=$2 \
+        PROC_FUNC \
+        ADDL_FUNCS=() \
 
-    # make sure the file gets deleted on exit
-
-    if [[ ! -d $(dirname -- "$DOINST") ]]; then
-        mkdir -p "$(dirname -- "$DOINST")" ||
-            return
-    fi
-
-    # truth table
-    #
-    # conditions:
-    #  ex:  old doinst.sh file exists
-    #  grp: config() exists in old doinst.sh
-    #
-    # outcomes:
-    #  add: append config function to new doinst.sh file
-    #
-    # ex    | grp   | add
-    # ------|-------|----
-    # 0 | x | 1
-    # 1 | 0 | 1
-    # 1 | 1 | 0
-
-    if [[ ! -f $DOINST ]] ||
-        ! grep -q -- '^config() {$' "$DOINST"; then
-
-        local -r BACKUP_FILE=$(mktemp -t "${0##*/}.XXXXXX")
-        TEMP_FILES+=("$BACKUP_FILE")
-
-        print_config_fn >> "$BACKUP_FILE" &&
-
-        printf '%s\n' "$config_line" >> "$BACKUP_FILE" &&
-        if [[ -f $DOINST ]]; then
-            cat -- "$DOINST" >> "$BACKUP_FILE"
-        fi &&
-        # XXX Can't just move file; what if outputting to STDOUT?
-        cat -- "$BACKUP_FILE" > "$DOINST"
+    if [[ $DELETE_NEW -ne 0 ]]; then
+        if [[ $PRESERVE_PERMS -ne 0 ]]; then
+            PROC_FUNC='preserve_perms_scorefile'
+            ADDL_FUNCS=('config_scorefile')
+        else
+            PROC_FUNC='config_scorefile'
+        fi
+    elif [[ $PRESERVE_PERMS -ne 0 ]]; then
+        PROC_FUNC='preserve_perms'
+        ADDL_FUNCS=('config')
     else
-        printf '%s\n' "$config_line" >> "$DOINST"
+        PROC_FUNC='config'
     fi
+
+    add_functions_to_doinst "$DOINST" "$PROC_FUNC" "${ADDL_FUNCS[@]}"
+    printf '%s\n' "$PROC_FUNC $(smartquote "$CONFFILE_INST")" >> "$DOINST"
 }
 
 smartquote() {
@@ -173,10 +227,6 @@ smartquote() {
 }
 
 # main function
-#
-# arguments:
-#   1:   doinst.sh output file
-#   ...: names of files to process
 handy_config() {
     local \
         DOINST_OUT=$1 \
@@ -187,6 +237,17 @@ handy_config() {
     shift 2
 
     for CONFFILE; do
+        # create files if wanted
+        if [[ ! -e $CONFFILE ]]; then
+            if [[ $CREATE -ne 0 ]]; then
+                mkdir -p -- "$(dirname -- "$CONFFILE")" &&
+                touch -- "$CONFFILE" || exit
+            else
+                printf 'Unable to configure non-existent file "%s"\n' "$CONFFILE" >&2
+                exit 2
+            fi
+        fi
+
         # kill the root directory part of the conf file name
         CONFFILE_INST=$(realpath -- "$CONFFILE")
         CONFFILE_INST=${CONFFILE_INST#"$(realpath -- "$ROOTDIR")"/}
@@ -200,24 +261,12 @@ handy_config() {
             if [[ ${CONFFILE%.new} != "$CONFFILE" ]]; then
                 printf 'Warning: %s already contains .new suffix\n' "$CONFFILE" >&2
             fi
-            mv -- "$CONFFILE"{,.new}
+            mv -- "$CONFFILE"{,.new} || exit
             CONFFILE+='.new'
             CONFFILE_INST+='.new'
         fi
 
-        # create files if wanted
-        if [[ $CREATE -ne 0 ]]; then
-            if [[ ! -d $(dirname -- "$CONFFILE") ]]; then
-                mkdir -p -- "$(dirname -- "$CONFFILE")" ||
-                    return
-            fi
-
-            if [[ ! -e $CONFFILE ]]; then
-                touch -- "$CONFFILE"
-            fi
-        fi
-
-        add_config_line_to_doinst "$DOINST_OUT" "config $(smartquote "$CONFFILE_INST")"
+        add_config_line_to_doinst "$DOINST_OUT" "$CONFFILE_INST"
     done
 }
 
