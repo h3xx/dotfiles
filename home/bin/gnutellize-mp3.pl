@@ -92,7 +92,7 @@ sub taghash {
         } elsif ($mime_short =~ m#(application|audio)/ogg#) {
             %tags = &ogg_taghash($filename);
         } else {
-            print STDERR "unknown mimetype for file `$filename': $mime_short";
+            print STDERR "unknown mimetype for file `$filename': $mime_short\n";
         }
     }
 
