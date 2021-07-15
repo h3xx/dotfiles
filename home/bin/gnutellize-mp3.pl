@@ -85,7 +85,7 @@ sub taghash {
                 =~ s/;.*$//;
         }
 
-        if ($mime_short eq 'audio/mpeg') {
+        if ($mime_short =~ m#audio/mpeg#) {
             %tags = &mp3_taghash($filename);
         } elsif ($mime_short =~ m#audio/(?:x-)?flac#) {
             %tags = &flac_taghash($filename);
