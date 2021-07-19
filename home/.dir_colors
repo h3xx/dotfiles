@@ -49,6 +49,7 @@ TERM screen-bce
 TERM screen-w
 TERM screen.linux
 TERM screen.rxvt
+TERM screen.xterm-256color
 TERM terminator
 TERM tmux
 TERM tmux-256color
