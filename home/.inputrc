@@ -28,6 +28,13 @@ $if bash
 "\eg":		"&>~/.garbage.out &"
 "\e\C-g":	"2>~/.garbage.out"
 
+"\M-w":		"2>&1"
+"\M-q":		"&>/dev/null &"
+"\M-\C-q":	"2>/dev/null"
+"\M-g":		"&>~/.garbage.out &"
+"\M-\C-g":	"2>~/.garbage.out"
+
+# Git
 "\M-d":		"git d "
 "\M-c":		"git c "
 "\M-s":		"git s "
@@ -37,6 +44,19 @@ $if bash
 "\M-m":		"git m "
 "\M-o":		"git co "
 
+"\ed":		"git d "
+"\ec":		"git c "
+"\es":		"git s "
+"\eu":		"git u"
+"\ep":		"git p "
+"\ef":		"git f "
+"\em":		"git m "
+"\eo":		"git co "
+
+# ls
+"\M-l":		"la\r"
+"\el":		"la\r"
+
 # limit history garbage
 # escape + arrow key (both xterm and rxvt)
 "\e\e[A": ""
@@ -44,57 +64,19 @@ $if bash
 "\e\e[C": ""
 "\e\e[D": ""
 
-# redirection short cuts
-$if term=xterm
-"\M-w":		"2>&1"
-"\M-q":		"&>/dev/null &"
-"\M-\C-q":	"2>/dev/null"
-"\M-g":		"&>~/.garbage.out &"
-"\M-\C-g":	"2>~/.garbage.out"
-$endif
-
-# redirection short cuts
-$if term=screen
-"\M-w":		"2>&1"
-"\M-q":		"&>/dev/null &"
-"\M-\C-q":	"2>/dev/null"
-"\M-g":		"&>~/.garbage.out &"
-"\M-\C-g":	"2>~/.garbage.out"
-$endif
-
-$if term=xterm
-"\M-l":		"la\r"
-$endif
-
-$if term=screen
-"\M-l":		"la\r"
-$endif
-
-$if term=rxvt
-"\el":		"la\r"
-$endif
-
-#$if term=putty
-#"\el":		"la\r"
-#$endif
-
 $endif
 
 # postgresql shortcuts
 $if psql
+
+	"\M-c": "select count(*) from "
+	"\M-r":	"rollback;begin;"
+	"\M-s":	"select * from "
+
 	"\e-c": "select count(*) from "
-	"\e-s":	"select * from "
 	"\e-r":	"rollback;begin;"
-	$if term=xterm
-	"\M-c": "select count(*) from "
-	"\M-r":	"rollback;begin;"
-	"\M-s":	"select * from "
-	$endif
-	$if term=screen
-	"\M-c": "select count(*) from "
-	"\M-r":	"rollback;begin;"
-	"\M-s":	"select * from "
-	$endif
+	"\e-s":	"select * from "
+
 $endif
 
 
