@@ -281,7 +281,11 @@ tcd() {
 	if [[ $1 =~ (https?|ftp):// ]]; then
 		TARBALL=${1##*/} # basename
 		[[ -e $TARBALL ]] ||
-		wget -O "$TARBALL" "$1"
+		wget -O "$TARBALL" "$1" || {
+			local ERR=$?
+			rm -f -- "$TARBALL"
+			return $ERR
+		}
 	else
 		TARBALL=$1
 	fi
