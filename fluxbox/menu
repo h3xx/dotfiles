@@ -17,7 +17,7 @@
 [begin] (fluxbox)
 [encoding] {UTF-8}
 	[exec] (xterm) {xterm -e 'mux'} <~/.fluxbox/icons/xterm.xpm>
-	[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
+	[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
 	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled} <~/.fluxbox/icons/google-chrome.xpm>
 	[exec] (keepassxc) {keepassxc}
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
@@ -32,7 +32,7 @@
 	[submenu] (net)
 		[submenu] (browsers)
 			[exec] (chromium) {chromium --extensions-update-frequency=604800 --purge-memory-button} <~/.fluxbox/icons/chromium.xpm>
-			[exec] (firefox) {GTK_THEME=Adwaita:light firefox} <~/.fluxbox/icons/firefox.xpm>
+			[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
 			[exec] (seamonkey) {seamonkey} <~/.fluxbox/icons/seamonkey.xpm>
 			[exec] (google-chrome) {google-chrome} <~/.fluxbox/icons/google-chrome.xpm>
 			[exec] (google-chrome [tor]) {google-chrome --process-per-site --proxy-server='socks5://localhost:9050'} <~/.fluxbox/icons/google-chrome.xpm>
