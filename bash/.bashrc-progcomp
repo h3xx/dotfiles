@@ -264,6 +264,44 @@ test -n "$(
 	__git_complete tig __git_complete_revlist
 }
 
+# bash completion for gpg
+# Source (modified): https://salsa.debian.org/debian/bash-completion/-/blob/master/completions/gpg
+# License: GPL-2.0
+_gpg() {
+	local \
+		CUR=${COMP_WORDS[$COMP_CWORD]} \
+		PREV=${COMP_WORDS[$COMP_CWORD-1]} \
+
+	case "$PREV" in
+		--sign | --clearsign | --decrypt-files | --load-extension | -!(-*)s)
+			# Complete default (files and dirs)
+			return
+			;;
+		--export | --sign-key | --lsign-key | --nrsign-key | --nrlsign-key | --edit-key)
+			# return list of public keys
+			COMPREPLY=($(compgen -W "$($1 --list-keys 2>/dev/null | sed -ne \
+				's@^pub.*/\([^ ]*\).*$@\1@p' -ne \
+				's@^.*\(<\([^>]*\)>\).*$@\2@p')" -- "$CUR"))
+			return
+			;;
+		--recipient | -!(-*)r)
+			COMPREPLY=($(compgen -W "$($1 --list-keys 2>/dev/null | sed -ne \
+				's@^.*<\([^>]*\)>.*$@\1@p')" -- "$CUR"))
+			if [[ -e ~/.gnupg/gpg.conf ]]; then
+				COMPREPLY+=($(compgen -W "$(sed -ne \
+					's@^[ \t]*group[ \t][ \t]*\([^=]*\).*$@\1@p' \
+					~/.gnupg/gpg.conf)" -- "$CUR"))
+			fi
+			return
+			;;
+	esac
+
+	if [[ $CUR = -* ]]; then
+		COMPREPLY=($(compgen -W '$($1 --dump-options)' -- "$CUR"))
+	fi
+} &&
+complete -F _gpg -o default gpg
+
 # XXX : debugging function
 #_listcomp() {
 #	local VARNAME
