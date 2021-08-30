@@ -18,12 +18,11 @@
 [encoding] {UTF-8}
 	[exec] (xterm) {xterm -e 'mux'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
-	[exec] (chrome) {google-chrome --ignore-gpu-blocklist --process-per-site --wm-window-animations-disabled} <~/.fluxbox/icons/google-chrome.xpm>
+	[exec] (thunderbird) {thunderbird} <~/.fluxbox/icons/thunderbird.xpm>
 	[exec] (keepassxc) {keepassxc}
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
 	[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 	[exec] (steam) {startsteam} <~/.fluxbox/icons/steam.xpm>
-	[exec] (mumble) {mumble} <~/.fluxbox/icons/mumble.xpm>
 	[exec] (xvkbd) {xvkbd}
 	[separator]
 	[submenu] (terminals)
@@ -43,7 +42,7 @@
 		[end]
 		[submenu] (im)
 			[exec] (pidgin) {pidgin} <~/.fluxbox/icons/pidgin.xpm>
-			[exec] (micq) {xterm -e micq}
+			[exec] (mumble) {mumble} <~/.fluxbox/icons/mumble.xpm>
 		[end]
 		[submenu] (mail)
 			[exec] (thunderbird) {thunderbird} <~/.fluxbox/icons/thunderbird.xpm>
@@ -60,7 +59,7 @@
 		[submenu] (irc)
 			[exec] (hexchat) {hexchat} <~/.fluxbox/icons/hexchat.xpm>
 			[exec] (irssi) {xterm -e irssi}
-			[exec] (BitchX) {xterm -e BitchX -N} <~/.fluxbox/icons/bitchx.xpm>
+			[exec] (weechat) {xterm -e weechat}
 		[end]
 		[submenu] (p2p)
 			[exec] (gtk-gnutella) {gtk-gnutella} <~/.fluxbox/icons/gtk-gnutella.xpm>
