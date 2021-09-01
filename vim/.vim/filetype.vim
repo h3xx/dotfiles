@@ -41,56 +41,6 @@ aug keycommands
 	au BufNewFile,BufRead	*
 				\ nnoremap <buffer> <silent> ,L :ru templates/keys/lorem_ipsum.vim<CR>
 
-	" use backslash-pipe (or [num]-backslash-pipe) to quickly comment lines
-
-	"" perl, sh, php and various config files use the # comment leader
-	au FileType alsaconf,
-				\coffee,
-				\conf,
-				\config,
-				\cvsrc,
-				\gitconfig,
-				\gtkrc,
-				\make,
-				\mplayerconf,
-				\muttrc,
-				\perl,
-				\php,
-				\procmail,
-				\python,
-				\readline,
-				\remind,
-				\resolv,
-				\screen,
-				\sh,
-				\squid,
-				\sshconfig,
-				\sudoers,
-				\yaml
-				\ noremap <buffer> <silent> <leader>\| :s+^+#+\|nohls<CR>
-
-	"" sql uses the -- comment leader
-	au FileType		sql
-				\ noremap <buffer> <silent> <leader>\| :s+^+--+\|nohls<CR>
-
-	"" c variants use the // comment leader
-	"" (technically, so does PHP, but I like to pretend I'm writing Perl)
-	au FileType		c,java,javascript,scss
-				\ noremap <buffer> <silent> <leader>\| :s+^+//+\|nohls<CR>
-
-	"" vim uses the " comment leader
-	au FileType		vim
-				\ noremap <buffer> <silent> <leader>\| :s+^+"+\|nohls<CR>
-
-	"" Xdefaults use the ! comment leader
-	au FileType		xdefaults
-				\ noremap <buffer> <silent> <leader>\| :s+^+!+\|nohls<CR>
-
-
-	"" ini and [shudder] asm use the ; comment leader
-	au FileType		asm,dosini
-				\ noremap <buffer> <silent> <leader>\| :s+^+;+\|nohls<CR>
-
 	" ,v - insertion of vim filetype specification
 	au FileType		sh,perl,html,xml,c,cpp,conf,mplayerconf,vim
 				\ nnoremap <buffer> <silent> ,v :ru templates/keys/hintline-filetype.vim<CR>

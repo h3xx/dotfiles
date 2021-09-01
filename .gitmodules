@@ -62,6 +62,10 @@
 	path = vim/.vim/pack/dist/start/vim-bbcode
 	url = https://github.com/Winseven4lyf/vim-bbcode.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-commentary"]
+	path = vim/.vim/pack/dist/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-easymotion"]
 	path = vim/.vim/pack/dist/start/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion.git

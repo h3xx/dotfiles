@@ -280,6 +280,11 @@ nnoremap <A-o> :Git co
 " usefulness: ****
 nnoremap <F2> :Gblame<cr>
 
+" Backslash-pipe to quickly comment lines using vim-commentary
+" (also use "gcc" in normal, or "gc" in visual mode)
+nmap \| <Plug>CommentaryLine
+vmap \| <Plug>Commentary
+
 " reverse function of ' and `
 " ' => more accurate jumping, ` => less accurate jumping
 " usefulness: ****
