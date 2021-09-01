@@ -41,9 +41,9 @@ aug keycommands
 	au BufNewFile,BufRead	*
 				\ nnoremap <buffer> <silent> ,L :ru templates/keys/lorem_ipsum.vim<CR>
 
-	" ,v - insertion of vim filetype specification
+	" ,v - insertion of vim hintline
 	au FileType		sh,perl,html,xml,c,cpp,conf,mplayerconf,vim
-				\ nnoremap <buffer> <silent> ,v :ru templates/keys/hintline-filetype.vim<CR>
+				\ nnoremap <buffer> <silent> ,v :ru templates/keys/hintline.vim<CR>
 
 aug END " keycommands
 
