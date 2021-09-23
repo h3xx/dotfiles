@@ -1,7 +1,7 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
-# Version 1.2
+# Version 1.3
 
 SYSCONFDIRS=(
     /etc
@@ -60,6 +60,11 @@ report_change() {
             diff "${DIFF_OPTS[@]}" -- "$OLD_CONF" "$NEW_CONF"
         fi
         echo '*****'
+    elif [[ -f $NEW_CONF ]]; then
+        echo '*****'
+        printf 'New file: "%s"\n' "$NEW_CONF"
+        cat -v -- "$NEW_CONF"
+        echo '*****'
     else
         printf 'error finding changes for configuration file "%s" => "%s"\n' "$OLD_CONF" "$NEW_CONF" >&2
     fi
@@ -74,7 +79,7 @@ accept_change() {
         NEW_CONF=${OLD_CONF}.new
     fi
 
-    if [[ -f $OLD_CONF && -f $NEW_CONF ]]; then
+    if [[ -f $NEW_CONF ]]; then
         mv -v -- "$NEW_CONF" "$OLD_CONF" || exit 1
     else
         printf 'error applying changes for configuration file "%s" => "%s"\n' "$OLD_CONF" "$NEW_CONF" >&2
@@ -119,35 +124,33 @@ prompt_change() {
         NEW_CONF=${OLD_CONF}.new
     fi
 
-    if [[ -f $OLD_CONF && -f $NEW_CONF ]]; then
-        # show the user what they're accepting
-        report_change "$OLD_CONF" "$NEW_CONF"
+    # show the user what they're accepting
+    report_change "$OLD_CONF" "$NEW_CONF"
 
-        if [[ $APPLY_ALL -ne 0 ]]; then
-            # user wants to install all of them
-            accept_change "$OLD_CONF" "$NEW_CONF"
-        else
-            read -p "$OLD_CONF => $NEW_CONF [y/N/e/d/a]? " ANSWER
-            case "${ANSWER//[A-Z]/[a-z]}" in
-                'a')
-                    INSTALL_ALL=1
-                    accept_change "$OLD_CONF" "$NEW_CONF"
-                    ;;
-                'y')
-                    accept_change "$OLD_CONF" "$NEW_CONF"
-                    ;;
-                'd')
-                    reject_change "$OLD_CONF" "$NEW_CONF"
-                    ;;
-                'e')
-                    edit_change "$OLD_CONF" "$NEW_CONF"
-                    prompt_change "$OLD_CONF" "$NEW_CONF"
-                    ;;
+    if [[ $APPLY_ALL -ne 0 ]]; then
+        # user wants to install all of them
+        accept_change "$OLD_CONF" "$NEW_CONF"
+    else
+        read -p "$OLD_CONF => $NEW_CONF [y/N/e/d/a]? " ANSWER
+        case "${ANSWER//[A-Z]/[a-z]}" in
+            'a')
+                INSTALL_ALL=1
+                accept_change "$OLD_CONF" "$NEW_CONF"
+                ;;
+            'y')
+                accept_change "$OLD_CONF" "$NEW_CONF"
+                ;;
+            'd')
+                reject_change "$OLD_CONF" "$NEW_CONF"
+                ;;
+            'e')
+                edit_change "$OLD_CONF" "$NEW_CONF"
+                prompt_change "$OLD_CONF" "$NEW_CONF"
+                ;;
 
-                #*)
-                    # do nothing...
-            esac
-        fi
+            #*)
+                # do nothing...
+        esac
     fi
 }
 
