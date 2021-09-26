@@ -141,10 +141,12 @@ EXEC 01;32     # This is for files with execute permission:
 .txz  01;31
 .tz   01;31
 .tz2  01;31
+.tzst 01;31
 .xz   01;31
 .z    01;31
 .zip  01;31
 .zoo  01;31
+.zst  01;31
 
 # multimedia (video/image/sound) file formats (magenta/bright magenta)
 .aac  00;35
@@ -167,15 +169,14 @@ EXEC 01;32     # This is for files with execute permission:
 .jpeg 01;35
 .jfif 01;35
 .m2a  01;35
+.m2t  01;35
 .m2v  01;35
 .m4a  01;35
 .m4p  01;35
 .m4v  01;35
 .mid  00;35
 .midi 00;35
-## mka - Matroska audio
 .mka  01;35
-## mkv - Matroska video
 .mkv  01;35
 .mod  00;35
 .mov  01;35
@@ -211,10 +212,14 @@ EXEC 01;32     # This is for files with execute permission:
 .tiff 01;35
 .vob  01;35
 .wav  01;35
+.webm 01;35
+.webp 01;35
 .wma  01;35
 .wmv  01;35
 .xbm  01;35
+.xcf  00;35
 .xpm  01;35
+.xspf 00;35
 .xwd  01;35
 .xvid 01;35
 
@@ -245,10 +250,6 @@ EXEC 01;32     # This is for files with execute permission:
 .tg   00;35
 ## tx - terminatorX set files
 .tx   00;35
-## xcf - gIMP internal save format
-.xcf  00;35
-## xspf - Audacious playlist (XML)
-.xspf 00;35
 
 # document (openoffice/pdf) file formats (bright white)
 
@@ -293,9 +294,11 @@ EXEC 01;32     # This is for files with execute permission:
 .pot  01;01
 .pps  01;01
 .ppt  01;01
+.pptx 01;01
 .xlc  01;01
 .xlm  01;01
 .xls  01;01
+.xlsx 01;01
 .xlt  01;01
 .xlw  01;01
 
