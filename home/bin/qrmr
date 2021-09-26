@@ -63,6 +63,8 @@ do_remove() {
     local DIR=$1
     (
         flock -x 9
+        # Fix permissions so we can remove it
+        do_ionice find "$DIR"/* -type d -exec chmod u+w,g+w,o+w -- {} +
         if [[ $SHRED -ne 0 ]]; then
             do_ionice find "$DIR"/* -type f -exec shred -zu -- {} + &&
             do_ionice find "$DIR"/* -type d -empty -delete
@@ -89,6 +91,12 @@ for DIR in "${DIRS[@]}"; do
         mkdir -p -- "$DIR" &&
         touch "$DIR"/.okaytodelete
         for fn; do
+            # Fix permissions so we can move it
+            if [[ ! -L $fn ]]; then
+                if [[ -d $fn ]]; then
+                    chmod u+w,g+w,o+w -- "$fn"
+                fi
+            fi
             mv -- "$fn" "$(mktemp -dp "$DIR" 'qrmr.XXXXXX')"
         done
         if [[ $FOREGROUND -ne 0 ]]; then
