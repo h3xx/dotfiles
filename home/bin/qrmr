@@ -23,7 +23,7 @@ with the terminal.
   -s        Shred instead of just rm.
   --        Terminate options list.
 
-Copyright (C) 2010-2020 Dan Church.
+Copyright (C) 2010-2021 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -64,21 +64,20 @@ fi
 
 LOCK_FILE=.qrmr.lock
 
+do_ionice() {
+    ionice -c 3 "$@"
+}
+
 do_remove() {
     local DIR=$1
-    if [[ $SHRED -ne 0 ]]; then
-        flock -x "$DIR/$LOCK_FILE" \
-            ionice -c 3 \
-            sh -c '
-                DIR=$0;
-                find "$DIR"/* -type f -exec shred -zu -- {} + &&
-                find "$DIR"/* -type d -empty -delete &&
-                rm -rf -- "$DIR"
-            ' \
-            "$DIR"
-    else
-        flock -x "$DIR/$LOCK_FILE" ionice -c 3 rm -rf -- "$DIR"/* "$DIR"
-    fi
+    (
+        flock -x 9
+        if [[ $SHRED -ne 0 ]]; then
+            do_ionice find "$DIR"/* -type f -exec shred -zu -- {} + &&
+            do_ionice find "$DIR"/* -type d -empty -delete
+        fi &&
+        do_ionice rm -rf -- "$DIR"/* "$DIR"
+    ) 9>"$DIR/$LOCK_FILE"
 }
 
 if [[ $SHRED -ne 0 ]]; then
