@@ -1,5 +1,14 @@
 #!/bin/bash
-_REALBIN=$(which -a less 2>/dev/null |grep -Fvx -m 1 "$0")
+
+# Remove self from path
+BINDIR=${0%/*}
+PATH=:$PATH:
+while [[ $PATH = *:$BINDIR:* ]]; do
+    PATH=${PATH//:$BINDIR:/:}
+done
+# Trim off ":" from the beginning and end.
+PATH=${PATH#:}
+PATH=${PATH%:}
 
 # colorized manpages
 LESS_TERMCAP_mb=$'\e[05m' \
@@ -9,4 +18,4 @@ LESS_TERMCAP_so=$'\e[07;38;5;154m' \
 LESS_TERMCAP_se=$'\e[0m' \
 LESS_TERMCAP_us=$'\e[04;01;38;5;165m' \
 LESS_TERMCAP_ue=$'\e[0m' \
-exec "$_REALBIN" "$@"
+exec less "$@"
