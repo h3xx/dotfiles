@@ -71,12 +71,13 @@ JackOutRight		= "system:playback_2"
 ALSAMixer1		= PCM
 
 # Second ALSA mixer device.
+# (by default this uses the default ALSA output; see /etc/asound.conf)
 
 # XXX use `aplay -l` / `amixer -c [0-9] info` for the correct card/mixer value
 
 # internal (motherboard) ac97 audio hardware
-ALSADevice		= hw:0
-ALSAMixer2		= Master
+#ALSADevice		= hw:0
+#ALSAMixer2		= Master
 
 # USB sound card
 #ALSADevice		= default
