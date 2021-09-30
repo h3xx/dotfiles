@@ -89,7 +89,7 @@ doinst_header() {
     mkdir -p -- "$(dirname -- "$DOINST")" || return
 
     cat <<EOF >>"$DOINST"
-if [ -x usr/bin/install-info ]; then
+if [ -x /usr/bin/install-info ]; then
 EOF
 }
 
@@ -100,7 +100,7 @@ doinst_entry() {
         INFOFILE=$3 \
 
     cat <<EOF >>"$DOINST"
-  chroot . /usr/bin/install-info --info-dir=$INFODIR $INFOFILE >/dev/null 2>&1
+  install-info --info-dir=$INFODIR $INFOFILE 2>/dev/null
 EOF
 }
 
