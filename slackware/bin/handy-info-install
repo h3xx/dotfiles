@@ -8,6 +8,7 @@ Usage: ${0##*/} [OPTIONS] [FILE]... [DIR]...
 Append doinst.sh information to install .info.gz files into /usr/info/dir.
 
   -h        Show this help message.
+  -f        Force adding info files, even if they don't exist.
   -z        Automatically gzip(1) info files.
   -o DOINST Append to doinst.sh file DOINST.
 
@@ -40,9 +41,13 @@ DEST_DOINST='install/doinst.sh'
 USE_INFO_FILE_BASENAME=0
 GZIP_INFOS=0
 INFODIR='/usr/info' # Slackware default
+FORCE=0
 
-while getopts 'ho:z' flag; do
+while getopts 'fho:z' flag; do
     case "$flag" in
+        'f')
+            FORCE=1
+            ;;
         'o')
             DEST_DOINST=$OPTARG
             USE_INFO_FILE_BASENAME=1
@@ -107,33 +112,55 @@ fi
 EOF
 }
 
-doinst_header "$DEST_DOINST"
-for INFOFILE; do
-
-    if [[ $GZIP_INFOS -ne 0 ]]; then
-        INFOFILE=$(compress_info "$INFOFILE")
-    fi
-
-    # remove the `dir' file if it is passed to us
-    if [[ $(basename -- "$INFOFILE" '.gz') = 'dir' ]]; then
-        rm -fv -- "$INFOFILE"
+INFOFILES=()
+ERRORS=()
+for ARG; do
+    if [[ $FORCE -ne 0 || -f $ARG ]]; then
+        INFOFILES+=("$ARG")
     else
-        # else continue as normal
-        if [[ $USE_INFO_FILE_BASENAME -ne 0 ]]; then
-            INFOFILE="usr/info/$(basename -- "$INFOFILE")"
-        fi
-        if [[ $(basename -- "$(dirname -- "$INFOFILE")") != 'info' ]]; then
-            # info file is in a non-standard subdirectory
-            INFOSUBDIR=$(basename -- "$(dirname -- "$INFOFILE")")
-        else
-            INFOSUBDIR=
-        fi
-
-        # install!
-        doinst_entry \
-            "$DEST_DOINST" \
-            "$INFODIR${INFOSUBDIR:+/$INFOSUBDIR}" \
-            "$INFOFILE"
+        ERRORS+=("'$ARG' is not a file")
     fi
 done
-doinst_footer "$DEST_DOINST"
+
+if [[ ${#ERRORS[@]} -gt 0 ]]; then
+    for ERR in "${ERRORS[@]}"; do
+        printf '%s\n' "$ERR" >&2
+    done
+    exit 1
+fi
+
+# Don't write broken "if" statements to doinst.sh!
+if [[ ${#INFOFILES[@]} -gt 0 ]]; then
+
+    doinst_header "$DEST_DOINST"
+    for INFOFILE in "${INFOFILES[@]}"; do
+
+        if [[ $GZIP_INFOS -ne 0 ]]; then
+            INFOFILE=$(compress_info "$INFOFILE")
+        fi
+
+        # remove the `dir' file if it is passed to us
+        if [[ $(basename -- "$INFOFILE" '.gz') = 'dir' ]]; then
+            rm -fv -- "$INFOFILE"
+        else
+            # else continue as normal
+            if [[ $USE_INFO_FILE_BASENAME -ne 0 ]]; then
+                INFOFILE="usr/info/$(basename -- "$INFOFILE")"
+            fi
+            if [[ $(basename -- "$(dirname -- "$INFOFILE")") != 'info' ]]; then
+                # info file is in a non-standard subdirectory
+                INFOSUBDIR=$(basename -- "$(dirname -- "$INFOFILE")")
+            else
+                INFOSUBDIR=
+            fi
+
+            # install!
+            doinst_entry \
+                "$DEST_DOINST" \
+                "$INFODIR${INFOSUBDIR:+/$INFOSUBDIR}" \
+                "$INFOFILE"
+        fi
+    done
+    doinst_footer "$DEST_DOINST"
+
+fi
