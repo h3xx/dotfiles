@@ -16,7 +16,7 @@ gzip(1) man files recursively, updating symlinks
   -u        Undo gzipping and symlinking.
   -v        Turn on verbose output.
 
-Copyright (C) 2010 Dan Church.
+Copyright (C) 2010-2021 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -78,7 +78,9 @@ _gzipmans() {
         FIND_LPARAMS=('-type' 'l' '!' '-iname' '*.gz') \
         LINK_TARGET \
         MANDIR \
-        OLD_LT
+        OLD_LT \
+        RL \
+        NEW_LINK
 
     if [[ $UNDO -ne 0 ]]; then
         GZIP=${GZIP/#gzip/gunzip}
@@ -134,14 +136,14 @@ _gzipmans() {
 
         # correct symlinks
         for LINK in $(find "$MANDIR" "${FIND_LPARAMS[@]}") ; do
-            LINK_TARGET=$(
-                RL=$(readlink -- "$LINK")
-                if [[ $UNDO -eq 0 ]]; then
-                    echo "${RL}.gz"
-                else
-                    echo "${RL/%.gz}"
-                fi
-            )
+            RL=$(readlink -- "$LINK")
+            if [[ $UNDO -eq 0 ]]; then
+                LINK_TARGET=$RL.gz
+                NEW_LINK=${LINK}.gz
+            else
+                LINK_TARGET=${RL/%.gz}
+                NEW_LINK=${LINK/%.gz}
+            fi
 
             # compensate for absolute symlinks to a file in the same directory
             if [[ ${LINK_TARGET:0:1} = '/' &&
@@ -157,13 +159,7 @@ _gzipmans() {
             fi
 
             # re-create gzipped symlink
-            $LN_S -- "$LINK_TARGET" "$(
-                if [[ $UNDO -eq 0 ]]; then
-                    echo "${LINK}.gz"
-                else
-                    echo "${LINK/%.gz}"
-                fi
-            )" &&
+            $LN_S -- "$LINK_TARGET" "$NEW_LINK" &&
             # remove old symlink
             $RM -- "$LINK"
         done
