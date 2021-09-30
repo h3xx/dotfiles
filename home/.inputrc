@@ -6,6 +6,12 @@ $include /etc/inputrc
 # do not make noise
 set bell-style none
 
+# Colorize completions according to $LS_COLORS
+set colored-stats on
+
+# Truncate long entries with ellipses when displaying possible completions
+set completion-prefix-display-length 5
+
 # append demarkation characters [*/@%=] to special entries
 set visible-stats on
 
