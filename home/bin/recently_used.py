@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 
 """
@@ -21,7 +21,6 @@ __license__   = "GPLv2"
 __email__     = "laurence@xenomachina.com"
 
 import argparse
-import os.path
 import sys
 
 import gi
