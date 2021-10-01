@@ -19,7 +19,7 @@
 	[exec] (xterm) {xterm -e 'mux'} <~/.fluxbox/icons/xterm.xpm>
 	[exec] (firefox) {firefox} <~/.fluxbox/icons/firefox.xpm>
 	[exec] (thunderbird) {thunderbird} <~/.fluxbox/icons/thunderbird.xpm>
-	[exec] (keepassxc) {keepassxc}
+	[exec] (keepassxc) {keepassxc} <~/.fluxbox/icons/keepassxc.xpm>
 	[exec] (gimp) {gimp} <~/.fluxbox/icons/gimp.xpm>
 	[exec] (nethack) {xterm -geometry 72x25 -font 10x20 -title NetHack -e 'sh -c nethack'} <~/.fluxbox/icons/nethack.xpm>
 	[exec] (steam) {startsteam} <~/.fluxbox/icons/steam.xpm>
