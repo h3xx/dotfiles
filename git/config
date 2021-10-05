@@ -73,6 +73,8 @@
 	user = h3xx
 
 [merge]
+	# merges should only be explicit merges, regardless of whether they're ff merges
+	ff = false
 	tool = vimdiff
 
 [pull]
