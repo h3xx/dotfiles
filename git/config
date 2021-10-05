@@ -18,6 +18,8 @@
 	pu		= pull
 	r		= reset
 	rb		= rebase
+	rba		= rebase --abort
+	rbc		= rebase --continue
 	rh		= reset --hard
 	s		= status
 	sf		= submodule foreach
