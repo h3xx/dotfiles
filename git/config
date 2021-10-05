@@ -48,6 +48,12 @@
 	pager = true
 	ui = auto
 
+[color "decorate"]
+	HEAD		= bold 81 235
+	branch		= bold 121 235
+	remoteBranch	= bold 222 235
+	tag		= bold 222 235
+
 [color "diff"]
 	frag		= bold 165 235
 	meta		= bold 39 235
@@ -82,6 +88,9 @@
 
 [github]
 	user = h3xx
+
+[log]
+	decorate = true
 
 [merge]
 	# merges should only be explicit merges, regardless of whether they're ff merges
