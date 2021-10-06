@@ -38,7 +38,7 @@ hr_size() (
         HR_UNIT=${UNITS[0]}
     fi
 
-    printf '%s %s\n' "$HR_VAL" "$HR_UNIT"
+    printf '%g %s\n' "$HR_VAL" "$HR_UNIT"
 )
 
 hr_size "$1"
