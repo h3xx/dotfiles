@@ -242,59 +242,45 @@ file_size() {
 }
 
 # produces a human-readable size from the byte count passed to it
-hr_size() {
-    local \
-        bytes=$1 \
-        units \
-        fact \
-        thresh \
-        decimals \
-        exp \
-        hr_val \
-        hr_unit \
+hr_size() (
+    declare -i BYTES=$1
 
-    #units=(B KB MB GB TB PB EB ZB YB) # shell math can only go so far...
-    units=(B KB MB GB TB)
-    fact=1024
-    thresh=9/10
-    decimals=1
+    #UNITS=(B KB MB GB TB PB EB ZB YB) # shell math can only go so far...
+    UNITS=(B KB MB GB TB)
+    FACT=1024
+    THRESH=9/10
+    DECIMALS=1
+    DECIMALS_FACTOR=$(( 10 ** DECIMALS ))
 
-    # cycle through units from largest to smallest, exiting when it finds
-    # the largest applicable unit
-    for ((exp = ${#units[@]} - 1; exp > -1; --exp)); do
-        # check if the unit is close enough to the unit's size, within
-        # the threshold
-        if [ "$bytes" -gt "$((fact**exp*${thresh}))" ]; then
+    # cycle through units from largest to smallest, exiting when it finds the
+    # largest applicable unit
+    for (( EXP = ${#UNITS[@]} - 1; EXP > -1; --EXP )); do
+        # check if the unit is close enough to the unit's size, within the
+        # threshold
+        if [[ $BYTES -gt $((FACT ** EXP * $THRESH)) ]]; then
             # we found the applicable unit
-
-            # subdividing bytes makes no sense
-            if [ "$exp" -eq 0 ]; then
-                decimals=0
-            fi
 
             # must multiply by a factor of 10 here to not truncate
             # the given number of decimal places after the point
-            hr_val=$((bytes*10**decimals/fact**exp))
+            HR_VAL=$(( BYTES * DECIMALS_FACTOR / FACT ** EXP ))
 
             # put the decimal point in
-            if [ "$decimals" -gt 0 ]; then
-                # left: divide and truncate
-                # right: modulus
-                hr_val=$((hr_val/10**decimals)).$((hr_val%10**decimals))
+            if [[ $DECIMALS -gt 0 ]]; then
+                HR_VAL=$(( HR_VAL / DECIMALS_FACTOR )).$(( HR_VAL % DECIMALS_FACTOR ))
             fi
 
-            hr_unit=${units[$exp]}
+            HR_UNIT=${UNITS[$EXP]}
             break
         fi
     done
 
-    if [ -z "$hr_unit" ]; then
-        hr_val=$bytes
-        hr_unit=${units[0]}
+    if [[ -z $HR_UNIT ]]; then
+        HR_VAL=$BYTES
+        HR_UNIT=${UNITS[0]}
     fi
 
-    echo "${hr_val} ${hr_unit}"
-}
+    printf '%s %s\n' "$HR_VAL" "$HR_UNIT"
+)
 
 # prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
 get_mimetype() {
