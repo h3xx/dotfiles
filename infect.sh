@@ -381,6 +381,12 @@ if has urlview; then
     soft_link_all ~ "$DOTFILES/urlview"/*
 fi
 
+# OPT: youtube-dl
+if has youtube-dl; then
+    soft_link "$DOTFILES/youtube-dl" ~/.config/youtube-dl
+    soft_link_all ~/bin "$DOTFILES/youtube-dl/bin"/*
+fi
+
 # Report
 printf '%d links created\n' "$LINK_CT"
 printf '%d dirs created\n' "$DIR_CT"
