@@ -349,6 +349,7 @@ fi
 # OPT: tig
 if hash tig 2>/dev/null; then
     soft_link "$DOTFILES/tig" ~/.config/tig
+    soft_link_all ~/bin "$DOTFILES/tig/bin"/*
 fi
 
 # OPT: tmux
