@@ -368,6 +368,7 @@ fi
 # OPT: tig
 if has tig; then
     soft_link "$DOTFILES/tig" ~/.config/tig
+    soft_link_all ~/bin "$DOTFILES/tig/bin"/*
 fi
 
 # OPT: tmux
