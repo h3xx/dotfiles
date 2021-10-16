@@ -214,16 +214,19 @@ run_diff() {
         LABEL_SIDE_LEN \
         WIDTH
 
-    # figure out how wide the screen is
-    WIDTH=${COLUMNS:-$(stty size |cut -f 2 -d ' ')}
     DIFF_OPTS=(
         '--suppress-common-lines'
         '--ignore-blank-lines'
         '--suppress-blank-empty'
         '--report-identical-files'
-        "${WIDTH:+--width=$WIDTH}"
     )
     DIFF=diff
+
+    # figure out how wide the screen is
+    WIDTH=${COLUMNS:-$(stty size |cut -f 2 -d ' ')}
+    if [[ -n $WIDTH ]]; then
+        DIFF_OPTS+=("--width=$WIDTH")
+    fi
 
     if [[ $PLAIN_DIFF -eq 0 ]]; then
         # determine the diffing program
