@@ -1,6 +1,16 @@
 #!/bin/bash
 # vi: sts=4 sw=4 ts=4 et
 
+YTDL_ARGS=()
+
+# Download archive
+if [[ -z $DOWNLOAD_ARCHIVE ]]; then
+    DOWNLOAD_ARCHIVE=.youtube-dl-archive
+fi
+if [[ -f $DOWNLOAD_ARCHIVE ]]; then
+    YTDL_ARGS+=(--download-archive "$DOWNLOAD_ARCHIVE")
+fi
+
 # XXX Unicode
 # Work around not being able to encode UTF-8 filenames from the web into
 # non-UTF-8 locales.
@@ -13,4 +23,5 @@
 export LANG=en_US.utf8
 
 exec /usr/bin/youtube-dl \
+    "${YTDL_ARGS[@]}" \
     "$@"
