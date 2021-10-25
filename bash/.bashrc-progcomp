@@ -237,6 +237,21 @@ if [[ -f ~/.pgpass ]]; then
 	}
 fi
 
+# gio
+complete -o default -F _gio gio
+_gio() {
+	local CMD
+	if [[ $COMP_CWORD -eq 1 || ${COMP_WORDS[1]} = help ]]; then
+		for CMD in \
+			cat copy help info list mime mkdir monitor mount move open remove rename save set trash tree version \
+			; do
+			if [[ $CMD = "$2"* ]]; then
+				COMPREPLY+=("$CMD")
+			fi
+		done
+	fi
+}
+
 # turn on git programmable completion, if installed
 test -n "$(
 	for fn in \
