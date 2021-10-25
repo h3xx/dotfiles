@@ -90,7 +90,8 @@
 
 [core]
 	# -R: Handle colors correctly
-	pager = less -R
+	# -S: Chop long lines
+	pager = less -RS
 
 [diff]
 	# more logical hunk breaks (I hope)
@@ -137,9 +138,9 @@
 	# disable paged branch listings
 	branch = no
 	# a better diff view
-	diff = diff-highlight | less -R
-	log = diff-highlight | less -R
-	show = diff-highlight | less -R
+	diff = diff-highlight | less -RS
+	log = diff-highlight | less -RS
+	show = diff-highlight | less -RS
 
 [pull]
 	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
