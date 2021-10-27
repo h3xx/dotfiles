@@ -3,8 +3,10 @@
 [advice]
 	# Turn off n00b mode
 	# Still useful: amWorkDir, implicitIdentity
+	addEmptyPathspec = false
 	commitBeforeMerge = false
 	detachedHead = false
+	pushUnqualifiedRefname = false
 	pushUpdateRejected = false
 	resolveConflict = false
 	statusHints = false
