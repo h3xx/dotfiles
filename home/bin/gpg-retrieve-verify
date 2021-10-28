@@ -64,6 +64,7 @@ trap 'cleanup' EXIT
 
 GPG_OPTS=(
     --keyserver-options auto-key-retrieve
+    --import-options import-clean
     --verify-files
 )
 
