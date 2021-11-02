@@ -143,6 +143,7 @@
 	diff = diff-highlight | less -RS
 	log = diff-highlight | less -RS
 	show = diff-highlight | less -RS
+	status = ~/.config/git/bin/sort-status
 
 [pull]
 	# avoid merge bubbles: do not ask to merge when a pull isn't a ff
