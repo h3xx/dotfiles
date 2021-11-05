@@ -30,7 +30,7 @@ upstream_ref() {
 }
 
 ME=${0/*\//}
-BIN=$(which -a "$ME" 2>/dev/null |grep -Fvx -m 1 "$0")
+BIN=$(type -afp "$ME" 2>/dev/null |grep -Fvx -m 1 "$0")
 
 # Act as a stand-in for the "git reset" alias, which doesn't support `-` and
 # gives a confusing and unhelpful error message: "fatal: option '-' must come
