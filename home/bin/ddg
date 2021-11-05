@@ -2,7 +2,7 @@
 # vi: et sts=4 sw=4 ts=4
 # opens elinks to the specified (or un-specified) search query
 
-if [[ -z ${BROWSER:=$(which -a elinks links lynx curl |head -1)} ]]; then
+if [[ -z ${BROWSER:=$(type -afp elinks links lynx curl |head -1)} ]]; then
     echo 'No suitable text mode browser found.' >&2
     echo 'Set BROWSER environment variable to specify one manually.' >&2
     exit 2

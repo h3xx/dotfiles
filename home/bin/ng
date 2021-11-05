@@ -2,7 +2,7 @@
 # vi: sts=4 sw=4 ts=4 et
 
 ME=${0/*\//}
-BIN=$(which -a "$ME" 2>/dev/null |grep -Fvx -m 1 "$0")
+BIN=$(type -afp "$ME" 2>/dev/null |grep -Fvx -m 1 "$0")
 
 check_recursion() {
     # failsafe - is npx recursively calling this script?
