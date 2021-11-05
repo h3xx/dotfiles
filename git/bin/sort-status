@@ -72,7 +72,7 @@ sub as_string {
 sub op_cmp {
     my ($self, $other) = @_;
     # Keyed to specific language settings (sorry)
-    if ($ENV{LANG} !~ /^en_US/) {
+    if ($ENV{LANG} !~ /^(?:en_US|C)\b/) {
         return 0;
     }
     $self->type cmp $other->type;
