@@ -15,6 +15,8 @@ fi
 
 # Set defaults
 DAYS=7
+CLEAN_FILES=1
+CLEAN_DIRS=1
 
 . "$MYCONF"
 
@@ -29,21 +31,25 @@ for DIR in "${CACHEDIRS[@]}"; do
             ! -perm /0200 \
             -exec chmod u+w -- {} +
 
-        # Remove old files
-        find "$DIR/" \
-            -mindepth 1 \
-            -type f \
-            ! -name .gitignore \
-            -mtime "+$DAYS" \
-            -print \
-            -delete
+        if [[ $CLEAN_FILES -ne 0 ]]; then
+            # Remove old files
+            find "$DIR/" \
+                -mindepth 1 \
+                -type f \
+                ! -name .gitignore \
+                -mtime "+$DAYS" \
+                -print \
+                -delete
+        fi
 
-        # Clear out any empty directories, including the cache dir itself
-        find "$DIR/" \
-            -type d \
-            -empty \
-            -print \
-            -delete
+        if [[ $CLEAN_DIRS -ne 0 ]]; then
+            # Clear out any empty directories, including the cache dir itself
+            find "$DIR/" \
+                -type d \
+                -empty \
+                -print \
+                -delete
+        fi
 
         ) >>"$LOG"
 
