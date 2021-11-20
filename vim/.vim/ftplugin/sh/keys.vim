@@ -12,6 +12,9 @@ nnoremap <buffer> <silent> ,d :ru templates/keys/sh-dirname.vim<CR>
 " ,g - insert getopts processing block
 nnoremap <buffer> <silent> ,g :ru templates/keys/sh-getopts.vim<CR>
 
+" ,h - insert file header
+nnoremap <buffer> <silent> ,h :ru templates/headers/sh.vim<CR>
+
 " ,s - insert in-bash suffix strip
 nnoremap <buffer> <silent> ,s :ru templates/keys/sh-strip-suffix.vim<CR>
 
