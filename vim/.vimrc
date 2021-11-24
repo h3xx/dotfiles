@@ -263,6 +263,9 @@ nnoremap <Esc><Esc> :noh<CR>
 " force opening new tabs when gf-ing
 nnoremap gf <C-W>gf
 
+" \v => re-select the text you just pasted
+nnoremap <leader>v V`]
+
 " C-u = undo in insert mode
 inoremap <C-U> <C-G>u<C-U>
 
