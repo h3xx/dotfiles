@@ -8,6 +8,7 @@ use warnings;
 # lessening the need to scroll up.
 
 my %matchers = (
+    aa_conflict => qr/interactive rebase in progress; onto/,
     a_untracked => qr/^Untracked files:/,
     b_unstaged => qr/^(?:Changes not staged for commit:|no changes added to commit|nothing to commit, working tree clean|nothing added to commit)/,
     c_staged => qr/^Changes to be committed:/,
