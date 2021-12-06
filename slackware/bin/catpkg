@@ -6,7 +6,7 @@ PACKAGES='/var/log/packages'
 SCRIPTS='/var/log/scripts'
 
 USAGE() {
-    printf 'Usage: %s [--] PACKAGE [PACKAGE]...\n' \
+    printf 'Usage: %s [--] PATTERN...\n' \
         "${0##*/}"
 }
 
@@ -15,35 +15,65 @@ HELP_MESSAGE() {
     cat <<EOF
 Slackware-specific script to display package contents.
 
-  -h        Show this help message.
-  --        Terminate options list.
+  -h, --help    Show this help message.
+  --            Terminate options list.
 
-Copyright (C) 2007-2020 Dan Church.
+EOF
+    COPYRIGHT_MESSAGE
+}
+
+COPYRIGHT_MESSAGE() {
+    cat <<EOF
+Copyright (C) 2007-2021 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 EOF
 }
 
-while getopts 'h-' FLAG; do
-    case "$FLAG" in
-        'h')
-            HELP_MESSAGE
-            exit 0
-            ;;
-        *)
-            printf 'Unrecognized flag: %s\n' \
-                "$FLAG" \
-                >&2
-            USAGE >&2
-            exit 1
-            ;;
-    esac
+ARGS=()
+ARG_ERRORS=0
+END_FLAGS=0
+# Hint: $0 is the script name
+for (( AI = 1; AI <= $#; ++AI )); do
+    ARG=${!AI}
+    if [[ $END_FLAGS -ne 0 ]]; then
+        ARGS+=("$ARG")
+    else
+        case "$ARG" in
+            --help|-h)
+                HELP_MESSAGE
+                exit 0
+                ;;
+            --)
+                END_FLAGS=1
+                ;;
+            [^-]*)
+                ARGS+=("$ARG")
+                ;;
+            *)
+                printf '%s: Unrecognized option: %s\n' \
+                    "${0##*/}" \
+                    "$ARG" \
+                    >&2
+                ARG_ERRORS=1
+        esac
+    fi
 done
 
-shift "$((OPTIND-1))"
+if [[ ${#ARGS[@]} -eq 0 ]]; then
+    USAGE
+    ARG_ERRORS=1
+fi
 
-for PKG in $(chkpkg "$@") ; do
+if [[ $ARG_ERRORS -ne 0 ]]; then
+    printf 'Try '\''%s --help'\'' for more information.\n' \
+        "${0##*/}" \
+        >&2
+    exit 2
+fi
+
+for PKG in $(chkpkg "${ARGS[@]}") ; do
     if [[ -f $SCRIPTS/$PKG ]]; then
         cat "$SCRIPTS/$PKG"
     fi
