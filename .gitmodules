@@ -82,6 +82,10 @@
 	path = vim/.vim/pack/dist/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/vim-hybrid"]
+	path = vim/.vim/pack/dist/start/vim-hybrid
+	url = https://github.com/w0ng/vim-hybrid.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/vim-repeat"]
 	path = vim/.vim/pack/dist/start/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
