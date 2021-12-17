@@ -20,20 +20,6 @@ let did_load_my_filetypes=1
 "
 "aug END " views
 
-" slightly better fugitive + gitgutter integration
-" (only makes life easier if g:gitgutter_realtime=0 and g:gitgutter_eager=0)
-aug fugitive_gitgutter
-
-	" leaving Fugitive staging buffer
-	au BufLeave	index
-				\ GitGutterAll
-
-	" after Fugitive sends off a commit (probably unnecessary)
-	au BufDelete	COMMIT_EDITMSG
-				\ GitGutterAll
-
-aug END " fugitive_gitgutter
-
 aug keycommands
 	au!
 

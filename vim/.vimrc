@@ -520,9 +520,8 @@ if &encoding == 'utf-8'
 endif
 
 " *** vim-gitgutter ***
-" wait until I save the file to update signs
+" wait until I switch buffers to update signs
 let g:gitgutter_realtime=0
-let g:gitgutter_eager=0
 " Support non-utf8 terminals
 let g:gitgutter_sign_removed_first_line='^'
 
