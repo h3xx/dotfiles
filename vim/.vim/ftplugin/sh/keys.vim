@@ -12,6 +12,9 @@ nnoremap <buffer> <silent> ,d :ru templates/keys/sh-dirname.vim<CR>
 " ,g - insert getopts processing block
 nnoremap <buffer> <silent> ,g :ru templates/keys/sh-getopts.vim<CR>
 
+" ,G - insert long option processing block
+nnoremap <buffer> <silent> ,G :ru templates/keys/sh-getopt-long.vim<CR>
+
 " ,h - insert file header
 nnoremap <buffer> <silent> ,h :ru templates/headers/sh.vim<CR>
 
