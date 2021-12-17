@@ -408,7 +408,8 @@ autocmd ColorScheme *
 
 
 " Replace blinding gvim color scheme (makes terminal vim brighter)
-colorscheme late_evening
+set bg=dark
+colorscheme hybrid
 
 " Correct some colors
 " (addendum: only affects terminal vim, looks better regular)
