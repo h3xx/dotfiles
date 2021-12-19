@@ -1,2 +1,2 @@
-" Standard space settings
-setl et sts=4 sw=4 ts=4
+" Markdown looks better with these space settings
+setl et sts=2 sw=2 ts=4
