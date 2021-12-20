@@ -67,7 +67,7 @@ endif
 
 " Include the .vimrc this file overrides
 " Resolve to e.g. '/home/.../dotfiles/vim'
-let s:dotfiles_vim_dir = fnamemodify(resolve(fnamemodify('~/.vimrc', ':p')), ':h')
+let s:dotfiles_vim_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let s:vimrc = s:dotfiles_vim_dir . '/.vimrc'
 " Do another readlink on it to make absolutely sure it's not this file
 if resolve(s:vimrc) != resolve(expand('<sfile>:p'))
