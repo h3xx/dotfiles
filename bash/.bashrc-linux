@@ -253,7 +253,7 @@ gcd() {
 		return $?
 	fi
 
-	if [[ -d $TARGETDIR ]]; then
+	if [[ $URL != "$TARGETDIR" && -d $TARGETDIR ]]; then
 		cd "$TARGETDIR"
 		return
 	fi
