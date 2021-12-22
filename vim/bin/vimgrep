@@ -1,6 +1,11 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+escape_vimcmd() {
+    # Pipe breaks commands, must escape
+    printf '%s\n' "${1//'|'/'\|'}"
+}
+
 smartquote() {
     local ARG=$1
     if [[ $ARG = *[^:@,./%^_=+a-zA-Z0-9-]* ]]; then
@@ -16,7 +21,7 @@ done
 
 VIM_ARGS=(
     # Open vim with `:grep' results
-    -c "grep ${ARGS[*]}"
+    -c "$(escape_vimcmd "grep ${ARGS[*]}")"
     -c 'cw'
 )
 
