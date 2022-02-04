@@ -1,9 +1,5 @@
-TARGETS = \
-	signature.dat \
-	commandline-tricks.dat \
-	fortunes-selected.dat \
-	quotes.dat \
-	tf2.dat
+# Equates to: [a-z]* + .dat suffix
+TARGETS = $(addsuffix .dat,$(filter-out $(wildcard *.dat),$(wildcard [a-z]*)))
 
 all: $(TARGETS)
 
