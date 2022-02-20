@@ -28,34 +28,24 @@ set visible-stats on
 $if bash
 # redirection short cuts
 # (esc-KEY in xterm = (esc-KEY && alt-KEY in rxvt))
-"\ew": "2>&1"
-"\eq": "&>/dev/null &"
-"\e\C-q": "2>/dev/null"
-"\eg": "&>~/.garbage.out &"
-"\e\C-g": "2>~/.garbage.out"
+Meta-w: "2>&1"
+Meta-q: "&>/dev/null &"
+M-Control-q: "2>/dev/null"
+Meta-g: "&>~/.garbage.out &"
+M-Control-g: "2>~/.garbage.out"
 
 # Git
-"\M-d": "git d "
-"\M-c": "git c "
-"\M-s": "git s "
-"\M-u": "git u"
-"\M-p": "git p "
-"\M-f": "git f "
-"\M-m": "git m "
-"\M-o": "git co "
-
-"\ed": "git d "
-"\ec": "git c "
-"\es": "git s "
-"\eu": "git u"
-"\ep": "git p "
-"\ef": "git f "
-"\em": "git m "
-"\eo": "git co "
+Meta-d: "git d "
+Meta-c: "git c "
+Meta-s: "git s "
+Meta-u: "git u"
+Meta-p: "git p "
+Meta-f: "git f "
+Meta-m: "git m "
+Meta-o: "git co "
 
 # ls
-"\M-l": "la\r"
-"\el": "la\r"
+Meta-l: "la\r"
 
 # limit history garbage
 # escape + arrow key (both xterm and rxvt)
@@ -69,13 +59,9 @@ $endif
 # postgresql shortcuts
 $if psql
 
-	"\M-c": "select count(*) from "
-	"\M-r": "rollback;begin;"
-	"\M-s": "select * from "
-
-	"\e-c": "select count(*) from "
-	"\e-r": "rollback;begin;"
-	"\e-s": "select * from "
+	Meta-c: "select count(*) from "
+	Meta-r: "rollback;begin;"
+	Meta-s: "select * from "
 
 $endif
 
@@ -86,7 +72,6 @@ $endif
 # ctrl-backspace (^H) deletes word
 "\x08": backward-kill-word
 
-$if term=xterm
 # allow the use of the Home/End keys (fixed)
 #"\e[1~": beginning-of-line
 #"\e[4~": end-of-line
@@ -96,21 +81,11 @@ $if term=xterm
 "\e[1;5D": backward-word
 
 # completions
-"\M-?": possible-completions
-"\M-*": insert-completions
+Meta-?: possible-completions
+Meta-*: insert-completions
 
 # enable Alt-. insertion of last typed argument
-"\M-.": yank-last-arg
-$endif
-
-# (copy of xterm block)
-$if term=screen
-"\e[1;5C": forward-word
-"\e[1;5D": backward-word
-"\M-?": possible-completions
-"\M-*": insert-completions
-"\M-.": yank-last-arg
-$endif
+Meta-.: yank-last-arg
 
 $if term=rxvt
 # allow the use of the Home/End keys
