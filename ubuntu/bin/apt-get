@@ -1,0 +1,119 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# This is a "Do What I Mean" (DWIM) wrapper for apt-get that allows you to use
+# partial commands such as "i" => "install"
+#
+# This may go away if the Ubuntu tool ever gets a polish.
+#
+# Example:
+#
+# [Small brain, not using this script]
+#     $ apt-get i wget
+#     E: Invalid operation i
+#
+# [Galaxy brain, using this script]
+#     $ apt-get i wget
+#     E: Invalid operation i
+#     Hmmm... I know you meant to type "install"...
+#     Reading package lists... Done
+#     [apt-get just works as intended]
+#
+# Copyright (C) 2021-2022 Dan Church.
+# License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+# This is free software: you are free to change and redistribute it. There is NO
+# WARRANTY, to the extent permitted by law.
+
+ME=${0##*/}
+REALBIN=/bin/$ME
+
+COMMANDS=()
+# Error code that indicates an unknown command
+ERRCODE_UNKNOWN_COMMAND=
+
+case "$ME" in
+    apt-get)
+        COMMANDS=(
+            update
+            upgrade
+            install
+            reinstall
+            remove
+            purge
+            autoremove
+            dist-upgrade
+            dselect-upgrade
+            build-dep
+            satisfy
+            clean
+            autoclean
+            check
+            source
+            download
+            changelog
+        )
+        ERRCODE_UNKNOWN_COMMAND=100
+        ;;
+
+    apt)
+        COMMANDS=(
+            list
+            search
+            show
+            install
+            reinstall
+            remove
+            autoremove
+            update
+            upgrade
+            full-upgrade
+            edit-sources
+            satisfy
+        )
+        ERRCODE_UNKNOWN_COMMAND=100
+        ;;
+
+    *)
+        # Unsupported command
+        exec "$REALBIN" "$@"
+esac
+
+"$REALBIN" "$@"
+ERR=$?
+IN_CMD=$1
+shift 1
+
+# Rewrite command if we can
+if [[
+    $IN_CMD != -* && (
+        # Uncertain error code for this command?
+        ( -z $ERRCODE_UNKNOWN_COMMAND && $ERR -ne 0 ) ||
+        $ERR -eq $ERRCODE_UNKNOWN_COMMAND
+    )
+]]; then
+    POSSIBLE=()
+    for CMD in "${COMMANDS[@]}"; do
+        # E.g. they typed "apt-get i foo"
+        if [[ $CMD = "$IN_CMD"* ]]; then
+            POSSIBLE+=("$CMD")
+        fi
+    done
+    if [[ ${#POSSIBLE[@]} -eq 0 ]]; then
+        # Can't help - I don't know what command you were trying for.
+        exit "$ERR"
+    elif [[ ${#POSSIBLE[@]} -eq 1 ]]; then
+        # Could only be one thing - just DWIM!
+        printf 'Hmmm... I know you meant to type "%s"...\n' "${POSSIBLE[0]}"
+        exec "$REALBIN" "${POSSIBLE[0]}" "$@"
+    else
+        # Multiple possible corrections:
+        # Produce a better error message at least. Display a list of possibles.
+        printf 'Command "%s" not found. Perhaps you meant...\n\n' "$IN_CMD" >&2
+        for POSS in "${POSSIBLE[@]}"; do
+            printf '    %s\n' "$POSS" >&2
+        done
+    fi
+else
+    # Can't help
+    exit "$ERR"
+fi
