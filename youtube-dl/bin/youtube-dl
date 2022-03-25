@@ -11,6 +11,13 @@ if [[ -f $DOWNLOAD_ARCHIVE ]]; then
     YTDL_ARGS+=(--download-archive "$DOWNLOAD_ARCHIVE")
 fi
 
+if type aria2c &>/dev/null; then
+    YTDL_ARGS+=(
+        --external-downloader aria2c
+        --external-downloader-args '--max-connection-per-server=10 --force-save=false --summary-interval=0'
+    )
+fi
+
 # XXX Unicode
 # Work around not being able to encode UTF-8 filenames from the web into
 # non-UTF-8 locales.
