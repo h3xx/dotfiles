@@ -24,6 +24,7 @@ if ! filereadable(expand("$VIMRUNTIME/defaults.vim"))
 					\ | endif
 	augroup END
 else
+	unlet! skip_defaults_vim
 	runtime defaults.vim
 endif
 
