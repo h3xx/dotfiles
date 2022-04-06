@@ -552,6 +552,12 @@ let g:ctrlp_custom_ignore={
 " Work around stale caches by pressing F5 in the Ctrl P search panel.
 let g:ctrlp_clear_cache_on_exit=0
 
+" Store up to 100 results in the window, let me scroll (C-j/k)
+let g:ctrlp_match_window='results:100'
+
+" Don't suddenly stop indexing after 10k files, keep going!
+let g:ctrlp_max_files=0
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin=1
