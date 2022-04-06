@@ -95,18 +95,6 @@ aug sourcecode
 	au BufNewFile		*.html
 				\ ru templates/headers/html5.vim
 
-	" XML
-	au BufNewFile		*.xml
-				\ ru templates/headers/xml.vim
-
-	"" XSLT
-	au BufNewFile		*.xsl,*.xslt
-				\ ru templates/headers/xsl.vim
-
-	"" XSD
-	au BufNewFile		*.xsd
-				\ ru templates/headers/xsd.vim
-
 	" Angular component templates
 	au BufNewFile,BufRead	*.component.html
 				\ setl et fdm=syntax ft=xml sts=4 sw=4 ts=4
