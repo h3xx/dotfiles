@@ -506,20 +506,20 @@ sub git_prompt_loader {
         '/usr/doc/git-*.*.*/contrib/completion/git-prompt.sh',
         '/usr/share/git-core/contrib/completion/git-prompt.sh',
         '/usr/lib/git-core/git-sh-prompt',
+        '~/.git-prompt.sh',
     );
     foreach my $globstr (@candidates) {
-        if ($globstr =~ /\*|\?/) {
-            if (glob $globstr) {
-                return sprintf
-                    'test -z "$(for fn in %s; do '
-                    . 'if [[ -f $fn ]]; then '
-                    . 'echo "$fn"; '
-                    . 'break; '
-                    . 'fi; '
-                    . 'done'
-                    . ')" || { . "$_"; }',
-                    $globstr
-            }
+        next unless grep { -f } glob $globstr;
+        if ($globstr =~ /\*|\?|~/) {
+            return sprintf
+                'test -z "$(for fn in %s; do '
+                . 'if [[ -f $fn ]]; then '
+                . 'echo "$fn"; '
+                . 'break; '
+                . 'fi; '
+                . 'done'
+                . ')" || { . "$_"; }',
+                $globstr
         } else {
             if (-f $globstr) {
                 return ". $globstr"
