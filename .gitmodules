@@ -50,6 +50,10 @@
 	path = vim/.vim/pack/dist/start/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
 	branch = master
+[submodule "vim/.vim/pack/dist/start/editorconfig-vim"]
+	path = vim/.vim/pack/dist/start/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim.git
+	branch = master
 [submodule "vim/.vim/pack/dist/start/gist-vim"]
 	path = vim/.vim/pack/dist/start/gist-vim
 	url = https://github.com/mattn/gist-vim.git
