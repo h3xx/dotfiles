@@ -1,13 +1,18 @@
 " getopts structure for shell scripts
 
 append
-while getopts 'h' flag; do
-    case "$flag" in
+while getopts 'h' FLAG; do
+    case "$FLAG" in
         'h')
-            HELP_MESSAGE 0
+            HELP_MESSAGE
+            exit 0
             ;;
         *)
-            HELP_MESSAGE 1
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
             ;;
     esac
 done

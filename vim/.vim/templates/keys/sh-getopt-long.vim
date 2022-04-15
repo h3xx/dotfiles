@@ -11,13 +11,17 @@ for ARG; do
                 FOO=${ARG#*=}
                 ;;
             --help|-h)
-                HELP_MESSAGE 0
+                HELP_MESSAGE
+                exit 0
                 ;;
             --)
                 NO_MORE_FLAGS=1
                 ;;
             *)
-                printf 'Unrecognized flag: %s\n' "$ARG" >&2
+                printf 'Unrecognized flag: %s\n' \
+                    "$ARG" \
+                    >&2
+                USAGE >&2
                 exit 2
                 ;;
         esac
