@@ -558,6 +558,9 @@ let g:ctrlp_match_window='results:100'
 " Don't suddenly stop indexing after 10k files, keep going!
 let g:ctrlp_max_files=0
 
+" *** editorconfig-vim ***
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
 " *** arcane plugins ***
 " prevent some built-in, unused plugins from loading
 let g:loaded_vimballPlugin=1
