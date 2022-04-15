@@ -236,6 +236,24 @@ if [[ -f ~/.pgpass ]]; then
 	}
 fi
 
+complete -F _artisan artisan art
+_artisan() {
+	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+	local COMMANDS=$(
+		while [[ $PWD != / ]]; do
+			if [[ -e artisan ]]; then
+				php artisan --raw --no-ansi list | cut -f 1 -d ' '
+				break
+			fi
+			cd ..
+		done
+	)
+	COMPREPLY=(
+		$(compgen -W "$COMMANDS" -- "${COMP_WORDS[$COMP_CWORD]}")
+	)
+}
+
+
 # gio
 complete -o default -F _gio gio
 _gio() {
