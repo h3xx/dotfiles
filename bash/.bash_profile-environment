@@ -4,6 +4,9 @@ if [[ -e ~/bin ]]; then
 	PATH=~/bin:$PATH
 fi
 
+# Add thousands-separator (locale-specific) to 'ls' output
+LS_OPTIONS="${LS_OPTIONS:+$LS_OPTIONS }--block-size='1"
+
 # Standard editor, pager
 export PAGER='less' MANPAGER='less' EDITOR='vim'
 alias vi='$EDITOR'
