@@ -57,6 +57,7 @@ text/html; elinks -dump 1 %s; copiousoutput
 text/html; elinks %s; needsterminal
 
 text/calendar; ~/.mutt/bin/icalprint -i %s; copiousoutput
+text/calendar; thunderbird %s; test=test -n "$DISPLAY"
 
 application/xrds+xml; vim %s; needsterminal
 
