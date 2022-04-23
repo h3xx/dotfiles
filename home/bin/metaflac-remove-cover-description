@@ -1,0 +1,40 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
+cleanup() {
+    rm -rf -- "$TEMP_DIR"
+}
+trap 'cleanup' EXIT
+
+for FN; do
+    TEMP_OUT=$(mktemp -p "$TEMP_DIR" -t "${0##*/}.XXXXXX")
+    TEMP_PIC=$(mktemp -p "$TEMP_DIR" -t "${0##*/}.XXXXXX")
+    if ! metaflac \
+        --export-picture-to="$TEMP_PIC" \
+        -- \
+        "$FN"; then
+        # no picture?
+        continue
+    fi
+
+    (
+        set -e
+
+        cp -a -- "$FN" "$TEMP_OUT"
+        metaflac \
+            --remove \
+            --block-type=PICTURE \
+            -- \
+            "$TEMP_OUT"
+
+        metaflac \
+            --import-picture-from="||||$TEMP_PIC" \
+            -- \
+            "$TEMP_OUT"
+
+        chmod --reference="$FN" -- "$TEMP_OUT"
+        cp -i -- "$TEMP_OUT" "$FN.new"
+        mv -- "$FN.new" "$FN"
+    )
+done
