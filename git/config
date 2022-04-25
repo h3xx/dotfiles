@@ -9,6 +9,7 @@
 	pushUnqualifiedRefname = false
 	pushUpdateRejected = false
 	resolveConflict = false
+	skippedCherryPicks = false
 	statusHints = false
 	waitingForEditor = false
 
