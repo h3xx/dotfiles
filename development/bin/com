@@ -3,6 +3,8 @@
 
 _COMPOSER=${_COMPOSER:-composer}
 
+pushd . >/dev/null
+
 while [[ $PWD != / ]]; do
     if [[ -e composer.json ]]; then
         exec "$_COMPOSER" \
@@ -11,6 +13,10 @@ while [[ $PWD != / ]]; do
     cd ..
 done
 
-printf 'Failed to find composer.json\n' \
+popd >/dev/null
+
+printf 'Warning: Failed to find composer.json\n' \
     >&2
-exit 2
+
+exec "$_COMPOSER" \
+    "$@"
