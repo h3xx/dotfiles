@@ -3,15 +3,23 @@
 
 # colorized manpages
 
-# Remove self from path
-BINDIR=${0%/*}
-PATH=:$PATH:
-while [[ $PATH = *:$BINDIR:* ]]; do
-    PATH=${PATH//:$BINDIR:/:}
-done
-# Trim off ":" from the beginning and end.
-PATH=${PATH#:}
-PATH=${PATH%:}
+next_bin() (
+    # Find path to wrapped program
+    BINNAME=${0##*/}
+    while read -r BIN; do
+        if [[ ! $BIN -ef $0 ]]; then
+            printf '%s\n' \
+                "$BIN"
+            return 0
+        fi
+    done < <(type -aP -- "$BINNAME")
+    printf 'Wrapped program not found in PATH: %s\n' \
+        "$BINNAME" \
+        >&2
+    return 127
+)
+
+REALBIN=$(next_bin) || exit
 
 LESS_TERMCAP_mb=$'\e[05m' \
 LESS_TERMCAP_md=$'\e[01;38;5;38m' \
@@ -20,5 +28,5 @@ LESS_TERMCAP_so=$'\e[07;38;5;154m' \
 LESS_TERMCAP_se=$'\e[0m' \
 LESS_TERMCAP_us=$'\e[04;01;38;5;165m' \
 LESS_TERMCAP_ue=$'\e[0m' \
-exec less \
+exec "$REALBIN" \
     "$@"

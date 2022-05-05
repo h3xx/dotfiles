@@ -1,8 +1,6 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
-_MYBINDIR=$(dirname -- "$0")
-
 ask_yn() (
     PROMPT=$1
     DEFAULT=$2
@@ -45,27 +43,31 @@ if [[ -t 1 ]]; then
     fi
 fi
 
-# Alter path so we don't start ourselves again
-PATH=:$PATH:
-while [[ $PATH = *:$_MYBINDIR:* ]]; do
-    PATH=${PATH//:$_MYBINDIR:/:}
-done
-PATH=${PATH#:}
-PATH=${PATH%:}
+next_bin() (
+    # Find path to wrapped program
+    BINNAME=${0##*/}
+    while read -r BIN; do
+        if [[ ! $BIN -ef $0 ]]; then
+            printf '%s\n' \
+                "$BIN"
+            return 0
+        fi
+    done < <(type -aP -- "$BINNAME")
+    printf 'Wrapped program not found in PATH: %s\n' \
+        "$BINNAME" \
+        >&2
+    return 127
+)
 
-if [[ $(which -- qemu-nbd 2>/dev/null) = "$0" ]]; then
-    # Can't happen
-    echo "$0: Bug! Refusing to infinitely start self" >&2
-    exit 2
-fi
+REALBIN=$(next_bin) || exit
 
 if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
     # Show you what I'm doing
     set -x
-    exec qemu-nbd \
+    exec "$REALBIN" \
         "${EXTRA_ARGS[@]}" \
         "$@"
 else
-    exec qemu-nbd \
+    exec "$REALBIN" \
         "$@"
 fi
