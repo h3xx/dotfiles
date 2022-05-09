@@ -168,6 +168,9 @@
 	# enables shortcuts like `git clone gh:h3xx/dotfiles.git`
 	insteadOf = gh:
 
+[url "git@gitlab.com:"]
+	insteadOf = gl:
+
 [user]
 	email = amphetamachine@gmail.com
 	name = Dan Church
