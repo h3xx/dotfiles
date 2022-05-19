@@ -31,7 +31,7 @@ if ! hash git &>/dev/null; then
 	GEN_ARGS+=(--no-git)
 fi
 
-if [[ $(locale |grep ^LC_CTYPE) = *(utf|UTF)*8* ]]; then
+if [[ $(locale charmap) = UTF-8 ]]; then
 	GEN_ARGS+=(--utf8)
 fi
 
