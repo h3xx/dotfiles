@@ -59,22 +59,23 @@ print_graphic() {
 	local PERC=$1
 
 	local HB=$((PERC*NUM_HEARTS/100)) \
-		REMAINDER=$((PERC%(100/NUM_HEARTS)))
+		REMAINDER=$((PERC%(100/NUM_HEARTS))) \
+		DISP
 
 	for ((I=0; I<HB; ++I)); do
-		printf $HEART_FULL
+		DISP+=$HEART_FULL
 	done
 
 	if [[ $REMAINDER -ne 0 && $I -lt $NUM_HEARTS ]]; then
-		printf $HEART_HALF
+		DISP+=$HEART_HALF
 		let ++I
 	fi
 
 	for ((; I<NUM_HEARTS; ++I)); do
-		printf $HEART_EMPTY
+		DISP+=$HEART_EMPTY
 	done
 
-	echo
+	printf '%s\n' "$DISP"
 }
 
 print_percent() {
