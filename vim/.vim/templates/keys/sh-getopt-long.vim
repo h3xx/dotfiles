@@ -10,6 +10,22 @@ for ARG; do
             --foo=*)
                 FOO=${ARG#*=}
                 ;;
+            --bool=*)
+                case "${ARG#*=}" in
+                    [0Nn]*)
+                        BOOL=0
+                        ;;
+                    [1Yy]*)
+                        BOOL=1
+                        ;;
+                    *)
+                        printf 'Unrecognized on/off value: %s\n' \
+                            "${ARG#*=}" \
+                            >&2
+                        exit 2
+                        ;;
+                esac
+                ;;
             --help|-h)
                 HELP_MESSAGE
                 exit 0
