@@ -73,7 +73,7 @@ There is NO WARRANTY, to the extent permitted by law.
 use Getopt::Long qw/ GetOptions /;
 use Pod::Usage qw/ pod2usage /;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 MAIN: {
     my (
@@ -116,15 +116,6 @@ MAIN: {
 
     $git = 0 if defined $no_git;
     $utf8 = 0 if defined $no_utf8;
-
-    # default: green / yellow
-    if ($ENV{USER} eq 'root') {
-        $host_color = '3' unless defined $host_color;
-        $user_color = '3:b' unless defined $user_color;
-    } else {
-        $host_color = '2' unless defined $host_color;
-        $user_color = '2:b' unless defined $user_color;
-    }
 
     my $prompt = Prompt->new(
         utf8 => $utf8,
@@ -337,21 +328,38 @@ sub next {
     return $ret;
 }
 
-package Prompt;
+package Defaults;
 use strict;
 use warnings;
-use overload '""' => 'to_string';
 
 sub new {
     my $class = shift;
+    my $self = bless {
+        user => $ENV{USER},
+    }, $class;
+    $self
+}
 
-    my %default_features = (
+sub basic_git {
+    return 0;
+}
+
+sub utf8 {
+    return 0;
+}
+
+sub features {
+    return (
         err => 1,
         tty => 1,
         git => 1,
         git_loader => 1,
     );
-    my %default_colors = (
+}
+
+sub colors {
+    my $self = shift;
+    return (
         dollar => '7:-0:b',
         err => '222:-235:b',
         frame => '0:b',
@@ -362,23 +370,51 @@ sub new {
         pwd => '7:-0',
         strudel => '7:-0',
         tty => '0:b',
-        host => '2',
-        user => '2:b',
+        host => $self->host_color,
+        user => $self->user_color,
     );
+}
+
+sub host_color {
+    # default: green (root) / yellow (non-root)
+    return $_[0]->_is_root ? '3' : '2';
+}
+
+sub user_color {
+    return $_[0]->host_color . ':b';
+}
+
+sub _is_root {
+    return $_[0]->{user} eq 'root';
+}
+
+package Prompt;
+use strict;
+use warnings;
+use overload '""' => 'to_string';
+
+sub new {
+    my $class = shift;
+
+    my $defaults = Defaults->new;
     my $self = bless {
         colors => {},
+        features => {},
         space_bg => 0,
+        basic_git => $defaults->basic_git,
+        utf8 => $defaults->utf8,
         @_,
     }, $class;
     # Merge options
+    delete @{$self->{features}}{ grep { not defined $self->{features}->{$_} } keys %{$self->{features}} };
     $self->{features} = {
-        %default_features,
+        $defaults->features,
         (defined $self->{features} ? %{$self->{features}} : ()),
     };
     # Eliminate undef colors, apply default colors
     delete @{$self->{colors}}{ grep { not defined $self->{colors}->{$_} } keys %{$self->{colors}} };
     $self->{colors} = {
-        %default_colors,
+        $defaults->colors,
         %{$self->{colors}},
     };
     foreach my $key (keys %{$self->{colors}}) {
