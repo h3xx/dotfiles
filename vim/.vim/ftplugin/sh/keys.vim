@@ -32,3 +32,6 @@ nnoremap <buffer> <silent> ,w :ru templates/keys/sh-workdir.vim<CR>
 
 " ,Z - insert HELP_MESSAGE function
 nnoremap <buffer> <silent> ,Z :ru templates/keys/sh-help_message.vim<CR>
+
+" Q - surround current line with '
+nmap <buffer> <silent> Q ysil'<Esc>
