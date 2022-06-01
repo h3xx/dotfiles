@@ -11,14 +11,14 @@ HELP_MESSAGE() {
     cat <<EOF
 List postgresql databases
 
-  -b            Bare database listing.
-  -h            Show this help message.
-  -l            List extra info about the database.
-  -S            Order by size.
-  -r            Reverse order.
-  -U USER       Log into the cluster using USER.
+  -b                    Bare database listing.
+  -h,--help             Show this help message.
+  -l                    List extra info about the database.
+  -S                    Order by size.
+  -r                    Reverse order.
+  -U USER,--user=USER   Log into the cluster using USER.
 
-Copyright (C) 2017-2020 Dan Church.
+Copyright (C) 2017-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -30,40 +30,56 @@ LONG=0
 ORDER_COL='datname'
 ORDER_DIR='asc'
 USER=postgres
-while getopts 'hbU:Srl' FLAG; do
-    case "$FLAG" in
-        'b')
-            BARE=1
-            LONG=0
-            ;;
-        'l')
-            LONG=1
-            BARE=0
-            ;;
-        'U')
-            USER=$OPTARG
-            ;;
-        'S')
-            ORDER_COL='pg_catalog.pg_database_size(datname)'
-            ;;
-        'r')
-            ORDER_DIR='desc'
-            ;;
-        'h')
-            HELP_MESSAGE
-            exit 0
-            ;;
-        *)
-            printf 'Unrecognized flag: %s\n' \
-                "$FLAG" \
-                >&2
-            USAGE >&2
-            exit 1
-            ;;
-    esac
-done
 
-shift "$((OPTIND-1))"
+NO_MORE_FLAGS=0
+for ARG; do
+    if [[ $(type -t ASSIGN_NEXT 2>/dev/null) = 'function' ]]; then
+        ASSIGN_NEXT "$ARG"
+        unset ASSIGN_NEXT
+        continue
+    fi
+    # Assume arguments that don't begin with a - are supposed to be files or other operands
+    if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
+        case "$ARG" in
+            -b)
+                BARE=1
+                LONG=0
+                ;;
+            -l)
+                LONG=1
+                BARE=0
+                ;;
+            -r)
+                ORDER_DIR='desc'
+                ;;
+            -S)
+                ORDER_COL='pg_catalog.pg_database_size(datname)'
+                ;;
+            -U)
+                ASSIGN_NEXT() {
+                    USER=$1
+                }
+                ;;
+            --user=*)
+                USER=${ARG#*=}
+                ;;
+            --help|-h)
+                HELP_MESSAGE
+                exit 0
+                ;;
+            --)
+                NO_MORE_FLAGS=1
+                ;;
+            *)
+                printf 'Unrecognized flag: %s\n' \
+                    "$ARG" \
+                    >&2
+                USAGE >&2
+                exit 2
+                ;;
+        esac
+    fi
+done
 
 # List databases and sizes
 if [[ $LONG -ne 0 ]]; then
