@@ -17,28 +17,17 @@ trap 'cleanup' EXIT
 ask_list() {
     local -r PROMPT=$1
     shift 1
-    local -r OPTIONS=("$@")
     local ANSWER
     if hash pick &>/dev/null; then
         printf '%s\n' "$PROMPT" >&2
-        ANSWER=$(IFS=$'\n'; printf '%s\n' "${OPTIONS[*]}" |pick -X)
+        ANSWER=$(IFS=$'\n'; printf '%s\n' "$*" |pick -X)
     else
-        local -i SELECT
-        local TEMP_ANS I
-        invalid_ans() {
-            [[ -z $TEMP_ANS || $SELECT -gt ${#OPTIONS[@]}-1 || $SELECT -lt 0 ]]
-        }
-        while invalid_ans; do
-            for I in "${!OPTIONS[@]}"; do
-                printf ' %d. %s\n' "$I" "${OPTIONS[I]}" >&2
-            done
-            read -r -p "$PROMPT" TEMP_ANS
-            SELECT=${TEMP_ANS//[^0-9]/}
-            if invalid_ans; then
-                printf '%s\n' 'Invalid selection' >&2
+        local PS3="$PROMPT #"
+        select ANSWER; do
+            if [[ -n $ANSWER ]]; then
+                break
             fi
         done
-        ANSWER=${OPTIONS[SELECT]}
     fi
     printf '%s\n' "$ANSWER"
     return 0
