@@ -178,7 +178,8 @@ endif " executable('ack')
 " ********************************
 
 " Default ai- and gq-wrapping width
-"set textwidth=79
+" (prevents vim from defaulting to using the terminal width)
+set textwidth=79
 
 " Don't add two spaces after a sentence-ending mark when gq-ing and j-ing
 set nojoinspaces
