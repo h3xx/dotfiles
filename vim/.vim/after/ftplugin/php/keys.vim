@@ -21,6 +21,9 @@ nnoremap <buffer> <silent> ,<C-d> :ru templates/keys/php-deprecation-class.vim<C
 " brace
 nnoremap <buffer> <silent> ,e :ru templates/keys/php-end-function-comment.vim<CR>
 
+" ,k - replace array_key_exists() with isset()
+nnoremap <buffer> <silent> ,k :ru templates/keys/php-replace_array_key_exists.vim<CR>
+
 " ,l - convert inline block to curly-braced block
 nnoremap <buffer> <silent> ,l :ru templates/keys/php-convert-inline-block.vim<CR>
 
