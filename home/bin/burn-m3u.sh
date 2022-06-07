@@ -78,7 +78,9 @@ if [[ $PREGAP -ne 0 ]]; then
 fi
 
 # parse M3U file into a list of files
-eval FILES=($(grep -v '^#' "$1" | sed -e 's/"/\\\\"/g; s/^/"/; s/$/"/'))
+readarray -t FILES < <(
+	grep -v '^#' "$1"
+)
 
 for AUDIO_FILE in "${FILES[@]}"; do
     OUT_WAV=$(mktemp -t "${0##*/}.XXXXXX")
