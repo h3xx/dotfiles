@@ -132,21 +132,21 @@ _jobspecs() {
 # module removal commands only see installed modules
 complete -F _instkmods rmmod
 _instkmods() {
-	COMPREPLY=(
-		$(cut -f 1 -d ' ' /proc/modules |grep "^$2")
+	readarray -t COMPREPLY < <(
+		cut -f 1 -d ' ' /proc/modules |
+		grep "^$2"
 	)
 }
 
 # module insertion commands see only modules
 complete -o default -F _kmods insmod modprobe
 _kmods() {
-	COMPREPLY=(
-		$(find "/lib/modules/$(uname -r)/" \
+	readarray -t COMPREPLY < <(
+		find "/lib/modules/$(uname -r)/" \
 			-type f \
 			\( -name "$2*.ko" -exec basename -- {} .ko \; \) -o \
 			\( -name "$2*.ko.gz" -exec basename -- {} .ko.gz \; \) |
 			sort -u
-		)
 	)
 }
 
@@ -174,8 +174,9 @@ _manpages() {
 # umount only sees mounted file systems
 complete -o default -F _mounts umount df
 _mounts() {
-	COMPREPLY=(
-		$(cut -f 2 -d ' ' /proc/mounts |grep "^$2")
+	readarray -t COMPREPLY < <(
+		cut -f 2 -d ' ' /proc/mounts |
+		grep "^$2"
 	)
 }
 
@@ -206,8 +207,9 @@ _pkg_config() {
 # swapoff
 complete -o default -F _swaps swapoff
 _swaps() {
-	COMPREPLY=(
-		$(/sbin/swapon -s | grep -o "^${2:-/}[^ ]*")
+	readarray -t COMPREPLY < <(
+		/sbin/swapon -s |
+		grep -o "^${2:-/}[^ ]*"
 	)
 }
 
@@ -215,13 +217,11 @@ _swaps() {
 if [[ $UID -eq 0 && -d /var/log/packages ]]; then
 	complete -o default -F _slackpacks removepkg
 	_slackpacks() {
-		COMPREPLY=(
-			$(
-				shopt -s nullglob
-				cd /var/log/packages
-				m=("$2"*)
-				echo "${m[@]%-+([^-])-+([^-])-+([^-])}"
-			)
+		readarray -t COMPREPLY < <(
+			shopt -s nullglob
+			cd /var/log/packages
+			m=("$2"*)
+			echo "${m[@]%-+([^-])-+([^-])-+([^-])}"
 		)
 	}
 fi
@@ -230,8 +230,9 @@ fi
 if [[ -f ~/.pgpass ]]; then
 	complete -o default -F _psqlcomp psql
 	_psqlcomp() {
-		COMPREPLY=(
-			$(cut -f 4 -d ':' ~/.pgpass |grep "^$2")
+		readarray -t COMPREPLY < <(
+			cut -f 4 -d ':' ~/.pgpass |
+			grep "^$2"
 		)
 	}
 fi
@@ -248,8 +249,8 @@ _artisan() {
 			cd ..
 		done
 	)
-	COMPREPLY=(
-		$(compgen -W "$COMMANDS" -- "${COMP_WORDS[$COMP_CWORD]}")
+	readarray -t COMPREPLY < <(
+		compgen -W "$COMMANDS" -- "${COMP_WORDS[$COMP_CWORD]}"
 	)
 }
 
@@ -312,25 +313,39 @@ _gpg() {
 			;;
 		--export | --sign-key | --lsign-key | --nrsign-key | --nrlsign-key | --edit-key)
 			# return list of public keys
-			COMPREPLY=($(compgen -W "$($1 --list-keys 2>/dev/null | sed -ne \
-				's@^pub.*/\([^ ]*\).*$@\1@p' -ne \
-				's@^.*\(<\([^>]*\)>\).*$@\2@p')" -- "$CUR"))
+			readarray -t COMPREPLY < <(
+				compgen -W "$(
+					$1 --list-keys 2>/dev/null |
+					sed -ne 's@^pub.*/\([^ ]*\).*$@\1@p' \
+						-ne 's@^.*\(<\([^>]*\)>\).*$@\2@p'
+				)" -- "$CUR"
+			)
 			return
 			;;
 		--recipient | -!(-*)r)
-			COMPREPLY=($(compgen -W "$($1 --list-keys 2>/dev/null | sed -ne \
-				's@^.*<\([^>]*\)>.*$@\1@p')" -- "$CUR"))
+			readarray -t COMPREPLY < <(
+				compgen -W "$(
+					$1 --list-keys 2>/dev/null |
+					sed -ne 's@^.*<\([^>]*\)>.*$@\1@p'
+				)" -- "$CUR"
+			)
 			if [[ -e ~/.gnupg/gpg.conf ]]; then
-				COMPREPLY+=($(compgen -W "$(sed -ne \
-					's@^[ \t]*group[ \t][ \t]*\([^=]*\).*$@\1@p' \
-					~/.gnupg/gpg.conf)" -- "$CUR"))
+				# Append
+				readarray -t -O ${#COMPREPLY[@]} COMPREPLY < <(
+					compgen -W "$(
+						sed -ne 's@^[ \t]*group[ \t][ \t]*\([^=]*\).*$@\1@p' \
+							~/.gnupg/gpg.conf
+					)" -- "$CUR"
+				)
 			fi
 			return
 			;;
 	esac
 
 	if [[ $CUR = -* ]]; then
-		COMPREPLY=($(compgen -W '$($1 --dump-options)' -- "$CUR"))
+		readarray -t COMPREPLY < <(
+			compgen -W '$($1 --dump-options)' -- "$CUR"
+		)
 	fi
 } &&
 complete -F _gpg -o default gpg
