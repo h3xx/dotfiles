@@ -34,7 +34,7 @@ ask_list() {
 }
 
 get_output_bin() (
-    OUTS=($(
+    readarray -t OUTS < <(
         type -ap "$BINNAME" 2>/dev/null |
         while read -r BIN; do
             if [[ -w $BIN || -w $(dirname "$BINNAME") ]]; then
@@ -43,7 +43,7 @@ get_output_bin() (
                 fi
             fi
         done
-    ))
+    )
     if [[ -d $DEFAULT_OUTDIR/ && -w $DEFAULT_OUTDIR/$BINNAME || -w $DEFAULT_OUTDIR ]]; then
         OUTS+=("$DEFAULT_OUTDIR/$BINNAME")
     fi
