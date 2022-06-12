@@ -1,21 +1,32 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+USAGE() {
+    printf 'Usage: %s [-n] TARBALL-OR-DIR TARBALL-OR-DIR\n' \
+        "${0##*/}"
+}
+
 NEW_FILES=0
 while getopts 'n' FLAG; do
     case "$FLAG" in
         'n')
             NEW_FILES=1
             ;;
+        *)
+            printf 'Unrecognized flag: %s\n' \
+                "$FLAG" \
+                >&2
+            USAGE >&2
+            exit 1
+            ;;
     esac
 done
 
 shift "$((OPTIND-1))"
 
-TEMP_FILES=()
-
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
 cleanup() {
-    rm -rf -- "${TEMP_FILES[@]}"
+    rm -rf -- "$TEMP_DIR"
 }
 
 trap 'cleanup' EXIT
@@ -29,17 +40,8 @@ diemsg() {
 tar_maindir() (
     FIRSTENTRY=$(tar tf "$1" 2>/dev/null |sort |head -1)
 
-    # Strip trailing slashes
-    FIRSTENTRY=${FIRSTENTRY%%/}
-
-    # Eliminate all but the first directory component from the first file
-    # (${var##/} means strip leading slashes)
-    while [[ ${FIRSTENTRY##/} = */* ]]; do
-        FIRSTENTRY=$(dirname -- "$FIRSTENTRY")
-    done
-
     printf '%s\n' \
-        "${FIRSTENTRY##/}"
+        "${FIRSTENTRY%%/*}"
 )
 
 diff_orig() {
@@ -66,7 +68,7 @@ diff_orig() {
 
     if [[ -f $SRC1 ]]; then
         # Attempt to untar the source file to a temporary directory
-        TEMP1=$(mktemp -d -t "${0##*/}.XXXXXX")
+        TEMP1=$(mktemp -d -p "$TEMP_DIR" -t "${0##*/}.XXXXXX")
         if ! tar x -C "$TEMP1" -f "$SRC1"; then
             diemsg "Failed to un-tar file \`$SRC1' into \`$TEMP1"
         fi
@@ -77,7 +79,7 @@ diff_orig() {
 
     if [[ -f ${SRC2:=.} ]]; then
         # Attempt to untar the source file to a temporary directory
-        TEMP2=$(mktemp -d -t "${0##*/}.XXXXXX")
+        TEMP2=$(mktemp -d -p "$TEMP_DIR" -t "${0##*/}.XXXXXX")
         if ! tar x -C "$TEMP2" -f "$SRC2"; then
             diemsg "Failed to un-tar file \`$SRC2' into \`$TEMP2"
         fi
@@ -85,8 +87,6 @@ diff_orig() {
     else
         DIR2=$SRC2
     fi
-
-    TEMP_FILES+=("$TEMP1" "$TEMP2")
 
     diff "${DIFF_OPTS[@]}" "$DIR1" "$DIR2" |
     grep -Ev '^(Only|Binary)' |
