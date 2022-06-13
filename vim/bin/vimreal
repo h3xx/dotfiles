@@ -4,14 +4,9 @@
 # Open vim with the real path for each non-option argument
 
 VIM_ARGS=()
-DONE=0
 for ARG; do
-    if [[ $DONE -eq 0 ]]; then
-        if [[ $ARG = -- ]]; then
-            DONE=1
-        elif [[ $ARG != -* ]]; then
-            ARG=$(realpath -- "$ARG")
-        fi
+    if [[ -e $ARG ]]; then
+        ARG=$(realpath -- "$ARG")
     fi
     VIM_ARGS+=("$ARG")
 done
