@@ -12,12 +12,13 @@ HELP_MESSAGE() {
 Delete merged branches.
 
   -h        Show this help message.
+  -C        Don't colorize prompts.
   -f        Delete branch even if git doesn't want us to.
   -i        Show prompt before deleting branches (default).
   -X PAT    Exclude branches matching regex PAT.
   --        Terminate options list.
 
-Copyright (C) 2020 Dan Church.
+Copyright (C) 2020-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -26,9 +27,13 @@ EOF
 
 INTERACTIVE=1
 EXCLUDE=
+COLOR=1
 
-while getopts 'fhiX:-' FLAG; do
+while getopts 'CfhiX:-' FLAG; do
     case "$FLAG" in
+        'C')
+            COLOR=0
+            ;;
         'f')
             INTERACTIVE=0
             ;;
@@ -64,9 +69,6 @@ ask_yn() (
 )
 
 merged_local_branches() (
-    # TODO replace with `git branch --show-current` when it's more
-    # widely-supported
-    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
     LC_MESSAGES=C \
     git branch \
         --color=never \
@@ -100,6 +102,25 @@ delete_branch() {
     git branch -D "$BRANCH"
 }
 
+colorize_branches() (
+    if [[ $COLOR -eq 0 ]]; then
+        cat
+    else
+        while read -r BR; do
+            RESET=$(git config --get-color '' reset)
+            if [[ $BR = "$CURRENT_BRANCH" ]]; then
+                COLOR=$(git config --get-color color.branch.current)
+            else
+                COLOR=$(git config --get-color color.branch.local)
+            fi
+            printf '%s\n' "$COLOR$BR$RESET"
+        done
+    fi
+)
+
+# TODO replace with `git branch --show-current` when it's more widely-supported
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 for BRANCH in $(merged_local_branches "$@"); do
     if [[ -n $EXCLUDE && $BRANCH =~ $EXCLUDE ]]; then
         # skipped because excluded (-X)
@@ -108,9 +129,10 @@ for BRANCH in $(merged_local_branches "$@"); do
     if [[ $INTERACTIVE -ne 0 ]]; then
         GO_AHEAD=0
         readarray -t CONTAINS < <(
-            contains_this_branch "$BRANCH"
+            contains_this_branch "$BRANCH" |
+            colorize_branches
         )
-        if ask_yn "Delete branch $BRANCH (contained in $(IFS=','; echo "${CONTAINS[*]}"))?" 'n'; then
+        if ask_yn "Delete branch $(colorize_branches <<< "$BRANCH") (contained in $(IFS=','; echo "${CONTAINS[*]}"))?" 'n'; then
             GO_AHEAD=1
         fi
     else
