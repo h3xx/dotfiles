@@ -23,7 +23,7 @@ with the terminal.
   -s        Shred instead of just rm.
   --        Terminate options list.
 
-Copyright (C) 2010-2021 Dan Church.
+Copyright (C) 2010-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -65,7 +65,13 @@ fi
 LOCK_FILE=.qrmr.lock
 
 do_ionice() {
-    ionice -c 3 "$@"
+    # ionice(1) is a nice Linux-specific thing, but it's not guaranteed to be
+    # installed everywhere.
+    if type ionice &>/dev/null; then
+        ionice -c 3 "$@"
+    else
+        "$@"
+    fi
 }
 
 do_remove() {
