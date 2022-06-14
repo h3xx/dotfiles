@@ -40,7 +40,7 @@ FAILED=0
 for FN; do
     MIMETYPE=$(get_mimetype "$FN")
     case "$MIMETYPE" in
-        'audio/x-flac')
+        'audio/flac'|'audio/x-flac')
             edit_flac "$FN" || FAILED=2
             ;;
         'audio/ogg')
