@@ -319,6 +319,11 @@ if has fluxbox; then
     fi
 fi
 
+# OPT: gnupg
+if has gpg; then
+    soft_link_all ~/bin "$DOTFILES/gnupg/bin"/*
+fi
+
 # OPT: ipager
 if has ipager; then
     if [[ $GUI -ne 0 ]]; then
