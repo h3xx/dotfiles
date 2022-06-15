@@ -1,0 +1,85 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+USAGE() {
+    printf 'Usage: %s [GPG_OPTIONS] KEY_ID...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+List GNU Privacy Guard keys.
+
+  -h,--help Show this help message.
+  -1        Use gpg to list keys (default).
+  -2        Use gpg2 to list keys.
+  --        Terminate options list.
+
+Copyright (C) 2021-2022 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+GPG=gpg
+
+PASS_ARGS=()
+NO_MORE_FLAGS=0
+for ARG; do
+    # Assume arguments that don't begin with a - are supposed to be files or
+    # other operands
+    if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
+        case "$ARG" in
+            -1)
+                GPG=gpg
+                ;;
+            -2)
+                GPG=gpg2
+                ;;
+            [^-]*)
+                PASS_ARGS+=("$ARG")
+                NO_MORE_FLAGS=1
+                ;;
+            --help|-h)
+                HELP_MESSAGE
+                exit 0
+                ;;
+            --)
+                NO_MORE_FLAGS=1
+                ;;
+            *)
+                PASS_ARGS+=("$ARG")
+                ;;
+        esac
+    else
+        PASS_ARGS+=("$ARG")
+    fi
+done
+
+LIST_OPTS=(
+    show-keyring
+    show-keyserver-urls
+    show-notation
+    show-notations
+    show-policy-urls
+    show-sig-expire
+    show-sig-subpackets
+    show-std-notations
+    show-uid-validity
+    show-unusable-subkeys
+    show-user-notations
+)
+GPG_OPTS=(
+    --list-options "$(IFS=,; echo "${LIST_OPTS[*]}")"
+)
+
+"$GPG" \
+    "${GPG_OPTS[@]}" \
+    --list-sigs \
+    "${PASS_ARGS[@]}"
+"$GPG" \
+    "${GPG_OPTS[@]}" \
+    --list-secret-keys \
+    "${PASS_ARGS[@]}"
