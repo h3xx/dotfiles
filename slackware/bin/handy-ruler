@@ -62,7 +62,7 @@ shift "$((OPTIND-1))"
 PKG=$1
 
 # determine how much to indent the handy ruler
-SPACES=$(echo -n "$PKG" |tr '[:print:]' ' ')
+SPACES=${PKG//?/' '}
 
 # wrap blurb to 70 columns, prefix with package name, and limit to 9 lines
 BLURB_LINES=$(echo "$BLURB" |fold -w 70 -b -s |sed -e "s/^/$PKG: /;s/ $//" |head -9)
