@@ -1,0 +1,267 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# By default, a crontab of "* * * * * exec date" pipes this to sendmail:
+#
+# <<EOMAIL
+# To: h3xx
+# Subject: cron for user h3xx exec date
+#
+# Thu Jun  2 11:59:01 CDT 2022
+# EOMAIL
+#
+# This script auto-adds a "References: <{UUID}@$HOSTNAME>" header to group
+# mails. Perfect for perpetually-failing cron jobs that clog your inbox. :-)
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] COMMAND [ARGS]...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+This lets you add MIME mail headers to the mails that cron sends, geared toward
+threading via 'References:' headers.
+
+Acts as a wrapper for a program for your crontab commands, e.g:
+40 4 * * * mailwrap /usr/bin/run-parts /etc/cron.daily 1> /dev/null
+
+Using run-parts changes changes the mails slightly by emulating run-parts,
+sending one email per script in the directory.
+
+  -g,--gen          Generate a deterministic UUID for the 'References:' MIME
+                      header from the command given (default).
+  --no-gen          Don't generate UUID for the 'References:' header.
+  --mailer=MAILER   Set mailer command to MAILER (default is
+                      "$_DEFAULT_MAILER").
+  -h,--help         Show this help message.
+  --                Terminate options list.
+
+Copyright (C) 2022 Dan Church.
+License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+EOF
+}
+
+ADD_REFERENCES_HEADERS=1
+READ_REFERENCES_HEADERS_FROM_THREAD_ID_FILES=0
+READ_REFERENCES_HEADERS_FROM_SCRIPT_COMMENTS=0
+ADD_ARBITRARY_HEADERS=0
+# TODO update options
+GENERATE_REFERENCES=1
+# Default cron mailer
+MAILER='/usr/sbin/sendmail -t -oem -i'
+_DEFAULT_MAILER=$MAILER
+
+PASS_ARGS=()
+NO_MORE_FLAGS=0
+for ARG; do
+    # Assume arguments that don't begin with a - are supposed to be files or other operands
+    if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
+        case "$ARG" in
+            --gen|-g)
+                GENERATE_REFERENCES=1
+                ;;
+            --no-gen)
+                GENERATE_REFERENCES=0
+                ;;
+            --mailer=*)
+                MAILER=${ARG#*=}
+                ;;
+            --help|-h)
+                HELP_MESSAGE
+                exit 0
+                ;;
+            --)
+                NO_MORE_FLAGS=1
+                ;;
+            *)
+                printf 'Unrecognized flag: %s\n' \
+                    "$ARG" \
+                    >&2
+                USAGE >&2
+                exit 2
+                ;;
+        esac
+    else
+        # Everything after args is part of the command
+        NO_MORE_FLAGS=0
+        PASS_ARGS+=("$ARG")
+    fi
+done
+
+SUBJECT_COMMAND_PREFIX=
+
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
+cleanup() {
+    rm -fr -- "$TEMP_DIR"
+}
+trap 'cleanup' EXIT
+
+extract_special_comments() (
+    COMMENT=$1
+    sed -ne 's/^#[[:space:]]*'"$COMMENT"'[[:space:]]*\(.*\)[[:space:]]*$/\1/p'
+)
+
+format_mail() (
+    # Where to load extra headers from
+    SCRIPT=$1
+
+    printf 'To: %s\n' \
+        "$USER"
+    printf 'Subject: cron for user %s %s%s\n' \
+        "$USER" \
+        "$SUBJECT_COMMAND_PREFIX" \
+        "$*"
+    mail_extra_headers "$SCRIPT" "$*"
+    printf '\n'
+
+    # Body
+    cat
+
+)
+
+is_run_parts() {
+    [[ ${1##*/} = 'run-parts' ]]
+}
+
+mailer() {
+    $MAILER
+}
+
+mail_extra_headers() (
+    SCRIPT=$1
+    FULL_COMMAND=$2
+
+    # "References" header
+    if [[ $ADD_REFERENCES_HEADERS -ne 0 ]]; then
+        readarray -t REFERENCES < <(
+            if [[ $GENERATE_REFERENCES -ne 0 ]]; then
+                # Generate a deterministic UUID from the command given
+                uuidgen \
+                    -n @oid \
+                    -N "$FULL_COMMAND" \
+                    --sha1
+            fi
+
+            if [[ $READ_REFERENCES_HEADERS_FROM_THREAD_ID_FILES -ne 0 ]]; then
+                for ID_FILE in \
+                    "$SCRIPT.mail-thread-id" \
+                    "$SCRIPT/.mail-thread-id" \
+                    ; do
+                    if [[ -f $ID_FILE ]]; then
+                        cat "$ID_FILE"
+                    fi
+                done
+            fi
+
+            if [[ $READ_REFERENCES_HEADERS_FROM_SCRIPT_COMMENTS -ne 0 ]]; then
+                if [[ -f $SCRIPT ]]; then
+                    extract_special_comments ':mailwrap-references:' \
+                        < "$SCRIPT"
+                fi
+            fi
+        )
+
+        for ID in "${REFERENCES[@]}"; do
+            if [[ -z $ID ]]; then
+                continue
+            fi
+            if [[ $ID != *@* ]]; then
+                ID+="@$HOSTNAME"
+            fi
+            printf 'References: <%s>\n' \
+                "$ID"
+        done
+    fi
+
+    # Arbitrary headers
+    if [[ $ADD_ARBITRARY_HEADERS -ne 0 ]]; then
+        for HEADER_FILE in \
+            "$SCRIPT.mail-headers" \
+            "$SCRIPT/.mail-headers" \
+            ; do
+            if [[ -f $HEADER_FILE ]]; then
+                cat "$HEADER_FILE"
+            fi
+        done
+    fi
+
+)
+
+main() {
+    if [[ $1 = 'exec' ]]; then
+        # 'exec' causes this script to exit early
+        SUBJECT_COMMAND_PREFIX='exec '
+        shift 1
+    fi
+    if is_run_parts "$1"; then
+        SUBJECT_COMMAND_PREFIX='[run-parts] '
+        shift 1
+        run_parts "$@"
+    else
+        OUT=$(mktemp -p "$TEMP_DIR" -t 'run_parts.XXXXXX')
+        "$@" &>"$OUT"
+
+        if [[ -s $OUT ]]; then
+            # Script produced output; send mail
+            format_mail "$@" < "$OUT" |
+                mailer
+        fi
+    fi
+}
+
+# Re-implementation of /usr/bin/run-parts, except captures output and adds
+# headers
+run_parts() (
+    USAGE() {
+        printf 'Usage: run_parts <directory>\n'
+    }
+
+    if [[ $# -lt 1 ]]; then
+        USAGE >&2
+        exit 1
+    fi
+
+    if [[ ! -d $1 ]]; then
+        printf 'Not a directory: %s\n' "$1" >&2
+        USAGE >&2
+        exit 1
+    fi
+
+    # There are several types of files that we would like to ignore
+    # automatically, as they are likely to be backups of other scripts:
+    # (Copied from /usr/bin/run-parts)
+    IGNORE_SUFFIXES="~ ^ , .bak .new .rpmsave .rpmorig .rpmnew .swp"
+
+    # Main loop:
+    for SCRIPT in "$1"/* ; do
+        # If this is not an executable file, skip it:
+        if [[ ! -f $SCRIPT || ! -x $SCRIPT ]]; then
+            continue
+        fi
+        # Determine if this file should be skipped by suffix:
+        for SUFFIX in $IGNORE_SUFFIXES; do
+            if [[ $SCRIPT = *"$SUFFIX" ]]; then
+                # Skip this script
+                continue 2
+            fi
+        done
+        # If we've made it this far, then run the script:
+        OUT=$(mktemp -p "$TEMP_DIR" -t 'run_parts.XXXXXX')
+
+        ("$SCRIPT" || echo "$SCRIPT failed.") &>"$OUT"
+
+        if [[ -s $OUT ]]; then
+            # Script produced output; send mail
+            format_mail "$SCRIPT" < "$OUT" |
+                mailer
+        fi
+    done
+
+    return 0
+)
+
+main "${PASS_ARGS[@]}"

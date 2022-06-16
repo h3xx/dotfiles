@@ -11,6 +11,10 @@ RUN_PARTS='/usr/bin/run-parts'
 DIR_BASE="$HOME/.cron"
 DIR_BASE2='~/.cron'
 
+if [[ -x $DIR_BASE/mailwrap ]]; then
+    RUN_PARTS="$DIR_BASE2/mailwrap $RUN_PARTS"
+fi
+
 has_exec() {
     local DIR=$DIR_BASE/$1
     if [[ $DEBUG -gt 1 || (
