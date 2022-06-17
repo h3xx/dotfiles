@@ -28,8 +28,10 @@ Acts as a wrapper for a program for your crontab commands, e.g:
 40 4 * * * mailwrap /usr/bin/run-parts /etc/cron.daily 1> /dev/null
 
 Using run-parts changes changes the mails slightly by emulating run-parts,
-sending one email per script in the directory.
+sending one email per script in the directory. Disable this with --batch.
 
+  --batch           Don't emulate run-parts, instead send one email per cron
+                      job.
   -g,--gen          Generate a deterministic UUID for the 'References:' MIME
                       header from the command given (default).
   --no-gen          Don't generate UUID for the 'References:' header.
@@ -54,6 +56,7 @@ GENERATE_REFERENCES=1
 # Default cron mailer
 MAILER='/usr/sbin/sendmail -t -oem -i'
 _DEFAULT_MAILER=$MAILER
+BATCH_MODE=0
 
 PASS_ARGS=()
 NO_MORE_FLAGS=0
@@ -61,6 +64,9 @@ for ARG; do
     # Assume arguments that don't begin with a - are supposed to be files or other operands
     if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
         case "$ARG" in
+            --batch)
+                BATCH_MODE=1
+                ;;
             --gen|-g)
                 GENERATE_REFERENCES=1
                 ;;
@@ -197,7 +203,7 @@ main() {
         SUBJECT_COMMAND_PREFIX='exec '
         shift 1
     fi
-    if is_run_parts "$1"; then
+    if [[ $BATCH_MODE -eq 0 ]] && is_run_parts "$1"; then
         SUBJECT_COMMAND_PREFIX='[run-parts] '
         shift 1
         run_parts "$@"
