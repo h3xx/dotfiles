@@ -45,11 +45,35 @@ assert_equals() {
     done
 }
 
+assert_file_doesnt_exist() {
+    local FN
+    for FN; do
+        if [[ -e $FN ]]; then
+            echo_failure "$FN exists"
+            echo
+            return 1
+        fi
+    done
+}
+
 assert_file_exists() {
     local FN
     for FN; do
         if [[ ! -e $FN ]]; then
             echo_failure "$FN does not exist"
+            echo
+            return 1
+        fi
+    done
+}
+
+assert_file_has_mimetype() {
+    local FN MIMETYPE EXPECTED=$1
+    shift 1
+    for FN; do
+        MIMETYPE=$(file -b --mime-type "$FN")
+        if [[ $MIMETYPE != "$EXPECTED" ]]; then
+            echo_failure "$FN MIME type $MIMETYPE != $EXPECTED"
             echo
             return 1
         fi
@@ -69,6 +93,34 @@ assert_hardlinked() {
         fi
         echo_success "$STARTER is hard-linked to $NEXT"
         echo
+    done
+}
+
+assert_file_is_symlink() {
+    local FN
+    for FN; do
+        if [[ ! -L $FN ]]; then
+            echo_failure "$FN is not a symbolic link"
+            echo
+            return 1
+        fi
+    done
+}
+
+assert_file_is_symlink_to() {
+    local \
+        STARTER=$1 \
+        NEXT \
+        RP_NEXT RP_STARTER
+    shift 1
+    RP_STARTER=$(realpath -- "$STARTER")
+    for NEXT; do
+        RP_NEXT=$(realpath -- "$NEXT")
+        if [[ $RP_NEXT != "$RP_STARTER" ]]; then
+            echo_failure "$NEXT is not a symbolic link to $STARTER (points to $RP_NEXT)"
+            echo
+            return 1
+        fi
     done
 }
 
