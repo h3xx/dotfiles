@@ -16,7 +16,7 @@ gzip(1) man files recursively, updating symlinks
   -u        Undo gzipping and symlinking.
   -v        Turn on verbose output.
 
-Copyright (C) 2010-2021 Dan Church.
+Copyright (C) 2010-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -70,10 +70,10 @@ abspath() {
 _gzipmans() {
     # set up programs and arguments
     local \
-        GZIP='gzip -f -9' \
-        CHMOD='chmod 0644' \
-        LN_S='ln -sf' \
-        RM='rm -f' \
+        GZIP=(gzip -f -9) \
+        CHMOD=(chmod 0644) \
+        LN_S=(ln -sf) \
+        RM=(rm -f) \
         FIND_GZPARAMS=('!' '-iname' '*.gz') \
         FIND_LPARAMS=('-type' 'l' '!' '-iname' '*.gz') \
         LINK_TARGET \
@@ -83,40 +83,40 @@ _gzipmans() {
         NEW_LINK
 
     if [[ $UNDO -ne 0 ]]; then
-        GZIP=${GZIP/#gzip/gunzip}
-        CHMOD=
+        GZIP[0]=gunzip
+        CHMOD=()
         FIND_GZPARAMS=('-iname' '*.gz')
         FIND_LPARAMS=('-type' 'l' '-iname' '*.gz')
     fi
 
     if [[ $VERBOSE -ne 0 ]]; then
         # cause commands to output verbose information
-        GZIP=${GZIP:+$GZIP -v}
-        CHMOD=${CHMOD/ / -v }
-        LN_S=${LN_S:+$LN_S -v}
-        RM=${RM:+$RM -v}
+        GZIP+=(-v)
+        CHMOD+=(-v)
+        LN_S+=(-v)
+        RM+=(-v)
     fi
 
     if [[ $DRY_RUN -ne 0 ]]; then
         # replace commands with ineffectual text output
-        GZIP=${GZIP:+echo $GZIP}
-        CHMOD=${CHMOD:+echo $CHMOD}
-        LN_S=${LN_S:+echo $LN_S}
-        RM=${RM:+echo $RM}
+        GZIP=(echo "${GZIP[@]}")
+        CHMOD=(echo "${CHMOD[@]}")
+        LN_S=(echo "${LN_S[@]}")
+        RM=(echo "${RM[@]}")
     fi
 
     # further construction of find parameters
     FIND_GZPARAMS=(
         '-type' 'f' '('
         # because sometimes we're used for gzipping infodirs too...
-            '(' '-path' '*/info/dir' '-exec' $RM '--' '{}' ';' ')' '-o'
+            '(' '-path' '*/info/dir' '-exec' "${RM[@]}" '--' '{}' ';' ')' '-o'
             '(' "${FIND_GZPARAMS[@]}"
-                '-exec' $GZIP '--' '{}' ';'
+                '-exec' "${GZIP[@]}" '--' '{}' ';'
     )
 
-    if [[ -n $CHMOD ]]; then
+    if [[ ${#CHMOD[@]} -ne 0 ]]; then
         FIND_GZPARAMS+=(
-                '-exec' $CHMOD '--' '{}.gz' ';'
+                '-exec' "${CHMOD[@]}" '--' '{}.gz' ';'
         )
     fi
 
@@ -135,7 +135,10 @@ _gzipmans() {
         find "$MANDIR" "${FIND_GZPARAMS[@]}"
 
         # correct symlinks
-        for LINK in $(find "$MANDIR" "${FIND_LPARAMS[@]}") ; do
+        readarray -t LINKS < <(
+            find "$MANDIR" "${FIND_LPARAMS[@]}"
+        )
+        for LINK in "${LINKS[@]}"; do
             RL=$(readlink -- "$LINK")
             if [[ $UNDO -eq 0 ]]; then
                 LINK_TARGET=$RL.gz
@@ -159,9 +162,9 @@ _gzipmans() {
             fi
 
             # re-create gzipped symlink
-            $LN_S -- "$LINK_TARGET" "$NEW_LINK" &&
+            "${LN_S[@]}" -- "$LINK_TARGET" "$NEW_LINK" &&
             # remove old symlink
-            $RM -- "$LINK"
+            "${RM[@]}" -- "$LINK"
         done
     done
 }
