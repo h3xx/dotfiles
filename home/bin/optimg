@@ -266,7 +266,6 @@ get_mimetype() {
     # possible workaround would be to include `--magic-file
     # /etc/file/magic/images'
     file \
-        --preserve-date \
         --dereference \
         --brief \
         --mime-type \

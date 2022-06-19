@@ -49,7 +49,6 @@ trap 'cleanup' EXIT
 # prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
 get_mimetype() {
     file \
-        --preserve-date \
         --dereference \
         --brief \
         --mime-type \
