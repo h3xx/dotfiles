@@ -38,7 +38,7 @@ HEART_EMPTY=.
 NUM_HEARTS=5
 
 main() {
-	BATTERY_STATUS=$(battery_status $1)
+	BATTERY_STATUS=$(battery_status "$1")
 	[[ -z $BATTERY_STATUS ]] && return
 
 	case "$STYLE" in
@@ -55,12 +55,11 @@ main() {
 
 }
 
-print_graphic() {
-	local PERC=$1
+print_graphic() (
+	PERC=$1
 
-	local HB=$((PERC*NUM_HEARTS/100)) \
-		REMAINDER=$((PERC%(100/NUM_HEARTS))) \
-		DISP
+	HB=$((PERC*NUM_HEARTS/100))
+	REMAINDER=$((PERC%(100/NUM_HEARTS)))
 
 	for ((I=0; I<HB; ++I)); do
 		DISP+=$HEART_FULL
@@ -68,7 +67,7 @@ print_graphic() {
 
 	if [[ $REMAINDER -ne 0 && $I -lt $NUM_HEARTS ]]; then
 		DISP+=$HEART_HALF
-		let ++I
+		(( ++I ))
 	fi
 
 	for ((; I<NUM_HEARTS; ++I)); do
@@ -76,11 +75,10 @@ print_graphic() {
 	done
 
 	printf '%s\n' "$DISP"
-}
+)
 
 print_percent() {
-	local PERC=$1
-	printf '%s%%\n' $PERC
+	printf '%s%%\n' "$1"
 }
 
 print_color_percent() {
@@ -98,18 +96,18 @@ print_color_percent() {
 
 	local ALIGN=$((NUM_HEARTS/2))
 	printf "${BGCOLOR}%-${NUM_HEARTS}s${COLOR_RESET}\n" \
-		$(printf "%${ALIGN}s%%" $PERC)
+		"$(printf "%${ALIGN}s%%" "$PERC")"
 }
 
-linux_get_bat() {
-	local BF=$(cat $BAT_FULL)
-	local BN=$(cat $BAT_NOW)
+linux_get_bat() (
+	BF=$(<"$BAT_FULL")
+	BN=$(<"$BAT_NOW")
 	echo $(( 100 * BN / BF ))
-}
+)
 
 openbsd_get_bat() {
-	BF=$(sysctl -n hw.sensors.acpibat0.amphour0 |  cut -d ' ' -f 1)
-	BN=$(sysctl -n hw.sensors.acpibat0.amphour3 |  cut -d ' ' -f 1)
+	BF=$(sysctl -n hw.sensors.acpibat0.amphour0 | cut -d ' ' -f 1)
+	BN=$(sysctl -n hw.sensors.acpibat0.amphour3 | cut -d ' ' -f 1)
 	echo "(($BN * 100) / $BF)" | bc -l | awk -F '.' '{ print $1 }';
 }
 
@@ -117,10 +115,10 @@ freebsd_get_bat() {
 	sysctl -n hw.acpi.battery.life
 }
 
-battery_status() {
-	local BATPATH STATUS BAT_FULL BAT_NOW
+battery_status() (
+	OS=$(uname -s)
 
-	case $(uname -s) in
+	case "$OS" in
 		'Linux')
 			BATPATH=${BATPATH:-/sys/class/power_supply/BAT0}
 			STATUS=$BATPATH/status
@@ -139,18 +137,18 @@ battery_status() {
 			;;
 		'FreeBSD')
 			STATUS=$(sysctl -n hw.acpi.battery.state)
-			case $1 in
-				"Discharging")
+			case "$1" in
+				'Discharging')
 					if [[ $STATUS -eq 1 ]]; then
 						freebsd_get_bat
 					fi
 					;;
-				"Charging")
+				'Charging')
 					if [[ $STATUS -eq 2 ]]; then
 						freebsd_get_bat
 					fi
 					;;
-				"")
+				*)
 					freebsd_get_bat
 					;;
 			esac
@@ -159,7 +157,8 @@ battery_status() {
 			openbsd_get_bat
 			;;
 		'Darwin')
-			case $1 in
+			EXT=
+			case "$1" in
 				'Discharging')
 					EXT='No'
 					;;
@@ -172,8 +171,8 @@ battery_status() {
 				grep -o '"[^"]*" = [^ ]*' |
 				sed -e 's/= //g' -e 's/"//g' |
 				sort |
-				while read KEY VALUE; do
-					case $KEY in
+				while read -r KEY VALUE; do
+					case "$KEY" in
 						'MaxCapacity')
 							MAXCAP=$VALUE
 							;;
@@ -196,8 +195,14 @@ battery_status() {
 						break
 					fi
 				done
-		esac
-}
+			;;
+		*)
+			printf 'Unsupported OS: %s\n' \
+				"$OS" \
+				>&2
+			;;
 
-main
+	esac
+)
 
+main "$@"
