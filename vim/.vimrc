@@ -221,7 +221,11 @@ set tabstop=4 shiftwidth=4
 " t	Automatic formatting of text using textwidth (but not comments)
 " w	Trailing white space indicates a paragraph continues in the next line.
 "	A line that ends in a non-white character ends a paragraph.
-set formatoptions-=anotw
+set fo-=a
+\ fo-=n
+\ fo-=o
+\ fo-=t
+\ fo-=w
 
 "" good options
 " c	Auto-wrap comments using textwidth, inserting the current comment leader
