@@ -185,7 +185,7 @@ battery_status() (
 							fi
 							;;
 						'FullyCharged')
-							if [[ $VALUE = 'Yes' ]]; then
+							if [[ -n $EXT && $VALUE = 'Yes' ]]; then
 								exit
 							fi
 							;;
