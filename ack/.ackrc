@@ -10,7 +10,7 @@
 --ignore-file=ext:scssc
 
 # composer libs
---ignore-dir=is:vendor
+# --ignore-dir=is:vendor
 
 # ignore Angular compile dir
 --ignore-dir=is:dist
