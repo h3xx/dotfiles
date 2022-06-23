@@ -21,7 +21,7 @@ directory.
   -v            Operate in verbose mode.
   -l            List scheduled deletions instead of scheduling.
 
-Copyright (C) 2019-2021 Dan Church.
+Copyright (C) 2019-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -101,10 +101,23 @@ schedule_delete() (
     #   directory you execute at(1) from job runtime).
     # - Pass the directory in as an environment variable, since that's the
     #   safest.
-    # - Fix permissions on any stubborn (non-writable) directories before removing.
+    # - Fix permissions on any stubborn (non-traversable or non-writable)
+    #   directories before removing.
+    # XXX Note \; instead of + in the first -exec ensures we're modifying
+    # permissions to non-traversable directories as we traverse the tree.
     export SDD_DIR=$(realpath -- "$DIR")
     cat <<'EOF' |
-test -d "$SDD_DIR" && find "$SDD_DIR" -type d ! -perm /0200 -exec chmod u+w -- {} +
+if [ -d "$SDD_DIR" ]; then
+    find "$SDD_DIR" \
+        -type d \
+        \( \
+            ! \( -executable -readable \) \
+            -exec chmod +rwx -- {} \; \
+            -o \
+            ! -writable \
+            -exec chmod +w -- {} + \
+        \)
+fi
 rm -rf -- "$SDD_DIR"
 EOF
         (cd /; at "$DELETE_DATE")
