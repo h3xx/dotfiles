@@ -79,7 +79,17 @@ do_remove() {
     (
         flock -x 9
         # Fix permissions so we can remove it
-        do_ionice find "$DIR"/* -type d -exec chmod u+w,g+w,o+w -- {} +
+        # XXX Note \; instead of + in the first -exec ensures we're modifying
+        # permissions to non-traversable directories as we traverse the tree.
+        do_ionice find "$DIR"/* \
+            -type d \
+            \( \
+                ! \( -executable -readable \) \
+                -exec chmod +rwx -- {} \; \
+                -o \
+                ! -writable \
+                -exec chmod +w -- {} + \
+            \)
         if [[ $SHRED -ne 0 ]]; then
             do_ionice find "$DIR"/* -type f -exec shred -zu -- {} + &&
             do_ionice find "$DIR"/* -type d -empty -delete
