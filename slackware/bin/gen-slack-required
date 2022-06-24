@@ -554,7 +554,9 @@ sub get_package_data {
 
         if ($packages_mtime < $cache_mtime) {
             print STDERR '(cached)...' if $opts{v};
-            $package_data = &retrieve(CACHE_STORE);
+            eval {
+                $package_data = &retrieve(CACHE_STORE);
+            };
 
             # invalidate the cache if it's newer than this script
             unless (defined $package_data->{version} and
