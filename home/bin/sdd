@@ -16,7 +16,7 @@ If DIRECTORY is specified, create that directory, otherwise delete the current
 directory.
 
   -h            Show this help message.
-  -d DATE       Set the at(1)-compatible deletion time (default is 'sunday').
+  -d DATE       Set the date(1)-compatible deletion time (default is 'sunday').
   -i            Operate in interactive mode.
   -v            Operate in verbose mode.
   -l            List scheduled deletions instead of scheduling.
@@ -72,12 +72,51 @@ ask_yn() (
     [[ $ANSWER =~ [1Yy] ]]
 )
 
+reinterpret_date() (
+    shopt -s extglob nocasematch
+    DATE=$1
+
+    # date(1) interprets some times differently than at(1):
+    # - date(1) assumes midnight if you give it bare a bare day of the week.
+    #   However, with 'tomorrow', 'yesterday', 'next week', etc. date(1)
+    #   preserves the time of day.
+    #   --> We want to keep the time of day.
+    # - date(1) interprets 'friday' on Friday to mean 'today'. at(1) interprets
+    #   this as next Friday.
+    #   --> We want 'friday' to mean the coming Friday (not today).
+    #
+    # XXX An undocumented feature of this reinterpretation is you can bypass it
+    # by adding a space at the beginning of your date string.
+
+    # Translate, e.g. 'thursday' => 'next thursday <local time in hh:mm:ss>'
+    # DO NOT translate 'thu 12:00'
+    if [[ $DATE = +(sun|mon|tue|wed|thu|fri|sat)*([a-z]) ]]; then
+        # User specified bare day of week.
+        DATE="next $DATE $(date +%T)"
+    fi
+    printf '%s\n' "$DATE"
+)
+
 schedule_delete() (
     DIR=${1:-.}
     if [[ $VERBOSE -ne 0 ]]; then
         printf 'Using directory "%s"\n' \
             "$DIR" \
             >&2
+    fi
+    DELETE_DATE_MODIFIED=$(reinterpret_date "$DELETE_DATE")
+    # at(1) requires -t <time> in the format of [[CC]YY]MMDDhhmm[.ss]
+    DELETE_TIMESTAMP_FOR_AT=$(date --date="$DELETE_DATE_MODIFIED" +%Y%m%d%H%M.%S)
+    if [[ -z $DELETE_TIMESTAMP_FOR_AT ]]; then
+        # date(1) was unable to parse this date
+        ERROR_DATE=$DELETE_DATE
+        if [[ $DELETE_DATE != "$DELETE_DATE_MODIFIED" ]]; then
+            ERROR_DATE+=" ($DELETE_DATE_MODIFIED)"
+        fi
+        printf 'ERROR: Date string %s is uninterpretable\n' \
+            "$ERROR_DATE" \
+            >&2
+        exit 1
     fi
 
     if [[ ! -e $DIR ]]; then
@@ -93,7 +132,8 @@ schedule_delete() (
         mkdir -p -- "$DIR" || return
     fi
     if [[ $INTERACTIVE -ne 0 ]]; then
-        if ! ask_yn "Schedule deletion for $DELETE_DATE?" y; then
+        DELETE_DATE_HR=$(date --date="$DELETE_DATE_MODIFIED")
+        if ! ask_yn "Schedule deletion for $DELETE_DATE_HR?" y; then
             return 1
         fi
     fi
@@ -120,7 +160,7 @@ if [ -d "$SDD_DIR" ]; then
 fi
 rm -rf -- "$SDD_DIR"
 EOF
-        (cd /; at "$DELETE_DATE")
+        (cd /; at -t "$DELETE_TIMESTAMP_FOR_AT")
 )
 
 from_now() (
