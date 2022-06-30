@@ -27,7 +27,7 @@
 	cp		= cherry-pick
 	cpa		= cherry-pick --abort
 	cpc		= cherry-pick --continue
-	d		= diff
+	d		= diff-wrapper
 	f		= fetch
 	fa		= fetch --all --no-tags
 	fp		= format-patch

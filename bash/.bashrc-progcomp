@@ -285,6 +285,9 @@ test -n "$(
 	. "$_" || continue
 	# Add alias completions that git-completion.bash isn't smart enough to
 	# figure out
+	_git_diff_wrapper() {
+		_git_diff "$@"
+	}
 	_git_merge_into() {
 		__git_complete_refs --dwim --mode=heads "$@"
 	}
