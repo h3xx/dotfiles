@@ -285,13 +285,7 @@ test -n "$(
 	. "$_" || continue
 	# Add alias completions that git-completion.bash isn't smart enough to
 	# figure out
-	_git_r() {
-		_git_reset "$@"
-	}
-	_git_rh() {
-		_git_reset "$@"
-	}
-	_git_rs() {
+	_git_reset_wrapper() {
 		_git_reset "$@"
 	}
 	# also complete git refs for tig
