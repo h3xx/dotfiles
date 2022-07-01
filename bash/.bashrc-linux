@@ -262,12 +262,14 @@ gcd() {
 	fi
 
 	# Massage "/path/to/dir/.git/" --> "/path/to/dir"
-	TARGETDIR=${TARGETDIR%/}
-	TARGETDIR=${TARGETDIR%.git}
-	# Massage "prefix:repo.git" --> "repo.git"
+	# Massage "/path/repo.git" --> "/path/repo"
 	# XXX Requires "shopt -s extglob"!
+	TARGETDIR=${TARGETDIR%%+(/|.git)}
+	# Massage "prefix:repo" --> "repo"
 	TARGETDIR=${TARGETDIR#+([0-9A-Za-z]):}
-	TARGETDIR=$(basename -- "$TARGETDIR" .git)
+	# Massage "/path/to/repo" --> "repo"
+	TARGETDIR=${TARGETDIR##*/}
+
 	cd "$TARGETDIR"
 }
 
