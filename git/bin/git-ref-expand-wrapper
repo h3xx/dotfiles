@@ -57,7 +57,7 @@ for ARG; do
         -)
             GIT_ARGS+=('@{-1}')
             ;;
-        --upstream)
+        --up|--upstream)
             GIT_ARGS+=("$(upstream_ref)")
             ;;
         *)
