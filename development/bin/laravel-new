@@ -39,11 +39,16 @@ check_required_binaries() {
 main() {
     local \
         NO_MORE_FLAGS=0 \
-        OPERANDS=()
+        OPERANDS=() \
+        LARAVEL_VERSION
+
     for ARG; do
         # Assume arguments that don't begin with a - are supposed to be files or other operands
         if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
             case "$ARG" in
+                --version=*)
+                    LARAVEL_VERSION=${ARG#*=}
+                    ;;
                 --help|-h)
                     HELP_MESSAGE
                     exit 0
@@ -76,12 +81,21 @@ main() {
     done
 }
 
-make_laravel_new() {
-    local PROJECT_DIR=$1
-    composer create-project laravel/laravel "$PROJECT_DIR"
+make_laravel_new() (
+    PROJECT_DIR=$1
+    COMPOSER_ARGS=(
+        create-project
+        laravel/laravel
+        "$PROJECT_DIR"
+    )
+
+    if [[ -n $LARAVEL_VERSION ]]; then
+        COMPOSER_ARGS+=("$LARAVEL_VERSION")
+    fi
+    composer "${COMPOSER_ARGS[@]}"
     # Fixes inability to find, say App\Models\User when you type User into tinker
     cd "$PROJECT_DIR"
     composer dumpauto
-}
+)
 
 main "$@"
