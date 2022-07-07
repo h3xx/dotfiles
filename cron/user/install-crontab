@@ -3,6 +3,7 @@
 
 # intelligently installs a crontab based on the contents of run-parts' targets
 
+RANDOM_SECONDS=1
 RANDOM_TIMES=1
 
 DEBUG=1
@@ -14,6 +15,14 @@ DIR_BASE2='~/.cron'
 if [[ -x $DIR_BASE/mailwrap ]]; then
     RUN_PARTS="$DIR_BASE2/mailwrap $RUN_PARTS"
 fi
+
+before_run() {
+    if [[ $RANDOM_SECONDS -ne 0 ]]; then
+        # Note: *BSD sleep doesn't support 's' suffix
+        printf 'sleep %d ; \n' \
+            "$(rand_num 5 59)"
+    fi
+}
 
 has_exec() {
     local DIR=$DIR_BASE/$1
@@ -27,9 +36,18 @@ has_exec() {
     return 1
 }
 
-# chooses a random number between 0 and N, inclusive
+# chooses a random number between M and N, inclusive
 rand_num() {
-    echo "$((RANDOM%($1+1)))"
+    local LB UB
+    if [[ $1 -eq ${2:-0} ]]; then
+        echo "$1"
+        return
+    elif [[ $1 -gt ${2:-0} ]]; then
+        LB=${2:-0} UB=$1
+    else
+        LB=$1 UB=$2
+    fi
+    echo "$(( LB + RANDOM % ( UB - LB + 1 ) ))"
 }
 
 ask_yn() (
@@ -54,7 +72,7 @@ trap 'cleanup' EXIT
 if has_exec 'cron.01m'; then
     cat <<EOF >>"$CRONTAB_TEMP"
 # Run frequent jobs every minute:
-* * * * * $RUN_PARTS $DIR_BASE2/cron.01m
+* * * * * $(before_run)$RUN_PARTS $DIR_BASE2/cron.01m
 
 EOF
 fi
@@ -62,7 +80,7 @@ fi
 if has_exec 'cron.05m'; then
     cat <<EOF >>"$CRONTAB_TEMP"
 # Run rapid jobs every 5 minutes:
-*/5 * * * * $RUN_PARTS $DIR_BASE2/cron.05m
+*/5 * * * * $(before_run)$RUN_PARTS $DIR_BASE2/cron.05m
 
 EOF
 fi
@@ -81,7 +99,7 @@ if has_exec 'cron.15m'; then
     DESC=":$OFFSET_DESC, :$((OFFSET+15)), :$((OFFSET+30)) and :$((OFFSET+45))"
     cat <<EOF >>"$CRONTAB_TEMP"
 # Run rapid habitual cron jobs four times an hour at $DESC:
-$MINS * * * * $RUN_PARTS $DIR_BASE2/cron.15m
+$MINS * * * * $(before_run)$RUN_PARTS $DIR_BASE2/cron.15m
 
 EOF
     unset OFFSET OFFSET_DESC MINS DESC
@@ -99,7 +117,7 @@ if has_exec 'cron.30m'; then
     DESC=":$OFFSET_DESC and :$((OFFSET+30))"
     cat <<EOF >>"$CRONTAB_TEMP"
 # Run habitual cron jobs twice an hour at $DESC:
-$MINS * * * * $RUN_PARTS $DIR_BASE2/cron.30m
+$MINS * * * * $(before_run)$RUN_PARTS $DIR_BASE2/cron.30m
 
 EOF
     unset OFFSET OFFSET_DESC MINS DESC
@@ -114,7 +132,7 @@ for INTERVAL in hourly daily weekly monthly yearly reboot; do
     #S_INT=$INTERVAL$'\t'
     if has_exec "cron.$INTERVAL"; then
         cat <<EOF >>"$CRONTAB_TEMP"
-@$S_INT ID=$S_INT $RUN_PARTS ~/.cron/cron.$INTERVAL
+@$S_INT ID=$S_INT $(before_run)$RUN_PARTS ~/.cron/cron.$INTERVAL
 
 EOF
     fi
