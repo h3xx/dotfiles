@@ -110,11 +110,11 @@ fi
 # "cron stars"
 for INTERVAL in hourly daily weekly monthly yearly reboot; do
     # for pretty printing
-    S_INT=$(printf %-8s "$INTERVAL")
+    S_INT=$(printf %-7s "$INTERVAL")
     #S_INT=$INTERVAL$'\t'
     if has_exec "cron.$INTERVAL"; then
         cat <<EOF >>"$CRONTAB_TEMP"
-@${S_INT}ID=$S_INT$RUN_PARTS ~/.cron/cron.$INTERVAL
+@$S_INT ID=$S_INT $RUN_PARTS ~/.cron/cron.$INTERVAL
 
 EOF
     fi
