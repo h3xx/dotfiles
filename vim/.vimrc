@@ -564,6 +564,7 @@ let g:ctrlp_match_window='results:100'
 let g:ctrlp_max_files=0
 
 " *** editorconfig-vim ***
+let g:EditorConfig_disable_rules = ['charset']
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 let g:EditorConfig_preserve_formatoptions = 1
 
