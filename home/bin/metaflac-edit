@@ -1,6 +1,9 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+shopt -s inherit_errexit &>/dev/null
+set -e
+
 TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
 cleanup() {
     rm -fr -- "$TEMP_DIR"
@@ -9,15 +12,15 @@ trap 'cleanup' EXIT
 
 edit_flac() {
     TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
-    metaflac --export-tags-to="$TAGS_TEMP" "$1" &&
-    ${EDITOR:-vi} "$TAGS_TEMP" &&
+    metaflac --export-tags-to="$TAGS_TEMP" "$1"
+    ${EDITOR:-vi} "$TAGS_TEMP"
     metaflac --remove-all-tags --import-tags-from="$TAGS_TEMP" "$1"
 }
 
 edit_ogg() {
     TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
-    vorbiscomment --list "$1" >"$TAGS_TEMP" &&
-    ${EDITOR:-vi} "$TAGS_TEMP" &&
+    vorbiscomment --list "$1" >"$TAGS_TEMP"
+    ${EDITOR:-vi} "$TAGS_TEMP"
     vorbiscomment --write --commentfile "$TAGS_TEMP" "$1"
 }
 
@@ -32,25 +35,21 @@ get_mimetype() {
         2>/dev/null
 }
 
-FAILED=0
-
 for FN; do
     MIMETYPE=$(get_mimetype "$FN")
     case "$MIMETYPE" in
         'audio/flac'|'audio/x-flac')
-            edit_flac "$FN" || FAILED=2
+            edit_flac "$FN"
             ;;
         'audio/ogg')
-            edit_ogg "$FN" || FAILED=2
+            edit_ogg "$FN"
             ;;
         *)
             printf '%s: Unrecognized file format "%s"\n' \
                 "$FN" \
                 "$MIMETYPE" \
                 >&2
-            FAILED=2
+            exit 2
             ;;
     esac
 done
-
-exit "$FAILED"
