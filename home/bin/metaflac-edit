@@ -12,16 +12,28 @@ trap 'cleanup' EXIT
 
 edit_flac() {
     TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
+    TAGS_ORIG=$(mktemp -p "$TEMP_DIR" -t '.tags-orig.XXXXXX')
     metaflac --export-tags-to="$TAGS_TEMP" "$1"
+    cp -- "$TAGS_TEMP" "$TAGS_ORIG"
     ${EDITOR:-vi} "$TAGS_TEMP"
-    metaflac --remove-all-tags --import-tags-from="$TAGS_TEMP" "$1"
+    if diff -q "$TAGS_TEMP" "$TAGS_ORIG" &>/dev/null; then
+        printf 'Tags not modified, skipping...\n' >&2
+    else
+        metaflac --remove-all-tags --import-tags-from="$TAGS_TEMP" "$1"
+    fi
 }
 
 edit_ogg() {
     TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
+    TAGS_ORIG=$(mktemp -p "$TEMP_DIR" -t '.tags-orig.XXXXXX')
     vorbiscomment --list "$1" >"$TAGS_TEMP"
+    cp -- "$TAGS_TEMP" "$TAGS_ORIG"
     ${EDITOR:-vi} "$TAGS_TEMP"
-    vorbiscomment --write --commentfile "$TAGS_TEMP" "$1"
+    if diff -q "$TAGS_TEMP" "$TAGS_ORIG" &>/dev/null; then
+        printf 'Tags not modified, skipping...\n' >&2
+    else
+        vorbiscomment --write --commentfile "$TAGS_TEMP" "$1"
+    fi
 }
 
 # prints out the simple mimetype (e.g. `image/jpeg') of a file's contents
