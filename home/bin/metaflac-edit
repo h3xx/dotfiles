@@ -1,23 +1,21 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
-TEMP_FILES=()
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
 cleanup() {
-    rm -f -- "${TEMP_FILES[@]}"
+    rm -fr -- "$TEMP_DIR"
 }
 trap 'cleanup' EXIT
 
 edit_flac() {
-    TAGS_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
-    TEMP_FILES+=("$TAGS_TEMP")
+    TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
     metaflac --export-tags-to="$TAGS_TEMP" "$1" &&
     ${EDITOR:-vi} "$TAGS_TEMP" &&
     metaflac --remove-all-tags --import-tags-from="$TAGS_TEMP" "$1"
 }
 
 edit_ogg() {
-    TAGS_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
-    TEMP_FILES+=("$TAGS_TEMP")
+    TAGS_TEMP=$(mktemp -p "$TEMP_DIR" -t 'tags.XXXXXX')
     vorbiscomment --list "$1" >"$TAGS_TEMP" &&
     ${EDITOR:-vi} "$TAGS_TEMP" &&
     vorbiscomment --write --commentfile "$TAGS_TEMP" "$1"
