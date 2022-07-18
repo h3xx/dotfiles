@@ -13,10 +13,12 @@ Add an icon for the Fluxbox menu, automatically resizing.
 PNG is the input icon file.
 NAME is the name of the .xpm file for output.
 
-Copyright (C) 2012-2013 Dan Church.
-License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
+Copyright (C) 2012-2022 Dan Church.
+License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+with Commons Clause 1.0 (https://commonsclause.com/).
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
+You may NOT use this software for commercial purposes.
 EOF
 }
 

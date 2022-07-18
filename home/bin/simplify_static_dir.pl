@@ -83,13 +83,17 @@ symlinked by default.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2010-2018 Dan Church.
+Copyright (C) 2010-2022 Dan Church.
 
-License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
+License GPLv3: GNU GPL version 3.0 (L<https://www.gnu.org/licenses/gpl-3.0.html>)
+
+with Commons Clause 1.0 (L<https://commonsclause.com/>).
 
 This is free software: you are free to change and redistribute it.
 
 There is NO WARRANTY, to the extent permitted by law.
+
+You may NOT use this software for commercial purposes.
 
 =head1 AUTHOR
 
@@ -560,13 +564,17 @@ Object for abstracting management of a hashed filesystem
 
 =head1 COPYRIGHT
 
-Copyright (C) 2010-2020 Dan Church.
+Copyright (C) 2010-2022 Dan Church.
 
-License GPLv3+: GNU GPL version 3 or later (L<http://gnu.org/licenses/gpl.html>).
+License GPLv3: GNU GPL version 3.0 (L<https://www.gnu.org/licenses/gpl-3.0.html>)
+
+with Commons Clause 1.0 (L<https://commonsclause.com/>).
 
 This is free software: you are free to change and redistribute it.
 
 There is NO WARRANTY, to the extent permitted by law.
+
+You may NOT use this software for commercial purposes.
 
 =head1 AUTHOR
 

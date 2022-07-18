@@ -28,10 +28,12 @@ Compare a build jail with an installed Slackware package.
   -L SED_PROG   Apply sed(1) program SED_PROG to left output.
   -R SED_PROG   Apply sed(1) program SED_PROG to right output.
 
-Copyright (C) 2010-2019 Dan Church.
-License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
-This is free software: you are free to change and redistribute it. There is NO
-WARRANTY, to the extent permitted by law.
+Copyright (C) 2010-2022 Dan Church.
+License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+with Commons Clause 1.0 (https://commonsclause.com/).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+You may NOT use this software for commercial purposes.
 EOF
 }
 
