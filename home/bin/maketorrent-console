@@ -10,13 +10,66 @@ require Digest::SHA1;
 use Getopt::Long qw/ GetOptions /;
 use File::Basename qw/ dirname /;
 use File::Find qw/ find /;
+use Pod::Usage qw/ pod2usage /;
 
-my $target;
+=head1 NAME
+
+maketorrent-console - Make torrent files.
+
+=head1 SYNOPSIS
+
+B<maketorrent-console> [I<OPTION>]... --target I<TORRENT-FILE> [I<DICE>]...
+
+=head1 OPTIONS
+
+=over 4
+
+=item --filesystem_encoding I<ENCODING>
+
+Ignored. Included for compatibility.
+
+=item --target I<TORRENT-FILE>
+
+Output to I<TORRENT-FILE>.
+
+=item --help
+
+Display this help and exit.
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright (C) 2019-2022 Dan Church S<E<lt>amphetamachine@gmail.comE<gt>>.
+
+License GPLv3: GNU GPL version 3.0 (L<https://www.gnu.org/licenses/gpl-3.0.html>)
+
+with Commons Clause 1.0 (L<https://commonsclause.com/>).
+
+This is free software: you are free to change and redistribute it.
+
+There is NO WARRANTY, to the extent permitted by law.
+
+You may NOT use this software for commercial purposes.
+
+=cut
+
+my $help;
 my $ignored;
+my $target;
 &GetOptions(
-    'target=s' => \$target,
     'filesystem_encoding=s' => \$ignored,
+    'help' => \$help,
+    'target=s' => \$target,
+) || &pod2usage(
+    -exitval => 2,
+    -msg => "Try '$0 --help' for more information",
 );
+&pod2usage(
+    -verbose => 1,
+    -exitval => 0,
+) if $help;
+
 if (!$target) {
     die "--target is required";
 }
