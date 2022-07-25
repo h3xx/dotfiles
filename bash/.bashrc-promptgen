@@ -3,7 +3,7 @@
 # Only show this number of directories in path when expanding \W and \w
 PROMPT_DIRTRIM=4
 
-if [[ ! -f ~/.bashrc-prompt-$HOSTNAME-$USER ]]; then
+if [[ ! -s ~/.bashrc-prompt-$HOSTNAME-$USER ]]; then
 
 case "$HOSTNAME" in
 	'necronomicon.slackware')
@@ -35,7 +35,7 @@ if [[ $(locale charmap) = UTF-8 ]]; then
 	GEN_ARGS+=(--utf8)
 fi
 
-"$(dirname -- "$(realpath "$BASH_SOURCE")")"/promptgen.pl "${GEN_ARGS[@]}" > ~/.bashrc-prompt-"$HOSTNAME-$USER"
+"$(dirname -- "$(realpath "$BASH_SOURCE")")"/color-prompt-generator/promptgen-main.pl "${GEN_ARGS[@]}" > ~/.bashrc-prompt-"$HOSTNAME-$USER"
 
 # clean up
 unset GEN_ARGS USER_COLOR HOST_COLOR

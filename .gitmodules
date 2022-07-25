@@ -1,3 +1,7 @@
+[submodule "bash/color-prompt-generator"]
+	path = bash/color-prompt-generator
+	url = https://github.com/h3xx/color-prompt-generator.git
+	branch = main
 [submodule "fluxbox/styles/solaris"]
 	path = fluxbox/styles/solaris
 	url = https://github.com/h3xx/fluxbox-style-solaris.git
