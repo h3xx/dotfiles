@@ -10,6 +10,7 @@ use Getopt::Std	qw/ getopts /;
 # modified AGAIN by Dan Church to provide better contrast between the colors and the numbers
 # modified AGAIN by Dan Church to show a specific palette by passing the script a list of numbers
 # modified AGAIN by Dan Church to make OO and DRY
+# modified AGAIN by Dan Church to support printing escape sequences
 
 
 sub HELP_MESSAGE {
@@ -19,9 +20,10 @@ Usage: $0 [OPTIONS] [COLOR...]
 Display a terminal color cube.
 
   -a            Display TERM::ANSIColor compatible aliases.
+  -f            Display foreground escape sequences.
   -O            When filtering by colors, show ONLY those colors.
 
-Copyright (C) 2015-2020 Dan Church.
+Copyright (C) 2015-2022 Dan Church.
 License GPLv3+: GNU GPL version 3 or later (http://gnu.org/licenses/gpl.html).
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
@@ -32,7 +34,7 @@ EOF
 
 
 MAIN: {
-    &getopts('aO', \ my %opts);
+    &getopts('afO', \ my %opts);
 
     my %reverse_colors;
     my $limit_to_colors;
@@ -49,7 +51,13 @@ MAIN: {
     my $cc = Color::Cube->new(
         reverse_colors => \%reverse_colors,
         limit_to_colors => $limit_to_colors,
-        ($opts{a} ? (format => 'ansicolor') : ()),
+        ($opts{a}
+            ? (format => 'ansicolor')
+            : ($opts{f}
+                ? (format => 'fg_escape')
+                : ()
+            )
+        ),
     );
 
     print $cc, "\n";
@@ -153,6 +161,17 @@ sub text {
     my ($alias, $color) = @_;
     if ($self->{format} eq 'ansicolor') {
         return $alias;
+    } elsif ($self->{format} eq 'fg_escape') {
+        my $escape;
+        if ($color < 16) {
+            $escape = $color + 30;
+            if ($color > 7) {
+                $escape = "1;$escape";
+            }
+        } else {
+            $escape = "30;07;48;5;$color";
+        }
+        return "\\e[${escape}m";
     }
     return $color;
 }
