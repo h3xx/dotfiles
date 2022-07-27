@@ -1,0 +1,152 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+EDITORCONFIG=.editorconfig
+BARE=0
+MODE=list
+EDIT_ALL=1
+
+USAGE() {
+    printf 'Usage: %s [OPTIONS] [--] [DIR]...\n' \
+        "${0##*/}"
+}
+
+HELP_MESSAGE() {
+    USAGE
+    cat <<EOF
+Find .editorconfig files.
+
+  -h            Show this help message.
+  -e, --edit    Open the files in \$EDITOR.
+  --edit-all    Invoke \$EDITOR with all files at once (default).
+  --edit-one    Invoke \$EDITOR with one file at a time.
+  -l, --list    List .editorconfig files (default).
+  --            Terminate options list.
+
+Copyright (C) 2022 Dan Church.
+License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+with Commons Clause 1.0 (https://commonsclause.com/).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+You may NOT use this software for commercial purposes.
+EOF
+}
+
+is_root_editorconfig() {
+    grep -Pq -- '^\s*root\s*=\s*true\s*$' \
+        "$1"
+}
+
+parse_args() {
+    local ARG NO_MORE_FLAGS=0
+    LOOK_IN_DIRS=()
+    for ARG; do
+        # Assume arguments that don't begin with a - are supposed to be files
+        # or other operands
+        if [[ $NO_MORE_FLAGS -eq 0 && $ARG = -* ]]; then
+            case "$ARG" in
+                -e|\
+                --edit)
+                    MODE=edit
+                    ;;
+                --edit-all)
+                    EDIT_ALL=1
+                    ;;
+                --edit-one)
+                    EDIT_ALL=0
+                    ;;
+                -l|\
+                --list)
+                    MODE=list
+                    ;;
+                --help|-h)
+                    HELP_MESSAGE
+                    exit 0
+                    ;;
+                --)
+                    NO_MORE_FLAGS=1
+                    ;;
+                *)
+                    printf 'Unrecognized flag: %s\n' \
+                        "$ARG" \
+                        >&2
+                    USAGE >&2
+                    exit 2
+                    ;;
+            esac
+        else
+            LOOK_IN_DIRS+=("$ARG")
+        fi
+    done
+}
+
+main() {
+    local DIR
+    parse_args "$@"
+    if [[ ${#LOOK_IN_DIRS[@]} -eq 0 ]]; then
+        LOOK_IN_DIRS=(.)
+    fi
+    for DIR in "${LOOK_IN_DIRS[@]}"; do
+        process_dir "$DIR"
+    done
+}
+
+process_dir() {
+    local FOUND=()
+    local EC NOTATION ROOT_FOUND
+
+    pushd "$1" >/dev/null || exit
+    while [[ $PWD != / ]]; do
+        if [[ -f $EDITORCONFIG && -r $EDITORCONFIG ]]; then
+            FOUND+=("$PWD/$EDITORCONFIG")
+        fi
+        cd ..
+    done
+    popd >/dev/null || exit
+
+    if [[ ${#FOUND[@]} -eq 0 ]]; then
+        printf 'No %s found in directory hierarchy\n' \
+            "$EDITORCONFIG" \
+            >&2
+    else
+        case "$MODE" in
+            'list')
+                ROOT_FOUND=0
+                for EC in "${FOUND[@]}"; do
+                    NOTATION=
+
+                    if [[ $BARE -eq 0 ]]; then
+                        if [[ $ROOT_FOUND -ne 0 ]]; then
+                            NOTATION=' (ignored)'
+                        elif is_root_editorconfig "$EC"; then
+                            NOTATION=' (root)'
+                            ROOT_FOUND=1
+                        fi
+                    fi
+
+                    printf '%s%s\n' \
+                        "$EC" \
+                        "$NOTATION"
+                done
+                ;;
+
+            'edit')
+                if [[ $EDIT_ALL -ne 0 ]]; then
+                    ${EDITOR:-vi} "${FOUND[@]}"
+                else
+                    for EC in "${FOUND[@]}"; do
+                        ${EDITOR:-vi} "$EC" || exit
+                    done
+                fi
+                ;;
+
+            *)
+                printf 'Invalid mode: %s\n' \
+                    "$MODE" \
+                    >&2
+                exit 2
+        esac
+    fi
+}
+
+main "$@"
