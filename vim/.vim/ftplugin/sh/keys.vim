@@ -6,6 +6,9 @@ nnoremap <buffer> <silent> ,a :ru templates/keys/sh-ask_yn.vim<CR>
 " ,b - insert in-bash basename
 nnoremap <buffer> <silent> ,b :ru templates/keys/sh-basename.vim<CR>
 
+" ,c - check_required_binaries() function
+nnoremap <buffer> <silent> ,c :ru templates/keys/sh-check_required_binaries.vim<CR>
+
 " ,d - insert in-bash basename
 nnoremap <buffer> <silent> ,d :ru templates/keys/sh-dirname.vim<CR>
 
