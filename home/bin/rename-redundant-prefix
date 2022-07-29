@@ -1,0 +1,145 @@
+#!/usr/bin/perl
+# vi: et sts=4 sw=4 ts=4
+use strict;
+use warnings;
+
+=head1 NAME
+
+rename-redundant-prefix - Eliminate redundant prefixes from files
+
+=head1 SYNOPSIS
+
+B<rename-redundant-prefix> [I<OPTION>]... I<FILE>...
+
+=head1 OPTIONS
+
+=over 4
+
+=item -i, --interactive
+
+Ask before overwriting existing files.
+
+=item -o, --no-overwrite
+
+Do not overwrite existing files.
+
+=item -v, --verbose
+
+Show which files were renamed, if any.
+
+=item --help
+
+Display this help and exit.
+
+=back
+
+=head1 COPYRIGHT
+
+License GPLv3: GNU GPL version 3.0 (L<https://www.gnu.org/licenses/gpl-3.0.html>)
+with Commons Clause 1.0 (L<https://commonsclause.com/>).
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+You may NOT use this software for commercial purposes.
+
+=cut
+
+use File::Basename qw/ basename dirname /;
+use Getopt::Long qw/ GetOptions /;
+Getopt::Long::Configure(qw/
+    no_getopt_compat
+    no_ignore_case
+/);
+use Pod::Usage qw/ pod2usage /;
+
+my (
+    $interactive,
+    $verbose,
+    $no_overwrite,
+);
+
+MAIN: {
+    my (
+        $help,
+    );
+    &GetOptions(
+        'i' => \$interactive, 'interactive' => \$interactive,
+        'o' => \$no_overwrite, 'no-overwrite' => \$no_overwrite,
+        'v' => \$verbose, 'verbose' => \$verbose,
+        'help' => \$help,
+    ) || &pod2usage(
+        -exitval => 2,
+        -msg => "Try 'rename-redundant-prefix --help' for more information",
+    );
+
+    if ($interactive && $no_overwrite) {
+        die "Mutually-exclusive arguments: --interactive --no-overwrite";
+    }
+
+    &pod2usage(
+        -verbose => 1,
+        -exitval => 0,
+    ) if $help;
+
+    # Print usage message if no arguments specified
+    &pod2usage(
+        -exitval => 1,
+        -sections => 'SYNOPSIS',
+        -verbose => 0,
+    ) unless @ARGV;
+
+    my @files = map {
+        [&dirname($_), &basename($_), $_]
+    } @ARGV;
+    my $prefix = &common_prefix(map {
+        $_->[1]
+    } @files);
+    die "No common prefix found" unless length $prefix;
+    foreach my $file (@files) {
+        &rename_prefix(
+            $prefix,
+            $file,
+        );
+    }
+}
+
+sub common_prefix {
+    my $first = shift;
+    PREFIX: for (my $len = length $first; $len > 0; --$len) {
+        my $test = substr $first, 0, $len;
+        foreach my $name (@_) {
+            if ($test ne substr $name, 0, $len) {
+                next PREFIX;
+            }
+        }
+        return $test;
+    }
+}
+
+sub rename_prefix {
+    my ($prefix, $file) = @_;
+    my ($dirname, $name, $path) = @{$file};
+    unless (-e $name) {
+        die "$name: not accessible: No such file or directory";
+    }
+    my $new_name = substr $name, length $prefix;
+    unless (length $new_name) {
+        die "Cannot rename `$name' to empty";
+    } elsif ($new_name eq $name) {
+        die "Rename of `$name' would be same as original name";
+    }
+
+    my $new_path = "$dirname/$new_name";
+    if (-e $new_path) {
+        return if $no_overwrite;
+        if ($interactive) {
+            printf STDERR "overwrite '%s' with '%s'? ";
+            return unless <> =~ /^y/i;
+        }
+    }
+    if ($verbose) {
+        printf STDERR "`%s' -> `%s'\n", $name, $new_name;
+    }
+    rename $path, $new_path
+        or die "Failed to rename: $!";
+
+}
