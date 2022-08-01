@@ -338,6 +338,11 @@ if has irssi; then
     soft_link "$DOTFILES/irssi" ~/.irssi
 fi
 
+# OPT: jq
+if has jq; then
+    soft_link_all ~/bin "$DOTFILES/jq/bin"/*
+fi
+
 # OPT: newsbeuter
 if has newsbeuter; then
     soft_link "$DOTFILES/newsbeuter" ~/.newsbeuter

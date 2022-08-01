@@ -1,0 +1,70 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# Wrapper script for jq(1).
+#
+# - Automatically adds `--ascii-output' for non-UTF8 terminals.
+# - Automatically pipes to less(1) (or value of $JQPAGER/$PAGER when outputting
+#   to a terminal.
+#
+# Copyright (C) 2022 Dan Church.
+# License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+# with Commons Clause 1.0 (https://commonsclause.com/).
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+# You may NOT use this software for commercial purposes.
+
+JQ_ARGS=()
+
+# TODO setup color scheme
+# - null
+# - false
+# - true
+# - numbers
+# - strings
+# - arrays
+# - objects
+# (Default '1;30:0;39:0;39:0;39:0;32:1;39:1;39')
+#JQ_COLORS=
+
+# Prevent jq from screwing up the terminal
+if [[ $(locale charmap) != UTF-8 ]]; then
+    JQ_ARGS+=(--ascii-output)
+fi
+
+next_bin() (
+    # Find path to wrapped program
+    BINNAME=${0##*/}
+    while read -r BIN; do
+        if [[ ! $BIN -ef $0 ]]; then
+            printf '%s\n' \
+                "$BIN"
+            return 0
+        fi
+    done < <(type -aP -- "$BINNAME")
+    printf 'Wrapped program not found in PATH: %s\n' \
+        "$BINNAME" \
+        >&2
+    return 127
+)
+
+REALBIN=$(next_bin) || exit
+
+if [[ -t 1 ]]; then
+    PAGER=${PAGER:-less}
+    JQPAGER=${JQPAGER:-"$PAGER -F -R"}
+    JQ_ARGS+=(
+        --color-output
+    )
+
+    set -o pipefail
+
+    "$REALBIN" \
+        "${JQ_ARGS[@]}" \
+        "$@" |
+    $JQPAGER
+else
+    "$REALBIN" \
+        "${JQ_ARGS[@]}" \
+        "$@"
+fi
