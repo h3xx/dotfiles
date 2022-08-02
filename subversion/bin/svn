@@ -1,0 +1,48 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# svn wrapper to execute some custom wrappers
+
+# Copyright (C) 2021-2022 Dan Church.
+# License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+# with Commons Clause 1.0 (https://commonsclause.com/).
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+# You may NOT use this software for commercial purposes.
+
+shopt -s inherit_errexit
+set -e
+
+next_bin() (
+    # Find path to wrapped program
+    BINNAME=${0##*/}
+    while read -r BIN; do
+        if [[ ! $BIN -ef $0 ]]; then
+            printf '%s\n' \
+                "$BIN"
+            return 0
+        fi
+    done < <(type -aP -- "$BINNAME")
+    printf 'Wrapped program not found in PATH: %s\n' \
+        "$BINNAME" \
+        >&2
+    return 127
+)
+
+SVN=$(next_bin)
+WRAPPER_DIR=~/.subversion/commands
+
+RUN=$SVN
+WRAPPER=$WRAPPER_DIR/svn-$1
+if [[
+    $1 != -*
+    && -x $WRAPPER
+]]; then
+    # Every wrapper relies on this
+    export SVN
+    RUN=$WRAPPER
+    shift 1
+fi
+
+exec \
+"$RUN" "$@"

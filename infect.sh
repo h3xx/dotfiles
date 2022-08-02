@@ -378,6 +378,12 @@ if has crawl; then
     soft_link "$DOTFILES/stone_soup" ~/.crawl
 fi
 
+# OPT: subversion
+if has svn; then
+    soft_link "$DOTFILES/subversion/commands" ~/.subversion/commands
+    soft_link_all ~/bin "$DOTFILES/subversion/bin"/*
+fi
+
 # OPT: tig
 if has tig; then
     soft_link "$DOTFILES/tig" ~/.config/tig

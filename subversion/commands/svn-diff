@@ -1,0 +1,41 @@
+#!/bin/bash
+# vi: et sts=4 sw=4 ts=4
+
+# Wrapper for svn that puts diffs in a pager
+# Script conceived 2021-10-18
+
+# Copyright (C) 2021-2022 Dan Church.
+# License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
+# with Commons Clause 1.0 (https://commonsclause.com/).
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+# You may NOT use this software for commercial purposes.
+
+if [[ -z $SVN ]]; then
+    printf 'Missing environment variable "SVN"\n' \
+        >&2
+    exit 1
+fi
+
+run_diff() {
+    exec "$SVN" diff "$@"
+}
+
+if [[ -t 1 ]]; then
+    # Output to terminal -- colorize and pipe thru pager
+
+    run_diff "$@" |
+    if type -t colordiff &>/dev/null; then
+        colordiff
+    fi |
+    # Here's some weird alchemy for you: this is a git contributed script that
+    # reads in git config to perform highlighting... Let's use it!
+    if type -t diff-highlight &>/dev/null; then
+        diff-highlight
+    fi |
+    less -R
+
+else
+    # Plain diff - likely outputting to file
+    run_diff "$@"
+fi
