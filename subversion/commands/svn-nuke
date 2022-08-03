@@ -10,10 +10,18 @@
 # There is NO WARRANTY, to the extent permitted by law.
 # You may NOT use this software for commercial purposes.
 
-# Restart with a directory argument if we don't have one.
-# (Revert needs a path, cleanup doesn't, but defaults to ".")
-if [[ $# -eq 0 ]]; then
-    exec "$0" .
+if [[ -z $SVN ]]; then
+    printf 'Missing environment variable "SVN"\n' \
+        >&2
+    exit 1
 fi
-svn revert -R "$@" &&
-svn cleanup --remove-unversioned --remove-ignored "$@"
+
+# Add a directory argument if we don't have one.
+# (Revert needs a path, cleanup doesn't, but defaults to ".")
+ARGS=("$@")
+if [[ ${#ARGS[@]} -eq 0 ]]; then
+    ARGS=(.)
+fi
+
+"$SVN" revert -R "${ARGS[@]}" &&
+"$SVN" cleanup --remove-unversioned --remove-ignored "${ARGS[@]}"
