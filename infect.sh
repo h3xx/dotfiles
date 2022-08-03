@@ -401,6 +401,13 @@ if has urlview; then
     soft_link_all ~ "$DOTFILES/urlview"/*
 fi
 
+# OPT: xpdf
+if has xpdf; then
+    if [[ $GUI -ne 0 ]]; then
+        soft_link_all ~ "$DOTFILES/xpdf"/*
+    fi
+fi
+
 # OPT: youtube-dl
 if has youtube-dl; then
     soft_link "$DOTFILES/youtube-dl" ~/.config/youtube-dl
