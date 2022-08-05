@@ -79,6 +79,9 @@
 	# use this to blow away all untracked files and unstaged changes
 	nuke		= !git clean -x -d -f && git co --force
 
+[clone]
+	defaultRemoteName = o
+
 [color]
 	branch = auto
 	diff = auto
