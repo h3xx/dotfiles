@@ -221,7 +221,8 @@ if [[ $UID -eq 0 && -d /var/log/packages ]]; then
 			shopt -s nullglob
 			cd /var/log/packages
 			m=("$2"*)
-			echo "${m[@]%-+([^-])-+([^-])-+([^-])}"
+			IFS=$'\n'
+			echo "${m[*]%-+([^-])-+([^-])-+([^-])}"
 		)
 	}
 fi
