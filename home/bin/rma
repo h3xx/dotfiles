@@ -22,7 +22,15 @@ FILE_ARGS=(
     -type f
     -regextype posix-egrep
     -regex ".*/($(IFS='|'; echo "${FILE_PATTERNS[*]}"))"
-    \! -exec fuser -s {} \;
+)
+
+if type -t fuser &>/dev/null; then
+    FILE_ARGS+=(
+        \! -exec fuser -s {} \;
+    )
+fi
+
+FILE_ARGS+=(
     -print
     -delete
 )
