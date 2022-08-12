@@ -183,7 +183,7 @@ sub interpolate_patterns {
 
     if ($opts{b}) {
         push @patterns_out, map {
-            my $bindir = $_;
+            my $bindir = quotemeta;
             map {
                 $bindir . '/' . $_
             } @patterns_in
@@ -207,7 +207,7 @@ sub interpolate_patterns {
             if defined $ENV{LD_LIBRARY_PATH};
 
         push @patterns_out, map {
-            my $lpath = $_;
+            my $lpath = quotemeta;
             map {
                 $lpath . '/lib' . $_
             } @patterns_in
@@ -218,7 +218,7 @@ sub interpolate_patterns {
     if ($opts{f}) {
         @patterns_out = map {quotemeta} @patterns_out;
     } else {
-        s#^/#^# foreach @patterns_out;
+        s#^\\?/#^# foreach @patterns_out;
     }
 
     my $combined = sprintf '(' . (join '|', (('%s') x @patterns_out)) . ')', @patterns_out;
