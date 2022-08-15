@@ -151,23 +151,29 @@ _kmods() {
 }
 
 # man completes on manual page names
-# TODO: use $MANPATH and $LANG settings
+# TODO: use $LANG settings?
 complete -o default -F _manpages man
 _manpages() {
 	[[ ${COMP_WORDS[1]} = */* ]] && return
 	readarray -t COMPREPLY < <(
 		COMP_WORDBREAKS=
+		readarray -t MANPATHS < <(
+			_MANPATH=$(manpath 2>/dev/null || command man -w 2>/dev/null)
+			_MANPATH=${_MANPATH:-/usr/man}
+			printf '%s\n' "${_MANPATH//:/$'\n'}"
+		)
 		if [[ $COMP_CWORD -gt 1 ]]; then
 			SECT=${COMP_WORDS[1]}
 		else
 			SECT='[0-9]'
 		fi
 		shopt -s nullglob
-
-		MANS=('/usr/man/man'${SECT}"/${2}"*.${SECT}*)
-		MANS=("${MANS[@]#/usr/man/man[0-9]/}")
 		IFS=$'\n'
-		echo -n "${MANS[*]%.[0-9]*}"
+		for MP in "${MANPATHS[@]}"; do
+			MANS=("$MP/man"${SECT}"/${2}"*.${SECT}*)
+			MANS=("${MANS[@]#$MP/man[0-9]/}")
+			echo -n "${MANS[*]%.[0-9]*}"
+		done |sort -u
 	)
 }
 
