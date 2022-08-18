@@ -100,14 +100,11 @@ if [[
             POSSIBLE+=("$CMD")
         fi
     done
-    if [[ ${#POSSIBLE[@]} -eq 0 ]]; then
-        # Can't help - I don't know what command you were trying for.
-        exit "$ERR"
-    elif [[ ${#POSSIBLE[@]} -eq 1 ]]; then
+    if [[ ${#POSSIBLE[@]} -eq 1 ]]; then
         # Could only be one thing - just DWIM!
         printf 'Hmmm... I know you meant to type "%s"...\n' "${POSSIBLE[0]}"
         exec "$REALBIN" "${POSSIBLE[0]}" "$@"
-    else
+    elif [[ ${#POSSIBLE[@]} -gt 1 ]]; then
         # Multiple possible corrections:
         # Produce a better error message at least. Display a list of possibles.
         printf 'Command "%s" not found. Perhaps you meant...\n\n' "$IN_CMD" >&2
@@ -115,7 +112,11 @@ if [[
             printf '    %s\n' "$POSS" >&2
         done
     fi
-else
-    # Can't help
-    exit "$ERR"
+    # Can't help - I don't know what command you were trying for.
 fi
+
+# At this point, either:
+# - The original, unmodified succeeded
+# - The command was too ambiguous to be corrected, and a list of possibles was
+#   printed
+exit "$ERR"
