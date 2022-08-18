@@ -95,8 +95,12 @@ if [[
 ]]; then
     POSSIBLE=()
     for CMD in "${COMMANDS[@]}"; do
-        # E.g. they typed "apt-get i foo"
-        if [[ $CMD = "$IN_CMD"* ]]; then
+        if [[
+            # Don't suggest they run the same command like a dummy
+            $CMD != "$IN_CMD" &&
+            # Command is a prefix, e.g. they typed "apt-get i foo"
+            $CMD = "$IN_CMD"*
+        ]]; then
             POSSIBLE+=("$CMD")
         fi
     done
