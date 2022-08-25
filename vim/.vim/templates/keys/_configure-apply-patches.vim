@@ -1,5 +1,5 @@
 " apply patches
-append
+insert
 (build_script=$(readlink -f -- "$BASH_SOURCE")
 patch_dir=$(dirname -- "$build_script")/patches
 for patch in "$patch_dir"/FILE-*.patch ; do

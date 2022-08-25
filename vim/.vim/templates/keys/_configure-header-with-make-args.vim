@@ -1,5 +1,5 @@
 " more advanced header for build scripts
-append
+insert
 (build_script=$(readlink -f -- "$BASH_SOURCE")
 conf_script=${build_script%-build}
 [[ $build_script = "$conf_script" || ! -f $conf_script ]] ||

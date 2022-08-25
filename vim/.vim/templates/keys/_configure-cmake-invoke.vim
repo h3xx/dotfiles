@@ -1,5 +1,5 @@
 " cmake -> _build
-append
+insert
 (
 mkdir -p _build &&
 cd _build &&
