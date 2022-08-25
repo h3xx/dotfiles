@@ -1,5 +1,5 @@
 " mktemp invocation for shell scripts
 
 append
-=$(mktemp -t "${0##*/}.XXXXXX")
+=$(mktemp -p "$TEMP_DIR" -t 'file.XXXXXX')
 .
