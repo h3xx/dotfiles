@@ -58,9 +58,11 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-TEMP_FILES=()
+# GPG tends to make vi-style backups, so there could be multiple files in this
+# directory
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
 cleanup() {
-    rm -f -- "${TEMP_FILES[@]}"
+    rm -fr -- "$TEMP_DIR"
 }
 trap 'cleanup' EXIT
 
@@ -72,11 +74,7 @@ GPG_OPTS=(
 
 # set up a temporary keyring for importing into
 if [[ -z $KEYRING && $TEMP_KEYRING -ne 0 ]]; then
-    KEYRING=$(mktemp -t "${0##*/}.XXXXXX")
-    TEMP_FILES+=(
-        "$KEYRING"
-        "${KEYRING}~" # GPG tends to make vi-style backups
-    )
+    KEYRING=$(mktemp -p "$TEMP_DIR")
 fi
 
 if [[ -n $KEYRING ]]; then
