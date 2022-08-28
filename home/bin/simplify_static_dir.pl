@@ -103,30 +103,23 @@ Written by Dan Church S<E<lt>amphetamachine@gmail.comE<gt>>
 
 use File::Find qw/ find /;
 use Getopt::Std qw/ getopts /;
+use Pod::Usage qw/ pod2usage /;
 
 sub HELP_MESSAGE {
     my $fh = shift;
-    print $fh <<EOF
-Usage: $0 [DIRS]
-Simplify a directory by hard-linking identical files.
-
-  -v            Verbose output.
-  -f            Print a sum of the number of freed bytes.
-  -m REGEX      Only match file paths matching REGEX.
-  -M REGEX      Exclude file paths matching REGEX.
-  -z            Include zero-length files in search.
-
-By default, scans the current directory.
-
-See also `perldoc $0'
-EOF
-;
-    exit 0;
+    &pod2usage(
+        -verbose => 1,
+        -exitval => 0,
+    );
 }
 
 
 MAIN: {
-    &getopts('vfm:M:z', \ my %opts);
+    &getopts('vfm:M:z', \ my %opts)
+        || &pod2usage(
+            -exitval => 2,
+            -msg => "Try '$0 --help' for more information",
+        );
 
     my $verbose = defined $opts{v};
     my $print_freed = defined $opts{f};
