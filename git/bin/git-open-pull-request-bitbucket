@@ -16,6 +16,7 @@ Open a web browser to create a new BitBucket pull request.
 
   -h            Show this help message.
   -s BRANCH     Set source branch (defaults to current branch).
+  -t BRANCH     Set target branch (defaults to empty).
 
 Copyright (C) 2015-2022 Dan Church.
 License GPLv3: GNU GPL version 3.0 (https://www.gnu.org/licenses/gpl-3.0.html)
@@ -27,11 +28,15 @@ EOF
 }
 
 ARG_SOURCE_BRANCH=
+ARG_TARGET_BRANCH=
 
-while getopts 'hs:' FLAG; do
+while getopts 'hs:t:' FLAG; do
     case "$FLAG" in
         's')
             ARG_SOURCE_BRANCH=$OPTARG
+            ;;
+        't')
+            ARG_TARGET_BRANCH=$OPTARG
             ;;
         'h')
             HELP_MESSAGE
@@ -77,6 +82,9 @@ pull_request_url() (
     HTTP_ARGS=(
         "source=$(url_encode "$SOURCE_BRANCH")"
     )
+    if [[ -n $ARG_TARGET_BRANCH ]]; then
+        HTTP_ARGS+=("dest=$(url_encode "$ARG_TARGET_BRANCH")")
+    fi
 
     # Concatenate all args, URL encoding '&' to %26
     HTTP_PARAMS=$(IFS='&'; echo "${HTTP_ARGS[*]//&/%26}")
