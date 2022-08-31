@@ -4,5 +4,6 @@ exec \
 sqlite3 \
     -bail \
     -init /dev/null \
+    -readonly \
     "$1" \
     .dump
