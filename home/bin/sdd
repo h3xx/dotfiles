@@ -1,6 +1,8 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+shopt -s extglob
+
 USAGE() {
     printf 'Usage: %s [OPTIONS] [--] [DIRECTORY]\n' \
         "${0##*/}"
@@ -209,15 +211,17 @@ list_scheduled() (
     atq |
         grep -w -- "$USER$" | # Limit to the current user
         while IFS= read -r LINE; do
+            # Line example: "1234\tSun Sep  4 15:32:00 2022 a h3xx"
             JOBID=${LINE%%[^0-9]*}
-            SDD_DIR=$(at -c "$JOBID" |grep ^SDD_DIR |
-                # eliminate "SDD_DIR="
-                cut -f 2- -d = |
-                # eliminate "; export SDD_DIR"
-                rev |cut -f 2- -d ';' |rev
-            )
+            SDD_DIR=$(at -c "$JOBID" |grep ^SDD_DIR)
             if [[ -n $SDD_DIR ]]; then
-                DATE=$(rev <<< "$LINE" |cut -f 3- -d ' ' |rev | cut -f 2-)
+                SDD_DIR=${SDD_DIR#'SDD_DIR='}
+                SDD_DIR=${SDD_DIR%'; export SDD_DIR'}
+                # Eliminate first column (job id)
+                # (Requires extglob)
+                DATE=${LINE#+([^[:space:]])[[:space:]]}
+                # Eliminate last two columns (queue letter, user)
+                DATE=${DATE%[[:space:]][A-Za-z][[:space:]]*}
                 TS=$(date +%s --date="$DATE")
                 printf '%d\t#%d\t%s\t%s\n' \
                     "$TS" \
