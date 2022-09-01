@@ -217,6 +217,9 @@ list_scheduled() (
             if [[ -n $SDD_DIR ]]; then
                 SDD_DIR=${SDD_DIR#'SDD_DIR='}
                 SDD_DIR=${SDD_DIR%'; export SDD_DIR'}
+                if [[ "$SDD_DIR/" = "$HOME/"* ]]; then
+                    SDD_DIR=${SDD_DIR/"$HOME"/'~'}
+                fi
                 # Eliminate first column (job id)
                 # (Requires extglob)
                 DATE=${LINE#+([^[:space:]])[[:space:]]}
