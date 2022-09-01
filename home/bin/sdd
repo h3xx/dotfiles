@@ -219,7 +219,7 @@ list_scheduled() (
             if [[ -n $SDD_DIR ]]; then
                 DATE=$(rev <<< "$LINE" |cut -f 3- -d ' ' |rev | cut -f 2-)
                 TS=$(date +%s --date="$DATE")
-                printf '%d\t#%d %s (%s)\n' \
+                printf '%d\t#%d\t%s\t%s\n' \
                     "$TS" \
                     "$JOBID" \
                     "$SDD_DIR" \
@@ -227,8 +227,11 @@ list_scheduled() (
             fi
         done |
         sort -n |
-        # Eliminate UNIX timestamp column (only used for sorting)
-        cut -f 2-
+        column \
+            --separator=$'\t' \
+            --table \
+            --table-columns='Timestamp,Job,Dir,When' \
+            --table-hide='Timestamp'
 )
 
 if [[ $MODE = 'list' ]]; then
