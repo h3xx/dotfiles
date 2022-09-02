@@ -48,11 +48,15 @@ check_required_binaries() {
 }
 
 check_required_binaries \
-    pngtopnm \
-    pnmtopng
+    convert
 
 if [[ -n $1 ]]; then
     INFILE=$1
 fi
 
-pngtopnm -mix -background "$COLOR" "$INFILE" |pnmtopng >"$OUTFILE"
+convert \
+    -background "$COLOR" \
+    -layers flatten \
+    -- \
+    "$INFILE" \
+    "$OUTFILE"
