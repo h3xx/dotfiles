@@ -115,6 +115,7 @@ my %scrobbler_opts = (
     api_key     => $cfg{api_key},
     secret_key  => $cfg{api_secret},
     client_ver  => $VERSION,
+    enc         => 'UTF-8',
 );
 my %scrobble_buf = (
     artist      => $opts{a},
@@ -124,6 +125,29 @@ my %scrobble_buf = (
     id          => $opts{n},
 );
 
+# Detect and translate non-Unicode strings to unicode ones.
+#
+# TODO This is imperfect, in that the codepoints' bytes are separated (see
+# dump). But! I've already spent 4 fucking hours trying to get this right.
+# Motherfucking goddamn Unicode!
+#
+# The important thing is that the bytes in the string are fixed, and that 'enc'
+# = 'UTF-8' so Net::LastFM::Submission reencodes it properly.
+sub normalize_string_to_utf8 {
+    use Encode qw/ decode_utf8 encode_utf8 /;
+    my $string = shift;
+    my $astring = eval {
+        # Note: make a copy
+        my $temp = $string;
+        decode_utf8($temp, Encode::FB_CROAK);
+    };
+    unless (defined $astring) {
+        # String was invalid utf8
+        $string = encode_utf8($string);
+    }
+    return $string;
+}
+
 # do some corrections
 foreach my $key (keys %scrobble_buf) {
     next unless defined $scrobble_buf{$key};
@@ -131,6 +155,8 @@ foreach my $key (keys %scrobble_buf) {
     $scrobble_buf{$key} =~ s/(^\s+|\s+$)//g;
     # compress all whitespace to a single space
     $scrobble_buf{$key} =~ s/\s+/ /g;
+
+    $scrobble_buf{$key} = &normalize_string_to_utf8($scrobble_buf{$key});
 }
 
 # for reporting/logging
