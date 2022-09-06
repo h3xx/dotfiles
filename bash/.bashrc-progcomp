@@ -171,8 +171,10 @@ _manpages() {
 		IFS=$'\n'
 		for MP in "${MANPATHS[@]}"; do
 			MANS=("$MP/man"${SECT}"/${2}"*.${SECT}*)
-			MANS=("${MANS[@]#$MP/man[0-9]/}")
-			echo -n "${MANS[*]%.[0-9]*}"
+			if [[ ${#MANS[@]} -gt 0 ]]; then
+				MANS=("${MANS[@]##*/}")
+				echo "${MANS[*]%.[0-9]*}"
+			fi
 		done |sort -u
 	)
 }
