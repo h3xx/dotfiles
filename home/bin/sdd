@@ -170,7 +170,7 @@ EOF
 from_now() (
     TS=$1
     NOW=$2
-    PRECISION=8
+    PRECISION=2
 
     rpt() {
         printf '%d %s%s ' "$1" "$2" \
