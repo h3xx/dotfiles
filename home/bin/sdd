@@ -238,7 +238,8 @@ list_scheduled() (
             --separator=$'\t' \
             --table \
             --table-columns='Timestamp,Job,Dir,When' \
-            --table-hide='Timestamp'
+            --table-hide='Timestamp' \
+            --table-noextreme='Dir'
 )
 
 if [[ $MODE = 'list' ]]; then
