@@ -55,19 +55,15 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-TEMP_FILES=()
-
+TEMP_DIR=$(mktemp -d -t "${0##*/}.XXXXXX")
 cleanup() {
-    rm -f -- "${TEMP_FILES[@]}"
+    rm -fr -- "$TEMP_DIR"
 }
-
 trap 'cleanup' EXIT
-
-TAG_TEMP=$(mktemp -t "${0##*/}.XXXXXX")
-TEMP_FILES+=("$TAG_TEMP")
 
 ERR=0
 for FLAC_FILE; do
+    TAG_TEMP=$(mktemp -p "$TEMP_DIR")
     # preserve tag info in our special temp file (should entirely rewrite
     # the temp file)
     metaflac \
