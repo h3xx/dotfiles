@@ -240,14 +240,27 @@ MAIN: {
         $freed_bytes += $inst->bytes_freed;
     }
 
-    printf STDERR "freed %d bytes (%0.4G %s)\n",
-        $freed_bytes, Directory::Simplify::Utils::hr_size($freed_bytes)
+    printf STDERR "freed %s bytes (%0.4G %s)\n",
+        Directory::Simplify::Utils::addcommas($freed_bytes),
+        Directory::Simplify::Utils::hr_size($freed_bytes)
             if $print_freed or $verbose;
 }
 
 package Directory::Simplify::Utils;
 use strict;
 use warnings;
+
+sub addcommas {
+    my @added;
+    foreach my $num (@_) {
+        # don't split anything after the decimal
+        my @parts = split /\./, $num;
+        while ($parts[0] =~ s/(\d)(\d{3}(?:\D|$))/$1,$2/) {
+        }
+        push @added, (join '.', @parts);
+    }
+    wantarray ? @added : $added[0]
+}
 
 sub hr_size {
     my $sz = shift;
