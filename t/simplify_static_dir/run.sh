@@ -87,6 +87,12 @@ test_freed_bytes() {
     assert_equals "$OUT" "freed 24 bytes (24 B)"
 }
 
+test_freed_bytes_commas() {
+    _prep_tar &&
+    local -r OUT=$($SCRIPT -f t/output-commas 2>&1 |tail -1)
+    assert_equals "$OUT" "freed 1,048,576 bytes (1 MB)"
+}
+
 cd "$TEMPDIR" || exit
 TEST_COUNT=0
 TESTS_PASSED=0
@@ -98,6 +104,7 @@ for TESTNAME in \
     test_link_counting \
     test_timestamp_preservation \
     test_freed_bytes \
+    test_freed_bytes_commas \
     ; do
 
     (( TEST_COUNT++ ))
