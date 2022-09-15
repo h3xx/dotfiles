@@ -1,6 +1,8 @@
 #!/bin/bash
 # vi: et sts=4 sw=4 ts=4
 
+shopt -s extglob
+
 USAGE() {
     printf 'Usage: %s [OPTIONS] [--] FILE...\n' \
         "${0##*/}"
@@ -92,6 +94,23 @@ fontname() {
             #cut -f 2- -d ' ' |
             #head -1
 
+            ;;
+
+        'application/vnd.ms-opentype')
+
+            local FAMILY SUBFAMILY
+            FAMILY=$(otfinfo -a -- "$FONT")
+
+            # Comes out as "Subfamily:       <string>"
+            SUBFAMILY=$(otfinfo -i -- "$FONT" |grep -i '^Subfamily' |cut -f 2- -d :)
+            # Trim whitespace
+            # (Depends on extglob)
+            SUBFAMILY=${SUBFAMILY##+( )}
+            SUBFAMILY=${SUBFAMILY%%+( )}
+
+            printf '%s %s' "$FAMILY" "$SUBFAMILY"
+
+            return
             ;;
 
         # FIXME : file(1) may be reporting the wrong mimetype the long
