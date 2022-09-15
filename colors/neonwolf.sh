@@ -33,5 +33,6 @@ BADWOLF_PALETTE_AUX=(
 )
 
 256colors2.pl \
+    "$@" \
     "${NEONWOLF_PALETTE[@]}" \
     "${BADWOLF_PALETTE_AUX[@]}"
