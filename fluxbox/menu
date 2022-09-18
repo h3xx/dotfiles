@@ -218,12 +218,12 @@
 	[submenu] (office)
 		[submenu] (libreoffice)
 			[exec] (libreoffice) {libreoffice} <~/.fluxbox/icons/libreoffice-main.xpm>
-			[exec] (libreoffice base) {libreoffice -base} <~/.fluxbox/icons/libreoffice-base.xpm>
-			[exec] (libreoffice calc) {libreoffice -calc} <~/.fluxbox/icons/libreoffice-calc.xpm>
-			[exec] (libreoffice draw) {libreoffice -draw} <~/.fluxbox/icons/libreoffice-draw.xpm>
-			[exec] (libreoffice impress) {libreoffice -impress} <~/.fluxbox/icons/libreoffice-impress.xpm>
-			[exec] (libreoffice math) {libreoffice -math} <~/.fluxbox/icons/libreoffice-math.xpm>
-			[exec] (libreoffice writer) {libreoffice -writer} <~/.fluxbox/icons/libreoffice-writer.xpm>
+			[exec] (libreoffice base) {libreoffice --base} <~/.fluxbox/icons/libreoffice-base.xpm>
+			[exec] (libreoffice calc) {libreoffice --calc} <~/.fluxbox/icons/libreoffice-calc.xpm>
+			[exec] (libreoffice draw) {libreoffice --draw} <~/.fluxbox/icons/libreoffice-draw.xpm>
+			[exec] (libreoffice impress) {libreoffice --impress} <~/.fluxbox/icons/libreoffice-impress.xpm>
+			[exec] (libreoffice math) {libreoffice --math} <~/.fluxbox/icons/libreoffice-math.xpm>
+			[exec] (libreoffice writer) {libreoffice --writer} <~/.fluxbox/icons/libreoffice-writer.xpm>
 		[end]
 		[submenu] (science)
 			[exec] (celestia) {celestia} <~/.fluxbox/icons/celestia.xpm>
