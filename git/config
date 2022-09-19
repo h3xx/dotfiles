@@ -134,6 +134,8 @@
 
 [init]
 	defaultBranch = main
+	# Omit the junk and sample scripts usually put inside of new .git dirs
+	templateDir =
 
 [log]
 	decorate = true
