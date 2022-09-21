@@ -4,8 +4,6 @@
 ON='ON'
 OFF='OFF'
 
-ARCH=${ARCH:-$(uname -m)}
-
 # Default CMake definitions
 CMAKE_DEFINES=(
     # Install directory used by install.
@@ -78,30 +76,6 @@ for DIR in "${RUNSTATEDIRS[@]}"; do
         break
     fi
 done
-
-# x86_64 support
-if [[ $ARCH = 'x86_64' ]]; then
-    CMAKE_DEFINES+=(
-        # Additional flags to use when compiling this target's sources.
-        #
-        # The COMPILE_FLAGS property sets additional compiler flags
-        # used to build sources within the target. Use
-        # COMPILE_DEFINITIONS to pass additional preprocessor
-        # definitions.
-        #COMPILE_FLAGS='-fPIC -DPIC'
-
-        # Set the libdir
-        LIB_SUFFIX=64
-        # Addendum: this can lead to confusion re: lib64 => lib6464
-        #CMAKE_INSTALL_LIBDIR='/usr/lib64'
-    )
-#else
-#   CMAKE_DEFINES+=(
-#       # Set the libdir
-#       LIB_SUFFIX=
-#       CMAKE_INSTALL_LIBDIR='/usr/lib'
-#   )
-fi
 
 # Use ccache by default for faster builds
 if hash ccache 2>/dev/null; then
