@@ -154,6 +154,7 @@ _kmods() {
 # TODO: use $LANG settings?
 complete -o default -F _manpages man
 _manpages() {
+	COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
 	[[ ${COMP_WORDS[1]} = */* ]] && return
 	readarray -t COMPREPLY < <(
 		COMP_WORDBREAKS=
