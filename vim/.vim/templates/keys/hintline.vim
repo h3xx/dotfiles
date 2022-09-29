@@ -45,5 +45,16 @@ endfor
 
 if len(s:sets) > 0
 	" (&commentstring should be printf-compatible, e.g. '#%s')
-	exe 'norm o'.substitute(printf(&commentstring, ' vi: ' . join(sort(s:sets))), ' \+', ' ', 'g')
+	if matchstr(&commentstring, '%s$') == ''
+		" Dirty (inline) commentstring, e.g. '<!--%s-->'
+		let s:eol = "\n"
+	else
+		" Clean commentstring
+		let s:eol = ''
+	endif
+	exe 'norm o'.substitute(printf(&commentstring,
+				\ ' vi: ' .
+				\ join(sort(s:sets)) .
+				\ s:eol
+				\ ), ' \+', ' ', 'g')
 endif
