@@ -108,6 +108,9 @@ fi
 shopt -s dotglob
 # Make it so e.g. vim/!(.gvimrc) will NOT list .gvimrc
 shopt -s extglob
+# Don't include '.' or '..' in globs (affects extglob too)
+# TODO This is automatic in Bash 5.2.0+ (shopt -s globskipdots)
+GLOBIGNORE='*(*/)+(.|..)'
 
 if [[ $GUI -ne 0 && -n $SSH_CONNECTION ]]; then
     if ! ask_yn_only_if_tty "You're connected over SSH. Still include GUI programs?" n; then
@@ -262,7 +265,7 @@ is_slackware() {
 }
 
 # Install bashrc's
-soft_link_all ~ "$DOTFILES/bash"/!(.|..|.bashrc|.bashrc_NON-SLACKWARE|color-prompt-generator)
+soft_link_all ~ "$DOTFILES/bash"/!(.bashrc|.bashrc_NON-SLACKWARE|color-prompt-generator)
 if is_slackware; then
     soft_link "$DOTFILES/bash"/.bashrc ~/.bashrc
 else
@@ -287,7 +290,7 @@ soft_link_all ~/.config "$DOTFILES/git"
 soft_link_all ~/bin "$DOTFILES/git/bin"/git-*
 
 # Install vim
-soft_link_all ~ "$DOTFILES/vim"/!(.|..|.vimrc|.vimrc_NON-SLACKWARE|bin)
+soft_link_all ~ "$DOTFILES/vim"/!(.vimrc|.vimrc_NON-SLACKWARE|bin)
 soft_link_all ~/bin "$DOTFILES/vim/bin"/*
 if is_slackware; then
     soft_link "$DOTFILES/vim"/.vimrc ~/.vimrc
@@ -296,11 +299,11 @@ else
 fi
 
 # Install misc other files
-soft_link_all ~ "$DOTFILES/home"/!(.|..|.fonts|.local|bin|rc.d|sbin)
+soft_link_all ~ "$DOTFILES/home"/!(.fonts|.local|bin|rc.d|sbin)
 
 if [[ $GUI -ne 0 ]]; then
     soft_link "$DOTFILES/font" ~/.font
-    soft_link_all ~/.fonts "$DOTFILES/home/.fonts"/!(.|..|.gitignore)
+    soft_link_all ~/.fonts "$DOTFILES/home/.fonts"/!(.gitignore)
     soft_link_all ~/.local/share/applications "$DOTFILES/home/.local/share/applications"/*
 fi
 
@@ -351,7 +354,7 @@ fi
 # OPT: mutt
 # (don't link dir, the config repo is meant to be added to with sensitive files)
 if has mutt; then
-    soft_link_all ~/.mutt "$DOTFILES/mutt"/!(.|..|*.xbm)
+    soft_link_all ~/.mutt "$DOTFILES/mutt"/!(*.xbm)
 fi
 
 # OPT: qemu-nbd
@@ -392,7 +395,7 @@ fi
 
 # OPT: tmux
 if has tmux; then
-    soft_link_all ~ "$DOTFILES/tmux"/!(.|..|bin)
+    soft_link_all ~ "$DOTFILES/tmux"/!(bin)
     soft_link_all ~/bin "$DOTFILES/tmux/bin"/*
 fi
 
