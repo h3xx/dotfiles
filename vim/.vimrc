@@ -342,6 +342,9 @@ nmap \s vii:!sort -u<cr>
 " same thing but case-insensitive and only considering letters
 nmap \S vii:!sort -fud<cr>
 
+" ,v - insertion of vim hintline
+nnoremap <silent> ,v :ru templates/keys/hintline.vim<cr>
+
 " ************************************
 " ***** key bindings, paste mode *****
 " ************************************
