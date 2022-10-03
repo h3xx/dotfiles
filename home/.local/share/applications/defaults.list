@@ -13,6 +13,7 @@ application/x-perl=gvim.desktop
 application/x-shellscript=gvim.desktop
 application/xml=gvim.desktop
 application/xrds+xml=gvim.desktop
+text/calendar=mozilla-thunderbird.desktop
 text/html=gvim.desktop
 text/plain=gvim.desktop
 text/troff=gvim.desktop
