@@ -29,7 +29,7 @@ EOF
 
 BARE=0
 LONG=0
-ORDER_COL='datname'
+ORDER_COL='x.name'
 ORDER_DIR='asc'
 USER=postgres
 
@@ -55,7 +55,7 @@ for ARG; do
                 ORDER_DIR='desc'
                 ;;
             -S)
-                ORDER_COL='pg_catalog.pg_database_size(datname)'
+                ORDER_COL='x.size_bytes'
                 ;;
             -U)
                 ASSIGN_NEXT() {
@@ -84,36 +84,32 @@ for ARG; do
 done
 
 # List databases and sizes
+INNER_LIST_CMD="
+    select
+        datname as name,
+        pg_catalog.pg_database_size(datname) as size_bytes
+    from
+        pg_database
+    where
+        datname not in (
+            'postgres'
+        )
+        and datistemplate = 'f'
+"
 if [[ $LONG -ne 0 ]]; then
     LIST_CMD="
-        select
-            datname,
-            pg_size_pretty(pg_catalog.pg_database_size(datname)) as size
-        from
-            pg_database
-        where
-            datname not in (
-                'postgres'
-            )
-            and datistemplate = 'f'
-        order by
-            $ORDER_COL $ORDER_DIR
+        select name, pg_size_pretty(size_bytes) as size
     "
 else
     LIST_CMD="
-        select
-            datname
-        from
-            pg_database
-        where
-            datname not in (
-                'postgres'
-            )
-            and datistemplate = 'f'
-        order by
-            $ORDER_COL $ORDER_DIR
+        select name
     "
 fi
+LIST_CMD+="
+    from ($INNER_LIST_CMD) x
+    order by
+        $ORDER_COL $ORDER_DIR
+"
 
 if [[ $BARE -ne 0 ]]; then
     LIST_CMD="copy ($LIST_CMD) to stdout"
