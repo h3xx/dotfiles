@@ -132,10 +132,13 @@ _jobspecs() {
 # module removal commands only see installed modules
 complete -F _instkmods rmmod
 _instkmods() {
-	readarray -t COMPREPLY < <(
-		cut -f 1 -d ' ' /proc/modules |
-		grep "^$2"
-	)
+	local MODULES NAME
+	readarray -t MODULES < /proc/modules
+	for NAME in "${MODULES[@]%% *}"; do
+		if [[ $NAME = "$2"* ]]; then
+			COMPREPLY+=("$NAME")
+		fi
+	done
 }
 
 # module insertion commands see only modules
