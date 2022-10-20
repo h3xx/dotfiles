@@ -186,10 +186,14 @@ _manpages() {
 # umount only sees mounted file systems
 complete -o default -F _mounts umount df
 _mounts() {
-	readarray -t COMPREPLY < <(
-		cut -f 2 -d ' ' /proc/mounts |
-		grep "^$2"
-	)
+	local MOUNTS MOUNTPATH
+	readarray -t MOUNTS < /proc/mounts
+	for MOUNTPATH in "${MOUNTS[@]#* }"; do
+        MOUNTPATH=${MOUNTPATH%%' '*}
+		if [[ $MOUNTPATH = "$2"* ]]; then
+			COMPREPLY+=("$MOUNTPATH")
+		fi
+	done
 }
 
 # pkg-config
