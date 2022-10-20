@@ -1,8 +1,0 @@
-# aliases
-
-# look up aliases instead of relying on `From:' lines
-set reverse_alias
-
-alias slackware-security Slackware Security <security@slackware.com>
-
-# vi: ft=muttrc

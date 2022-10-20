@@ -1,3 +1,0 @@
-#!/bin/sh
-# toggle mute status
-exec amixer sset Master,0 toggle

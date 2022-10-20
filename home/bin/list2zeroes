@@ -1,6 +1,0 @@
-#!/usr/bin/perl -w
-use strict;
-
-# translates a newline-separated list into a null-separated list
-
-print join ("\0", map { chomp; $_ } <>);

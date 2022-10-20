@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# "The global address time.nist.gov is resolved to all of the server addresses
-# below in a round-robin sequence to equalize the load across all of the
-# servers."
-# Source: http://tf.nist.gov/tf-cgi/servers.cgi
-NTPSERVER='time.nist.gov'
-
-exec /usr/sbin/ntpdate -u "$NTPSERVER"

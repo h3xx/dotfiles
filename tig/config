@@ -1,4 +1,0 @@
-set diff-highlight = true
-set main-view = line-number:no,interval=5 id:no date:custom,format=%F author:full commit-title:yes,graph,refs,overflow=no
-
-source ~/.config/tig/tig-colors-neonwolf/tig-colors-neonwolf-256.tigrc

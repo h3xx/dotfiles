@@ -1,6 +1,0 @@
---add-metadata
---default-search ytsearch
---no-call-home
---no-overwrites
---recode-video mkv
--o "%(title)s-%(id)s.%(ext)s"

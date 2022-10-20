@@ -1,9 +1,0 @@
-#!/bin/bash
-# vi: et sts=4 sw=4 ts=4
-
-# Prints the root commit of the commit-like passed it.
-# Unsure of what'll print out if unrelated histories are merged...
-
-exec git rev-list \
-    --max-parents=0 \
-    "${@:-HEAD}"

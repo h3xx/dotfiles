@@ -1,7 +1,0 @@
-# Fix to give method or class name in php diff
-*.php diff=php
-# Treat package manager lockfiles as binary
-# (really should not be editing these files manually)
-composer.lock binary
-package-lock.json binary
-pnpm-lock.yaml binary

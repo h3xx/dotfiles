@@ -1,6 +1,0 @@
-#!/bin/sh
-# vi: et sts=4 sw=4 ts=4
-
-DOCDIR_BASE='usr/doc'
-
-echo "$DOCDIR_BASE/$(basename -- "${1:-$PWD}")"
