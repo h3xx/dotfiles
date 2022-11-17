@@ -1,4 +1,4 @@
 ## Just some hacker's dotfiles
 
-This project has moved to GitLab:
-https://gitlab.com/h3xx/dotfiles
+This project has moved to Codeberg:
+https://codeberg.org/h3xx/dotfiles
